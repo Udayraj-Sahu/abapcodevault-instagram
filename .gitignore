@@ -1,0 +1,4 @@
+__pycache__/
+new_token.txt
+pipeline/tts/
+out/

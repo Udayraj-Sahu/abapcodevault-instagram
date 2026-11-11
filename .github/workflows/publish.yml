@@ -1,0 +1,49 @@
+name: Publish to Instagram
+
+on:
+  schedule:
+    - cron: "30 13 * * *"   # every day 13:30 UTC = 7:00 PM IST; posts only what is due
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Publish just this queue folder now (leave empty for today's due posts)"
+        required: false
+        default: ""
+      dry_run:
+        description: "Dry run (show what would be published)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Publish due posts
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          MEDIA_BASE_URL: https://cdn.jsdelivr.net/gh/${{ github.repository }}@${{ github.sha }}
+          ONLY: ${{ inputs.only }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
+        run: python scripts/publish.py
+      - name: Save published log
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain published.json)" ]; then
+            git config user.name "abapcodevault-bot"
+            git config user.email "abapcodevault-bot@users.noreply.github.com"
+            git add published.json
+            git commit -m "Log published posts"
+            git pull --rebase
+            git push
+          fi

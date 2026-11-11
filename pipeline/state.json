@@ -1,0 +1,10 @@
+{
+  "handle": "@abapcodevault",
+  "next_week": 2,
+  "history": [
+    "4 ABAP 7.40 syntax tricks (old vs new)",
+    "sy-subrc cheat sheet",
+    "FOR ALL ENTRIES empty-table trap",
+    "Interview: Standard vs Sorted vs Hashed tables"
+  ]
+}

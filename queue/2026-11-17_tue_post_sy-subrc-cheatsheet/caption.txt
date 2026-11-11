@@ -1,0 +1,7 @@
+sy-subrc ko ignore karna = production me dump 💥
+
+Har ABAP developer ke liye ek quick cheat sheet. Rule simple hai: statement ke turant baad check karo, kyunki next statement isko overwrite kar deta hai.
+
+Save karo aur apne fresher dost ko tag karo 👇
+
+#sapabap #abap #sap #abapdeveloper #sapfresher #cheatsheet #debugging #sapjobs #abapcodevault

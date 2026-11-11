@@ -1,0 +1,236 @@
+{
+  "week": 1,
+  "handle": "@abapcodevault",
+  "posts": [
+    {
+      "day": "Mon",
+      "type": "carousel",
+      "slug": "740-syntax-tricks",
+      "tag": "Modern ABAP",
+      "slides": [
+        {
+          "kind": "cover",
+          "kicker": "ABAP 7.40+",
+          "title": "4 syntax tricks that cut your code in half",
+          "subtitle": "Old way vs new way. Swipe and save."
+        },
+        {
+          "kind": "compare",
+          "heading": "1. Inline declarations",
+          "left_title": "Old way",
+          "left": "DATA lv_count TYPE i.\nlv_count = lines( lt_orders ).",
+          "right_title": "New way",
+          "right": "DATA(lv_count) = lines( lt_orders )."
+        },
+        {
+          "kind": "compare",
+          "heading": "2. Table expressions",
+          "left_title": "Old way",
+          "left": "READ TABLE lt_mara INTO ls_mara\n  WITH KEY matnr = lv_matnr.\nIF sy-subrc = 0.\n  lv_mtart = ls_mara-mtart.\nENDIF.",
+          "right_title": "New way",
+          "right": "lv_mtart = VALUE #(\n  lt_mara[ matnr = lv_matnr ]-mtart\n  OPTIONAL )."
+        },
+        {
+          "kind": "compare",
+          "heading": "3. Fill a table with VALUE",
+          "left_title": "Old way",
+          "left": "ls_item-matnr = 'MAT-01'.\nls_item-menge = 10.\nAPPEND ls_item TO lt_items.",
+          "right_title": "New way",
+          "right": "lt_items = VALUE #(\n  ( matnr = 'MAT-01' menge = 10 ) )."
+        },
+        {
+          "kind": "compare",
+          "heading": "4. String templates",
+          "left_title": "Old way",
+          "left": "CONCATENATE 'Order' lv_vbeln\n  'saved' INTO lv_msg\n  SEPARATED BY space.",
+          "right_title": "New way",
+          "right": "lv_msg = |Order { lv_vbeln } saved|."
+        },
+        {
+          "kind": "cta",
+          "title": "Which one do you use daily?",
+          "body": "Comment the number. Full code + cheat sheets in the ABAP Code Vault (link in bio).",
+          "actions": [
+            "Save",
+            "Share with your team",
+            "Follow @abapcodevault"
+          ]
+        }
+      ],
+      "caption": "Abhi bhi CONCATENATE aur READ TABLE likh rahe ho? 😅\n\nABAP 7.40+ ke ye 4 tricks aapka code half kar denge aur reviewer bhi khush rahega:\n\n1️⃣ Inline DATA( )\n2️⃣ Table expressions itab[ ]\n3️⃣ VALUE #( ) se table fill\n4️⃣ String templates | |\n\nSave karo, next project me kaam aayega. Kaunsa trick aap daily use karte ho? Comment me number batao 👇\n\nFull code + cheat sheets → link in bio",
+      "hashtags": [
+        "#sapabap",
+        "#abap",
+        "#sap",
+        "#abapdeveloper",
+        "#saps4hana",
+        "#sapfresher",
+        "#coding",
+        "#programming",
+        "#techjobsindia",
+        "#abapcodevault"
+      ]
+    },
+    {
+      "day": "Tue",
+      "type": "post",
+      "slug": "sy-subrc-cheatsheet",
+      "tag": "Cheat sheet",
+      "slides": [
+        {
+          "kind": "list",
+          "heading": "sy-subrc: what it means after each statement",
+          "items": [
+            "0 - Success, always",
+            "4 after READ TABLE / SELECT - Row not found",
+            "8 after READ TABLE ... BINARY SEARCH - Not found, past the end of the table",
+            "4 after LOOP - No rows processed",
+            "1, 2, 3... after CALL FUNCTION - The EXCEPTIONS you numbered",
+            "Check it immediately - The next statement overwrites it"
+          ]
+        }
+      ],
+      "caption": "sy-subrc ko ignore karna = production me dump 💥\n\nHar ABAP developer ke liye ek quick cheat sheet. Rule simple hai: statement ke turant baad check karo, kyunki next statement isko overwrite kar deta hai.\n\nSave karo aur apne fresher dost ko tag karo 👇",
+      "hashtags": [
+        "#sapabap",
+        "#abap",
+        "#sap",
+        "#abapdeveloper",
+        "#sapfresher",
+        "#cheatsheet",
+        "#debugging",
+        "#sapjobs",
+        "#abapcodevault"
+      ]
+    },
+    {
+      "day": "Thu",
+      "type": "reel",
+      "slug": "for-all-entries-trap",
+      "tag": "Performance",
+      "seconds_per_slide": 3.5,
+      "slides": [
+        {
+          "kind": "cover",
+          "kicker": "ABAP trap",
+          "title": "This one line can read your ENTIRE table",
+          "voiceover": "सुनो, एक मिनट रुको। ये एक लाइन... आपकी पूरी टेबल पढ़ सकती है। और ज़्यादातर फ्रेशर्स ये गलती करते हैं।",
+          "spoken": "Suno, ek minute ruko. Ye ek line aapki poori table padh sakti hai. Aur zyada-tar freshers ye galti karte hain.",
+          "subtitle": "FOR ALL ENTRIES ka sabse bada trap"
+        },
+        {
+          "kind": "code",
+          "heading": "Looks innocent, right?",
+          "code": "SELECT vbeln, posnr, matnr\n  FROM vbap\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE vbeln = @lt_orders-vbeln\n  INTO TABLE @DATA(lt_items).",
+          "filename": "zreport.abap",
+          "voiceover": "ये सेलेक्ट देखो। बिल्कुल नॉर्मल लग रहा है ना? ऑर्डर्स की टेबल से, हम वीबैप के आइटम्स पढ़ रहे हैं।",
+          "spoken": "Ye SELECT dekho. Bilkul normal lag raha hai na? Orders ki table se hum VBAP ke items padh rahe hain."
+        },
+        {
+          "kind": "text",
+          "heading": "If lt_orders is empty...",
+          "body": "the WHERE clause is ignored.\n\nSAP reads every row of VBAP. Millions of rows. Timeout. Angry user.",
+          "highlight": "Empty driver table = no filter at all",
+          "voiceover": "लेकिन ट्विस्ट ये है। अगर ऑर्डर्स वाली टेबल खाली हुई, तो व्हेयर कंडीशन पूरी तरह इग्नोर हो जाती है। और सैप, पूरी वीबैप टेबल उठा लेता है। लाखों रोज़। सीधा टाइमआउट।",
+          "spoken": "Lekin twist ye hai. Agar orders wali table khaali hui, to WHERE condition poori tarah ignore ho jaati hai. Aur SAP poori VBAP table utha leta hai. Laakhon rows. Seedha timeout."
+        },
+        {
+          "kind": "code",
+          "heading": "The fix: one IF",
+          "code": "IF lt_orders IS NOT INITIAL.\n  SELECT vbeln, posnr, matnr\n    FROM vbap\n    FOR ALL ENTRIES IN @lt_orders\n    WHERE vbeln = @lt_orders-vbeln\n    INTO TABLE @DATA(lt_items).\nENDIF.",
+          "filename": "zreport.abap",
+          "note": "Bonus: remove duplicates from lt_orders first.",
+          "voiceover": "फिक्स? बस एक इफ। सेलेक्ट से पहले चेक करो, कि टेबल इनिशियल नहीं है। और हो सके तो, डुप्लिकेट्स भी पहले हटा दो।",
+          "spoken": "Fix? Bas ek IF. SELECT se pehle check karo ki table initial nahi hai. Aur ho sake to duplicates bhi pehle hata do."
+        },
+        {
+          "kind": "cta",
+          "title": "Follow for daily ABAP tips",
+          "body": "Interview me bhi ye question pakka aata hai.",
+          "actions": [
+            "Save",
+            "Share",
+            "Follow @abapcodevault"
+          ],
+          "voiceover": "ये सवाल इंटरव्यू में भी पक्का आता है। तो पोस्ट सेव कर लो, और ऐसी ही टिप्स के लिए, फॉलो करो अबैप कोड वॉल्ट।",
+          "spoken": "Ye sawaal interview mein bhi pakka aata hai. To post save kar lo, aur aisi hi tips ke liye follow karo ABAP Code Vault."
+        }
+      ],
+      "caption": "Ek chhota sa IF missing tha... aur report ne poori VBAP table padh li 😱\n\nFOR ALL ENTRIES me driver table empty ho to WHERE condition ignore ho jaati hai. Har baar pehle IS NOT INITIAL check karo.\n\nInterview me bhi ye question bahut aata hai. Save karo! 📌\n\n160 aise interview questions → link in bio",
+      "hashtags": [
+        "#sapabap",
+        "#abap",
+        "#sap",
+        "#abapdeveloper",
+        "#performance",
+        "#sapinterview",
+        "#sapfresher",
+        "#reels",
+        "#abapcodevault"
+      ],
+      "voice": "hm_omega",
+      "voice_lang": "hi",
+      "voice_speed": 1.0
+    },
+    {
+      "day": "Sat",
+      "type": "carousel",
+      "slug": "itab-types-interview",
+      "tag": "Interview Q",
+      "slides": [
+        {
+          "kind": "cover",
+          "kicker": "Asked in 8 out of 10 interviews",
+          "title": "Standard vs Sorted vs Hashed table",
+          "subtitle": "Explain it in 30 seconds. Swipe."
+        },
+        {
+          "kind": "text",
+          "heading": "STANDARD table",
+          "body": "Access by index or linear search on key. Duplicates allowed.\n\nUse for small tables and ALV output.",
+          "highlight": "Read cost grows with table size"
+        },
+        {
+          "kind": "text",
+          "heading": "SORTED table",
+          "body": "Always kept sorted by its key. Reads use binary search automatically.\n\nUse when you read by a partial key or need data in order.",
+          "highlight": "Fast reads, slower inserts"
+        },
+        {
+          "kind": "text",
+          "heading": "HASHED table",
+          "body": "Access only by the full unique key. Constant read time, no index access.\n\nUse for big lookup tables inside loops.",
+          "highlight": "Same speed for 100 or 1,000,000 rows"
+        },
+        {
+          "kind": "code",
+          "heading": "Declare all three",
+          "code": "DATA lt_std TYPE STANDARD TABLE OF mara\n  WITH EMPTY KEY.\nDATA lt_srt TYPE SORTED TABLE OF mara\n  WITH NON-UNIQUE KEY mtart.\nDATA lt_hsh TYPE HASHED TABLE OF mara\n  WITH UNIQUE KEY matnr.",
+          "filename": "itab_types.abap"
+        },
+        {
+          "kind": "cta",
+          "title": "Want 159 more like this?",
+          "body": "ABAP Interview Pack: 160 questions with answers, Fresher to Senior. Link in bio.",
+          "actions": [
+            "Save for your interview",
+            "Tag a job seeker",
+            "Follow @abapcodevault"
+          ]
+        }
+      ],
+      "caption": "Interviewer: \"Standard, sorted aur hashed table me difference batao.\" 🤔\n\nYe question 8/10 interviews me aata hai. 30 second me answer karna seekho:\n\n🔹 Standard: small tables, ALV output\n🔹 Sorted: partial key ya ordered read\n🔹 Hashed: full unique key, big lookups\n\nAur ek real example zaroor do apne project se. Save karo interview se pehle 📌\n\nABAP Interview Pack (160 Q&A) → link in bio",
+      "hashtags": [
+        "#sapabap",
+        "#abap",
+        "#sap",
+        "#sapinterview",
+        "#interviewprep",
+        "#abapdeveloper",
+        "#sapfresher",
+        "#sapjobs",
+        "#abapcodevault"
+      ]
+    }
+  ]
+}

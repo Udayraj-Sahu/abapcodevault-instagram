@@ -1,0 +1,18 @@
+{
+  "pattern": ["Mon carousel", "Tue post", "Thu reel", "Sat carousel"],
+  "weeks": {
+    "1":  ["4 ABAP 7.40 syntax tricks (old vs new)", "sy-subrc cheat sheet", "FOR ALL ENTRIES empty-table trap", "Interview: Standard vs Sorted vs Hashed tables"],
+    "2":  ["ALV in 10 lines with CL_SALV_TABLE", "Top 10 developer T-codes", "SELECT inside LOOP: why it kills performance + fix", "Interview: Domain vs Data element"],
+    "3":  ["Report events in order (INITIALIZATION to END-OF-SELECTION)", "SD tables cheat sheet (VBAK, VBAP, LIKP, VBRK...)", "Debugging trick: /h and breakpoint at statement MESSAGE", "Interview: SELECT SINGLE vs UP TO 1 ROWS"],
+    "4":  ["Field symbols vs work areas (with speed comparison)", "MM tables cheat sheet (MARA, MARC, EKKO, MSEG/MATDOC...)", "Leading zeros bug: ALPHA conversion", "Interview: Lock objects ENQUEUE/DEQUEUE"],
+    "5":  ["BAPI pattern: call, check RETURN, commit", "BAPI_TRANSACTION_COMMIT: why you must call it", "The X-structure trap in BAPIs", "Interview: BAPI vs BDC vs LSMW"],
+    "6":  ["VALUE, FOR and REDUCE explained with examples", "FI tables cheat sheet (BKPF, BSEG, ACDOCA...)", "Short dump in production: 5-step checklist (ST22)", "Interview: User exit vs Customer exit vs BAdI"],
+    "7":  ["How to find a BAdI for any transaction", "Selection screen cheat sheet", "Hide/show fields with MODIF ID", "Interview: PBO vs PAI and OK_CODE"],
+    "8":  ["SmartForm driver program step by step", "SmartForms vs Adobe Forms comparison", "Get a SmartForm as PDF in 4 steps", "Interview: Classic vs New BAdI"],
+    "9":  ["CDS view basics for ABAP developers", "S/4HANA changes every ABAP dev must know", "Code pushdown in one example", "Interview: CDS view vs SE11 view"],
+    "10": ["OO ABAP: class, object, constructor in 5 slides", "Instance vs static components cheat sheet", "Singleton pattern in ABAP", "Interview: Abstract class vs Interface"],
+    "11": ["Excel upload with TEXT_CONVERT_XLS_TO_SAP", "File handling T-codes and FMs cheat sheet", "GUI_UPLOAD doesn't work in background: why + fix", "Interview: Background job questions"],
+    "12": ["IDoc basics: control, data, status records", "IDoc T-codes cheat sheet (WE02, WE19, BD87...)", "Reprocess a failed IDoc in 3 steps", "Interview: Scenario - report shows no data, what do you check?"]
+  },
+  "after_week_12": "Create new topics yourself: rotate through basics, DDIC, internal tables, SQL/performance, ALV, OO, module pool, forms, enhancements, BAPI/BDC/IDoc, S/4HANA/CDS/RAP. Never repeat a topic already listed in state.json history. Every Sat carousel is an interview question that ends by plugging the ABAP Interview Pack; every Mon carousel ends by plugging the ABAP Code Vault."
+}
