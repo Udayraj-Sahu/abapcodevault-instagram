@@ -14,7 +14,7 @@ Each daily run creates tomorrow's 3 posts.
 2. For each type (post, carousel, reel): if `queue/` already has an UNPUBLISHED folder for DATE with that type (folder name starts with DATE and contains `_<type>_`, and it is not a key in published.json), skip that type. Otherwise pick the next unused topic from topics.json (carousel list chosen by day-of-month parity; see topics.json how_to_use).
 3. Write `pipeline/days/DATE.json` (same schema as `pipeline/weeks/week01.json`, only the needed posts; set "day" to the weekday short name).
 4. `python3 pipeline/generate.py pipeline/days/DATE.json out/DATE`
-5. Contact-sheet check (carousel/post PNGs + 6–8 reel frames via ffmpeg); fix overflow and re-render. ffprobe the reel for video+audio.
+5. Contact-sheet check (carousel/post PNGs + 6–8 reel frames via ffmpeg); fix overflow and re-render. ffprobe the reel for video+audio. If the generator printed **OVERLAP WARNING** (also saved as out/DATE/OVERLAP_WARNING.txt), shorten or restructure that slide and re-render until it is gone.
 6. `python3 scripts/queue_day.py out/DATE DATE`
 7. Update `state.json`: `last_queued_date` = DATE, append the topics to `history`. Commit and push.
 8. **Improve one thing** in reels or posts, following `pipeline/IMPROVEMENTS.md` (one tested change per run, logged there, own commit). Never let an improvement block or break the day's posts: if in doubt, revert it.

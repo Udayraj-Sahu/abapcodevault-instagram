@@ -639,7 +639,7 @@ def _code_blocks(B, x, y, w, code, accent, max_h, filename, typewriter=False):
         cx = 34 + i * 30
         d.ellipse([cx - 8, 24, cx + 8, 40], fill=(205, 197, 182, 255))
     d.text((130, 18), filename, font=F_MONO(24), fill=DIM)
-    B.add(frame, x, y, "up", 0.25, "pop")
+    B.add(frame, x, y, "up", 0.25, "pop", container=True)
     cy = y + 64 + 26
     geo = {"x": x, "w": w, "lh": lh, "lines": [], "font": f}
     for ln in lines:
@@ -773,6 +773,7 @@ def build_blocks(s, accent, top_z=None, bottom_z=None):
             dd.rounded_rectangle([0, 0, tw - 1, 79], radius=40, fill=BG + (255,), outline=accent + (255,), width=3)
             dd.text((32, 17), a, font=F_SEMI(38), fill=accent)
             y = B.add(pimg, x, y, "pop", 0.28, "pop") + 24
+    check_overlaps(B.items, s)
     # centre vertically inside the content zone
     top = min(b["y"] for b in B.items)
     bottom = max(b["y"] + b["img"].size[1] for b in B.items)
@@ -780,6 +781,32 @@ def build_blocks(s, accent, top_z=None, bottom_z=None):
     for b in B.items:
         b["y"] += off
     return B.items
+
+
+OVERLAPS = []
+
+
+def _opaque_box(b):
+    """Bounding box of the visible pixels of a block, in layout coordinates."""
+    bb = b["img"].getchannel("A").getbbox() if b["img"].mode == "RGBA" else (0, 0) + b["img"].size
+    if not bb:
+        return None
+    return (b["x"] + bb[0], b["y"] + bb[1], b["x"] + bb[2], b["y"] + bb[3])
+
+
+def check_overlaps(items, s):
+    """Record text blocks that collide (overlays, containers, decorations and timed blocks are exempt)."""
+    solid = [(i, _opaque_box(b)) for i, b in enumerate(items)
+             if b["anim"] != "overlay" and not b.get("container") and not b.get("decor") and b.get("until") is None]
+    solid = [(i, r) for i, r in solid if r]
+    for a in range(len(solid)):
+        for c in range(a + 1, len(solid)):
+            (_, r1), (_, r2) = solid[a], solid[c]
+            ix = min(r1[2], r2[2]) - max(r1[0], r2[0])
+            iy = min(r1[3], r2[3]) - max(r1[1], r2[1])
+            if ix > 8 and iy > 8:
+                OVERLAPS.append(f"slide kind={s.get('kind')} title={str(s.get('title') or s.get('heading') or s.get('question') or '')[:40]!r}: blocks overlap by {ix}x{iy}px")
+                return
 
 
 def schedule_blocks(blocks, speech_start, speech_len, pace_k=1.0, scene_dur=None):
@@ -1227,6 +1254,24 @@ def ov_circle(w, h, color=EMPH_RED, pad=14):
     return fn
 
 
+def ov_box(w, h, color=GREEN, pad=8, width=7):
+    """Hand-drawn outline around a card, drawn clockwise as p goes 0 -> 1 (never covers the text)."""
+    def fn(img, p, ox, oy):
+        d = ImageDraw.Draw(img)
+        x0, y0, x1, y1 = ox - pad, oy - pad, ox + w + pad, oy + h + pad
+        pts = [(x0, y0), (x1, y0), (x1, y1), (x0, y1), (x0, y0)]
+        seg = [abs(pts[i + 1][0] - pts[i][0]) + abs(pts[i + 1][1] - pts[i][1]) for i in range(4)]
+        left = sum(seg) * p
+        for i in range(4):
+            if left <= 0:
+                break
+            f = min(1.0, left / seg[i])
+            a, b = pts[i], pts[i + 1]
+            d.line([a, (a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f)], fill=color + (255,), width=width)
+            left -= seg[i]
+    return fn
+
+
 def ov_strike(w, h, color=EMPH_RED):
     def fn(img, p, ox, oy):
         d = ImageDraw.Draw(img)
@@ -1351,13 +1396,13 @@ def build_new_kind(B, s, accent, x, w, avail_h):
         if style == "number":
             num = text_img([str(s.get("number", "7"))], F_HAND(300), accent, 300)
             B.add(num, x - 10, y - 30, "stamp", 0.3, "stamp")
-            tx, tw_ = x + num.size[0] + 10, w - num.size[0] - 10
+            tx, tw_ = x + num.size[0] + 40, w - num.size[0] - 40
             im = heading_img(s["title"], F_HEAD(84), tw_, lh=94)
             B.add(im, tx, y + 40, "up", 0.3)
             y = y + max(num.size[1] - 40, im.size[1] + 40) + 30
         elif style == "question":
             y = B.add(heading_img(s["title"], F_HEAD(100), w, lh=110), x - 6, y, "pop", 0.3, "pop") + 10
-            y = B.add(text_img(["?"], F_HAND(220), accent, 220), x + w - 160, y - 60, "stamp", 0.3, "stamp") - 40
+            y = B.add(text_img(["?"], F_HAND(220), accent, 220), x + w - 160, y - 30, "stamp", 0.3, "stamp", decor=True) + 10
         elif style == "checklist":
             heading(s["title"], 92)
             for it in s.get("items", [])[:4]:
@@ -1408,17 +1453,20 @@ def build_new_kind(B, s, accent, x, w, avail_h):
             boxes.append((y, card2.size[1]))
             y = B.add(card2, x, y, "slide", 0.3, "pop") + 20
         reveal = s.get("reveal", True)
-        if s.get("countdown", True):
-            cy = boxes[0][0] if boxes else y
-            for n in ("3", "2", "1"):
-                num = text_img([n], F_HAND(260), accent, 260)
-                B.add(num, x + w - num.size[0] + 10, cy - 220, "stamp", 0.75, "tick", until=0.72)
         ans = s.get("answer")
-        if reveal and ans is not None and 0 <= int(ans) < len(boxes):
+        do_reveal = reveal and ans is not None and 0 <= int(ans) < len(boxes)
+        area_y = y + 10
+        if s.get("countdown", True) or do_reveal:
+            y = area_y + 200   # reserved strip below the options: countdown, then the stamp
+        if s.get("countdown", True):
+            for n in ("3", "2", "1"):
+                num = text_img([n], F_HAND(200), accent, 200)
+                B.add(num, x + (w - num.size[0]) // 2, area_y - 10, "stamp", 0.75, "tick", until=0.72, decor=True)
+        if do_reveal:
             by, bh = boxes[int(ans)]
-            B.overlay(ov_circle(w - 20, bh - 10, GREEN), x + 10, by + 5, w - 20, bh - 10, pause=0.2, dur=0.6)
-            st = _stamp("CORRECT", GREEN, 48)
-            B.add(st, x + w - st.size[0] + 20, by - 40, "stamp", 0.3, "stamp")
+            B.overlay(ov_box(w, bh), x, by, w, bh, pause=0.2, dur=0.6)
+            st = _stamp("CORRECT: " + "ABCD"[int(ans)], GREEN, 52)
+            B.add(st, x + (w - st.size[0]) // 2, area_y + 20, "stamp", 0.3, "stamp")
 
     elif kind == "answer":
         st = _stamp(s.get("label", "ANSWER"), GREEN, 52)
@@ -1556,7 +1604,7 @@ def build_new_kind(B, s, accent, x, w, avail_h):
         if s.get("kicker"):
             y = B.add(text_img([s["kicker"]], F_HAND(62), accent, 66), x, y, "up") + 16
         q = text_img(["“"], F_HEAD(220), MARKER, 180)
-        B.add(q, x - 10, y - 30, "stamp", 0.2)
+        B.add(q, x - 10, y - 30, "stamp", 0.2, decor=True)
         y += 90
         heading(s.get("quote", ""), 76)
         if s.get("by"):
@@ -1592,12 +1640,13 @@ def build_new_kind(B, s, accent, x, w, avail_h):
             cards.append(im)
         ch = max(c.size[1] for c in cards)
         B.add(cards[0], x, y, "slide", 0.3, "pop")
-        B.add(text_img(["or"], F_HAND(64), MUTED, 64), x + half + 6, y + ch // 2 - 40, "fade", 0.25)
+        orim = text_img(["or"], F_HAND(64), MUTED, 64)
+        B.add(orim, x + half + (70 - orim.size[0]) // 2, y + ch // 2 - 40, "fade", 0.25)
         B.add(cards[1], x + half + 70, y, "slide", 0.4, "pop")
         ans = str(s.get("answer", "")).lower()
         if ans in ("a", "b"):
             cx_ = x if ans == "a" else x + half + 70
-            B.overlay(ov_circle(half - 10, ch - 10, GREEN), cx_ + 5, y + 5, half - 10, ch - 10, pause=0.2, dur=0.6)
+            B.overlay(ov_box(half, ch), cx_, y, half, ch, pause=0.2, dur=0.6)
         y += ch + 20
         if s.get("explain"):
             body(s["explain"], 40)
@@ -1681,6 +1730,11 @@ def main():
         print("rendered", folder)
     with open(os.path.join(out, "ALL_CAPTIONS.txt"), "w", encoding="utf-8") as fh:
         fh.write("\n".join(captions))
+    if OVERLAPS:
+        uniq = sorted(set(OVERLAPS))
+        print("OVERLAP WARNING:\n  " + "\n  ".join(uniq))
+        with open(os.path.join(out, "OVERLAP_WARNING.txt"), "w", encoding="utf-8") as fh:
+            fh.write("\n".join(uniq) + "\n")
 
 
 if __name__ == "__main__":
