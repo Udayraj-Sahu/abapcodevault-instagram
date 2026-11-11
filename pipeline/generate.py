@@ -415,6 +415,13 @@ def render_slide(s, idx, total, handle, tag, accent, tall):
     W, H = (1080, 1920) if tall else (1080, 1350)
     img = Image.new("RGB", (W, H), BG)
     y0, y1 = chrome(img, handle, tag, idx, total, accent, tall)
+    kind = s.get("kind", "text")
+    if kind in NEW_KINDS or (kind == "cover" and s.get("style")):
+        blocks = build_blocks(s, accent, y0, y1 if not tall else y1 - 120)
+        content = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        draw_blocks(content, blocks, 0, final=True)
+        img.paste(content, (0, 0), content)
+        return img
     # Draw content on its own layer, then centre it vertically in the content area.
     layer = Image.new("RGB", (W, H), BG)
     KINDS[s.get("kind", "text")](layer, s, y0, y1, accent, tall)
@@ -487,7 +494,7 @@ def build_narration(slides, folder, p, default_secs):
     import numpy as np
     import soundfile as sf
     pieces, durations, speech, sr = [], [], [], 24000
-    lead, tail = 0.35, 0.45  # silence before / after each line
+    lead, tail = p.get("_lead", 0.35), p.get("_tail", 0.45)  # silence before / after each line
     for i, s in enumerate(slides, 1):
         text = s.get("voiceover", "").strip()
         if text:
@@ -545,12 +552,19 @@ class Blocks:
     def __init__(self):
         self.items = []
 
-    def add(self, img, x, y, anim="up", pause=0.22, sfx=None):
-        self.items.append({"img": img, "x": x, "y": y, "anim": anim, "pause": pause, "sfx": sfx})
+    def add(self, img, x, y, anim="up", pause=0.22, sfx=None, **extra):
+        b = {"img": img, "x": x, "y": y, "anim": anim, "pause": pause, "sfx": sfx}
+        b.update(extra)
+        self.items.append(b)
         return y + img.size[1]
 
+    def overlay(self, fn, x, y, w, h, pause=0.2, dur=0.6, sfx="scratch", **extra):
+        """Procedural drawing (circle, arrow, strike...) drawn progressively. fn(img, p, ox, oy)."""
+        return self.add(Image.new("RGBA", (max(1, w), max(1, h)), (0, 0, 0, 0)), x, y, "overlay",
+                        pause, sfx, overlay=fn, dur=dur, **extra)
 
-def _code_blocks(B, x, y, w, code, accent, max_h, filename):
+
+def _code_blocks(B, x, y, w, code, accent, max_h, filename, typewriter=False):
     d0 = ImageDraw.Draw(Image.new("RGB", (1, 1)))
     lines = code.rstrip("\n").split("\n")
     size = 32
@@ -575,6 +589,7 @@ def _code_blocks(B, x, y, w, code, accent, max_h, filename):
     d.text((130, 18), filename, font=F_MONO(24), fill=DIM)
     B.add(frame, x, y, "up", 0.25, "pop")
     cy = y + 64 + 26
+    geo = {"x": x, "w": w, "lh": lh, "lines": [], "font": f}
     for ln in lines:
         lw = int(d0.textlength(ln, font=f)) + 8
         im = Image.new("RGBA", (max(8, lw), lh), (0, 0, 0, 0))
@@ -598,20 +613,29 @@ def _code_blocks(B, x, y, w, code, accent, max_h, filename):
                     col = CODE_INK
                 dd.text((cx, 0), tok, font=f, fill=col)
                 cx += dd.textlength(tok, font=f)
+        geo["lines"].append((cy, lw))
         if ln.strip():
-            B.add(im, x + 32, cy, "type", 0.0)
+            if typewriter:
+                B.add(im, x + 32, cy, "typec", 0.0, "tick", dur=max(0.25, len(ln.strip()) * 0.035))
+            else:
+                B.add(im, x + 32, cy, "type", 0.0)
         cy += lh
+    B.last_code = geo
     return y + h
 
 
-def build_blocks(s, accent):
+def build_blocks(s, accent, top_z=None, bottom_z=None):
     B = Blocks()
     d0 = ImageDraw.Draw(Image.new("RGB", (1, 1)))
     W = REEL_W
     x, w = 72, W - 144
+    TOPZ = CONTENT_TOP if top_z is None else top_z
+    BOTZ = CONTENT_BOTTOM if bottom_z is None else bottom_z
     kind = s.get("kind", "text")
     y = 0
-    if kind == "cover":
+    if kind in NEW_KINDS or (kind == "cover" and s.get("style")):
+        build_new_kind(B, s, accent, x, w, BOTZ - TOPZ)
+    elif kind == "cover":
         if s.get("kicker"):
             y = B.add(text_img([s["kicker"]], F_HAND(64), accent, 70), x, y, "up") + 24
         tsize = s.get("title_size", 108)
@@ -625,7 +649,7 @@ def build_blocks(s, accent):
         if s.get("subtitle"):
             y = B.add(text_img(wrap(d0, s["subtitle"], F_BODY(44), w), F_BODY(44), MUTED, 62, w), x, y, "up")
         if s.get("code"):
-            _code_blocks(B, x, y + 50, w, s["code"], accent, CONTENT_BOTTOM - CONTENT_TOP - y - 60, "program.abap")
+            _code_blocks(B, x, y + 50, w, s["code"], accent, BOTZ - TOPZ - y - 60, "program.abap")
     elif kind == "text":
         if s.get("heading"):
             y = B.add(heading_img(s["heading"], F_HEAD(72), w, lh=82), x - 6, y, "up") + 40
@@ -650,13 +674,16 @@ def build_blocks(s, accent):
         if s.get("note"):
             note_lines = wrap(d0, s["note"], F_BODY(40), w)
             note_h = len(note_lines) * 56 + 40
-        y = _code_blocks(B, x, y, w, s["code"], accent, CONTENT_BOTTOM - CONTENT_TOP - y - note_h, s.get("filename", "program.abap"))
+        y = _code_blocks(B, x, y, w, s["code"], accent, BOTZ - TOPZ - y - note_h, s.get("filename", "program.abap"),
+                         typewriter=bool(s.get("typewriter")))
+        if s.get("spotlight") is not None:
+            add_spotlight(B, B.last_code, s["spotlight"])
         if s.get("note"):
             B.add(text_img(note_lines, F_BODY(40), MUTED, 56, w), x, y + 36, "up", 0.3)
     elif kind == "compare":
         if s.get("heading"):
             y = B.add(heading_img(s["heading"], F_HEAD(64), w, lh=74), x - 6, y, "up") + 34
-        avail = (CONTENT_BOTTOM - CONTENT_TOP - y - 40) // 2
+        avail = (BOTZ - TOPZ - y - 40) // 2
         for title, code, col in ((s.get("left_title", "Old way"), s["left"], RED),
                                  (s.get("right_title", "New way"), s["right"], GREEN)):
             tw = int(d0.textlength(title, font=F_SEMI(30))) + 40
@@ -697,22 +724,27 @@ def build_blocks(s, accent):
     # centre vertically inside the content zone
     top = min(b["y"] for b in B.items)
     bottom = max(b["y"] + b["img"].size[1] for b in B.items)
-    off = CONTENT_TOP + max(0, ((CONTENT_BOTTOM - CONTENT_TOP) - (bottom - top)) // 2) - top
+    off = TOPZ + max(0, ((BOTZ - TOPZ) - (bottom - top)) // 2) - top
     for b in B.items:
         b["y"] += off
     return B.items
 
 
-def schedule_blocks(blocks, speech_start, speech_len):
+def schedule_blocks(blocks, speech_start, speech_len, pace_k=1.0):
     """Give every block an appear time. Code lines type in across the narration."""
     t = 0.12
-    n_type = sum(1 for b in blocks if b["anim"] == "type")
+    n_type = sum(1 for b in blocks if b["anim"] in ("type", "typec"))
     type_step = 0.1
     if n_type:
         type_step = min(0.45, max(0.09, (speech_len * 0.6) / n_type))
     for b in blocks:
         b["t"] = t
-        t += type_step if b["anim"] == "type" else b["pause"]
+        if b["anim"] == "type":
+            t += type_step
+        elif b["anim"] == "typec":
+            t += max(type_step, b.get("dur", 0.3) + 0.05)
+        else:
+            t += b["pause"] * pace_k
     return blocks
 
 
@@ -795,40 +827,94 @@ def draw_subtitle(img, timeline, tau, accent):
         x += ww + gap
 
 
-def render_scene(base, blocks, tau, dur, sub_tl, accent):
-    content = Image.new("RGBA", (REEL_W, REEL_H), (0, 0, 0, 0))
+ANIM_DUR = {"type": 0.18, "stamp": 0.28, "draw": 0.5, "overlay": 0.6, "slide": 0.45, "fade": 0.4}
+
+
+def _alpha(im, a):
+    if a >= 1:
+        return im
+    im = im.copy()
+    im.putalpha(im.getchannel("A").point(lambda v, a=a: int(v * a)))
+    return im
+
+
+def draw_blocks(content, blocks, tau, final=False):
+    """Composite blocks onto an RGBA canvas at time tau (final=True: end state, for static slides)."""
     for b in blocks:
-        p = (tau - b["t"]) / (0.18 if b["anim"] == "type" else 0.5)
-        if p <= 0:
-            continue
-        p = min(1.0, p)
+        if final:
+            if b.get("until") is not None:
+                continue
+            p = 1.0
+        else:
+            dur_b = b.get("dur") or ANIM_DUR.get(b["anim"], 0.5)
+            p = (tau - b["t"]) / dur_b
+            if p <= 0:
+                continue
+            p = min(1.0, p)
+            if b.get("until") is not None:
+                left = b["t"] + b["until"] - tau
+                if left <= 0:
+                    continue
+                if left < 0.15:
+                    b = dict(b, img=_alpha(b["img"], left / 0.15))
         im = b["img"]
         x, y = b["x"], b["y"]
-        if b["anim"] == "type":
+        a = b["anim"]
+        if a == "overlay":
+            b["overlay"](content, ease_out(p), x, y)
+            continue
+        if a == "type":
             e = ease_out(p)
-            if p < 1:
-                im = im.copy()
-                im.putalpha(im.getchannel("A").point(lambda v, e=e: int(v * e)))
+            im = _alpha(im, e)
             x = int(x - (1 - e) * 24)
-        elif b["anim"] == "pop":
+        elif a == "typec":
+            # typewriter: reveal left -> right with a cursor
+            wv = max(1, int(im.size[0] * p))
+            if p < 1:
+                im = im.crop((0, 0, wv, im.size[1]))
+            content.alpha_composite(im, (int(x), int(y)))
+            if p < 1 or (not final and int(tau * 2.5) % 2 == 0 and tau - b["t"] < b.get("dur", 0.3) + 0.6):
+                d = ImageDraw.Draw(content)
+                d.rectangle([x + wv + 2, y + 4, x + wv + 6, y + im.size[1] - 8], fill=SAP_BLUE + (255,))
+            continue
+        elif a == "pop":
             e = ease_back(p)
             sc = 0.86 + 0.14 * e
             if p < 1:
                 w0, h0 = im.size
                 im = im.resize((max(1, int(w0 * sc)), max(1, int(h0 * sc))), Image.BILINEAR)
-                a = min(1.0, p * 2.2)
-                im.putalpha(im.getchannel("A").point(lambda v, a=a: int(v * a)))
-                x = int(x + (w0 - im.size[0]) / 2 * 0.0)
+                im = _alpha(im, min(1.0, p * 2.2))
                 y = int(y + (h0 - im.size[1]) / 2)
-        else:
+        elif a == "stamp":
             e = ease_out(p)
+            sc = 1.6 - 0.6 * e
             if p < 1:
-                im = im.copy()
-                im.putalpha(im.getchannel("A").point(lambda v, e=e: int(v * e)))
+                w0, h0 = im.size
+                im = im.resize((max(1, int(w0 * sc)), max(1, int(h0 * sc))), Image.BILINEAR)
+                im = _alpha(im, min(1.0, p * 3))
+                x = int(x + (w0 - im.size[0]) / 2)
+                y = int(y + (h0 - im.size[1]) / 2)
+        elif a == "draw":
+            if p < 1:
+                im = im.crop((0, 0, max(1, int(im.size[0] * ease_out(p))), im.size[1]))
+        elif a == "slide":
+            e = ease_out(p)
+            im = _alpha(im, e)
+            x = int(x + (1 - e) * 140)
+        elif a == "fade":
+            im = _alpha(im, ease_out(p))
+        else:  # "up"
+            e = ease_out(p)
+            im = _alpha(im, e)
             y = int(y + (1 - e) * 46)
         content.alpha_composite(im, (int(x), int(y)))
+
+
+def render_scene(base, blocks, tau, dur, sub_tl, accent, push=0.04):
+    content = Image.new("RGBA", (REEL_W, REEL_H), (0, 0, 0, 0))
+    draw_blocks(content, blocks, tau)
     # slow camera push on the content
-    z = 1.0 + 0.04 * ease_out(min(1.0, tau / max(dur, 0.1)))
+    z = 1.0 + push * ease_out(min(1.0, tau / max(dur, 0.1)))
     if z > 1.001:
         zw, zh = int(REEL_W * z), int(REEL_H * z)
         content = content.resize((zw, zh), Image.BILINEAR)
@@ -851,6 +937,22 @@ def synth_sfx(kind, sr=24000):
         band = smooth - np.convolve(smooth, np.ones(120) / 120, mode="same")
         env = np.sin(np.linspace(0, np.pi, n)) ** 2
         return (band * env * 0.55).astype("float32")
+    if kind == "stamp":
+        n = int(0.22 * sr)
+        t = np.arange(n) / sr
+        thud = np.sin(2 * np.pi * 95 * t) * np.exp(-t * 22) * 0.5
+        click = np.random.default_rng(3).standard_normal(n) * np.exp(-t * 160) * 0.18
+        return (thud + click).astype("float32")
+    if kind == "tick":
+        n = int(0.04 * sr)
+        t = np.arange(n) / sr
+        return (np.sin(2 * np.pi * 2400 * t) * np.exp(-t * 180) * 0.09).astype("float32")
+    if kind == "scratch":
+        n = int(0.32 * sr)
+        noise = np.random.default_rng(11).standard_normal(n).astype("float32")
+        hp = noise - np.convolve(noise, np.ones(6) / 6, mode="same")
+        env = np.sin(np.linspace(0, np.pi, n)) ** 1.5
+        return (hp * env * 0.06).astype("float32")
     n = int(0.09 * sr)
     t = np.arange(n) / sr
     freq = 900 * np.exp(-t * 28) + 260
@@ -881,6 +983,36 @@ def apply_transition(kind, prev, nxt, base, p):
         zw, zh = int(W * sc), int(H * sc)
         z = nxt.resize((zw, zh), Image.BILINEAR).crop(((zw - W) // 2, (zh - H) // 2, (zw - W) // 2 + W, (zh - H) // 2 + H))
         return Image.blend(prev, z, e)
+    if kind == "whip":
+        # fast whip-pan with motion blur, header fixed
+        from PIL import ImageFilter
+        out = base.copy()
+        dx = int(W * e)
+        blur = int(30 * (1 - abs(2 * e - 1))) + 1
+        body_prev = prev.crop((0, HEADER_H, W, H)).filter(ImageFilter.BoxBlur(blur))
+        body_next = nxt.crop((0, HEADER_H, W, H)).filter(ImageFilter.BoxBlur(blur))
+        out.paste(body_prev, (-dx, HEADER_H))
+        out.paste(body_next, (W - dx, HEADER_H))
+        return out
+    if kind == "flip":
+        # page flip: body squashes to a line, then the next page opens
+        out = base.copy()
+        src = prev if e < 0.5 else nxt
+        k = abs(1 - 2 * e)
+        bh = H - HEADER_H
+        nh = max(2, int(bh * k))
+        body = src.crop((0, HEADER_H, W, H)).resize((W, nh), Image.BILINEAR)
+        out.paste(body, (0, HEADER_H + (bh - nh) // 2))
+        return out
+    if kind == "wipe":
+        # highlighter wipe: a yellow band sweeps left -> right revealing the next scene
+        out = prev.copy()
+        edge = int((W + 160) * e) - 80
+        if edge > 0:
+            out.paste(nxt.crop((0, HEADER_H, min(W, edge), H)), (0, HEADER_H))
+        d = ImageDraw.Draw(out)
+        d.rectangle([edge - 30, HEADER_H, edge + 50, H], fill=MARKER)
+        return out
     # "rise": outgoing scene drifts up while fading
     prev = prev.transform(prev.size, Image.AFFINE, (1, 0, 0, 0, 1, int(60 * e)), fillcolor=BG)
     return Image.blend(prev, nxt, e)
@@ -890,6 +1022,13 @@ def make_motion_reel(p, slides, folder, handle, accent):
     import numpy as np
     import soundfile as sf
     default = float(p.get("seconds_per_slide", 3.5))
+    fmt = FORMATS.get(p.get("format", ""), {})
+    pace = PACES.get(p.get("pace") or fmt.get("pace") or "calm", PACES["calm"])
+    p = dict(p)
+    p.setdefault("voice_speed", pace["voice_speed"])
+    if p.get("pace") or fmt:
+        p["voice_speed"] = p.get("voice_speed_override", pace["voice_speed"])
+    p["_lead"], p["_tail"] = pace["lead"], pace["tail"]
     has_vo = any(s.get("voiceover") for s in slides)
     if has_vo:
         durations, vo_wav, speech = build_narration(slides, folder, p, default)
@@ -900,7 +1039,7 @@ def make_motion_reel(p, slides, folder, handle, accent):
     base = reel_chrome(handle, p.get("tag", "SAP ABAP"), accent)
     scenes = []
     for s, dur, (st, ln) in zip(slides, durations, speech):
-        blocks = schedule_blocks(build_blocks(s, accent), st, ln)
+        blocks = schedule_blocks(build_blocks(s, accent), st, ln, pace["pause_k"])
         sub = s.get("spoken") or ""
         tl = word_timeline(sub, st, ln) if (sub and ln > 0) else []
         scenes.append((blocks, dur, tl))
@@ -910,15 +1049,17 @@ def make_motion_reel(p, slides, folder, handle, accent):
     # ---- audio: voice + sfx, loudness-normalised later by ffmpeg
     mix = np.zeros(int(total * sr) + sr, dtype="float32")
     mix[: len(voice)] += voice
-    whoosh, popf = synth_sfx("whoosh", sr), synth_sfx("pop", sr)
+    whoosh = synth_sfx("whoosh", sr)
+    sfx_bank = {k: synth_sfx(k, sr) for k in ("pop", "stamp", "tick", "scratch")}
     for i, st0 in enumerate(starts):
         if i > 0:
             a = max(0, int((st0 - 0.2) * sr))
             mix[a:a + len(whoosh)] += whoosh[: len(mix) - a]
         for b in scenes[i][0]:
-            if b.get("sfx") == "pop":
+            snd = sfx_bank.get(b.get("sfx") or "")
+            if snd is not None and b["t"] < durations[i]:
                 a = int((st0 + b["t"]) * sr)
-                mix[a:a + len(popf)] += popf[: len(mix) - a]
+                mix[a:a + len(snd)] += snd[: max(0, len(mix) - a)]
     mix = np.clip(mix, -1, 1)
     mix_wav = os.path.join(folder, "_mix.wav")
     sf.write(mix_wav, mix, sr)
@@ -931,20 +1072,22 @@ def make_motion_reel(p, slides, folder, handle, accent):
            "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", "-c:a", "aac", "-b:a", "192k", "-ar", "48000",
            "-shortest", "-movflags", "+faststart", out_mp4]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-    trans = 0.35
-    transitions = p.get("transitions") or TRANSITIONS
+    trans = pace["trans"]
+    transitions = p.get("transitions") or fmt.get("transitions") or TRANSITIONS
     n_frames = int(total * FPS)
     for fi in range(n_frames):
         t = fi / FPS
         i = max(k for k, st0 in enumerate(starts) if st0 <= t + 1e-9)
         tau = t - starts[i]
         blocks, dur, tl = scenes[i]
-        frame = render_scene(base, blocks, tau, dur, tl, accent)
+        frame = render_scene(base, blocks, tau, dur, tl, accent, pace["push"])
         kind_t = transitions[(i - 1) % len(transitions)] if i > 0 else None
-        tlen = 0.45 if kind_t in ("slide", "zoom") else trans
+        tlen = trans + (0.1 if kind_t in ("slide", "zoom", "flip", "wipe") else 0)
+        if kind_t == "whip":
+            tlen = 0.28
         if i > 0 and tau < tlen:
             pb, pd, ptl = scenes[i - 1]
-            prev = render_scene(base, pb, pd + tau, pd, ptl, accent)
+            prev = render_scene(base, pb, pd + tau, pd, ptl, accent, pace["push"])
             frame = apply_transition(kind_t, prev, frame, base, tau / tlen)
         # progress bar
         d = ImageDraw.Draw(frame)
@@ -959,6 +1102,457 @@ def make_motion_reel(p, slides, folder, handle, accent):
         if os.path.exists(f_):
             os.remove(f_)
     return out_mp4
+
+
+# =====================================================================
+# Phase 1 formats: drawn emphasis, new slide kinds, recipes
+# =====================================================================
+EMPH_RED = (214, 64, 52)
+
+
+def _hand_ellipse(d, box, p, color, width=6):
+    """Hand-drawn ellipse that draws itself (p 0->1); two slightly offset strokes."""
+    x0, y0, x1, y1 = box
+    sweep = 380 * p
+    if sweep <= 1:
+        return
+    d.arc([x0, y0, x1, y1], start=200, end=200 + sweep, fill=color, width=width)
+    if p > 0.5:
+        d.arc([x0 - 4, y0 + 3, x1 + 3, y1 - 2], start=210, end=210 + (sweep - 190), fill=color, width=max(2, width - 3))
+
+
+def _hand_line(d, x0, y0, x1, y1, p, color, width=6, head=False):
+    xe, ye = x0 + (x1 - x0) * p, y0 + (y1 - y0) * p
+    d.line([x0, y0, xe, ye], fill=color, width=width)
+    if head and p > 0.85:
+        import math
+        ang = math.atan2(y1 - y0, x1 - x0)
+        for da in (2.6, -2.6):
+            d.line([x1, y1, x1 + 34 * math.cos(ang + da), y1 + 34 * math.sin(ang + da)], fill=color, width=width)
+
+
+def ov_circle(w, h, color=EMPH_RED, pad=14):
+    def fn(img, p, ox, oy):
+        _hand_ellipse(ImageDraw.Draw(img), [ox - pad, oy - pad, ox + w + pad, oy + h + pad], p, color + (255,))
+    return fn
+
+
+def ov_strike(w, h, color=EMPH_RED):
+    def fn(img, p, ox, oy):
+        d = ImageDraw.Draw(img)
+        _hand_line(d, ox - 6, oy + h * 0.55, ox + w + 6, oy + h * 0.45, p, color + (255,), 7)
+    return fn
+
+
+def ov_arrow(x0, y0, x1, y1, color=EMPH_RED):
+    """Arrow from (x0,y0) to (x1,y1), coordinates relative to the overlay origin."""
+    def fn(img, p, ox, oy):
+        _hand_line(ImageDraw.Draw(img), ox + x0, oy + y0, ox + x1, oy + y1, p, color + (255,), 6, head=True)
+    return fn
+
+
+def ov_tick(size, color=GREEN):
+    def fn(img, p, ox, oy):
+        d = ImageDraw.Draw(img)
+        a = (ox + size * 0.15, oy + size * 0.55)
+        b = (ox + size * 0.42, oy + size * 0.82)
+        c = (ox + size * 0.9, oy + size * 0.18)
+        if p < 0.4:
+            q = p / 0.4
+            d.line([a, (a[0] + (b[0] - a[0]) * q, a[1] + (b[1] - a[1]) * q)], fill=color + (255,), width=8)
+        else:
+            q = (p - 0.4) / 0.6
+            d.line([a, b], fill=color + (255,), width=8)
+            d.line([b, (b[0] + (c[0] - b[0]) * q, b[1] + (c[1] - b[1]) * q)], fill=color + (255,), width=8)
+    return fn
+
+
+def add_spotlight(B, geo, idx):
+    """Dim every code line except `idx` (int or list) once the code has typed in."""
+    keep = set(idx if isinstance(idx, list) else [idx])
+    lines, lh, x, w = geo["lines"], geo["lh"], geo["x"], geo["w"]
+    y_first = lines[0][0] if lines else 0
+    total_h = (lines[-1][0] - y_first + lh) if lines else 1
+
+    def fn(img, p, ox, oy):
+        d = ImageDraw.Draw(img)
+        for i, (ly, _) in enumerate(lines):
+            if i in keep:
+                continue
+            yy = oy + (ly - y_first)
+            d.rectangle([ox + 20, yy - 2, ox + w - 20, yy + lh - 6], fill=PANEL + (int(135 * p),))
+    B.overlay(fn, x, y_first, w, total_h, pause=0.3, dur=0.5, sfx=None)
+
+
+def _card(w, lines, font, fill=INK, bg=PANEL, border=BORDER, pad=30, lh=None, radius=18):
+    lh = lh or int(font.size * 1.35)
+    h = pad * 2 + lh * len(lines) - int(font.size * 0.25)
+    im = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rounded_rectangle([0, 0, w - 1, h - 1], radius=radius, fill=bg + (255,), outline=border + (255,), width=3)
+    y = pad
+    for ln in lines:
+        d.text((pad, y), ln, font=font, fill=fill)
+        y += lh
+    return im
+
+
+def _label(text, font, fg, bg, padx=22, pady=10, radius=10):
+    d0 = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    tw = int(d0.textlength(text, font=font))
+    im = Image.new("RGBA", (tw + padx * 2, font.size + pady * 2 + 6), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rounded_rectangle([0, 0, im.size[0] - 1, im.size[1] - 1], radius=radius, fill=bg + (255,))
+    d.text((padx, pady - 2), text, font=font, fill=fg)
+    return im
+
+
+def _stamp(text, color=EMPH_RED, size=56):
+    """Rubber-stamp label: outlined, slightly rotated."""
+    f = F_HEAD(size)
+    d0 = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    tw = int(d0.textlength(text, font=f))
+    im = Image.new("RGBA", (tw + 60, size + 50), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rounded_rectangle([4, 4, im.size[0] - 5, im.size[1] - 5], radius=12, outline=color + (255,), width=6)
+    d.text((30, 18), text, font=f, fill=color + (255,))
+    return im.rotate(-6, expand=True, resample=Image.BICUBIC)
+
+
+NEW_KINDS = {"quiz", "answer", "chat", "myth", "number", "story", "bug", "table", "flow", "tip",
+             "fact", "choice", "checklist"}
+
+
+def build_new_kind(B, s, accent, x, w, avail_h):
+    d0 = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    kind = s.get("kind")
+    y = 0
+
+    def heading(text, size=66, anim="up"):
+        nonlocal y
+        if text:
+            y = B.add(heading_img(text, F_HEAD(size), w, lh=int(size * 1.14)), x - 6, y, anim) + 34
+
+    def body(text, size=44, pause=0.35, color=MUTED):
+        nonlocal y
+        for para in str(text).split("\n\n"):
+            if para.strip():
+                y = B.add(text_img(wrap(d0, para, F_BODY(size), w), F_BODY(size), color, int(size * 1.42), w),
+                          x, y, "up", pause) + 24
+
+    def marker_box(text, size=44):
+        nonlocal y
+        hl = wrap(d0, text, F_SEMI(size), w - 72)
+        h = len(hl) * int(size * 1.36) + 64
+        box = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        dd = ImageDraw.Draw(box)
+        dd.rounded_rectangle([0, 0, w - 1, h - 1], radius=12, fill=MARKER + (255,))
+        dd.rectangle([0, 0, 9, h - 1], fill=accent + (255,))
+        yy = 30
+        for ln in hl:
+            dd.text((36, yy), ln, font=F_SEMI(size), fill=INK)
+            yy += int(size * 1.36)
+        y = B.add(box, x, y + 10, "pop", 0.3, "pop") + 10
+
+    if kind == "cover":
+        style = s.get("style")
+        if s.get("kicker"):
+            y = B.add(text_img([s["kicker"]], F_HAND(64), accent, 70), x, y, "up") + 20
+        if style == "number":
+            num = text_img([str(s.get("number", "7"))], F_HAND(300), accent, 300)
+            B.add(num, x - 10, y - 30, "stamp", 0.3, "stamp")
+            tx, tw_ = x + num.size[0] + 10, w - num.size[0] - 10
+            im = heading_img(s["title"], F_HEAD(84), tw_, lh=94)
+            B.add(im, tx, y + 40, "up", 0.3)
+            y = y + max(num.size[1] - 40, im.size[1] + 40) + 30
+        elif style == "question":
+            y = B.add(heading_img(s["title"], F_HEAD(100), w, lh=110), x - 6, y, "pop", 0.3, "pop") + 10
+            y = B.add(text_img(["?"], F_HAND(220), accent, 220), x + w - 160, y - 60, "stamp", 0.3, "stamp") - 40
+        elif style == "checklist":
+            heading(s["title"], 92)
+            for it in s.get("items", [])[:4]:
+                row = Image.new("RGBA", (w, 76), (0, 0, 0, 0))
+                dd = ImageDraw.Draw(row)
+                dd.rounded_rectangle([0, 10, 52, 62], radius=8, outline=INK + (255,), width=4)
+                dd.text((80, 8), it, font=F_SEMI(46), fill=INK)
+                B.add(row, x, y, "up", 0.2)
+                B.overlay(ov_tick(56), x - 2, y + 6, 60, 60, pause=0.25, dur=0.35, sfx="tick")
+                y += 92
+        elif style == "bug":
+            heading(s["title"], 92)
+            if s.get("code"):
+                y = _code_blocks(B, x, y, w, s["code"], accent, avail_h - y - 40, "zbug.abap")
+                ln_i = int(s.get("bug_line", 0))
+                geo = B.last_code
+                if 0 <= ln_i < len(geo["lines"]):
+                    ly, lw = geo["lines"][ln_i]
+                    B.overlay(ov_circle(min(lw, w - 80), geo["lh"] - 10), x + 32, ly, min(lw, w - 80), geo["lh"] - 10,
+                              pause=0.3, dur=0.6)
+        else:
+            heading(s["title"], 96, "pop")
+        if s.get("subtitle"):
+            y += 10
+            body(s["subtitle"], 44, 0.3)
+
+    elif kind == "quiz":
+        heading(s.get("question", ""), 64)
+        opts = s.get("options", [])
+        letters = "ABCD"
+        boxes = []
+        for i, o in enumerate(opts[:4]):
+            f = F_SEMI(42)
+            lines = wrap(d0, o, f, w - 150)
+            card = _card(w, lines, f, pad=28)
+            d = ImageDraw.Draw(card)
+            # letter badge
+            card2 = Image.new("RGBA", (w, card.size[1]), (0, 0, 0, 0))
+            card2.alpha_composite(card)
+            d2 = ImageDraw.Draw(card2)
+            d2.rounded_rectangle([0, 0, w - 1, card.size[1] - 1], radius=18, fill=PANEL + (255,), outline=BORDER + (255,), width=3)
+            d2.ellipse([22, card.size[1] // 2 - 30, 82, card.size[1] // 2 + 30], fill=accent + (255,))
+            d2.text((40, card.size[1] // 2 - 26), letters[i], font=F_HEAD(42), fill=(255, 255, 255))
+            yy = 28
+            for ln in lines:
+                d2.text((104, yy), ln, font=f, fill=INK)
+                yy += int(f.size * 1.35)
+            boxes.append((y, card2.size[1]))
+            y = B.add(card2, x, y, "slide", 0.3, "pop") + 20
+        reveal = s.get("reveal", True)
+        if s.get("countdown", True):
+            cy = boxes[0][0] if boxes else y
+            for n in ("3", "2", "1"):
+                num = text_img([n], F_HAND(260), accent, 260)
+                B.add(num, x + w - num.size[0] + 10, cy - 220, "stamp", 0.75, "tick", until=0.72)
+        ans = s.get("answer")
+        if reveal and ans is not None and 0 <= int(ans) < len(boxes):
+            by, bh = boxes[int(ans)]
+            B.overlay(ov_circle(w - 20, bh - 10, GREEN), x + 10, by + 5, w - 20, bh - 10, pause=0.2, dur=0.6)
+            st = _stamp("CORRECT", GREEN, 48)
+            B.add(st, x + w - st.size[0] + 20, by - 40, "stamp", 0.3, "stamp")
+
+    elif kind == "answer":
+        st = _stamp(s.get("label", "ANSWER"), GREEN, 52)
+        y = B.add(st, x, y, "stamp", 0.35, "stamp") + 20
+        heading(s.get("heading", ""), 72)
+        body(s.get("body", ""))
+        if s.get("highlight"):
+            marker_box(s["highlight"])
+
+    elif kind == "chat":
+        heading(s.get("heading", ""), 60)
+        for m in s.get("messages", []):
+            me = str(m.get("from", "")).lower() in ("you", "me", "candidate")
+            f = F_BODY(42)
+            bw = int(w * 0.8)
+            lines = wrap(d0, m.get("text", ""), f, bw - 70)
+            lh = int(f.size * 1.38)
+            h = 56 + lh * len(lines) + 34
+            im = Image.new("RGBA", (bw, h), (0, 0, 0, 0))
+            d = ImageDraw.Draw(im)
+            bg = accent if me else PANEL
+            fg = (255, 255, 255) if me else INK
+            d.rounded_rectangle([0, 0, bw - 1, h - 1], radius=28, fill=bg + (255,),
+                                outline=(bg if me else BORDER) + (255,), width=3)
+            d.text((34, 18), m.get("from", ""), font=F_SEMI(30), fill=(220, 232, 250) if me else accent)
+            yy = 58
+            for ln in lines:
+                d.text((34, yy), ln, font=f, fill=fg)
+                yy += lh
+            bx = x + (w - bw if me else 0)
+            reading = 0.5 + len(m.get("text", "")) / 45
+            y = B.add(im, bx, y, "pop", reading, "pop") + 22
+
+    elif kind == "myth":
+        lab = _label("MYTH", F_HEAD(34), (255, 255, 255), EMPH_RED)
+        y = B.add(lab, x, y, "pop", 0.25, "pop") + 18
+        m_lines = wrap(d0, s.get("myth", ""), F_SEMI(52), w)
+        mt = text_img(m_lines, F_SEMI(52), INK, 70, w)
+        my = y
+        y = B.add(mt, x, y, "up", 0.6) + 36
+        # strike through every myth line, exactly as long as the line
+        for i, ln in enumerate(m_lines):
+            lw_ = int(d0.textlength(ln, font=F_SEMI(52)))
+            B.overlay(ov_strike(lw_, 60), x, my + i * 70, lw_, 60,
+                      pause=0.15 if i < len(m_lines) - 1 else 0.4, dur=0.35)
+        st = _stamp("FACT", GREEN, 56)
+        y = B.add(st, x, y, "stamp", 0.35, "stamp") + 16
+        marker_box(s.get("fact", ""), 46)
+        if s.get("detail"):
+            body(s["detail"], 40)
+
+    elif kind == "number":
+        num = text_img([str(s.get("number", 1))], F_HAND(320), accent, 320)
+        B.add(num, x - 10, y - 40, "stamp", 0.35, "stamp")
+        y = y + num.size[1] - 70
+        heading(s.get("title", ""), 70)
+        body(s.get("body", ""), 44)
+        if s.get("code"):
+            y = _code_blocks(B, x, y + 10, w, s["code"], accent, avail_h - y - 20, s.get("filename", "program.abap")) + 10
+
+    elif kind == "story":
+        k = " · ".join(t for t in (s.get("time"), s.get("place")) if t)
+        if k:
+            y = B.add(text_img([k], F_HAND(70), accent, 76), x, y, "fade", 0.4) + 24
+        heading(s.get("heading", ""), 66)
+        for ln in s.get("lines", []):
+            im = text_img(wrap(d0, ln, F_BODY(46), w), F_BODY(46), INK, 66, w)
+            y = B.add(im, x, y, "fade", 0.5 + len(ln) / 60) + 22
+        if s.get("lesson"):
+            marker_box(s["lesson"], 44)
+
+    elif kind == "bug":
+        heading(s.get("heading", ""), 62)
+        note = s.get("note", "")
+        note_h = 110 if note else 0
+        y = _code_blocks(B, x, y, w, s.get("code", ""), accent, avail_h - y - note_h - 20,
+                         s.get("filename", "zbug.abap"), typewriter=bool(s.get("typewriter")))
+        geo = B.last_code
+        ln_i = int(s.get("bug_line", 0))
+        if 0 <= ln_i < len(geo["lines"]):
+            ly, lw = geo["lines"][ln_i]
+            cw = min(lw, w - 80)
+            B.overlay(ov_circle(cw, geo["lh"] - 10), x + 32, ly, cw, geo["lh"] - 10, pause=0.25, dur=0.6)
+            if note:
+                nt = text_img([note], F_HAND(62), EMPH_RED, 66)
+                ny = y + 26
+                # arrow runs up the right margin from the note to the circled line
+                ax0 = w - 40
+                ax1 = min(w - 60, 32 + cw + 40)
+                B.overlay(ov_arrow(ax0, 20, ax1, -(ny - ly) + geo["lh"] // 2), x, ny, w, 10, pause=0.15, dur=0.4)
+                B.add(nt, x + max(0, w - 60 - nt.size[0]), ny + 4, "fade", 0.3)
+                y = ny + nt.size[1] + 10
+
+    elif kind == "table":
+        heading(s.get("heading", ""), 62)
+        cols = s.get("columns", [])
+        rows = s.get("rows", [])
+        n = max(1, len(cols))
+        cw = w // n
+        fs = 38 if len(rows) <= 6 else 32
+        rh = int(fs * 1.9)
+        hdr = Image.new("RGBA", (w, rh), (0, 0, 0, 0))
+        d = ImageDraw.Draw(hdr)
+        d.rounded_rectangle([0, 0, w - 1, rh - 1], radius=12, fill=accent + (255,))
+        for i, c in enumerate(cols):
+            d.text((i * cw + 22, (rh - fs) // 2 - 4), str(c), font=F_SEMI(fs), fill=(255, 255, 255))
+        y = B.add(hdr, x, y, "up", 0.25) + 4
+        for r_i, r in enumerate(rows):
+            row = Image.new("RGBA", (w, rh), (0, 0, 0, 0))
+            d = ImageDraw.Draw(row)
+            if r_i % 2 == 0:
+                d.rectangle([0, 0, w - 1, rh - 1], fill=PANEL + (255,))
+            for i, c in enumerate(r[:n]):
+                font = F_MONO_B(fs - 2) if i == 0 else F_BODY(fs)
+                txt = str(c)
+                while d0.textlength(txt, font=font) > cw - 30 and len(txt) > 3:
+                    txt = txt[:-2] + "…"
+                d.text((i * cw + 22, (rh - fs) // 2 - 4), txt, font=font, fill=INK if i else accent)
+            y = B.add(row, x, y, "up", 0.2) + 0
+
+    elif kind == "flow":
+        heading(s.get("heading", ""), 62)
+        steps = s.get("steps", [])
+        bw = int(w * 0.86)
+        bx = x + (w - bw) // 2
+        gap = 64
+        for i, st_ in enumerate(steps):
+            card = _card(bw, wrap(d0, st_, F_SEMI(40), bw - 60), F_SEMI(40), pad=24)
+            y = B.add(card, bx, y, "pop", 0.25, "pop")
+            if i < len(steps) - 1:
+                B.overlay(ov_arrow(0, 6, 0, gap - 6, accent), x + w // 2, y, 2, gap, pause=0.2, dur=0.35, sfx=None)
+                y += gap
+
+    elif kind == "tip":
+        if s.get("kicker"):
+            y = B.add(text_img([s["kicker"]], F_HAND(62), accent, 66), x, y, "up") + 16
+        q = text_img(["“"], F_HEAD(220), MARKER, 180)
+        B.add(q, x - 10, y - 30, "stamp", 0.2)
+        y += 90
+        heading(s.get("quote", ""), 76)
+        if s.get("by"):
+            y = B.add(text_img(["— " + s["by"]], F_HAND(56), MUTED, 60), x, y, "fade", 0.3) + 10
+
+    elif kind == "fact":
+        y = B.add(text_img([s.get("title", "Did you know?")], F_HAND(84), accent, 88), x, y, "up", 0.3) + 10
+        heading(s.get("text", ""), 74, "pop")
+        if s.get("detail"):
+            body(s["detail"], 42)
+
+    elif kind == "choice":
+        heading(s.get("question", ""), 66)
+        half = (w - 70) // 2
+        cards = []
+        for key in ("a", "b"):
+            o = s.get(key, {}) or {}
+            f = F_SEMI(40)
+            lines = wrap(d0, o.get("label", ""), f, half - 50)
+            sub = wrap(d0, o.get("sub", ""), F_BODY(32), half - 50) if o.get("sub") else []
+            h = 120 + len(lines) * 54 + len(sub) * 44 + 30
+            im = Image.new("RGBA", (half, h), (0, 0, 0, 0))
+            d = ImageDraw.Draw(im)
+            d.rounded_rectangle([0, 0, half - 1, h - 1], radius=20, fill=PANEL + (255,), outline=BORDER + (255,), width=3)
+            d.text((26, 18), key.upper(), font=F_HAND(84), fill=accent)
+            yy = 112
+            for ln in lines:
+                d.text((26, yy), ln, font=f, fill=INK)
+                yy += 54
+            for ln in sub:
+                d.text((26, yy), ln, font=F_BODY(32), fill=MUTED)
+                yy += 44
+            cards.append(im)
+        ch = max(c.size[1] for c in cards)
+        B.add(cards[0], x, y, "slide", 0.3, "pop")
+        B.add(text_img(["or"], F_HAND(64), MUTED, 64), x + half + 6, y + ch // 2 - 40, "fade", 0.25)
+        B.add(cards[1], x + half + 70, y, "slide", 0.4, "pop")
+        ans = str(s.get("answer", "")).lower()
+        if ans in ("a", "b"):
+            cx_ = x if ans == "a" else x + half + 70
+            B.overlay(ov_circle(half - 10, ch - 10, GREEN), cx_ + 5, y + 5, half - 10, ch - 10, pause=0.2, dur=0.6)
+        y += ch + 20
+        if s.get("explain"):
+            body(s["explain"], 40)
+
+    elif kind == "checklist":
+        heading(s.get("heading", ""), 64)
+        for it in s.get("items", []):
+            title, _, rest = str(it).partition(" - ")
+            tl = wrap(d0, title, F_SEMI(42), w - 100)
+            rl = wrap(d0, rest, F_BODY(34), w - 100) if rest else []
+            h = len(tl) * 56 + len(rl) * 46 + 16
+            row = Image.new("RGBA", (w, max(h, 70)), (0, 0, 0, 0))
+            d = ImageDraw.Draw(row)
+            d.rounded_rectangle([0, 8, 52, 60], radius=8, outline=INK + (255,), width=4)
+            yy = 4
+            for ln in tl:
+                d.text((84, yy), ln, font=F_SEMI(42), fill=INK)
+                yy += 56
+            for ln in rl:
+                d.text((84, yy), ln, font=F_BODY(34), fill=MUTED)
+                yy += 46
+            B.add(row, x, y, "up", 0.15)
+            B.overlay(ov_tick(56), x - 2, y + 4, 60, 60, pause=0.35, dur=0.35, sfx="tick")
+            y += row.size[1] + 24
+    if not B.items:
+        B.add(text_img([" "], F_BODY(20), INK, 20), x, 0)
+
+
+# ---------------------------------------------------------------------
+# Recipes: format -> pace + transitions (reels); rotation tracked in state.json
+# ---------------------------------------------------------------------
+PACES = {
+    "fast": {"voice_speed": 1.08, "lead": 0.2, "tail": 0.3, "pause_k": 0.72, "push": 0.06, "trans": 0.3},
+    "calm": {"voice_speed": 0.97, "lead": 0.4, "tail": 0.6, "pause_k": 1.15, "push": 0.03, "trans": 0.5},
+}
+FORMATS = {
+    "bug_hunt":       {"pace": "fast", "transitions": ["whip", "zoom", "slide", "whip"]},
+    "before_after":   {"pace": "fast", "transitions": ["slide", "wipe", "zoom", "slide"]},
+    "quiz":           {"pace": "fast", "transitions": ["zoom", "whip", "rise", "zoom"]},
+    "three_things":   {"pace": "fast", "transitions": ["flip", "slide", "flip", "slide"]},
+    "myth_fact":      {"pace": "fast", "transitions": ["wipe", "zoom", "wipe", "rise"]},
+    "live_coding":    {"pace": "calm", "transitions": ["rise", "wipe", "rise", "flip"]},
+    "interview_chat": {"pace": "calm", "transitions": ["slide", "rise", "slide", "rise"]},
+    "story":          {"pace": "calm", "transitions": ["rise", "flip", "wipe", "rise"]},
+}
 
 
 def main():

@@ -19,22 +19,31 @@ then logs it here. The goal: each week's content looks noticeably more polished 
 ## Backlog (pick the top unchecked item, or a better idea)
 - [x] Rotating reel transitions: rise, slide (page push), zoom (2026-11-11)
 - [ ] Highlighter "draw-on": yellow marker sweeps left→right behind words on reels instead of appearing at once
-- [ ] Code typing per character (typewriter) with a blinking cursor for short code panels (≤ 6 lines)
-- [ ] Spotlight the code line being explained: dim other lines while the voice talks about it
+- [x] Code typing per character (typewriter) with a blinking cursor (2026-11-11)
+- [x] Spotlight the code line being explained (2026-11-11)
 - [ ] Hook punch-in: first 0.6 s of the reel zooms from 1.12 → 1.0 for a stronger first frame
-- [ ] Handwritten arrow/annotation pointing at the key line in code slides ("this is the bug")
+- [x] Handwritten circle + arrow + note on the bug line (2026-11-11)
 - [ ] Caption pill: bounce on each new chunk, slight tilt like a sticker
 - [ ] End card: "Follow" button pulses twice; progress bar fills with a soft glow
 - [ ] Sticky-note style for highlight boxes (slight rotation + paper shadow) on static slides
 - [ ] Carousel progress dots on every slide; "swipe" arrow nudges on the cover
 - [ ] Cover slide: big handwritten number badge for list posts ("10")
 - [ ] Subtle paper grain texture and soft shadow under code boxes
-- [ ] Match transition to content: slide for step-to-step, zoom for reveal/fix, rise for everything else
+- [x] Transitions + pace chosen per format (2026-11-11)
 - [ ] Beat-synced cuts: snap scene changes to the nearest sentence pause in the voiceover
 - [ ] Sound polish: softer whoosh for slide cuts, a tiny "tick" when each code line appears
+
+- [ ] Interview chat: typing-dots bubble ("...") before each message appears
+- [ ] Quiz: options shake slightly during the countdown; wrong options fade when the answer is revealed
+- [ ] Story: subtle film-grain/vignette and a ticking-clock SFX on the time kicker
+- [ ] Number format: big number flips like a page counter between scenes
+- [ ] Table: rows slide in with a pen-underline under the best option
+- [ ] Flow: arrows draw step by step synced to the voice
+- [ ] New post kind: "mistake card" (red X on wrong code, green tick on right code side by side)
 
 ## Log
 | Date | Area | Change | Why |
 | --- | --- | --- | --- |
 | 2026-11-11 | Reel cuts | Transitions rotate between rise, slide (header stays fixed) and zoom | Same fade every cut felt repetitive; variety keeps attention |
+| 2026-11-11 | Variety engine | 8 reel formats, 8 carousel formats, 8 post formats; 13 new slide kinds; stamp/typewriter/draw-on/slide anims; circle/arrow/strike/tick/spotlight overlays; whip/flip/wipe transitions; fast/calm pacing; stamp/tick/scratch SFX | Every post feels different while the brand stays fixed |
 | 2026-11-11 | Static slides | Light notebook theme, highlighter on key words, handwritten notes, auto-fit lists | Final brand design; lists never overflow |

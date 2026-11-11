@@ -13,5 +13,11 @@
     "SD tables cheat sheet (VBAK, VBAP, LIKP, VBRK...)",
     "Interview: Domain vs Data element",
     "Debugging trick: /h and breakpoint at statement MESSAGE"
-  ]
+  ],
+  "recent_formats": {
+    "reel": [],
+    "carousel": [],
+    "post": [],
+    "cover": []
+  }
 }

@@ -35,12 +35,67 @@ Always these 7: `#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresh
 + 1-2 topic tags (e.g. #alv #performance #sapinterview #cleancode #tcodes #bapi #smartforms #cds)
 + always `#abapcodevault` last.
 
+## Formats & recipes (variety engine)
+Every post gets a **format**. Never reuse a format that appears in the last 5 entries of `state.json -> recent_formats[<type>]`
+(for covers: last 3). Pick the format that fits the topic best among the allowed ones, then append it to that list.
+Set `"format": "<name>"` on every post (reels use it for pace + transitions automatically).
+
+### Reel formats (5 frames, voiceover rules below)
+| Format | Pace | Frame plan (kinds) |
+| --- | --- | --- |
+| `bug_hunt` | fast | cover style=bug ("Can you *spot the bug*?") → bug (circle + note) → text (why) → code typewriter (fix) → cta |
+| `before_after` | fast | cover → compare (old/new) → text (why better) → fact ("*2 lines* became *1*") → cta |
+| `quiz` | fast | cover style=question → quiz (options, answer index, countdown) → answer → text (explain) → cta |
+| `three_things` | fast | cover style=number ("3 …") → number 1 → number 2 → number 3 → cta |
+| `myth_fact` | fast | cover style=question → myth → text/code (proof) → tip → cta |
+| `live_coding` | calm | cover → code typewriter → code typewriter + spotlight → text (recap) → cta |
+| `interview_chat` | calm | cover style=question → chat (2 msgs) → chat (follow-up) → answer (key point) → cta |
+| `story` | calm | cover (kicker "2:07 AM · Production") → story → bug or code → story (lesson) → cta |
+Pace (voice speed, pauses, camera, transition style) comes from the format; do not set voice_speed.
+
+### Carousel formats (6-7 slides)
+| Format | Slide plan |
+| --- | --- |
+| `step_by_step` | cover → code/text steps → cta (Code Vault plug) |
+| `mistake_fix` | cover style=bug → bug → compare → checklist → cta |
+| `myth_fact` | cover style=question → myth ×2-3 → tip → cta |
+| `quiz` | cover style=question → quiz (reveal:false, countdown:false) → answer → quiz → answer → cta |
+| `cheat_table` | cover style=number → table → table → fact → cta |
+| `flowchart` | cover → flow → text/code per step → cta |
+| `bug_story` | cover → story → bug → code fix → answer (lesson) → cta |
+| `interview_qa` | cover style=question → chat → answer → chat → answer → cta (Interview Pack plug) |
+Even day-of-month: a teaching format (step_by_step, mistake_fix, myth_fact, cheat_table, flowchart, bug_story) + Code Vault plug.
+Odd day-of-month: an interview format (quiz, interview_qa, myth_fact) + Interview Pack plug.
+Rotate cover styles too: default, number, question, checklist, bug.
+
+### Single post formats (1 slide)
+`list` (cheat sheet) · `table` · `tip` (quote card) · `fact` ("Did you know?") · `code` (snippet card) · `choice` (this or that) · `flow` · `checklist`
+
+### Slide kinds reference (JSON)
+- cover: `{"kind":"cover","kicker":"...","title":"... *key* ...","subtitle":"..."}`; styles:
+  `"style":"number","number":"7"` · `"style":"question"` · `"style":"checklist","items":[...]` · `"style":"bug","code":"...","bug_line":1`
+- quiz: `{"kind":"quiz","question":"...","options":["A","B","C"],"answer":2,"countdown":true,"reveal":true}`
+- answer: `{"kind":"answer","label":"ANSWER","heading":"*HASHED* table","body":"...","highlight":"..."}`
+- chat: `{"kind":"chat","heading":"...","messages":[{"from":"Interviewer","text":"..."},{"from":"You","text":"..."}]}`
+- myth: `{"kind":"myth","myth":"...","fact":"...","detail":"..."}`
+- number: `{"kind":"number","number":"1","title":"...","body":"...","code":"optional"}`
+- story: `{"kind":"story","time":"2:07 AM","place":"Production","heading":"...","lines":["...","..."],"lesson":"..."}`
+- bug: `{"kind":"bug","heading":"...","code":"...","bug_line":1,"note":"short handwritten note","typewriter":false}`
+- table: `{"kind":"table","heading":"...","columns":["A","B","C"],"rows":[["...","...","..."]]}` (max 8 rows)
+- flow: `{"kind":"flow","heading":"...","steps":["...","..."]}` (max 5 steps)
+- tip: `{"kind":"tip","kicker":"...","quote":"... *key* ...","by":"..."}`
+- fact: `{"kind":"fact","title":"Did you know?","text":"... *key* ...","detail":"..."}`
+- choice: `{"kind":"choice","question":"...","a":{"label":"...","sub":"..."},"b":{...},"answer":"b","explain":"..."}`
+- checklist: `{"kind":"checklist","heading":"...","items":["Title - detail", ...]}`
+- code (extras): `"typewriter": true` (character typing + cursor, ≤ 8 lines), `"spotlight": 2` (dim other lines)
+- existing: text, code, compare, list, cta
+
 ## Reel voiceover (every reel)
-- Every reel slide gets a `"voiceover"` line; the post sets `"voice": "hm_omega", "voice_lang": "hi", "voice_speed": 1.0`.
+- Every reel slide gets a `"voiceover"` line; the post sets `"voice": "hm_omega", "voice_lang": "hi"` and a `"format"` (pace comes from the format; no voice_speed needed).
 - Write voiceover ONLY in Devanagari script, Hinglish style. Spell English/ABAP terms phonetically in Devanagari (फॉर ऑल एंट्रीज़, सेलेक्ट, इंटरनल टेबल, वीबैप). Never use Latin letters: ALL-CAPS words get spelled letter by letter, and Latin words switch to an English accent.
 - Every reel slide also gets `"spoken"`: the same line in Roman Hinglish. It becomes the word-by-word on-screen captions (do NOT use the key `subtitle` for this; on a cover slide `subtitle` is the visible sub-heading).
 - Sound like a person talking to a friend: short sentences, natural pauses with commas and "...", phrases like "suno", "dekho", "twist ye hai", "bas ek IF". Open with a hook in the first 2 seconds.
-- 1–3 short sentences per slide, explaining what is on screen. Total reel 30–60 seconds. Use `"voice_speed": 1.0`.
+- 1–3 short sentences per slide, explaining what is on screen. Total reel 30–60 seconds.
 - The engine animates automatically: blocks slide/pop in, code types in line by line across the narration, camera push, scene transitions, progress bar, whoosh/pop SFX, loudness normalised.
 - Setup before rendering: `pip install --break-system-packages kokoro-onnx soundfile`, then download into a `tts` folder next to generate.py (or set ABAP_TTS_DIR):
   - https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx
