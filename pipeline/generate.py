@@ -858,6 +858,34 @@ def synth_sfx(kind, sr=24000):
     return (np.sin(phase) * np.exp(-t * 55) * 0.16).astype("float32")
 
 
+TRANSITIONS = ["rise", "slide", "zoom", "rise"]   # rotated cut by cut; a post may set "transitions"
+HEADER_H = 230   # tag + handle + progress bar stay fixed during transitions
+
+
+def apply_transition(kind, prev, nxt, base, p):
+    """Blend outgoing frame `prev` into incoming `nxt`; p goes 0 -> 1."""
+    e = ease_out(min(1.0, max(0.0, p)))
+    W, H = nxt.size
+    if kind == "slide":
+        # page push: content slides left, header stays put
+        out = base.copy()
+        body_prev = prev.crop((0, HEADER_H, W, H))
+        body_next = nxt.crop((0, HEADER_H, W, H))
+        dx = int(W * e)
+        out.paste(body_prev, (-dx, HEADER_H))
+        out.paste(body_next, (W - dx, HEADER_H))
+        return out
+    if kind == "zoom":
+        # incoming scene settles from a slight zoom while fading in
+        sc = 1.06 - 0.06 * e
+        zw, zh = int(W * sc), int(H * sc)
+        z = nxt.resize((zw, zh), Image.BILINEAR).crop(((zw - W) // 2, (zh - H) // 2, (zw - W) // 2 + W, (zh - H) // 2 + H))
+        return Image.blend(prev, z, e)
+    # "rise": outgoing scene drifts up while fading
+    prev = prev.transform(prev.size, Image.AFFINE, (1, 0, 0, 0, 1, int(60 * e)), fillcolor=BG)
+    return Image.blend(prev, nxt, e)
+
+
 def make_motion_reel(p, slides, folder, handle, accent):
     import numpy as np
     import soundfile as sf
@@ -904,6 +932,7 @@ def make_motion_reel(p, slides, folder, handle, accent):
            "-shortest", "-movflags", "+faststart", out_mp4]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     trans = 0.35
+    transitions = p.get("transitions") or TRANSITIONS
     n_frames = int(total * FPS)
     for fi in range(n_frames):
         t = fi / FPS
@@ -911,13 +940,12 @@ def make_motion_reel(p, slides, folder, handle, accent):
         tau = t - starts[i]
         blocks, dur, tl = scenes[i]
         frame = render_scene(base, blocks, tau, dur, tl, accent)
-        if i > 0 and tau < trans:
+        kind_t = transitions[(i - 1) % len(transitions)] if i > 0 else None
+        tlen = 0.45 if kind_t in ("slide", "zoom") else trans
+        if i > 0 and tau < tlen:
             pb, pd, ptl = scenes[i - 1]
             prev = render_scene(base, pb, pd + tau, pd, ptl, accent)
-            # outgoing scene drifts up while fading
-            e = ease_out(tau / trans)
-            prev = prev.transform(prev.size, Image.AFFINE, (1, 0, 0, 0, 1, int(60 * e)), fillcolor=BG)
-            frame = Image.blend(prev, frame, e)
+            frame = apply_transition(kind_t, prev, frame, base, tau / tlen)
         # progress bar
         d = ImageDraw.Draw(frame)
         d.rounded_rectangle([72, 100, REEL_W - 72, 106], radius=3, fill=BORDER)

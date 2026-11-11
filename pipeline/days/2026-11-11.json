@@ -1,0 +1,84 @@
+{
+  "date": "2026-11-11",
+  "handle": "@abapcodevault",
+  "posts": [
+    {
+      "day": "Wed",
+      "type": "post",
+      "slug": "sd-tables-cheatsheet",
+      "tag": "Cheat sheet",
+      "slides": [
+        {"kind": "list", "heading": "SD tables you *must know*", "items": [
+          "VBAK - Sales order header",
+          "VBAP - Sales order item",
+          "VBEP - Schedule lines",
+          "VBKD - Sales business data",
+          "VBPA - Partner functions",
+          "VBFA - Document flow",
+          "LIKP - Delivery header",
+          "LIPS - Delivery item",
+          "VBRK - Billing header",
+          "VBRP - Billing item"
+        ]}
+      ],
+      "caption": "Working in SD? These 10 tables come up in almost every report and enhancement.\n\nOrder: VBAK, VBAP, VBEP, VBKD, VBPA\nFlow between documents: VBFA\nDelivery: LIKP, LIPS\nBilling: VBRK, VBRP\n\nThe key that ties them together is the document number plus item number, and VBFA tells you which delivery and invoice belong to which order.\n\nSave this for your next SD requirement. Which table do you query most often?",
+      "hashtags": ["#sap", "#abap", "#coding", "#sapabap", "#abapdeveloper", "#saps4hana", "#sapfresher", "#sapsd", "#abapcodevault"]
+    },
+    {
+      "day": "Wed",
+      "type": "carousel",
+      "slug": "domain-vs-data-element",
+      "tag": "Interview Q",
+      "slides": [
+        {"kind": "cover", "kicker": "Asked to almost every fresher", "title": "*Domain* vs *Data element*", "subtitle": "Explain it clearly in 30 seconds. Swipe."},
+        {"kind": "text", "heading": "*Domain* = technical", "body": "Defines how the value is stored: data type, length, decimals.\n\nAlso fixed values, value table and conversion routine (like ALPHA).", "highlight": "The \"how it is stored\" part"},
+        {"kind": "text", "heading": "*Data element* = meaning", "body": "Defines what the field means: field labels, F1 documentation, search help.\n\nIt points to a domain (or a built-in type) for the technical details.", "highlight": "The \"what it means\" part"},
+        {"kind": "code", "heading": "Real example: *KUNNR*", "code": "Table field  KNA1-KUNNR\n  Data element  KUNNR\n    Labels: \"Customer\"\n  Domain        KUNNR\n    CHAR 10\n    Conversion   ALPHA", "filename": "se11_view.txt", "note": "One domain can be reused by many data elements with different labels."},
+        {"kind": "list", "heading": "How to *answer it*", "items": [
+          "Give the one-line difference - Domain is technical, data element is semantic",
+          "Name what each holds - Type and length vs labels and F1 help",
+          "Add a real example - KUNNR with ALPHA conversion"
+        ]},
+        {"kind": "cta", "title": "Want *159 more* like this?", "body": "ABAP Interview Pack: 160 questions with answers, Fresher to Senior. Link in bio.", "actions": ["Save for your interview", "Tag a job seeker", "Follow @abapcodevault"]}
+      ],
+      "caption": "\"What is the difference between a domain and a data element?\"\n\nA simple way to answer:\n- Domain: the technical side. Data type, length, decimals, fixed values, conversion routine.\n- Data element: the meaning. Field labels, F1 documentation, search help. It refers to a domain.\n\nThen give a real example, such as KUNNR with its ALPHA conversion. That one detail shows you have actually worked in SE11.\n\nSave this before your next interview.\nABAP Interview Pack (160 Q&A): link in bio.",
+      "hashtags": ["#sap", "#abap", "#coding", "#sapabap", "#abapdeveloper", "#saps4hana", "#sapfresher", "#sapinterview", "#abapcodevault"]
+    },
+    {
+      "day": "Wed",
+      "type": "reel",
+      "slug": "find-error-message-source",
+      "tag": "Debugging",
+      "voice": "hm_omega",
+      "voice_lang": "hi",
+      "voice_speed": 1.0,
+      "slides": [
+        {"kind": "cover", "kicker": "Debugging trick", "title": "Find where *any error message* comes from", "subtitle": "In under a minute",
+         "voiceover": "यूज़र को कोई एरर मैसेज आ रहा है, और आपको पता ही नहीं कि ये कहाँ से आ रहा है? ये ट्रिक सीख लो।",
+         "spoken": "User ko koi error message aa raha hai, aur aapko pata hi nahi ki ye kahan se aa raha hai? Ye trick seekh lo."},
+        {"kind": "text", "heading": "The *problem*", "body": "A standard transaction shows an error.\n\nThousands of lines of code. Which one raised it?", "highlight": "Searching the code by hand takes hours",
+         "voiceover": "स्टैंडर्ड ट्रांज़ैक्शन में हज़ारों लाइन्स का कोड होता है। हाथ से ढूंढोगे, तो घंटों लग जाएंगे।",
+         "spoken": "Standard transaction mein hazaaron lines ka code hota hai. Haath se dhoondhoge, to ghanton lag jaayenge."},
+        {"kind": "list", "heading": "Step 1: *Start the debugger*", "items": [
+          "Type /h in the command field - Press Enter",
+          "Repeat the action - The debugger opens",
+          "Open Breakpoints menu - Breakpoint at Statement"
+        ],
+         "voiceover": "सबसे पहले कमांड फील्ड में स्लैश एच टाइप करो, और एंटर दबाओ। अब वही एक्शन दोबारा करो। डीबगर खुल जाएगा। फिर ब्रेकपॉइंट्स मेन्यू में जाओ।",
+         "spoken": "Sabse pehle command field mein slash h type karo aur Enter dabao. Ab wahi action dobara karo. Debugger khul jaayega. Phir Breakpoints menu mein jao."},
+        {"kind": "list", "heading": "Step 2: *Breakpoint at MESSAGE*", "items": [
+          "Statement: MESSAGE - Then press F8",
+          "Debugger stops at the exact line - Before the message shows",
+          "Check the IF above it - That is your root cause"
+        ],
+         "voiceover": "ब्रेकपॉइंट एट स्टेटमेंट में मैसेज लिखो, और एफ़ एट दबाओ। डीबगर ठीक उसी लाइन पर रुकेगा, जहाँ से मैसेज आ रहा है। अब ऊपर वाली कंडीशन देखो। वही असली वजह है।",
+         "spoken": "Breakpoint at statement mein MESSAGE likho aur F8 dabao. Debugger theek usi line par rukega jahan se message aa raha hai. Ab upar wali condition dekho. Wahi asli wajah hai."},
+        {"kind": "cta", "title": "Save this for your *next bug*", "body": "Daily ABAP tips, code and interview questions.", "actions": ["Save", "Share", "Follow @abapcodevault"],
+         "voiceover": "ये ट्रिक प्रोडक्शन इश्यूज़ में बहुत काम आती है। पोस्ट सेव करो, और फॉलो करो अबैप कोड वॉल्ट।",
+         "spoken": "Ye trick production issues mein bahut kaam aati hai. Post save karo aur follow karo ABAP Code Vault."}
+      ],
+      "caption": "A user reports an error, and you have no idea which line of code raised it.\n\nThe fastest way to find out:\n1. Type /h in the command field and press Enter\n2. Repeat the action to open the debugger\n3. Breakpoints > Breakpoint at Statement > MESSAGE\n4. Press F8. The debugger stops at the exact line.\n\nLook at the condition above that line. That is usually your root cause.\n\nSave this for your next production issue.",
+      "hashtags": ["#sap", "#abap", "#coding", "#sapabap", "#abapdeveloper", "#saps4hana", "#sapfresher", "#debugging", "#abapcodevault"]
+    }
+  ]
+}

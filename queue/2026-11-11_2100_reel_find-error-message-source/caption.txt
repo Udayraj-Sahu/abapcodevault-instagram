@@ -1,0 +1,13 @@
+A user reports an error, and you have no idea which line of code raised it.
+
+The fastest way to find out:
+1. Type /h in the command field and press Enter
+2. Repeat the action to open the debugger
+3. Breakpoints > Breakpoint at Statement > MESSAGE
+4. Press F8. The debugger stops at the exact line.
+
+Look at the condition above that line. That is usually your root cause.
+
+Save this for your next production issue.
+
+#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #debugging #abapcodevault

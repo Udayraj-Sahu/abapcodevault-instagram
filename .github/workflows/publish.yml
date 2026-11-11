@@ -5,6 +5,7 @@ on:
     - cron: "30 3 * * *"    # 9:00 AM IST  -> post
     - cron: "30 7 * * *"    # 1:00 PM IST  -> carousel
     - cron: "0 14 * * *"    # 7:30 PM IST  -> reel
+    - cron: "30 15 * * *"   # 9:00 PM IST  -> catch-up / special slots
     # each run posts only what is due (date + time in post.json), so a late run never double-posts
   workflow_dispatch:
     inputs:

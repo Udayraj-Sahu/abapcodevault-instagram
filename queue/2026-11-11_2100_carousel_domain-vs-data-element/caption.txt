@@ -1,0 +1,12 @@
+"What is the difference between a domain and a data element?"
+
+A simple way to answer:
+- Domain: the technical side. Data type, length, decimals, fixed values, conversion routine.
+- Data element: the meaning. Field labels, F1 documentation, search help. It refers to a domain.
+
+Then give a real example, such as KUNNR with its ALPHA conversion. That one detail shows you have actually worked in SE11.
+
+Save this before your next interview.
+ABAP Interview Pack (160 Q&A): link in bio.
+
+#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #sapinterview #abapcodevault

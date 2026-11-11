@@ -1,0 +1,12 @@
+Working in SD? These 10 tables come up in almost every report and enhancement.
+
+Order: VBAK, VBAP, VBEP, VBKD, VBPA
+Flow between documents: VBFA
+Delivery: LIKP, LIPS
+Billing: VBRK, VBRP
+
+The key that ties them together is the document number plus item number, and VBFA tells you which delivery and invoice belong to which order.
+
+Save this for your next SD requirement. Which table do you query most often?
+
+#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #sapsd #abapcodevault

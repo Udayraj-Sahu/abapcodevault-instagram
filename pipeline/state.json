@@ -9,6 +9,9 @@
     "Interview: Standard vs Sorted vs Hashed tables",
     "Top 10 developer T-codes",
     "ALV in 10 lines with CL_SALV_TABLE",
-    "SELECT inside LOOP: why it kills performance + fix"
+    "SELECT inside LOOP: why it kills performance + fix",
+    "SD tables cheat sheet (VBAK, VBAP, LIKP, VBRK...)",
+    "Interview: Domain vs Data element",
+    "Debugging trick: /h and breakpoint at statement MESSAGE"
   ]
 }
