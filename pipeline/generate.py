@@ -534,7 +534,7 @@ def make_reel(frames, out_mp4, durations, audio=None):
 
 def build_narration(slides, folder, p, default_secs):
     """Synthesize one clip per slide that has 'voiceover'. Returns (durations, wav path or None)."""
-    voice = p.get("voice", "hm_omega")
+    voice = p.get("voice", "hm_psi")
     lang = p.get("voice_lang", "hi")
     speed = float(p.get("voice_speed", 1.0))
     if not any(s.get("voiceover") for s in slides):
@@ -1140,8 +1140,9 @@ def make_motion_reel(p, slides, folder, handle, accent):
     mix[: len(voice)] += voice
     whoosh = synth_sfx("whoosh", sr)
     sfx_bank = {k: synth_sfx(k, sr) for k in ("pop", "stamp", "tick", "scratch")}
+    use_whoosh = bool(p.get("whoosh", False))   # transition whoosh removed by default (sounded odd)
     for i, st0 in enumerate(starts):
-        if i > 0:
+        if i > 0 and use_whoosh:
             a = max(0, int((st0 - 0.2) * sr))
             mix[a:a + len(whoosh)] += whoosh[: len(mix) - a]
         for b in scenes[i][0]:

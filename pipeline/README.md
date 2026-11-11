@@ -94,7 +94,7 @@ Rotate cover styles too: default, number, question, checklist, bug.
 - existing: text, code, compare, list, cta
 
 ## Reel voiceover (Hinglish, every reel)
-- Post sets `"voice": "hm_omega", "voice_lang": "hi"` and a `"format"`.
+- Post sets `"voice": "hm_psi", "voice_lang": "hi"` and a `"format"`.
 - Every reel slide has `"voiceover"` written the way an Indian developer actually talks (Hinglish):
   **Hindi words in Devanagari, English and technical words in Latin script**, exactly as people say them.
   Example: `"Loop के अंदर SELECT SINGLE. हर row के लिए एक database call."`
@@ -107,7 +107,7 @@ Rotate cover styles too: default, number, question, checklist, bug.
 - Sound like a person talking to a friend: short sentences, a hook in the first 2 seconds ("Is code mein bug hai.",
   "Aapki report slow hai?"), natural phrases ("dekho", "bas", "save kar lo").
 - Check: voiceover_script.txt in the reel folder, and the reel duration (12-18 s) with ffprobe.
-- The engine animates automatically: blocks slide/pop in, code types in line by line across the narration, camera push, scene transitions, progress bar, whoosh/pop SFX, loudness normalised.
+- The engine animates automatically: blocks slide/pop in, code types in across the narration, camera push, scene transitions, progress bar, soft pop/stamp/tick SFX (no whoosh on cuts), loudness normalised.
 - Setup before rendering: `pip install --break-system-packages kokoro-onnx soundfile`, then download into a `tts` folder next to generate.py (or set ABAP_TTS_DIR):
   - https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx
   - https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin
