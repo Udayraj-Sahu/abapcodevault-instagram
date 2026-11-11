@@ -2,7 +2,10 @@ name: Publish to Instagram
 
 on:
   schedule:
-    - cron: "30 13 * * *"   # every day 13:30 UTC = 7:00 PM IST; posts only what is due
+    - cron: "30 3 * * *"    # 9:00 AM IST  -> post
+    - cron: "30 7 * * *"    # 1:00 PM IST  -> carousel
+    - cron: "0 14 * * *"    # 7:30 PM IST  -> reel
+    # each run posts only what is due (date + time in post.json), so a late run never double-posts
   workflow_dispatch:
     inputs:
       only:

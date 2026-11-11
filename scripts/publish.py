@@ -2,7 +2,9 @@
 """Publish due posts from queue/ to Instagram (Instagram API with Instagram Login).
 
 Each folder in queue/ holds:
-  post.json    {"type": "carousel" | "post" | "reel", "publish_date": "YYYY-MM-DD"}
+  post.json    {"type": "carousel" | "post" | "reel", "publish_date": "YYYY-MM-DD",
+                "publish_time": "HH:MM" (IST, optional; default by type: post 09:00,
+                carousel 13:00, reel 19:30)}
   caption.txt
   slide_01.jpg ...   (carousel/post)   or   reel.mp4 (+ optional cover.jpg)
 
@@ -33,6 +35,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 QUEUE = os.path.join(ROOT, "queue")
 LOG = os.path.join(ROOT, "published.json")
 IST = dt.timezone(dt.timedelta(hours=5, minutes=30))
+DEFAULT_TIME = {"post": "09:00", "carousel": "13:00", "reel": "19:30"}
 
 
 def call(method, path, params=None):
@@ -121,7 +124,8 @@ def publish(folder, ig_id):
 
 
 def main():
-    today = dt.datetime.now(IST).date().isoformat()
+    now = dt.datetime.now(IST)
+    now_key = now.strftime("%Y-%m-%d %H:%M")
     log = json.load(open(LOG)) if os.path.exists(LOG) else {}
     only = os.environ.get("ONLY", "").strip()
     folders = sorted(d for d in glob.glob(os.path.join(QUEUE, "*")) if os.path.isdir(d))
@@ -134,10 +138,12 @@ def main():
         if only:
             if name == only:
                 due.append(f)
-        elif meta.get("publish_date", "9999") <= today:
-            due.append(f)
+        else:
+            slot = f'{meta.get("publish_date", "9999-12-31")} {meta.get("publish_time") or DEFAULT_TIME.get(meta.get("type"), "19:00")}'
+            if slot <= now_key:
+                due.append(f)
     if not due:
-        print(f"Nothing due on {today}.")
+        print(f"Nothing due at {now_key} IST.")
         return
     if os.environ.get("DRY_RUN") == "1":
         for f in due:

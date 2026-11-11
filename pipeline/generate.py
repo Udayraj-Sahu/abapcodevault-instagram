@@ -267,20 +267,32 @@ def s_compare(img, s, y0, y1, accent, tall):
 def s_list(img, s, y0, y1, accent, tall):
     d = ImageDraw.Draw(img)
     W = img.size[0]
-    y = y0 + (110 if tall else 40)
-    if s.get("heading"):
-        y = draw_lines(d, (72, y), wrap(d, s["heading"], F_HEAD(64), W - 144), F_HEAD(64), WHITE, 74) + 40
     items = s.get("items", [])
-    size = 40
-    for i, it in enumerate(items, 1):
-        num = f"{i:02d}"
-        d.text((72, y + 2), num, font=F_MONO_B(34), fill=accent)
-        title, _, rest = str(it).partition(" - ")
-        lines = wrap(d, title, F_SEMI(size), W - 144 - 90)
-        y = draw_lines(d, (162, y), lines, F_SEMI(size), WHITE, int(size * 1.35))
-        if rest:
-            y = draw_lines(d, (162, y + 4), wrap(d, rest, F_BODY(34), W - 144 - 90), F_BODY(34), MUTED, 48)
-        y += 34
+
+    def layout(k, draw):
+        y = y0 + (110 if tall else 40)
+        hs, ts, rs = int(64 * k), int(40 * k), int(34 * k)
+        if s.get("heading"):
+            lines = wrap(d, s["heading"], F_HEAD(hs), W - 144)
+            if draw:
+                draw_lines(d, (72, y), lines, F_HEAD(hs), WHITE, int(hs * 1.15))
+            y += len(lines) * int(hs * 1.15) + int(40 * k)
+        for i, it in enumerate(items, 1):
+            title, _, rest = str(it).partition(" - ")
+            tl = wrap(d, title, F_SEMI(ts), W - 144 - 90)
+            rl = wrap(d, rest, F_BODY(rs), W - 144 - 90) if rest else []
+            if draw:
+                d.text((72, y + 2), f"{i:02d}", font=F_MONO_B(int(34 * k)), fill=accent)
+                draw_lines(d, (162, y), tl, F_SEMI(ts), WHITE, int(ts * 1.35))
+                if rl:
+                    draw_lines(d, (162, y + len(tl) * int(ts * 1.35) + 4), rl, F_BODY(rs), MUTED, int(rs * 1.4))
+            y += len(tl) * int(ts * 1.35) + (len(rl) * int(rs * 1.4) + 4 if rl else 0) + int(30 * k)
+        return y
+
+    k = 1.0
+    while k > 0.55 and layout(k, False) > y1:
+        k -= 0.04
+    layout(k, True)
 
 
 def s_cta(img, s, y0, y1, accent, tall):

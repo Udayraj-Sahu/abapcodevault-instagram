@@ -1,10 +1,14 @@
 {
   "handle": "@abapcodevault",
-  "next_week": 2,
+  "mode": "daily",
+  "last_queued_date": "2026-11-12",
   "history": [
     "4 ABAP 7.40 syntax tricks (old vs new)",
     "sy-subrc cheat sheet",
     "FOR ALL ENTRIES empty-table trap",
-    "Interview: Standard vs Sorted vs Hashed tables"
+    "Interview: Standard vs Sorted vs Hashed tables",
+    "Top 10 developer T-codes",
+    "ALV in 10 lines with CL_SALV_TABLE",
+    "SELECT inside LOOP: why it kills performance + fix"
   ]
 }

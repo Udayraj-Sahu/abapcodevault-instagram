@@ -1,22 +1,22 @@
-# @abapcodevault — weekly Instagram pipeline
+# @abapcodevault — daily Instagram pipeline
 
-Each Sunday run creates the next week's 4 posts.
+Each daily run creates tomorrow's 3 posts.
 
-## Weekly rhythm
-| Day | Type | Size | Purpose |
+## Daily rhythm (3 posts every day)
+| Time (IST) | Type | Size | Purpose |
 | --- | --- | --- | --- |
-| Mon | carousel (6–7 slides) | 1080×1350 | Teach a concept, end with plug for ABAP Code Vault |
-| Tue | post (1 slide) | 1080×1350 | Cheat sheet people save |
-| Thu | reel (5 frames, ~18 s MP4) | 1080×1920 | Hook + problem + fix; user adds trending audio |
-| Sat | carousel (6 slides) | 1080×1350 | Interview question, end with plug for ABAP Interview Pack |
+| 9:00 AM | post (1 slide) | 1080×1350 | Cheat sheet people save |
+| 1:00 PM | carousel (6–7 slides) | 1080×1350 | Even day-of-month: concept, ends with ABAP Code Vault plug. Odd day: interview question, ends with ABAP Interview Pack plug |
+| 7:30 PM | reel (5 frames, 30–60 s MP4 with voiceover) | 1080×1920 | Hook + problem + fix |
 
-## Steps for a run
-1. Read `pipeline/state.json` → `next_week`. Read `pipeline/topics.json` for that week's 4 topics (after week 12, invent new ones, never repeating `history`).
-2. Write `weekNN.json` following the schema in `generate.py` and the example `pipeline/weeks/week01.json`.
-3. `python3 generate.py weekNN.json out/weekNN` (needs Pillow + ffmpeg).
-4. Make a contact sheet of the PNGs, look at it, and fix overflow (shorten text or code) before delivering.
-5. Zip `out/weekNN`, send it plus `ALL_CAPTIONS.txt` to the user.
-6. Update `state.json`: increment `next_week`, append the 4 topics to `history`.
+## Steps for a daily run (makes TOMORROW's posts)
+1. DATE = tomorrow (Asia/Kolkata). Read `pipeline/state.json`, `pipeline/topics.json`, `published.json` and list `queue/`.
+2. For each type (post, carousel, reel): if `queue/` already has an UNPUBLISHED folder for DATE with that type (folder name starts with DATE and contains `_<type>_`, and it is not a key in published.json), skip that type. Otherwise pick the next unused topic from topics.json (carousel list chosen by day-of-month parity; see topics.json how_to_use).
+3. Write `pipeline/days/DATE.json` (same schema as `pipeline/weeks/week01.json`, only the needed posts; set "day" to the weekday short name).
+4. `python3 pipeline/generate.py pipeline/days/DATE.json out/DATE`
+5. Contact-sheet check (carousel/post PNGs + 6–8 reel frames via ffmpeg); fix overflow and re-render. ffprobe the reel for video+audio.
+6. `python3 scripts/queue_day.py out/DATE DATE`
+7. Update `state.json`: `last_queued_date` = DATE, append the topics to `history`. Commit and push.
 
 ## Content rules
 - Slide text: English, short. Max ~12 code lines per panel, max ~45 characters per code line.

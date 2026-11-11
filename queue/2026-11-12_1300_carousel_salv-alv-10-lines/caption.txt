@@ -1,0 +1,13 @@
+ALV banane ke liye field catalog likhte likhte thak gaye? 😮‍💨
+
+CL_SALV_TABLE se sirf 10 lines me poora ALV ready:
+1️⃣ Data select karo
+2️⃣ factory( ) call karo
+3️⃣ display( ) — bas!
+
+Toolbar, optimized columns aur zebra stripes bhi 3 extra lines me. Bas TRY...CATCH lagana mat bhoolna.
+
+Save karo next report ke liye 📌
+Hotspot, totals aur layouts wala full template → link in bio
+
+#sapabap #abap #sap #alv #abapdeveloper #saps4hana #sapfresher #coding #abapcodevault

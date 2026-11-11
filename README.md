@@ -1,14 +1,14 @@
 # @abapcodevault — automatic Instagram posting
 
-Every Sunday, Claude generates next week's 4 posts and adds them to `queue/`.
-Every day at **7:00 PM IST**, a GitHub Action posts whatever is due:
+Every day a GitHub Action posts whatever is due, at 3 fixed times (IST):
 
-| Day | Post |
+| Time (IST) | Post |
 | --- | --- |
-| Mon | Carousel (concept + ABAP Code Vault plug) |
-| Tue | Single post (cheat sheet) |
-| Thu | Reel with voiceover and captions |
-| Sat | Carousel (interview question + Interview Pack plug) |
+| 9:00 AM | Single post (cheat sheet) |
+| 1:00 PM | Carousel (concept or interview question) |
+| 7:30 PM | Reel with voiceover and captions |
+
+Claude generates tomorrow's 3 posts every afternoon and adds them to `queue/`.
 
 `published.json` records every post that went live, so nothing is posted twice.
 
