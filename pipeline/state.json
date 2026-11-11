@@ -15,7 +15,11 @@
     "Debugging trick: /h and breakpoint at statement MESSAGE"
   ],
   "recent_formats": {
-    "reel": [],
+    "reel": [
+      "three_things",
+      "before_after",
+      "bug_hunt"
+    ],
     "carousel": [],
     "post": [],
     "cover": []

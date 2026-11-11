@@ -40,18 +40,21 @@ Every post gets a **format**. Never reuse a format that appears in the last 5 en
 (for covers: last 3). Pick the format that fits the topic best among the allowed ones, then append it to that list.
 Set `"format": "<name>"` on every post (reels use it for pace + transitions automatically).
 
-### Reel formats (5 frames, voiceover rules below)
+### Reel formats (12-18 seconds, 3-4 frames)
+Every reel must be **12-18 s**. Write ~30-45 words of voiceover in total (about 8-14 words per frame).
+The generator speeds the voice up to 15% if slightly long, holds the last frame if short, and writes
+LENGTH_WARNING.txt if still too long: then shorten the script and re-render.
 | Format | Pace | Frame plan (kinds) |
 | --- | --- | --- |
-| `bug_hunt` | fast | cover style=bug ("Can you *spot the bug*?") → bug (circle + note) → text (why) → code typewriter (fix) → cta |
-| `before_after` | fast | cover → compare (old/new) → text (why better) → fact ("*2 lines* became *1*") → cta |
-| `quiz` | fast | cover style=question → quiz (options, answer index, countdown) → answer → text (explain) → cta |
-| `three_things` | fast | cover style=number ("3 …") → number 1 → number 2 → number 3 → cta |
-| `myth_fact` | fast | cover style=question → myth → text/code (proof) → tip → cta |
-| `live_coding` | calm | cover → code typewriter → code typewriter + spotlight → text (recap) → cta |
-| `interview_chat` | calm | cover style=question → chat (2 msgs) → chat (follow-up) → answer (key point) → cta |
-| `story` | calm | cover (kicker "2:07 AM · Production") → story → bug or code → story (lesson) → cta |
-Pace (voice speed, pauses, camera, transition style) comes from the format; do not set voice_speed.
+| `bug_hunt` | fast | cover style=bug → bug (circle + note) → code typewriter (fix) → [cta] |
+| `before_after` | fast | cover style=question → compare (slow/fast) → fact ("*X* became *Y*") |
+| `quiz` | fast | quiz (question + 3 options, countdown, reveal) → answer → [cta] |
+| `three_things` | fast | cover style=number ("3 …") → number 1 → number 2 → number 3 |
+| `myth_fact` | fast | myth → answer or code (proof) → [cta] |
+| `live_coding` | calm | cover → code typewriter (≤ 6 lines, spotlight the key line) → answer (recap) |
+| `interview_chat` | calm | chat (question + answer) → answer (key point) → [cta] |
+| `story` | calm | story (time, place, 2 short lines) → bug or code → answer (lesson) |
+[cta] = optional 2-second end card with a 4-6 word voice line. Pace comes from the format; never set voice_speed.
 
 ### Carousel formats (6-7 slides)
 | Format | Slide plan |
@@ -90,12 +93,20 @@ Rotate cover styles too: default, number, question, checklist, bug.
 - code (extras): `"typewriter": true` (character typing + cursor, ≤ 8 lines), `"spotlight": 2` (dim other lines)
 - existing: text, code, compare, list, cta
 
-## Reel voiceover (every reel)
-- Every reel slide gets a `"voiceover"` line; the post sets `"voice": "hm_omega", "voice_lang": "hi"` and a `"format"` (pace comes from the format; no voice_speed needed).
-- Write voiceover ONLY in Devanagari script, Hinglish style. Spell English/ABAP terms phonetically in Devanagari (फॉर ऑल एंट्रीज़, सेलेक्ट, इंटरनल टेबल, वीबैप). Never use Latin letters: ALL-CAPS words get spelled letter by letter, and Latin words switch to an English accent.
-- Every reel slide also gets `"spoken"`: the same line in Roman Hinglish. It becomes the word-by-word on-screen captions (do NOT use the key `subtitle` for this; on a cover slide `subtitle` is the visible sub-heading).
-- Sound like a person talking to a friend: short sentences, natural pauses with commas and "...", phrases like "suno", "dekho", "twist ye hai", "bas ek IF". Open with a hook in the first 2 seconds.
-- 1–3 short sentences per slide, explaining what is on screen. Total reel 30–60 seconds.
+## Reel voiceover (Hinglish, every reel)
+- Post sets `"voice": "hm_omega", "voice_lang": "hi"` and a `"format"`.
+- Every reel slide has `"voiceover"` written the way an Indian developer actually talks (Hinglish):
+  **Hindi words in Devanagari, English and technical words in Latin script**, exactly as people say them.
+  Example: `"Loop के अंदर SELECT SINGLE. हर row के लिए एक database call."`
+  The engine speaks Devanagari with Hindi pronunciation and Latin words with English pronunciation, in the same voice.
+- Never transliterate English terms into Devanagari (no सेलेक्ट) and never write Hindi words in Latin inside "voiceover".
+- Acronyms and T-codes are pronounced via the SAY table in generate.py (SAP, ALV, BAPI, SE38, ST22, VBAK, F8 ...).
+  Add new ones there if needed. Do not put code lines or symbols like @, =, -> in the voiceover; describe them in words.
+- Every reel slide also gets `"spoken"`: the same line fully in Roman Hinglish (for on-screen captions).
+  Do NOT use the key `subtitle` for this (on a cover slide `subtitle` is the visible sub-heading).
+- Sound like a person talking to a friend: short sentences, a hook in the first 2 seconds ("Is code mein bug hai.",
+  "Aapki report slow hai?"), natural phrases ("dekho", "bas", "save kar lo").
+- Check: voiceover_script.txt in the reel folder, and the reel duration (12-18 s) with ffprobe.
 - The engine animates automatically: blocks slide/pop in, code types in line by line across the narration, camera push, scene transitions, progress bar, whoosh/pop SFX, loudness normalised.
 - Setup before rendering: `pip install --break-system-packages kokoro-onnx soundfile`, then download into a `tts` folder next to generate.py (or set ABAP_TTS_DIR):
   - https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx

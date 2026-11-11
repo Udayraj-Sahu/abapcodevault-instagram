@@ -442,16 +442,64 @@ TTS_DIR = os.environ.get("ABAP_TTS_DIR", os.path.join(os.path.dirname(os.path.ab
 _KOKORO = None
 
 
-def tts(text, voice, lang, speed, out_wav):
-    """Kokoro TTS (pip install kokoro-onnx soundfile; model files in TTS_DIR). Returns seconds."""
+DEVANAGARI = re.compile(r"[\u0900-\u097F]")
+LATIN = re.compile(r"[A-Za-z0-9]")
+# How English acronyms / T-codes should be spoken (Latin text in a voiceover)
+SAY = {"SAP": "S A P", "ALV": "A L V", "SQL": "sequel", "BAPI": "bappy", "ABAP": "aa baap", "IDoc": "I doc",
+       "IDOC": "I doc", "CDS": "C D S", "RAP": "rap", "BDC": "B D C", "RFC": "R F C", "SE11": "S E eleven",
+       "SE16N": "S E sixteen N", "SE37": "S E thirty seven", "SE38": "S E thirty eight", "SE80": "S E eighty",
+       "SE91": "S E ninety one", "SE09": "S E zero nine", "SE19": "S E nineteen", "SE18": "S E eighteen",
+       "ST22": "S T twenty two", "ST05": "S T zero five", "SM37": "S M thirty seven", "SM30": "S M thirty",
+       "WE02": "W E zero two", "WE19": "W E nineteen", "BD87": "B D eighty seven", "F5": "F five",
+       "F6": "F six", "F7": "F seven", "F8": "F eight", "VBAK": "V back", "VBAP": "V bap", "VBRK": "V B R K",
+       "VBRP": "V B R P", "LIKP": "L I K P", "LIPS": "lips", "MARA": "mara", "EKKO": "E K K O",
+       "EKPO": "E K P O", "KNA1": "K N A one", "BKPF": "B K P F", "BSEG": "B seg", "MSEG": "M seg",
+       "OOPS": "oops", "HANA": "hana", "S/4HANA": "S four hana", "UI": "U I", "API": "A P I", "PDF": "P D F"}
+
+
+def phonemize_mixed(text):
+    """Hinglish: Devanagari words -> Hindi phonemes, Latin words -> English phonemes, one voice."""
+    tok = _kokoro().tokenizer
+    groups, cur, cur_l = [], [], None
+    for w in str(text).split():
+        core = re.sub(r"[^\w/\u0900-\u097F]", "", w)
+        if core in SAY:
+            w = w.replace(core, SAY[core])
+        elif core.isupper() and len(core) >= 2 and not core.isalpha():
+            pass
+        l = "hi" if DEVANAGARI.search(w) else ("en-us" if LATIN.search(w) else (cur_l or "hi"))
+        if cur and l != cur_l:
+            groups.append((cur_l, " ".join(cur)))
+            cur = []
+        cur.append(w)
+        cur_l = l
+    if cur:
+        groups.append((cur_l, " ".join(cur)))
+    return " ".join(tok.phonemize(t, lang=l) for l, t in groups)
+
+
+def _kokoro():
     global _KOKORO
-    import soundfile as sf
     if _KOKORO is None:
         from kokoro_onnx import Kokoro
         _KOKORO = Kokoro(os.path.join(TTS_DIR, "kokoro-v1.0.onnx"), os.path.join(TTS_DIR, "voices-v1.0.bin"))
-    samples, sr = _KOKORO.create(text, voice=voice, speed=speed, lang=lang)
+    return _KOKORO
+
+
+def tts(text, voice, lang, speed, out_wav):
+    """Kokoro TTS (pip install kokoro-onnx soundfile; model files in TTS_DIR). Returns seconds.
+    Hinglish mode: Hindi words in Devanagari, English/technical words in Latin script."""
+    import soundfile as sf
+    k = _kokoro()
+    if lang == "hi":
+        samples, sr = k.create(phonemize_mixed(text), voice=voice, speed=speed, is_phonemes=True)
+    else:
+        samples, sr = k.create(text, voice=voice, speed=speed, lang=lang)
     sf.write(out_wav, samples, sr)
     return len(samples) / sr
+
+
+VOICE_POLISH = "highpass=f=70,equalizer=f=3000:t=q:w=1.2:g=2.5,acompressor=threshold=-20dB:ratio=3:attack=5:release=60"
 
 
 def make_reel(frames, out_mp4, durations, audio=None):
@@ -512,8 +560,12 @@ def build_narration(slides, folder, p, default_secs):
         durations.append(shown)
         speech.append((lead, secs))
     full = np.concatenate(pieces)
+    raw = os.path.join(folder, "voiceover_raw.wav")
     out = os.path.join(folder, "voiceover.wav")
-    sf.write(out, full, sr)
+    sf.write(raw, full, sr)
+    # broadcast-style polish: rumble cut, presence lift, gentle compression
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", raw, "-af", VOICE_POLISH, "-ar", str(sr), out], check=True)
+    os.remove(raw)
     return durations, out, speech
 
 
@@ -730,7 +782,7 @@ def build_blocks(s, accent, top_z=None, bottom_z=None):
     return B.items
 
 
-def schedule_blocks(blocks, speech_start, speech_len, pace_k=1.0):
+def schedule_blocks(blocks, speech_start, speech_len, pace_k=1.0, scene_dur=None):
     """Give every block an appear time. Code lines type in across the narration."""
     t = 0.12
     n_type = sum(1 for b in blocks if b["anim"] in ("type", "typec"))
@@ -745,6 +797,20 @@ def schedule_blocks(blocks, speech_start, speech_len, pace_k=1.0):
             t += max(type_step, b.get("dur", 0.3) + 0.05)
         else:
             t += b["pause"] * pace_k
+    # short scenes: compress the whole choreography so it finishes before the cut
+    if scene_dur:
+        def end_of(b):
+            return b["t"] + (b.get("dur") or ANIM_DUR.get(b["anim"], 0.5))
+        end = max((end_of(b) for b in blocks if b.get("until") is None), default=0)
+        limit = scene_dur * 0.8
+        if end > limit > 0:
+            k = limit / end
+            for b in blocks:
+                b["t"] *= k
+                if b.get("dur"):
+                    b["dur"] *= k
+                if b.get("until") is not None:
+                    b["until"] *= k
     return blocks
 
 
@@ -978,11 +1044,17 @@ def apply_transition(kind, prev, nxt, base, p):
         out.paste(body_next, (W - dx, HEADER_H))
         return out
     if kind == "zoom":
-        # incoming scene settles from a slight zoom while fading in
+        # incoming scene settles from a slight zoom while fading in; header stays fixed
         sc = 1.06 - 0.06 * e
-        zw, zh = int(W * sc), int(H * sc)
-        z = nxt.resize((zw, zh), Image.BILINEAR).crop(((zw - W) // 2, (zh - H) // 2, (zw - W) // 2 + W, (zh - H) // 2 + H))
-        return Image.blend(prev, z, e)
+        body = nxt.crop((0, HEADER_H, W, H))
+        bw, bh = body.size
+        zw, zh = int(bw * sc), int(bh * sc)
+        zb = body.resize((zw, zh), Image.BILINEAR).crop(((zw - bw) // 2, (zh - bh) // 2, (zw - bw) // 2 + bw, (zh - bh) // 2 + bh))
+        z = nxt.copy()
+        z.paste(zb, (0, HEADER_H))
+        out = Image.blend(prev, z, e)
+        out.paste(base.crop((0, 0, W, HEADER_H)), (0, 0))
+        return out
     if kind == "whip":
         # fast whip-pan with motion blur, header fixed
         from PIL import ImageFilter
@@ -1032,6 +1104,23 @@ def make_motion_reel(p, slides, folder, handle, accent):
     has_vo = any(s.get("voiceover") for s in slides)
     if has_vo:
         durations, vo_wav, speech = build_narration(slides, folder, p, default)
+        rmin, rmax = float(p.get("min_len", REEL_MIN)), float(p.get("max_len", REEL_MAX))
+        for _ in range(2):   # slightly long? speed the voice up (max +15%) and re-synthesize
+            total0 = sum(durations)
+            if total0 <= rmax:
+                break
+            f = total0 / rmax
+            if p["voice_speed"] * f > pace["voice_speed"] * 1.15:
+                break
+            p["voice_speed"] = round(p["voice_speed"] * f * 1.02, 3)
+            durations, vo_wav, speech = build_narration(slides, folder, p, default)
+        if sum(durations) < rmin:   # short? hold the last frame longer
+            durations[-1] += rmin - sum(durations)
+        if sum(durations) > rmax + 0.5:
+            msg = f"WARNING: reel is {sum(durations):.1f}s (target {rmin:.0f}-{rmax:.0f}s). Shorten the voiceover."
+            print(msg)
+            with open(os.path.join(folder, "LENGTH_WARNING.txt"), "w") as fh:
+                fh.write(msg + "\n")
         voice, sr = sf.read(vo_wav, dtype="float32")
     else:
         durations, speech, sr = [default] * len(slides), [(0.2, default - 0.6)] * len(slides), 24000
@@ -1039,7 +1128,7 @@ def make_motion_reel(p, slides, folder, handle, accent):
     base = reel_chrome(handle, p.get("tag", "SAP ABAP"), accent)
     scenes = []
     for s, dur, (st, ln) in zip(slides, durations, speech):
-        blocks = schedule_blocks(build_blocks(s, accent), st, ln, pace["pause_k"])
+        blocks = schedule_blocks(build_blocks(s, accent), st, ln, pace["pause_k"], dur)
         sub = s.get("spoken") or ""
         tl = word_timeline(sub, st, ln) if (sub and ln > 0) else []
         scenes.append((blocks, dur, tl))
@@ -1539,10 +1628,11 @@ def build_new_kind(B, s, accent, x, w, avail_h):
 # ---------------------------------------------------------------------
 # Recipes: format -> pace + transitions (reels); rotation tracked in state.json
 # ---------------------------------------------------------------------
-PACES = {
-    "fast": {"voice_speed": 1.08, "lead": 0.2, "tail": 0.3, "pause_k": 0.72, "push": 0.06, "trans": 0.3},
-    "calm": {"voice_speed": 0.97, "lead": 0.4, "tail": 0.6, "pause_k": 1.15, "push": 0.03, "trans": 0.5},
+PACES = {   # reels are short (12-18 s), so even "calm" is brisk
+    "fast": {"voice_speed": 1.1, "lead": 0.12, "tail": 0.22, "pause_k": 0.6, "push": 0.06, "trans": 0.26},
+    "calm": {"voice_speed": 1.0, "lead": 0.2, "tail": 0.32, "pause_k": 0.85, "push": 0.035, "trans": 0.36},
 }
+REEL_MIN, REEL_MAX = 12.0, 18.0
 FORMATS = {
     "bug_hunt":       {"pace": "fast", "transitions": ["whip", "zoom", "slide", "whip"]},
     "before_after":   {"pace": "fast", "transitions": ["slide", "wipe", "zoom", "slide"]},

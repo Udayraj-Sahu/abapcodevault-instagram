@@ -101,57 +101,36 @@
       ]
     },
     {
-      "day": "Thu",
       "type": "reel",
-      "slug": "select-in-loop",
-      "tag": "Performance",
+      "format": "before_after",
       "voice": "hm_omega",
       "voice_lang": "hi",
-      "voice_speed": 1.0,
       "slides": [
         {
           "kind": "cover",
+          "style": "question",
           "kicker": "Performance killer",
-          "title": "Your report is slow because of *THIS*",
-          "subtitle": "SELECT inside LOOP",
-          "voiceover": "आपकी रिपोर्ट स्लो है? नब्बे परसेंट केस में वजह एक ही होती है। लूप के अंदर सेलेक्ट।",
-          "spoken": "Aapki report slow hai? Nabbe percent case mein wajah ek hi hoti hai. Loop ke andar SELECT."
+          "title": "Why is your *report so slow*",
+          "voiceover": "आपकी report slow है? वजह शायद ये है।",
+          "spoken": "Aapki report slow hai? Wajah shayad ye hai."
         },
         {
-          "kind": "code",
-          "heading": "The *slow* way",
-          "code": "LOOP AT lt_orders INTO DATA(ls_order).\n  SELECT SINGLE name1\n    FROM kna1\n    WHERE kunnr = @ls_order-kunnr\n    INTO @DATA(lv_name).\nENDLOOP.",
-          "filename": "zslow.abap",
-          "voiceover": "ये कोड देखो। हर ऑर्डर के लिए, हम डेटाबेस से कस्टमर का नाम पढ़ रहे हैं। दस हज़ार ऑर्डर्स, मतलब दस हज़ार डेटाबेस कॉल्स।",
-          "spoken": "Ye code dekho. Har order ke liye hum database se customer ka naam padh rahe hain. Das hazaar orders, matlab das hazaar database calls."
+          "kind": "compare",
+          "heading": "*Slow* vs *fast*",
+          "left_title": "Slow",
+          "left": "LOOP AT lt_orders INTO DATA(ls).\n  SELECT SINGLE name1 FROM kna1\n    WHERE kunnr = @ls-kunnr\n    INTO @DATA(lv_name).\nENDLOOP.",
+          "right_title": "Fast",
+          "right": "SELECT kunnr, name1 FROM kna1\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE kunnr = @lt_orders-kunnr\n  INTO TABLE @DATA(lt_kna1).",
+          "voiceover": "Loop के अंदर SELECT, मतलब हर row पर database call. एक बार में पढ़ो, फिर memory से उठाओ।",
+          "spoken": "Loop ke andar SELECT, matlab har row par database call. Ek baar mein padho, phir memory se uthao."
         },
         {
-          "kind": "text",
-          "heading": "Why it *hurts*",
-          "body": "Every SELECT is a separate trip to the database.\n\nThe loop is fast. The round trips are what kill you.",
-          "highlight": "Read once, then look up in memory",
-          "voiceover": "हर सेलेक्ट, डेटाबेस तक एक अलग ट्रिप है। लूप तेज़ है, लेकिन ये ट्रिप्स आपकी रिपोर्ट को मार देती हैं। तो रूल सिंपल है। एक बार पढ़ो, फिर मेमोरी में ढूंढो।",
-          "spoken": "Har SELECT database tak ek alag trip hai. Loop tez hai, lekin ye trips aapki report ko maar deti hain. To rule simple hai. Ek baar padho, phir memory mein dhoondho."
-        },
-        {
-          "kind": "code",
-          "heading": "The *fast* way",
-          "code": "SELECT kunnr, name1 FROM kna1\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE kunnr = @lt_orders-kunnr\n  INTO TABLE @DATA(lt_kna1).\n\nLOOP AT lt_orders INTO DATA(ls_order).\n  DATA(lv_name) = VALUE #(\n    lt_kna1[ kunnr = ls_order-kunnr ]-name1\n    OPTIONAL ).\nENDLOOP.",
-          "filename": "zfast.abap",
-          "voiceover": "फिक्स ये है। लूप से पहले, एक ही सेलेक्ट में सारे कस्टमर्स पढ़ लो। फिर लूप के अंदर, इंटरनल टेबल से नाम उठा लो। और हाँ, फॉर ऑल एंट्रीज़ से पहले टेबल खाली तो नहीं, ये चेक करना मत भूलना।",
-          "spoken": "Fix ye hai. Loop se pehle ek hi SELECT mein saare customers padh lo. Phir loop ke andar internal table se naam utha lo. Aur haan, FOR ALL ENTRIES se pehle table khaali to nahi, ye check karna mat bhoolna."
-        },
-        {
-          "kind": "cta",
-          "title": "Follow for *daily ABAP tips*",
-          "body": "3 posts every day: tips, code and interview questions.",
-          "actions": [
-            "Save",
-            "Share",
-            "Follow @abapcodevault"
-          ],
-          "voiceover": "ऐसी ही प्रैक्टिकल टिप्स के लिए, पोस्ट सेव करो, और फॉलो करो अबैप कोड वॉल्ट। रोज़ नई टिप मिलेगी।",
-          "spoken": "Aisi hi practical tips ke liye post save karo aur follow karo ABAP Code Vault. Roz nayi tip milegi."
+          "kind": "fact",
+          "title": "Result",
+          "text": "*10,000 calls* become *1*",
+          "detail": "Then read lt_kna1 inside the loop.",
+          "voiceover": "दस हज़ार calls की जगह, सिर्फ एक। Save कर लो।",
+          "spoken": "Das hazaar calls ki jagah, sirf ek. Save kar lo."
         }
       ],
       "caption": "Is your report taking 20 minutes instead of 2?\n\nIn most cases the cause is the same: a SELECT inside a LOOP. Every iteration is a separate trip to the database.\n\nThe fix: read the data once before the loop (JOIN or FOR ALL ENTRIES), then look it up in an internal table inside the loop. For large volumes, use a SORTED or HASHED table.\n\nSave this for your next code review.",
@@ -166,7 +145,10 @@
         "#performance",
         "#sapinterview",
         "#abapcodevault"
-      ]
+      ],
+      "slug": "select-in-loop",
+      "day": "Thu",
+      "tag": "Performance"
     }
   ]
 }
