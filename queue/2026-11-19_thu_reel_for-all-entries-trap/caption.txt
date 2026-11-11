@@ -1,9 +1,0 @@
-Ek chhota sa IF missing tha... aur report ne poori VBAP table padh li 😱
-
-FOR ALL ENTRIES me driver table empty ho to WHERE condition ignore ho jaati hai. Har baar pehle IS NOT INITIAL check karo.
-
-Interview me bhi ye question bahut aata hai. Save karo! 📌
-
-160 aise interview questions → link in bio
-
-#sapabap #abap #sap #abapdeveloper #performance #sapinterview #sapfresher #reels #abapcodevault

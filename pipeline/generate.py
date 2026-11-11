@@ -30,18 +30,26 @@ import sys
 from PIL import Image, ImageChops, ImageDraw, ImageFont
 
 # ---------- Brand ----------
-BG = (11, 18, 32)
-PANEL = (15, 24, 48)
-PANEL_TOP = (19, 30, 54)
-BORDER = (36, 50, 77)
-WHITE = (255, 255, 255)
-TEXT = (232, 237, 245)
-MUTED = (199, 208, 222)
-DIM = (143, 160, 186)
-AMBER = (245, 184, 61)
-BLUE = (124, 196, 255)
-GREEN = (126, 224, 161)
-RED = (255, 138, 128)
+# Light "notebook" theme with SAP blue accent
+BG = (251, 248, 241)        # cream paper
+RULE = (232, 227, 214)      # ruled lines
+MARGIN = (242, 196, 196)    # notebook margin line
+PANEL = (243, 240, 233)     # code box
+PANEL_TOP = (234, 230, 220)
+BORDER = (219, 212, 198)
+WHITE = (27, 31, 42)        # INK: used for headings (name kept for compatibility)
+INK = WHITE
+TEXT = INK
+MUTED = (72, 80, 96)
+DIM = (125, 131, 145)
+SAP_BLUE = (10, 110, 209)
+AMBER = SAP_BLUE
+BLUE = SAP_BLUE
+GREEN = (46, 125, 50)       # strings in code / "new way" pill
+RED = (200, 62, 62)         # "old way" pill
+NUM = (176, 96, 20)         # numbers in code
+MARKER = (255, 226, 110)    # yellow highlighter
+CODE_INK = (38, 44, 58)
 
 FONT_DIRS = ["/usr/share/fonts/opentype/inter", "/usr/share/fonts/truetype/dejavu"]
 
@@ -65,6 +73,13 @@ def F_SEMI(s):
 
 def F_BODY(s):
     return _font(["Inter-Regular.otf", "DejaVuSans.ttf"], s)
+
+
+def F_HAND(s):
+    p = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts", "Caveat-Bold.woff")
+    if os.path.exists(p):
+        return ImageFont.truetype(p, s)
+    return F_SEMI(s)
 
 
 def F_MONO(s):
@@ -127,12 +142,96 @@ def pill(draw, x, y, text, font, fg, bg, pad_x=18, pad_y=10, radius=10):
     return x + w + 2 * pad_x
 
 
+def paper(img):
+    """Cream notebook paper: faint ruled lines + margin line."""
+    d = ImageDraw.Draw(img)
+    W, H = img.size
+    for y in range(64, H, 64):
+        d.line([0, y, W, y], fill=RULE, width=2)
+    d.line([40, 0, 40, H], fill=MARGIN, width=3)
+
+
+def marked_tokens(text):
+    """'Plain *highlighted words* plain' -> [(word, marked), ...]"""
+    out = []
+    prev = ""
+    for i, seg in enumerate(str(text).split("*")):
+        words = seg.split()
+        glued = prev and not prev[-1:].isspace() and seg and not seg[:1].isspace()
+        prev = seg
+        if words and out and glued:
+            # punctuation right after a closing/opening marker sticks to the previous word
+            pw, pm = out[-1]
+            out[-1] = (pw + words[0], pm)
+            words = words[1:]
+        for w in words:
+            out.append((w, i % 2 == 1))
+    return out
+
+
+def wrap_marked(tokens, font, maxw):
+    d0 = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    lines, cur = [], []
+    for t in tokens:
+        test = " ".join(w for w, _ in cur + [t])
+        if cur and d0.textlength(test, font=font) > maxw:
+            lines.append(cur)
+            cur = []
+        cur.append(t)
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def line_img(tokens, font, fill=None, w=None):
+    """One line of words; marked words get a yellow highlighter stroke behind them."""
+    fill = fill or INK
+    d0 = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    gap = d0.textlength(" ", font=font)
+    widths = [d0.textlength(t, font=font) for t, _ in tokens]
+    total = int(sum(widths) + gap * max(0, len(tokens) - 1)) + 24
+    h = int(font.size * 1.3)
+    im = Image.new("RGBA", (max(w or 0, total), h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    x = 6
+    for i, ((t, mk), ww) in enumerate(zip(tokens, widths)):
+        if mk:
+            nxt = i + 1 < len(tokens) and tokens[i + 1][1]
+            x1 = x + ww + (gap if nxt else 0) + 8
+            d.rounded_rectangle([x - 8, int(h * 0.28), x1, int(h * 0.86)], radius=6, fill=MARKER + (255,))
+        x += ww + gap
+    x = 6
+    for (t, _), ww in zip(tokens, widths):
+        d.text((x, 0), t, font=font, fill=fill)
+        x += ww + gap
+    return im
+
+
+def heading_img(text, font, maxw, fill=None, lh=None):
+    """Multi-line heading with *marker* support, as one RGBA image."""
+    lh = lh or int(font.size * 1.12)
+    lines = wrap_marked(marked_tokens(text), font, maxw)
+    imgs = [line_img(l, font, fill) for l in lines]
+    h = lh * (len(imgs) - 1) + (imgs[-1].size[1] if imgs else 1)
+    out = Image.new("RGBA", (maxw + 40, max(1, h)), (0, 0, 0, 0))
+    for i, im in enumerate(imgs):
+        out.alpha_composite(im, (0, i * lh))
+    return out
+
+
+def paste_heading(img, x, y, text, font, maxw, fill=None, lh=None):
+    im = heading_img(text, font, maxw, fill, lh)
+    img.paste(im, (x - 6, y), im)
+    return y + im.size[1]
+
+
 def chrome(img, handle, tag, idx, total, accent, tall):
     """Top bar + footer shared by every slide."""
+    paper(img)
     d = ImageDraw.Draw(img)
     W, H = img.size
     top = 150 if tall else 64
-    pill(d, 72, top, tag.upper(), F_MONO_B(26), BG, accent)
+    pill(d, 72, top, tag.upper(), F_MONO_B(26), (255, 255, 255), accent)
     hx = W - 72 - d.textlength(handle, font=F_MONO(28))
     d.text((hx, top + 10), handle, font=F_MONO(28), fill=DIM)
     bottom = H - (260 if tall else 96)
@@ -140,12 +239,15 @@ def chrome(img, handle, tag, idx, total, accent, tall):
     if total > 1:
         d.text((72, bottom), f"{idx}/{total}", font=F_MONO(28), fill=DIM)
     if idx < total:
-        nxt = "Swipe  →" if not tall else ""
-        if nxt:
-            d.text((W - 72 - d.textlength(nxt, font=F_SEMI(30)), bottom - 2), nxt, font=F_SEMI(30), fill=accent)
+        if not tall:
+            arrow, word = "→", "swipe "
+            aw = d.textlength(arrow, font=F_SEMI(36))
+            ww = d.textlength(word, font=F_HAND(46))
+            d.text((W - 72 - aw - ww, bottom - 14), word, font=F_HAND(46), fill=accent)
+            d.text((W - 72 - aw, bottom - 6), arrow, font=F_SEMI(36), fill=accent)
     else:
-        sv = "Save for later"
-        d.text((W - 72 - d.textlength(sv, font=F_SEMI(30)), bottom - 2), sv, font=F_SEMI(30), fill=accent)
+        sv = "save this for later!"
+        d.text((W - 72 - d.textlength(sv, font=F_HAND(46)), bottom - 14), sv, font=F_HAND(46), fill=accent)
     return top + 90, bottom - 60  # content area y0, y1
 
 
@@ -169,7 +271,7 @@ def code_panel(img, x, y, w, code, accent, max_h, filename="program.abap"):
     d.line([x, y + 64, x + w, y + 64], fill=BORDER, width=2)
     for i in range(3):
         cx = x + 34 + i * 30
-        d.ellipse([cx - 8, y + 24, cx + 8, y + 40], fill=(58, 74, 104))
+        d.ellipse([cx - 8, y + 24, cx + 8, y + 40], fill=(205, 197, 182))
     d.text((x + 130, y + 18), filename, font=F_MONO(24), fill=DIM)
     cy = y + 64 + 26
     for ln in lines:
@@ -190,9 +292,9 @@ def code_panel(img, x, y, w, code, accent, max_h, filename="program.abap"):
                 elif tok.upper() in ABAP_KW and tok.isupper():
                     col = accent
                 elif re.fullmatch(r"\d+", tok):
-                    col = BLUE
+                    col = NUM
                 else:
-                    col = (214, 222, 234)
+                    col = CODE_INK
                 d.text((cx, cy), tok, font=f, fill=col)
                 cx += d.textlength(tok, font=f)
         cy += lh
@@ -206,14 +308,12 @@ def s_cover(img, s, y0, y1, accent, tall):
     W = img.size[0]
     y = y0 + (180 if tall else 120)
     if s.get("kicker"):
-        d.text((72, y), s["kicker"], font=F_SEMI(38), fill=accent)
-        y += 70
+        d.text((72, y), s["kicker"], font=F_HAND(58), fill=accent)
+        y += 84
     tsize = s.get("title_size", 104 if tall else 96)
-    lines = wrap(d, s["title"], F_HEAD(tsize), W - 144)
-    while len(lines) > 5 and tsize > 60:
+    while len(wrap_marked(marked_tokens(s["title"]), F_HEAD(tsize), W - 144)) > 5 and tsize > 60:
         tsize -= 6
-        lines = wrap(d, s["title"], F_HEAD(tsize), W - 144)
-    y = draw_lines(d, (72, y), lines, F_HEAD(tsize), WHITE, int(tsize * 1.08)) + 40
+    y = paste_heading(img, 72, y, s["title"], F_HEAD(tsize), W - 144, lh=int(tsize * 1.08)) + 40
     if s.get("subtitle"):
         y = draw_lines(d, (72, y), wrap(d, s["subtitle"], F_BODY(42), W - 144), F_BODY(42), MUTED, 60)
     if s.get("code"):
@@ -225,15 +325,16 @@ def s_text(img, s, y0, y1, accent, tall):
     W = img.size[0]
     y = y0 + (120 if tall else 50)
     if s.get("heading"):
-        y = draw_lines(d, (72, y), wrap(d, s["heading"], F_HEAD(68), W - 144), F_HEAD(68), WHITE, 78) + 36
+        y = paste_heading(img, 72, y, s["heading"], F_HEAD(68), W - 144, lh=78) + 36
     bsize = 44 if tall else 42
     for para in str(s.get("body", "")).split("\n\n"):
         y = draw_lines(d, (72, y), wrap(d, para, F_BODY(bsize), W - 144), F_BODY(bsize), MUTED, int(bsize * 1.45)) + 28
     if s.get("highlight"):
         lines = wrap(d, s["highlight"], F_SEMI(40), W - 144 - 70)
         h = len(lines) * 56 + 56
-        d.rounded_rectangle([72, y + 10, W - 72, y + 10 + h], radius=18, fill=PANEL, outline=accent, width=3)
-        draw_lines(d, (72 + 36, y + 38), lines, F_SEMI(40), WHITE, 56)
+        d.rounded_rectangle([72, y + 10, W - 72, y + 10 + h], radius=10, fill=MARKER)
+        d.rectangle([72, y + 10, 80, y + 10 + h], fill=accent)
+        draw_lines(d, (72 + 36, y + 38), lines, F_SEMI(40), INK, 56)
 
 
 def s_code(img, s, y0, y1, accent, tall):
@@ -241,7 +342,7 @@ def s_code(img, s, y0, y1, accent, tall):
     W = img.size[0]
     y = y0 + (100 if tall else 40)
     if s.get("heading"):
-        y = draw_lines(d, (72, y), wrap(d, s["heading"], F_HEAD(60), W - 144), F_HEAD(60), WHITE, 70) + 30
+        y = paste_heading(img, 72, y, s["heading"], F_HEAD(60), W - 144, lh=70) + 30
     note_h = 0
     if s.get("note"):
         note_lines = wrap(d, s["note"], F_BODY(36), W - 144)
@@ -256,11 +357,11 @@ def s_compare(img, s, y0, y1, accent, tall):
     W = img.size[0]
     y = y0 + (100 if tall else 40)
     if s.get("heading"):
-        y = draw_lines(d, (72, y), wrap(d, s["heading"], F_HEAD(60), W - 144), F_HEAD(60), WHITE, 70) + 34
+        y = paste_heading(img, 72, y, s["heading"], F_HEAD(60), W - 144, lh=70) + 34
     avail = (y1 - y - 40) // 2
     for title, code, col in ((s.get("left_title", "Old way"), s["left"], RED),
                              (s.get("right_title", "New way"), s["right"], GREEN)):
-        pill(d, 72, y, title, F_SEMI(28), BG, col)
+        pill(d, 72, y, title, F_SEMI(28), (255, 255, 255), col)
         y = code_panel(img, 72, y + 66, W - 144, code, accent, avail - 66, s.get("filename", "program.abap")) + 34
 
 
@@ -273,10 +374,10 @@ def s_list(img, s, y0, y1, accent, tall):
         y = y0 + (110 if tall else 40)
         hs, ts, rs = int(64 * k), int(40 * k), int(34 * k)
         if s.get("heading"):
-            lines = wrap(d, s["heading"], F_HEAD(hs), W - 144)
+            n = len(wrap_marked(marked_tokens(s["heading"]), F_HEAD(hs), W - 144))
             if draw:
-                draw_lines(d, (72, y), lines, F_HEAD(hs), WHITE, int(hs * 1.15))
-            y += len(lines) * int(hs * 1.15) + int(40 * k)
+                paste_heading(img, 72, y, s["heading"], F_HEAD(hs), W - 144, lh=int(hs * 1.15))
+            y += n * int(hs * 1.15) + int(40 * k)
         for i, it in enumerate(items, 1):
             title, _, rest = str(it).partition(" - ")
             tl = wrap(d, title, F_SEMI(ts), W - 144 - 90)
@@ -299,11 +400,11 @@ def s_cta(img, s, y0, y1, accent, tall):
     d = ImageDraw.Draw(img)
     W = img.size[0]
     y = y0 + (260 if tall else 170)
-    y = draw_lines(d, (72, y), wrap(d, s.get("title", "Save this post"), F_HEAD(88), W - 144), F_HEAD(88), WHITE, 96) + 40
+    y = paste_heading(img, 72, y, s.get("title", "Save this post"), F_HEAD(88), W - 144, lh=96) + 40
     y = draw_lines(d, (72, y), wrap(d, s.get("body", ""), F_BODY(42), W - 144), F_BODY(42), MUTED, 60) + 60
     for a in s.get("actions", ["Save", "Share with a friend", "Follow for daily ABAP"]):
-        pill(d, 72, y, a, F_SEMI(34), WHITE, PANEL, pad_x=26, pad_y=16, radius=40)
-        d.rounded_rectangle([72, y, 72 + d.textlength(a, font=F_SEMI(34)) + 52, y + 34 + 32], radius=40, outline=BORDER, width=2)
+        pill(d, 72, y, a, F_SEMI(34), accent, BG, pad_x=26, pad_y=16, radius=40)
+        d.rounded_rectangle([72, y, 72 + d.textlength(a, font=F_SEMI(34)) + 52, y + 34 + 32], radius=40, outline=accent, width=3)
         y += 96
 
 
@@ -325,7 +426,8 @@ def render_slide(s, idx, total, handle, tag, accent, tall):
         if tall:
             target_top -= 60  # keep clear of Instagram's caption overlay
         crop = layer.crop((0, top, W, bottom))
-        img.paste(crop, (0, max(y0, target_top)))
+        mask = ImageChops.difference(crop, Image.new("RGB", crop.size, BG)).convert("L").point(lambda v: 255 if v > 0 else 0)
+        img.paste(crop, (0, max(y0, target_top)), mask)
     return img
 
 
@@ -469,7 +571,7 @@ def _code_blocks(B, x, y, w, code, accent, max_h, filename):
     d.line([0, 64, w, 64], fill=BORDER + (255,), width=2)
     for i in range(3):
         cx = 34 + i * 30
-        d.ellipse([cx - 8, 24, cx + 8, 40], fill=(58, 74, 104, 255))
+        d.ellipse([cx - 8, 24, cx + 8, 40], fill=(205, 197, 182, 255))
     d.text((130, 18), filename, font=F_MONO(24), fill=DIM)
     B.add(frame, x, y, "up", 0.25, "pop")
     cy = y + 64 + 26
@@ -491,9 +593,9 @@ def _code_blocks(B, x, y, w, code, accent, max_h, filename):
                 elif tok.upper() in ABAP_KW and tok.isupper():
                     col = accent
                 elif re.fullmatch(r"\d+", tok):
-                    col = BLUE
+                    col = NUM
                 else:
-                    col = (214, 222, 234)
+                    col = CODE_INK
                 dd.text((cx, 0), tok, font=f, fill=col)
                 cx += dd.textlength(tok, font=f)
         if ln.strip():
@@ -511,14 +613,14 @@ def build_blocks(s, accent):
     y = 0
     if kind == "cover":
         if s.get("kicker"):
-            y = B.add(text_img([s["kicker"]], F_SEMI(42), accent, 50), x, y, "up") + 30
+            y = B.add(text_img([s["kicker"]], F_HAND(64), accent, 70), x, y, "up") + 24
         tsize = s.get("title_size", 108)
-        lines = wrap(d0, s["title"], F_HEAD(tsize), w)
+        lines = wrap_marked(marked_tokens(s["title"]), F_HEAD(tsize), w)
         while len(lines) > 5 and tsize > 64:
             tsize -= 6
-            lines = wrap(d0, s["title"], F_HEAD(tsize), w)
+            lines = wrap_marked(marked_tokens(s["title"]), F_HEAD(tsize), w)
         for ln in lines:  # each title line pops separately = kinetic typography
-            y = B.add(text_img([ln], F_HEAD(tsize), WHITE, int(tsize * 1.08)), x, y, "pop", 0.16, "pop") - int(tsize * 0.22)
+            y = B.add(line_img(ln, F_HEAD(tsize)), x - 6, y, "pop", 0.16, "pop") - int(tsize * 0.22)
         y += 60
         if s.get("subtitle"):
             y = B.add(text_img(wrap(d0, s["subtitle"], F_BODY(44), w), F_BODY(44), MUTED, 62, w), x, y, "up")
@@ -526,7 +628,7 @@ def build_blocks(s, accent):
             _code_blocks(B, x, y + 50, w, s["code"], accent, CONTENT_BOTTOM - CONTENT_TOP - y - 60, "program.abap")
     elif kind == "text":
         if s.get("heading"):
-            y = B.add(text_img(wrap(d0, s["heading"], F_HEAD(72), w), F_HEAD(72), WHITE, 82, w), x, y, "up") + 40
+            y = B.add(heading_img(s["heading"], F_HEAD(72), w, lh=82), x - 6, y, "up") + 40
         for para in str(s.get("body", "")).split("\n\n"):
             y = B.add(text_img(wrap(d0, para, F_BODY(46), w), F_BODY(46), MUTED, 66, w), x, y, "up", 0.35) + 30
         if s.get("highlight"):
@@ -534,15 +636,16 @@ def build_blocks(s, accent):
             h = len(hl) * 60 + 64
             box = Image.new("RGBA", (w, h), (0, 0, 0, 0))
             dd = ImageDraw.Draw(box)
-            dd.rounded_rectangle([0, 0, w - 1, h - 1], radius=20, fill=PANEL + (255,), outline=accent + (255,), width=4)
+            dd.rounded_rectangle([0, 0, w - 1, h - 1], radius=12, fill=MARKER + (255,))
+            dd.rectangle([0, 0, 9, h - 1], fill=accent + (255,))
             y_ = 30
             for ln in hl:
-                dd.text((36, y_), ln, font=F_SEMI(44), fill=WHITE)
+                dd.text((36, y_), ln, font=F_SEMI(44), fill=INK)
                 y_ += 60
             y = B.add(box, x, y + 16, "pop", 0.3, "pop")
     elif kind == "code":
         if s.get("heading"):
-            y = B.add(text_img(wrap(d0, s["heading"], F_HEAD(64), w), F_HEAD(64), WHITE, 74, w), x, y, "up") + 34
+            y = B.add(heading_img(s["heading"], F_HEAD(64), w, lh=74), x - 6, y, "up") + 34
         note_h = 0
         if s.get("note"):
             note_lines = wrap(d0, s["note"], F_BODY(40), w)
@@ -552,19 +655,19 @@ def build_blocks(s, accent):
             B.add(text_img(note_lines, F_BODY(40), MUTED, 56, w), x, y + 36, "up", 0.3)
     elif kind == "compare":
         if s.get("heading"):
-            y = B.add(text_img(wrap(d0, s["heading"], F_HEAD(64), w), F_HEAD(64), WHITE, 74, w), x, y, "up") + 34
+            y = B.add(heading_img(s["heading"], F_HEAD(64), w, lh=74), x - 6, y, "up") + 34
         avail = (CONTENT_BOTTOM - CONTENT_TOP - y - 40) // 2
         for title, code, col in ((s.get("left_title", "Old way"), s["left"], RED),
                                  (s.get("right_title", "New way"), s["right"], GREEN)):
             tw = int(d0.textlength(title, font=F_SEMI(30))) + 40
             p = Image.new("RGBA", (tw, 52), (0, 0, 0, 0))
             ImageDraw.Draw(p).rounded_rectangle([0, 0, tw - 1, 51], radius=10, fill=col + (255,))
-            ImageDraw.Draw(p).text((20, 9), title, font=F_SEMI(30), fill=BG)
+            ImageDraw.Draw(p).text((20, 9), title, font=F_SEMI(30), fill=(255, 255, 255))
             B.add(p, x, y, "pop", 0.2, "pop")
             y = _code_blocks(B, x, y + 66, w, code, accent, avail - 66, s.get("filename", "program.abap")) + 34
     elif kind == "list":
         if s.get("heading"):
-            y = B.add(text_img(wrap(d0, s["heading"], F_HEAD(66), w), F_HEAD(66), WHITE, 76, w), x, y, "up") + 40
+            y = B.add(heading_img(s["heading"], F_HEAD(66), w, lh=76), x - 6, y, "up") + 40
         for i, it in enumerate(s.get("items", []), 1):
             title, _, rest = str(it).partition(" - ")
             tl = wrap(d0, title, F_SEMI(42), w - 90)
@@ -582,14 +685,14 @@ def build_blocks(s, accent):
                 yy += 50
             y = B.add(im, x, y, "up", 0.45) + 34
     elif kind == "cta":
-        y = B.add(text_img(wrap(d0, s.get("title", "Save this post"), F_HEAD(92), w), F_HEAD(92), WHITE, 100, w), x, y, "pop", 0.3, "pop") + 40
+        y = B.add(heading_img(s.get("title", "Save this post"), F_HEAD(92), w, lh=100), x - 6, y, "pop", 0.3, "pop") + 40
         y = B.add(text_img(wrap(d0, s.get("body", ""), F_BODY(44), w), F_BODY(44), MUTED, 62, w), x, y, "up") + 60
         for a in s.get("actions", ["Save", "Share", "Follow"]):
             tw = int(d0.textlength(a, font=F_SEMI(38))) + 64
             pimg = Image.new("RGBA", (tw, 80), (0, 0, 0, 0))
             dd = ImageDraw.Draw(pimg)
-            dd.rounded_rectangle([0, 0, tw - 1, 79], radius=40, fill=PANEL + (255,), outline=accent + (255,), width=3)
-            dd.text((32, 17), a, font=F_SEMI(38), fill=WHITE)
+            dd.rounded_rectangle([0, 0, tw - 1, 79], radius=40, fill=BG + (255,), outline=accent + (255,), width=3)
+            dd.text((32, 17), a, font=F_SEMI(38), fill=accent)
             y = B.add(pimg, x, y, "pop", 0.28, "pop") + 24
     # centre vertically inside the content zone
     top = min(b["y"] for b in B.items)
@@ -615,15 +718,9 @@ def schedule_blocks(blocks, speech_start, speech_len):
 
 def reel_chrome(handle, tag, accent):
     img = Image.new("RGB", (REEL_W, REEL_H), BG)
+    paper(img)
     d = ImageDraw.Draw(img)
-    # soft vignette glow behind content
-    glow = Image.new("L", (REEL_W, REEL_H), 0)
-    ImageDraw.Draw(glow).ellipse([-200, 300, REEL_W + 200, 1500], fill=26)
-    from PIL import ImageFilter
-    glow = glow.filter(ImageFilter.GaussianBlur(160))
-    img = Image.composite(Image.new("RGB", img.size, (20, 34, 60)), img, glow)
-    d = ImageDraw.Draw(img)
-    pill(d, 72, 150, tag.upper(), F_MONO_B(28), BG, accent)
+    pill(d, 72, 150, tag.upper(), F_MONO_B(28), (255, 255, 255), accent)
     hx = REEL_W - 72 - d.textlength(handle, font=F_MONO(30))
     d.text((hx, 160), handle, font=F_MONO(30), fill=DIM)
     return img
@@ -688,12 +785,12 @@ def draw_subtitle(img, timeline, tau, accent):
     sc = 0.85 + 0.15 * ease_back(p)
     bh = 96 * sc
     d.rounded_rectangle([x - pad, SUB_Y - bh / 2, x + total + pad, SUB_Y + bh / 2], radius=24,
-                        fill=(0, 0, 0, int(150 * p)))
+                        fill=INK + (int(235 * p),))
     for (w_, t0, t1), ww in zip(cur, widths):
         active = t0 <= tau < t1 + 0.05
-        col = accent if active else WHITE
+        col = MARKER if active else (255, 255, 255)
         if tau < t0:
-            col = (200, 208, 222)
+            col = (170, 176, 190)
         d.text((x, SUB_Y - 38), w_, font=f, fill=col)
         x += ww + gap
 
@@ -845,7 +942,7 @@ def main():
     os.makedirs(out, exist_ok=True)
     handle = spec.get("handle", "@abapcodevault")
     captions = []
-    accents = {"carousel": AMBER, "post": BLUE, "reel": GREEN}
+    accents = {"carousel": SAP_BLUE, "post": SAP_BLUE, "reel": SAP_BLUE}
     for n, p in enumerate(spec["posts"], 1):
         ptype = p["type"]
         tall = ptype == "reel"

@@ -1,7 +1,10 @@
-Fresher ho ya 4 saal ka developer, ye 10 T-codes roz kaam aate hain 💻
+Save this list. You will use it every single day.
 
-SE38 se code likho, SE16N se data check karo, ST22 se dump samjho aur ST05 se slow report pakdo. Inko yaad kar liya to aadha kaam fast ho jayega.
+The 10 T-codes that cover most of an ABAP developer's work:
+SE38/SE80 to write code, SE11 for the dictionary, SE16N to check data, ST22 to read dumps and ST05 to catch slow SQL.
 
-Save karo aur bookmark bana lo. Aapka favourite T-code kaunsa hai? Comment me batao 👇
+Knowing these by heart makes you noticeably faster, and interviewers expect it.
 
-#sapabap #abap #sap #abapdeveloper #tcodes #sapfresher #cheatsheet #sapjobs #abapcodevault
+Which T-code do you open first every morning? Tell us in the comments.
+
+#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #tcodes #abapcodevault

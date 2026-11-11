@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-21",
+  "handle": "@abapcodevault",
+  "posts": [
+    {
+      "day": "Sat",
+      "type": "carousel",
+      "slug": "itab-types-interview",
+      "tag": "Interview Q",
+      "slides": [
+        {
+          "kind": "cover",
+          "kicker": "Asked in almost every interview",
+          "title": "*Standard* vs *Sorted* vs *Hashed* table",
+          "subtitle": "Explain it in 30 seconds. Swipe."
+        },
+        {
+          "kind": "text",
+          "heading": "*STANDARD* table",
+          "body": "Access by index or linear search on key. Duplicates allowed.\n\nUse for small tables and ALV output.",
+          "highlight": "Read cost grows with table size"
+        },
+        {
+          "kind": "text",
+          "heading": "*SORTED* table",
+          "body": "Always kept sorted by its key. Reads use binary search automatically.\n\nUse when you read by a partial key or need data in order.",
+          "highlight": "Fast reads, slower inserts"
+        },
+        {
+          "kind": "text",
+          "heading": "*HASHED* table",
+          "body": "Access only by the full unique key. Constant read time, no index access.\n\nUse for big lookup tables inside loops.",
+          "highlight": "Same speed for 100 or 1,000,000 rows"
+        },
+        {
+          "kind": "code",
+          "heading": "Declare *all three*",
+          "code": "DATA lt_std TYPE STANDARD TABLE OF mara\n  WITH EMPTY KEY.\nDATA lt_srt TYPE SORTED TABLE OF mara\n  WITH NON-UNIQUE KEY mtart.\nDATA lt_hsh TYPE HASHED TABLE OF mara\n  WITH UNIQUE KEY matnr.",
+          "filename": "itab_types.abap"
+        },
+        {
+          "kind": "cta",
+          "title": "Want *159 more* like this?",
+          "body": "ABAP Interview Pack: 160 questions with answers, Fresher to Senior. Link in bio.",
+          "actions": [
+            "Save for your interview",
+            "Tag a job seeker",
+            "Follow @abapcodevault"
+          ]
+        }
+      ],
+      "caption": "Interviewer: \"What's the difference between standard, sorted and hashed tables?\"\n\nLearn to answer it in 30 seconds:\n- Standard: small tables, ALV output, index access\n- Sorted: reads by partial key, data kept in order\n- Hashed: lookups by full unique key, constant speed\n\nThen add one real example from your own project. Save this before your next interview.\n\nABAP Interview Pack (160 Q&A): link in bio.",
+      "hashtags": [
+        "#sap",
+        "#abap",
+        "#coding",
+        "#sapabap",
+        "#abapdeveloper",
+        "#saps4hana",
+        "#sapfresher",
+        "#sapinterview",
+        "#abapcodevault"
+      ]
+    }
+  ]
+}

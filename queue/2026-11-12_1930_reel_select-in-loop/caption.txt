@@ -1,9 +1,9 @@
-Report 2 minute ki jagah 20 minute le rahi hai? 🐢
+Is your report taking 20 minutes instead of 2?
 
-Zyada-tar case me culprit ek hi hai: LOOP ke andar SELECT. Har iteration = ek database trip.
+In most cases the cause is the same: a SELECT inside a LOOP. Every iteration is a separate trip to the database.
 
-Fix: loop se pehle ek baar data padho (JOIN ya FOR ALL ENTRIES), phir loop me internal table se lookup karo. Bade data ke liye SORTED ya HASHED table use karo.
+The fix: read the data once before the loop (JOIN or FOR ALL ENTRIES), then look it up in an internal table inside the loop. For large volumes, use a SORTED or HASHED table.
 
-Save karo, code review me kaam aayega 📌
+Save this for your next code review.
 
-#sapabap #abap #sap #performance #abapdeveloper #sapinterview #sapfresher #reels #abapcodevault
+#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #performance #sapinterview #abapcodevault

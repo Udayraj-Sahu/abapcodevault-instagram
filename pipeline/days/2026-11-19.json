@@ -1,0 +1,76 @@
+{
+  "date": "2026-11-19",
+  "handle": "@abapcodevault",
+  "posts": [
+    {
+      "day": "Thu",
+      "type": "reel",
+      "slug": "for-all-entries-trap",
+      "tag": "Performance",
+      "seconds_per_slide": 3.5,
+      "slides": [
+        {
+          "kind": "cover",
+          "kicker": "ABAP trap",
+          "title": "This one line can read your *ENTIRE* table",
+          "voiceover": "सुनो, एक मिनट रुको। ये एक लाइन... आपकी पूरी टेबल पढ़ सकती है। और ज़्यादातर फ्रेशर्स ये गलती करते हैं।",
+          "spoken": "Suno, ek minute ruko. Ye ek line aapki poori table padh sakti hai. Aur zyada-tar freshers ye galti karte hain.",
+          "subtitle": "The FOR ALL ENTRIES trap"
+        },
+        {
+          "kind": "code",
+          "heading": "Looks *innocent*, right?",
+          "code": "SELECT vbeln, posnr, matnr\n  FROM vbap\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE vbeln = @lt_orders-vbeln\n  INTO TABLE @DATA(lt_items).",
+          "filename": "zreport.abap",
+          "voiceover": "ये सेलेक्ट देखो। बिल्कुल नॉर्मल लग रहा है ना? ऑर्डर्स की टेबल से, हम वीबैप के आइटम्स पढ़ रहे हैं।",
+          "spoken": "Ye SELECT dekho. Bilkul normal lag raha hai na? Orders ki table se hum VBAP ke items padh rahe hain."
+        },
+        {
+          "kind": "text",
+          "heading": "If lt_orders is *empty*...",
+          "body": "the WHERE clause is ignored.\n\nSAP reads every row of VBAP. Millions of rows. Timeout. Angry user.",
+          "highlight": "Empty driver table = no filter at all",
+          "voiceover": "लेकिन ट्विस्ट ये है। अगर ऑर्डर्स वाली टेबल खाली हुई, तो व्हेयर कंडीशन पूरी तरह इग्नोर हो जाती है। और सैप, पूरी वीबैप टेबल उठा लेता है। लाखों रोज़। सीधा टाइमआउट।",
+          "spoken": "Lekin twist ye hai. Agar orders wali table khaali hui, to WHERE condition poori tarah ignore ho jaati hai. Aur SAP poori VBAP table utha leta hai. Laakhon rows. Seedha timeout."
+        },
+        {
+          "kind": "code",
+          "heading": "The fix: *one IF*",
+          "code": "IF lt_orders IS NOT INITIAL.\n  SELECT vbeln, posnr, matnr\n    FROM vbap\n    FOR ALL ENTRIES IN @lt_orders\n    WHERE vbeln = @lt_orders-vbeln\n    INTO TABLE @DATA(lt_items).\nENDIF.",
+          "filename": "zreport.abap",
+          "note": "Bonus: remove duplicates from lt_orders first.",
+          "voiceover": "फिक्स? बस एक इफ। सेलेक्ट से पहले चेक करो, कि टेबल इनिशियल नहीं है। और हो सके तो, डुप्लिकेट्स भी पहले हटा दो।",
+          "spoken": "Fix? Bas ek IF. SELECT se pehle check karo ki table initial nahi hai. Aur ho sake to duplicates bhi pehle hata do."
+        },
+        {
+          "kind": "cta",
+          "title": "Follow for *daily ABAP tips*",
+          "body": "This one comes up in interviews all the time.",
+          "actions": [
+            "Save",
+            "Share",
+            "Follow @abapcodevault"
+          ],
+          "voiceover": "ये सवाल इंटरव्यू में भी पक्का आता है। तो पोस्ट सेव कर लो, और ऐसी ही टिप्स के लिए, फॉलो करो अबैप कोड वॉल्ट।",
+          "spoken": "Ye sawaal interview mein bhi pakka aata hai. To post save kar lo, aur aisi hi tips ke liye follow karo ABAP Code Vault."
+        }
+      ],
+      "caption": "One missing IF, and the report read the entire VBAP table.\n\nWith FOR ALL ENTRIES, an empty driver table means the WHERE condition is ignored and every row is selected. Always check IS NOT INITIAL first, and remove duplicates from the driver table.\n\nThis is a classic interview question, so save it.\n\n160 more interview questions with answers: ABAP Interview Pack, link in bio.",
+      "hashtags": [
+        "#sap",
+        "#abap",
+        "#coding",
+        "#sapabap",
+        "#abapdeveloper",
+        "#saps4hana",
+        "#sapfresher",
+        "#performance",
+        "#sapinterview",
+        "#abapcodevault"
+      ],
+      "voice": "hm_omega",
+      "voice_lang": "hi",
+      "voice_speed": 1.0
+    }
+  ]
+}

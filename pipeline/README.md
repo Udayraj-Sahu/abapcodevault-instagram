@@ -18,12 +18,21 @@ Each daily run creates tomorrow's 3 posts.
 6. `python3 scripts/queue_day.py out/DATE DATE`
 7. Update `state.json`: `last_queued_date` = DATE, append the topics to `history`. Commit and push.
 
-## Content rules
-- Slide text: English, short. Max ~12 code lines per panel, max ~45 characters per code line.
-- Captions: Hinglish (Hindi in Roman script mixed with English), friendly, 60–120 words, hook in line 1, ends with a question or "Save karo" and "link in bio" when plugging a product.
-- 8–10 hashtags, always include #sapabap #abap #sap #abapcodevault.
-- Code must be correct ABAP 7.40+. No company or client names. No invented statistics.
-- Slide kinds: cover, text, code, compare, list, cta.
+## Design (fixed)
+- Light "notebook" theme: cream ruled paper, ink text, one brand colour **SAP blue**, yellow highlighter, handwritten (Caveat) notes. All built into generate.py; do not change colours per post.
+- Wrap 1-3 key words of every title/heading in `*asterisks*` to get the yellow highlighter, e.g. `"A full *ALV report* in 10 lines"`. Use it on every cover title, heading and CTA title; never on more than half the words.
+- Cover `kicker` is a short handwritten note (2-5 words), e.g. "No field catalog needed".
+- Slide kinds: cover, text, code, compare, list, cta. Slide text English, short. Max ~12 code lines per panel, ~45 characters per code line.
+
+## Captions (fixed)
+- **Professional English**, LinkedIn-like tone. No Hinglish in captions.
+- Structure: hook question or bold statement on line 1 -> blank line -> 2-4 short lines or a numbered list with the substance -> blank line -> one engagement line (question or "Save this for ...") -> product line when the post plugs a product ("... ABAP Code Vault (link in bio)" / "ABAP Interview Pack (160 Q&A): link in bio").
+- 60-120 words. At most 1 emoji, or none. No invented statistics.
+
+## Hashtags (fixed: 9-10 per post)
+Always these 7: `#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher`
++ 1-2 topic tags (e.g. #alv #performance #sapinterview #cleancode #tcodes #bapi #smartforms #cds)
++ always `#abapcodevault` last.
 
 ## Reel voiceover (every reel)
 - Every reel slide gets a `"voiceover"` line; the post sets `"voice": "hm_omega", "voice_lang": "hi", "voice_speed": 1.0`.

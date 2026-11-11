@@ -8,21 +8,35 @@
       "slug": "top-10-tcodes",
       "tag": "Cheat sheet",
       "slides": [
-        {"kind": "list", "heading": "10 T-codes every ABAP developer uses daily", "items": [
-          "SE38 / SE80 - Write and browse programs",
-          "SE11 - Tables, structures, data elements",
-          "SE16N - Look at table data fast",
-          "SE37 - Test function modules",
-          "SE24 - Build and test classes",
-          "ST22 - Read short dumps",
-          "SE09 - Release your transports",
-          "ST05 - SQL trace for slow reports",
-          "SM37 - Check background jobs",
-          "SE91 - Create message classes"
-        ]}
+        {
+          "kind": "list",
+          "heading": "10 T-codes every ABAP developer *uses daily*",
+          "items": [
+            "SE38 / SE80 - Write and browse programs",
+            "SE11 - Tables, structures, data elements",
+            "SE16N - Look at table data fast",
+            "SE37 - Test function modules",
+            "SE24 - Build and test classes",
+            "ST22 - Read short dumps",
+            "SE09 - Release your transports",
+            "ST05 - SQL trace for slow reports",
+            "SM37 - Check background jobs",
+            "SE91 - Create message classes"
+          ]
+        }
       ],
-      "caption": "Fresher ho ya 4 saal ka developer, ye 10 T-codes roz kaam aate hain 💻\n\nSE38 se code likho, SE16N se data check karo, ST22 se dump samjho aur ST05 se slow report pakdo. Inko yaad kar liya to aadha kaam fast ho jayega.\n\nSave karo aur bookmark bana lo. Aapka favourite T-code kaunsa hai? Comment me batao 👇",
-      "hashtags": ["#sapabap", "#abap", "#sap", "#abapdeveloper", "#tcodes", "#sapfresher", "#cheatsheet", "#sapjobs", "#abapcodevault"]
+      "caption": "Save this list. You will use it every single day.\n\nThe 10 T-codes that cover most of an ABAP developer's work:\nSE38/SE80 to write code, SE11 for the dictionary, SE16N to check data, ST22 to read dumps and ST05 to catch slow SQL.\n\nKnowing these by heart makes you noticeably faster, and interviewers expect it.\n\nWhich T-code do you open first every morning? Tell us in the comments.",
+      "hashtags": [
+        "#sap",
+        "#abap",
+        "#coding",
+        "#sapabap",
+        "#abapdeveloper",
+        "#saps4hana",
+        "#sapfresher",
+        "#tcodes",
+        "#abapcodevault"
+      ]
     },
     {
       "day": "Thu",
@@ -30,15 +44,61 @@
       "slug": "salv-alv-10-lines",
       "tag": "ALV",
       "slides": [
-        {"kind": "cover", "kicker": "No field catalog needed", "title": "A full ALV report in 10 lines", "subtitle": "CL_SALV_TABLE, step by step. Swipe."},
-        {"kind": "code", "heading": "Step 1: Get your data", "code": "SELECT vbeln, erdat, kunnr, netwr\n  FROM vbak\n  INTO TABLE @DATA(lt_orders)\n  UP TO 100 ROWS.", "filename": "zsalv_demo.abap"},
-        {"kind": "code", "heading": "Step 2: Create and show the ALV", "code": "cl_salv_table=>factory(\n  IMPORTING r_salv_table = DATA(lo_alv)\n  CHANGING  t_table      = lt_orders ).\n\nlo_alv->display( ).", "filename": "zsalv_demo.abap", "note": "That's a working ALV. Columns come from the table type automatically."},
-        {"kind": "code", "heading": "Step 3: Add the toolbar", "code": "lo_alv->get_functions( )->set_all( ).\nlo_alv->get_columns( )->set_optimize( ).\nlo_alv->get_display_settings(\n  )->set_striped_pattern( abap_true ).", "filename": "zsalv_demo.abap", "note": "Sort, filter, Excel export and zebra stripes in 3 lines."},
-        {"kind": "text", "heading": "Don't forget TRY...CATCH", "body": "factory( ) raises CX_SALV_MSG, and get_column( ) raises CX_SALV_NOT_FOUND for a wrong column name.\n\nWrap the ALV code in TRY...CATCH and show the error text.", "highlight": "Column names must be UPPER CASE"},
-        {"kind": "cta", "title": "Want the full template?", "body": "Hotspots, totals, popup ALV and saved layouts are in the ABAP Code Vault. Link in bio.", "actions": ["Save", "Share with your team", "Follow @abapcodevault"]}
+        {
+          "kind": "cover",
+          "kicker": "No field catalog needed",
+          "title": "A full *ALV report* in 10 lines",
+          "subtitle": "CL_SALV_TABLE, step by step. Swipe."
+        },
+        {
+          "kind": "code",
+          "heading": "Step 1: *Get your data*",
+          "code": "SELECT vbeln, erdat, kunnr, netwr\n  FROM vbak\n  INTO TABLE @DATA(lt_orders)\n  UP TO 100 ROWS.",
+          "filename": "zsalv_demo.abap"
+        },
+        {
+          "kind": "code",
+          "heading": "Step 2: *Create and show* the ALV",
+          "code": "cl_salv_table=>factory(\n  IMPORTING r_salv_table = DATA(lo_alv)\n  CHANGING  t_table      = lt_orders ).\n\nlo_alv->display( ).",
+          "filename": "zsalv_demo.abap",
+          "note": "That's a working ALV. Columns come from the table type automatically."
+        },
+        {
+          "kind": "code",
+          "heading": "Step 3: Add the *toolbar*",
+          "code": "lo_alv->get_functions( )->set_all( ).\nlo_alv->get_columns( )->set_optimize( ).\nlo_alv->get_display_settings(\n  )->set_striped_pattern( abap_true ).",
+          "filename": "zsalv_demo.abap",
+          "note": "Sort, filter, Excel export and zebra stripes in 3 lines."
+        },
+        {
+          "kind": "text",
+          "heading": "Don't forget *TRY...CATCH*",
+          "body": "factory( ) raises CX_SALV_MSG, and get_column( ) raises CX_SALV_NOT_FOUND for a wrong column name.\n\nWrap the ALV code in TRY...CATCH and show the error text.",
+          "highlight": "Column names must be UPPER CASE"
+        },
+        {
+          "kind": "cta",
+          "title": "Want the *full template*?",
+          "body": "Hotspots, totals, popup ALV and saved layouts are in the ABAP Code Vault. Link in bio.",
+          "actions": [
+            "Save",
+            "Share with your team",
+            "Follow @abapcodevault"
+          ]
+        }
       ],
-      "caption": "ALV banane ke liye field catalog likhte likhte thak gaye? 😮‍💨\n\nCL_SALV_TABLE se sirf 10 lines me poora ALV ready:\n1️⃣ Data select karo\n2️⃣ factory( ) call karo\n3️⃣ display( ) — bas!\n\nToolbar, optimized columns aur zebra stripes bhi 3 extra lines me. Bas TRY...CATCH lagana mat bhoolna.\n\nSave karo next report ke liye 📌\nHotspot, totals aur layouts wala full template → link in bio",
-      "hashtags": ["#sapabap", "#abap", "#sap", "#alv", "#abapdeveloper", "#saps4hana", "#sapfresher", "#coding", "#abapcodevault"]
+      "caption": "Still building a field catalog by hand for every ALV?\n\nCL_SALV_TABLE gives you a complete ALV report in about 10 lines:\n1. Select your data\n2. Call factory( )\n3. Call display( )\n\nAdd the toolbar, optimized columns and zebra stripes with three more lines. Just remember to wrap it in TRY...CATCH.\n\nSave this for your next report.\nThe full template with hotspots, totals and saved layouts is in the ABAP Code Vault (link in bio).",
+      "hashtags": [
+        "#sap",
+        "#abap",
+        "#coding",
+        "#sapabap",
+        "#abapdeveloper",
+        "#saps4hana",
+        "#sapfresher",
+        "#alv",
+        "#abapcodevault"
+      ]
     },
     {
       "day": "Thu",
@@ -49,24 +109,64 @@
       "voice_lang": "hi",
       "voice_speed": 1.0,
       "slides": [
-        {"kind": "cover", "kicker": "Performance killer", "title": "Your report is slow because of THIS", "subtitle": "SELECT inside LOOP",
-         "voiceover": "आपकी रिपोर्ट स्लो है? नब्बे परसेंट केस में वजह एक ही होती है। लूप के अंदर सेलेक्ट।",
-         "spoken": "Aapki report slow hai? Nabbe percent case mein wajah ek hi hoti hai. Loop ke andar SELECT."},
-        {"kind": "code", "heading": "The slow way", "code": "LOOP AT lt_orders INTO DATA(ls_order).\n  SELECT SINGLE name1\n    FROM kna1\n    WHERE kunnr = @ls_order-kunnr\n    INTO @DATA(lv_name).\nENDLOOP.", "filename": "zslow.abap",
-         "voiceover": "ये कोड देखो। हर ऑर्डर के लिए, हम डेटाबेस से कस्टमर का नाम पढ़ रहे हैं। दस हज़ार ऑर्डर्स, मतलब दस हज़ार डेटाबेस कॉल्स।",
-         "spoken": "Ye code dekho. Har order ke liye hum database se customer ka naam padh rahe hain. Das hazaar orders, matlab das hazaar database calls."},
-        {"kind": "text", "heading": "Why it hurts", "body": "Every SELECT is a separate trip to the database.\n\nThe loop is fast. The round trips are what kill you.", "highlight": "Read once, then look up in memory",
-         "voiceover": "हर सेलेक्ट, डेटाबेस तक एक अलग ट्रिप है। लूप तेज़ है, लेकिन ये ट्रिप्स आपकी रिपोर्ट को मार देती हैं। तो रूल सिंपल है। एक बार पढ़ो, फिर मेमोरी में ढूंढो।",
-         "spoken": "Har SELECT database tak ek alag trip hai. Loop tez hai, lekin ye trips aapki report ko maar deti hain. To rule simple hai. Ek baar padho, phir memory mein dhoondho."},
-        {"kind": "code", "heading": "The fast way", "code": "SELECT kunnr, name1 FROM kna1\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE kunnr = @lt_orders-kunnr\n  INTO TABLE @DATA(lt_kna1).\n\nLOOP AT lt_orders INTO DATA(ls_order).\n  DATA(lv_name) = VALUE #(\n    lt_kna1[ kunnr = ls_order-kunnr ]-name1\n    OPTIONAL ).\nENDLOOP.", "filename": "zfast.abap",
-         "voiceover": "फिक्स ये है। लूप से पहले, एक ही सेलेक्ट में सारे कस्टमर्स पढ़ लो। फिर लूप के अंदर, इंटरनल टेबल से नाम उठा लो। और हाँ, फॉर ऑल एंट्रीज़ से पहले टेबल खाली तो नहीं, ये चेक करना मत भूलना।",
-         "spoken": "Fix ye hai. Loop se pehle ek hi SELECT mein saare customers padh lo. Phir loop ke andar internal table se naam utha lo. Aur haan, FOR ALL ENTRIES se pehle table khaali to nahi, ye check karna mat bhoolna."},
-        {"kind": "cta", "title": "Follow for daily ABAP tips", "body": "Roz 3 posts: tips, code aur interview questions.", "actions": ["Save", "Share", "Follow @abapcodevault"],
-         "voiceover": "ऐसी ही प्रैक्टिकल टिप्स के लिए, पोस्ट सेव करो, और फॉलो करो अबैप कोड वॉल्ट। रोज़ नई टिप मिलेगी।",
-         "spoken": "Aisi hi practical tips ke liye post save karo aur follow karo ABAP Code Vault. Roz nayi tip milegi."}
+        {
+          "kind": "cover",
+          "kicker": "Performance killer",
+          "title": "Your report is slow because of *THIS*",
+          "subtitle": "SELECT inside LOOP",
+          "voiceover": "आपकी रिपोर्ट स्लो है? नब्बे परसेंट केस में वजह एक ही होती है। लूप के अंदर सेलेक्ट।",
+          "spoken": "Aapki report slow hai? Nabbe percent case mein wajah ek hi hoti hai. Loop ke andar SELECT."
+        },
+        {
+          "kind": "code",
+          "heading": "The *slow* way",
+          "code": "LOOP AT lt_orders INTO DATA(ls_order).\n  SELECT SINGLE name1\n    FROM kna1\n    WHERE kunnr = @ls_order-kunnr\n    INTO @DATA(lv_name).\nENDLOOP.",
+          "filename": "zslow.abap",
+          "voiceover": "ये कोड देखो। हर ऑर्डर के लिए, हम डेटाबेस से कस्टमर का नाम पढ़ रहे हैं। दस हज़ार ऑर्डर्स, मतलब दस हज़ार डेटाबेस कॉल्स।",
+          "spoken": "Ye code dekho. Har order ke liye hum database se customer ka naam padh rahe hain. Das hazaar orders, matlab das hazaar database calls."
+        },
+        {
+          "kind": "text",
+          "heading": "Why it *hurts*",
+          "body": "Every SELECT is a separate trip to the database.\n\nThe loop is fast. The round trips are what kill you.",
+          "highlight": "Read once, then look up in memory",
+          "voiceover": "हर सेलेक्ट, डेटाबेस तक एक अलग ट्रिप है। लूप तेज़ है, लेकिन ये ट्रिप्स आपकी रिपोर्ट को मार देती हैं। तो रूल सिंपल है। एक बार पढ़ो, फिर मेमोरी में ढूंढो।",
+          "spoken": "Har SELECT database tak ek alag trip hai. Loop tez hai, lekin ye trips aapki report ko maar deti hain. To rule simple hai. Ek baar padho, phir memory mein dhoondho."
+        },
+        {
+          "kind": "code",
+          "heading": "The *fast* way",
+          "code": "SELECT kunnr, name1 FROM kna1\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE kunnr = @lt_orders-kunnr\n  INTO TABLE @DATA(lt_kna1).\n\nLOOP AT lt_orders INTO DATA(ls_order).\n  DATA(lv_name) = VALUE #(\n    lt_kna1[ kunnr = ls_order-kunnr ]-name1\n    OPTIONAL ).\nENDLOOP.",
+          "filename": "zfast.abap",
+          "voiceover": "फिक्स ये है। लूप से पहले, एक ही सेलेक्ट में सारे कस्टमर्स पढ़ लो। फिर लूप के अंदर, इंटरनल टेबल से नाम उठा लो। और हाँ, फॉर ऑल एंट्रीज़ से पहले टेबल खाली तो नहीं, ये चेक करना मत भूलना।",
+          "spoken": "Fix ye hai. Loop se pehle ek hi SELECT mein saare customers padh lo. Phir loop ke andar internal table se naam utha lo. Aur haan, FOR ALL ENTRIES se pehle table khaali to nahi, ye check karna mat bhoolna."
+        },
+        {
+          "kind": "cta",
+          "title": "Follow for *daily ABAP tips*",
+          "body": "3 posts every day: tips, code and interview questions.",
+          "actions": [
+            "Save",
+            "Share",
+            "Follow @abapcodevault"
+          ],
+          "voiceover": "ऐसी ही प्रैक्टिकल टिप्स के लिए, पोस्ट सेव करो, और फॉलो करो अबैप कोड वॉल्ट। रोज़ नई टिप मिलेगी।",
+          "spoken": "Aisi hi practical tips ke liye post save karo aur follow karo ABAP Code Vault. Roz nayi tip milegi."
+        }
       ],
-      "caption": "Report 2 minute ki jagah 20 minute le rahi hai? 🐢\n\nZyada-tar case me culprit ek hi hai: LOOP ke andar SELECT. Har iteration = ek database trip.\n\nFix: loop se pehle ek baar data padho (JOIN ya FOR ALL ENTRIES), phir loop me internal table se lookup karo. Bade data ke liye SORTED ya HASHED table use karo.\n\nSave karo, code review me kaam aayega 📌",
-      "hashtags": ["#sapabap", "#abap", "#sap", "#performance", "#abapdeveloper", "#sapinterview", "#sapfresher", "#reels", "#abapcodevault"]
+      "caption": "Is your report taking 20 minutes instead of 2?\n\nIn most cases the cause is the same: a SELECT inside a LOOP. Every iteration is a separate trip to the database.\n\nThe fix: read the data once before the loop (JOIN or FOR ALL ENTRIES), then look it up in an internal table inside the loop. For large volumes, use a SORTED or HASHED table.\n\nSave this for your next code review.",
+      "hashtags": [
+        "#sap",
+        "#abap",
+        "#coding",
+        "#sapabap",
+        "#abapdeveloper",
+        "#saps4hana",
+        "#sapfresher",
+        "#performance",
+        "#sapinterview",
+        "#abapcodevault"
+      ]
     }
   ]
 }

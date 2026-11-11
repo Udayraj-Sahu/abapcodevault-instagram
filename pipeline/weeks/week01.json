@@ -11,12 +11,12 @@
         {
           "kind": "cover",
           "kicker": "ABAP 7.40+",
-          "title": "4 syntax tricks that cut your code in half",
+          "title": "4 syntax tricks that *cut your code in half*",
           "subtitle": "Old way vs new way. Swipe and save."
         },
         {
           "kind": "compare",
-          "heading": "1. Inline declarations",
+          "heading": "1. *Inline* declarations",
           "left_title": "Old way",
           "left": "DATA lv_count TYPE i.\nlv_count = lines( lt_orders ).",
           "right_title": "New way",
@@ -24,7 +24,7 @@
         },
         {
           "kind": "compare",
-          "heading": "2. Table expressions",
+          "heading": "2. *Table* expressions",
           "left_title": "Old way",
           "left": "READ TABLE lt_mara INTO ls_mara\n  WITH KEY matnr = lv_matnr.\nIF sy-subrc = 0.\n  lv_mtart = ls_mara-mtart.\nENDIF.",
           "right_title": "New way",
@@ -32,7 +32,7 @@
         },
         {
           "kind": "compare",
-          "heading": "3. Fill a table with VALUE",
+          "heading": "3. Fill a table with *VALUE*",
           "left_title": "Old way",
           "left": "ls_item-matnr = 'MAT-01'.\nls_item-menge = 10.\nAPPEND ls_item TO lt_items.",
           "right_title": "New way",
@@ -40,7 +40,7 @@
         },
         {
           "kind": "compare",
-          "heading": "4. String templates",
+          "heading": "4. *String* templates",
           "left_title": "Old way",
           "left": "CONCATENATE 'Order' lv_vbeln\n  'saved' INTO lv_msg\n  SEPARATED BY space.",
           "right_title": "New way",
@@ -48,8 +48,8 @@
         },
         {
           "kind": "cta",
-          "title": "Which one do you use daily?",
-          "body": "Comment the number. Full code + cheat sheets in the ABAP Code Vault (link in bio).",
+          "title": "Which one do you *use daily*?",
+          "body": "Comment the number. Full code and cheat sheets are in the ABAP Code Vault (link in bio).",
           "actions": [
             "Save",
             "Share with your team",
@@ -57,17 +57,16 @@
           ]
         }
       ],
-      "caption": "Abhi bhi CONCATENATE aur READ TABLE likh rahe ho? 😅\n\nABAP 7.40+ ke ye 4 tricks aapka code half kar denge aur reviewer bhi khush rahega:\n\n1️⃣ Inline DATA( )\n2️⃣ Table expressions itab[ ]\n3️⃣ VALUE #( ) se table fill\n4️⃣ String templates | |\n\nSave karo, next project me kaam aayega. Kaunsa trick aap daily use karte ho? Comment me number batao 👇\n\nFull code + cheat sheets → link in bio",
+      "caption": "Still writing CONCATENATE and READ TABLE in 2026?\n\nThese 4 ABAP 7.40 features cut your code in half and make reviews easier:\n1. Inline DATA( )\n2. Table expressions itab[ ]\n3. VALUE #( ) to fill tables\n4. String templates | |\n\nSave this for your next project. Which one do you use every day? Comment the number.\n\nFull code and cheat sheets: link in bio.",
       "hashtags": [
-        "#sapabap",
-        "#abap",
         "#sap",
+        "#abap",
+        "#coding",
+        "#sapabap",
         "#abapdeveloper",
         "#saps4hana",
         "#sapfresher",
-        "#coding",
-        "#programming",
-        "#techjobsindia",
+        "#cleancode",
         "#abapcodevault"
       ]
     },
@@ -113,14 +112,14 @@
         {
           "kind": "cover",
           "kicker": "ABAP trap",
-          "title": "This one line can read your ENTIRE table",
+          "title": "This one line can read your *ENTIRE* table",
           "voiceover": "सुनो, एक मिनट रुको। ये एक लाइन... आपकी पूरी टेबल पढ़ सकती है। और ज़्यादातर फ्रेशर्स ये गलती करते हैं।",
           "spoken": "Suno, ek minute ruko. Ye ek line aapki poori table padh sakti hai. Aur zyada-tar freshers ye galti karte hain.",
-          "subtitle": "FOR ALL ENTRIES ka sabse bada trap"
+          "subtitle": "The FOR ALL ENTRIES trap"
         },
         {
           "kind": "code",
-          "heading": "Looks innocent, right?",
+          "heading": "Looks *innocent*, right?",
           "code": "SELECT vbeln, posnr, matnr\n  FROM vbap\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE vbeln = @lt_orders-vbeln\n  INTO TABLE @DATA(lt_items).",
           "filename": "zreport.abap",
           "voiceover": "ये सेलेक्ट देखो। बिल्कुल नॉर्मल लग रहा है ना? ऑर्डर्स की टेबल से, हम वीबैप के आइटम्स पढ़ रहे हैं।",
@@ -128,7 +127,7 @@
         },
         {
           "kind": "text",
-          "heading": "If lt_orders is empty...",
+          "heading": "If lt_orders is *empty*...",
           "body": "the WHERE clause is ignored.\n\nSAP reads every row of VBAP. Millions of rows. Timeout. Angry user.",
           "highlight": "Empty driver table = no filter at all",
           "voiceover": "लेकिन ट्विस्ट ये है। अगर ऑर्डर्स वाली टेबल खाली हुई, तो व्हेयर कंडीशन पूरी तरह इग्नोर हो जाती है। और सैप, पूरी वीबैप टेबल उठा लेता है। लाखों रोज़। सीधा टाइमआउट।",
@@ -136,7 +135,7 @@
         },
         {
           "kind": "code",
-          "heading": "The fix: one IF",
+          "heading": "The fix: *one IF*",
           "code": "IF lt_orders IS NOT INITIAL.\n  SELECT vbeln, posnr, matnr\n    FROM vbap\n    FOR ALL ENTRIES IN @lt_orders\n    WHERE vbeln = @lt_orders-vbeln\n    INTO TABLE @DATA(lt_items).\nENDIF.",
           "filename": "zreport.abap",
           "note": "Bonus: remove duplicates from lt_orders first.",
@@ -145,8 +144,8 @@
         },
         {
           "kind": "cta",
-          "title": "Follow for daily ABAP tips",
-          "body": "Interview me bhi ye question pakka aata hai.",
+          "title": "Follow for *daily ABAP tips*",
+          "body": "This one comes up in interviews all the time.",
           "actions": [
             "Save",
             "Share",
@@ -156,16 +155,17 @@
           "spoken": "Ye sawaal interview mein bhi pakka aata hai. To post save kar lo, aur aisi hi tips ke liye follow karo ABAP Code Vault."
         }
       ],
-      "caption": "Ek chhota sa IF missing tha... aur report ne poori VBAP table padh li 😱\n\nFOR ALL ENTRIES me driver table empty ho to WHERE condition ignore ho jaati hai. Har baar pehle IS NOT INITIAL check karo.\n\nInterview me bhi ye question bahut aata hai. Save karo! 📌\n\n160 aise interview questions → link in bio",
+      "caption": "One missing IF, and the report read the entire VBAP table.\n\nWith FOR ALL ENTRIES, an empty driver table means the WHERE condition is ignored and every row is selected. Always check IS NOT INITIAL first, and remove duplicates from the driver table.\n\nThis is a classic interview question, so save it.\n\n160 more interview questions with answers: ABAP Interview Pack, link in bio.",
       "hashtags": [
-        "#sapabap",
-        "#abap",
         "#sap",
+        "#abap",
+        "#coding",
+        "#sapabap",
         "#abapdeveloper",
+        "#saps4hana",
+        "#sapfresher",
         "#performance",
         "#sapinterview",
-        "#sapfresher",
-        "#reels",
         "#abapcodevault"
       ],
       "voice": "hm_omega",
@@ -180,37 +180,37 @@
       "slides": [
         {
           "kind": "cover",
-          "kicker": "Asked in 8 out of 10 interviews",
-          "title": "Standard vs Sorted vs Hashed table",
+          "kicker": "Asked in almost every interview",
+          "title": "*Standard* vs *Sorted* vs *Hashed* table",
           "subtitle": "Explain it in 30 seconds. Swipe."
         },
         {
           "kind": "text",
-          "heading": "STANDARD table",
+          "heading": "*STANDARD* table",
           "body": "Access by index or linear search on key. Duplicates allowed.\n\nUse for small tables and ALV output.",
           "highlight": "Read cost grows with table size"
         },
         {
           "kind": "text",
-          "heading": "SORTED table",
+          "heading": "*SORTED* table",
           "body": "Always kept sorted by its key. Reads use binary search automatically.\n\nUse when you read by a partial key or need data in order.",
           "highlight": "Fast reads, slower inserts"
         },
         {
           "kind": "text",
-          "heading": "HASHED table",
+          "heading": "*HASHED* table",
           "body": "Access only by the full unique key. Constant read time, no index access.\n\nUse for big lookup tables inside loops.",
           "highlight": "Same speed for 100 or 1,000,000 rows"
         },
         {
           "kind": "code",
-          "heading": "Declare all three",
+          "heading": "Declare *all three*",
           "code": "DATA lt_std TYPE STANDARD TABLE OF mara\n  WITH EMPTY KEY.\nDATA lt_srt TYPE SORTED TABLE OF mara\n  WITH NON-UNIQUE KEY mtart.\nDATA lt_hsh TYPE HASHED TABLE OF mara\n  WITH UNIQUE KEY matnr.",
           "filename": "itab_types.abap"
         },
         {
           "kind": "cta",
-          "title": "Want 159 more like this?",
+          "title": "Want *159 more* like this?",
           "body": "ABAP Interview Pack: 160 questions with answers, Fresher to Senior. Link in bio.",
           "actions": [
             "Save for your interview",
@@ -219,16 +219,16 @@
           ]
         }
       ],
-      "caption": "Interviewer: \"Standard, sorted aur hashed table me difference batao.\" 🤔\n\nYe question 8/10 interviews me aata hai. 30 second me answer karna seekho:\n\n🔹 Standard: small tables, ALV output\n🔹 Sorted: partial key ya ordered read\n🔹 Hashed: full unique key, big lookups\n\nAur ek real example zaroor do apne project se. Save karo interview se pehle 📌\n\nABAP Interview Pack (160 Q&A) → link in bio",
+      "caption": "Interviewer: \"What's the difference between standard, sorted and hashed tables?\"\n\nLearn to answer it in 30 seconds:\n- Standard: small tables, ALV output, index access\n- Sorted: reads by partial key, data kept in order\n- Hashed: lookups by full unique key, constant speed\n\nThen add one real example from your own project. Save this before your next interview.\n\nABAP Interview Pack (160 Q&A): link in bio.",
       "hashtags": [
-        "#sapabap",
-        "#abap",
         "#sap",
-        "#sapinterview",
-        "#interviewprep",
+        "#abap",
+        "#coding",
+        "#sapabap",
         "#abapdeveloper",
+        "#saps4hana",
         "#sapfresher",
-        "#sapjobs",
+        "#sapinterview",
         "#abapcodevault"
       ]
     }
