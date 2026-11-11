@@ -2,11 +2,10 @@ name: Publish to Instagram
 
 on:
   schedule:
-    - cron: "30 3 * * *"    # 9:00 AM IST  -> post
-    - cron: "30 7 * * *"    # 1:00 PM IST  -> carousel
-    - cron: "0 14 * * *"    # 7:30 PM IST  -> reel
-    - cron: "30 15 * * *"   # 9:00 PM IST  -> catch-up / special slots
-    # each run posts only what is due (date + time in post.json), so a late run never double-posts
+    # GitHub often starts scheduled runs late (or skips them) at busy times like :00 / :30,
+    # so check every 10 minutes on off-minutes. Each run posts only what is due
+    # (date + time in post.json) and published.json prevents double posts.
+    - cron: "4,14,24,34,44,54 * * * *"
   workflow_dispatch:
     inputs:
       only:
