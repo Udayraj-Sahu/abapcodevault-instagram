@@ -13,17 +13,21 @@ tok = os.environ["IG_ACCESS_TOKEN"]
 ig_id = os.environ.get("IG_USER_ID", "").strip()
 
 
-def get(url, params):
+def get(url, params, fatal=True):
     params["access_token"] = tok
     try:
         with urllib.request.urlopen(url + "?" + urllib.parse.urlencode(params), timeout=60) as r:
             return json.loads(r.read().decode())
     except urllib.error.HTTPError as e:
-        raise SystemExit(f"Token check FAILED: {e.code} {e.read().decode(errors='replace')}")
+        msg = f"{e.code} {e.read().decode(errors='replace')}"
+        if fatal:
+            raise SystemExit(f"Token check FAILED: {msg}")
+        print(f"(system-user check failed: {msg}; trying Instagram-login token)")
+        return None
 
 
-if ig_id:
-    me = get(f"https://graph.facebook.com/v26.0/{ig_id}", {"fields": "username,name"})
+me = get(f"https://graph.facebook.com/v26.0/{ig_id}", {"fields": "username,name"}, fatal=False) if ig_id else None
+if me:
     print(f"Token OK (system-user token): @{me.get('username')} id={ig_id}. Never expires; no refresh needed.")
 else:
     me = get("https://graph.instagram.com/v26.0/me", {"fields": "user_id,username,account_type"})

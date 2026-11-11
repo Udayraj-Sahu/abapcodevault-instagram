@@ -26,8 +26,9 @@ import urllib.parse
 import urllib.request
 
 IG_USER_ID = os.environ.get("IG_USER_ID", "").strip()
-# System-user tokens work on graph.facebook.com; Instagram-login tokens on graph.instagram.com
-API = "https://graph.facebook.com/v26.0" if IG_USER_ID else "https://graph.instagram.com/v26.0"
+# System-user tokens work on graph.facebook.com; Instagram-login tokens on graph.instagram.com.
+# detect_api() picks whichever host accepts the token.
+API = "https://graph.facebook.com/v26.0"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 QUEUE = os.path.join(ROOT, "queue")
 LOG = os.path.join(ROOT, "published.json")
@@ -49,6 +50,25 @@ def call(method, path, params=None):
     except urllib.error.HTTPError as e:
         body = e.read().decode(errors="replace")
         raise RuntimeError(f"{method} {path} failed: {e.code} {body}") from None
+
+
+def detect_api():
+    """Return (profile, ig_id) and set API to the host that accepts this token."""
+    global API
+    errors = []
+    if IG_USER_ID:
+        API = "https://graph.facebook.com/v26.0"
+        try:
+            return call("GET", IG_USER_ID, {"fields": "username"}), IG_USER_ID
+        except RuntimeError as e:
+            errors.append(str(e))
+    API = "https://graph.instagram.com/v26.0"
+    try:
+        me = call("GET", "me", {"fields": "user_id,username"})
+        return me, (me.get("user_id") or me.get("id"))
+    except RuntimeError as e:
+        errors.append(str(e))
+    raise RuntimeError("Token not accepted by either Instagram API host:\n" + "\n".join(errors))
 
 
 def wait_ready(container_id, limit_s=600):
@@ -123,12 +143,7 @@ def main():
         for f in due:
             print("WOULD PUBLISH:", os.path.basename(f))
         return
-    if IG_USER_ID:
-        me = call("GET", IG_USER_ID, {"fields": "username"})
-        ig_id = IG_USER_ID
-    else:
-        me = call("GET", "me", {"fields": "user_id,username"})
-        ig_id = me.get("user_id") or me.get("id")
+    me, ig_id = detect_api()
     print(f"Publishing as @{me.get('username')} ({ig_id})")
     failed = False
     for f in due:
