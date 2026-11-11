@@ -7,7 +7,10 @@ Each folder in queue/ holds:
   slide_01.jpg ...   (carousel/post)   or   reel.mp4 (+ optional cover.jpg)
 
 Env:
-  IG_ACCESS_TOKEN   long-lived Instagram user token (secret)
+  IG_ACCESS_TOKEN   access token (secret). Either a system-user token from Meta's
+                    "Unified login" setup (never expires; needs IG_USER_ID) or an
+                    Instagram-login user token (60 days; IG_USER_ID not needed)
+  IG_USER_ID        Instagram account ID (set it when using a system-user token)
   MEDIA_BASE_URL    public base URL for this repo's files at the current commit
   DRY_RUN=1         print what would be published, publish nothing
   ONLY=<folder>     publish just this folder (manual run), ignoring its date
@@ -22,7 +25,9 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-API = "https://graph.instagram.com/v26.0"
+IG_USER_ID = os.environ.get("IG_USER_ID", "").strip()
+# System-user tokens work on graph.facebook.com; Instagram-login tokens on graph.instagram.com
+API = "https://graph.facebook.com/v26.0" if IG_USER_ID else "https://graph.instagram.com/v26.0"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 QUEUE = os.path.join(ROOT, "queue")
 LOG = os.path.join(ROOT, "published.json")
@@ -118,8 +123,12 @@ def main():
         for f in due:
             print("WOULD PUBLISH:", os.path.basename(f))
         return
-    me = call("GET", "me", {"fields": "user_id,username"})
-    ig_id = me.get("user_id") or me.get("id")
+    if IG_USER_ID:
+        me = call("GET", IG_USER_ID, {"fields": "username"})
+        ig_id = IG_USER_ID
+    else:
+        me = call("GET", "me", {"fields": "user_id,username"})
+        ig_id = me.get("user_id") or me.get("id")
     print(f"Publishing as @{me.get('username')} ({ig_id})")
     failed = False
     for f in due:

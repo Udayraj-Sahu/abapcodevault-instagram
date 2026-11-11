@@ -17,31 +17,25 @@ Every day at **7:00 PM IST**, a GitHub Action posts whatever is due:
 ### 1. Make your Instagram a professional account
 Instagram app → Settings → **Account type and tools** → **Switch to professional account** → choose **Creator** (or Business).
 
-### 2. Create a Meta app and get a token
-1. Go to <https://developers.facebook.com> → log in → **My Apps** → **Create app**.
-2. Use case: **Manage messaging & content on Instagram**. Give it any name, e.g. `abapcodevault-poster`.
-3. In the app dashboard open **Instagram → API setup with Instagram login**.
-4. Under **Generate access tokens**, click **Add account** and log in with the @abapcodevault Instagram account. Allow the permissions it asks for (it must include **content publishing**).
-   - If it says the account needs a role: **App roles → Roles → Add people → Instagram tester**, then in the Instagram app go to Settings → **Website permissions → Apps and websites → Tester invites** and accept.
-5. Click **Generate token** next to the account and copy the token. It is valid for 60 days; the token workflow below refreshes it automatically.
+### 2. Create a Meta app and get a token (Unified login)
+1. <https://developers.facebook.com> → **My Apps → Create app** → use case **Manage messaging & content on Instagram**.
+2. **Customize → API setup with Unified login** → connect a **Business portfolio** (create a free one if needed).
+3. **1. Configure your app → Create new configuration**: token type **System-user access token**, expiration **Never**, asset **your Instagram account**, permissions must include **instagram_basic** and **instagram_content_publish**. The redirect URL can stay empty.
+4. **2. Generate access tokens** → generate the system-user token for the configuration and copy it.
+5. Note the **Instagram account ID** (a long number shown with the account in this setup, or in Business settings → Accounts → Instagram accounts).
 
-The app can stay in **Development mode**: posting to your own account works without Meta app review.
-
-### 3. Add the token to this repo
+### 3. Add two secrets to this repo
 Repo → **Settings → Secrets and variables → Actions → New repository secret**
-- Name: `IG_ACCESS_TOKEN`
-- Value: the token from step 2
+- `IG_ACCESS_TOKEN` = the token
+- `IG_USER_ID` = the Instagram account ID
 
-### 4. (Recommended) Let the token refresh itself
-GitHub → your profile → **Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**
-- Repository access: only this repo
-- Permissions: **Secrets → Read and write**
-- Expiration: the longest allowed
+A system-user token never expires, so no refresh setup is needed.
 
-Add it to this repo as a secret named `GH_PAT`. Twice a month the token workflow then renews `IG_ACCESS_TOKEN` before it expires. Without `GH_PAT`, the workflow only checks the token, and you must paste a fresh one every ~55 days.
+### 4. (Only for 60-day Instagram-login tokens) automatic refresh
+If you used a 60-day Instagram-login token instead (no `IG_USER_ID`), add a fine-grained GitHub token with **Secrets: Read and write** on this repo as `GH_PAT`; the token workflow then renews it twice a month.
 
 ### 5. Test it
-1. **Actions → Check and refresh Instagram token → Run workflow.** The log should say `Token OK: @abapcodevault`.
+1. **Actions → Check and refresh Instagram token → Run workflow.** The log should say `Token OK ... @abapcodevault`.
 2. **Actions → Publish to Instagram → Run workflow**, tick **Dry run**. The log lists what would be posted.
 3. To post one item right now, run it again with the folder name in **only** (e.g. `2026-11-17_tue_post_sy-subrc-cheatsheet`).
 

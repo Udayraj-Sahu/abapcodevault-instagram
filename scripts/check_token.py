@@ -1,23 +1,35 @@
 #!/usr/bin/env python3
-"""Verify the Instagram token works and show the account it posts to.
-With REFRESH=1, also refresh the long-lived token and print the new one to the
-file new_token.txt (used by the refresh workflow; never printed to the log)."""
+"""Verify the token works and show the Instagram account it posts to.
+System-user token (IG_USER_ID set): checks graph.facebook.com; never expires, no refresh.
+Instagram-login token: checks graph.instagram.com; with REFRESH=1 also refreshes it and
+writes the new token to new_token.txt (never printed to the log)."""
 import json
 import os
+import urllib.error
 import urllib.parse
 import urllib.request
 
 tok = os.environ["IG_ACCESS_TOKEN"]
-q = urllib.parse.urlencode({"fields": "user_id,username,account_type", "access_token": tok})
-with urllib.request.urlopen(f"https://graph.instagram.com/v26.0/me?{q}", timeout=60) as r:
-    me = json.loads(r.read().decode())
-print(f"Token OK: @{me.get('username')} ({me.get('account_type')}) id={me.get('user_id')}")
+ig_id = os.environ.get("IG_USER_ID", "").strip()
 
-if os.environ.get("REFRESH") == "1":
-    q = urllib.parse.urlencode({"grant_type": "ig_refresh_token", "access_token": tok})
-    with urllib.request.urlopen(f"https://graph.instagram.com/refresh_access_token?{q}", timeout=60) as r:
-        res = json.loads(r.read().decode())
-    with open("new_token.txt", "w") as fh:
-        fh.write(res["access_token"])
-    days = int(res.get("expires_in", 0)) // 86400
-    print(f"Token refreshed; valid for about {days} more days.")
+
+def get(url, params):
+    params["access_token"] = tok
+    try:
+        with urllib.request.urlopen(url + "?" + urllib.parse.urlencode(params), timeout=60) as r:
+            return json.loads(r.read().decode())
+    except urllib.error.HTTPError as e:
+        raise SystemExit(f"Token check FAILED: {e.code} {e.read().decode(errors='replace')}")
+
+
+if ig_id:
+    me = get(f"https://graph.facebook.com/v26.0/{ig_id}", {"fields": "username,name"})
+    print(f"Token OK (system-user token): @{me.get('username')} id={ig_id}. Never expires; no refresh needed.")
+else:
+    me = get("https://graph.instagram.com/v26.0/me", {"fields": "user_id,username,account_type"})
+    print(f"Token OK: @{me.get('username')} ({me.get('account_type')}) id={me.get('user_id')}")
+    if os.environ.get("REFRESH") == "1":
+        res = get("https://graph.instagram.com/refresh_access_token", {"grant_type": "ig_refresh_token"})
+        with open("new_token.txt", "w") as fh:
+            fh.write(res["access_token"])
+        print(f"Token refreshed; valid for about {int(res.get('expires_in', 0)) // 86400} more days.")
