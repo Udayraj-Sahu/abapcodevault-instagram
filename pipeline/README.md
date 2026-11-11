@@ -17,6 +17,7 @@ Each daily run creates tomorrow's 3 posts.
 5. Contact-sheet check (carousel/post PNGs + 6–8 reel frames via ffmpeg); fix overflow and re-render. ffprobe the reel for video+audio.
 6. `python3 scripts/queue_day.py out/DATE DATE`
 7. Update `state.json`: `last_queued_date` = DATE, append the topics to `history`. Commit and push.
+8. **Improve one thing** in reels or posts, following `pipeline/IMPROVEMENTS.md` (one tested change per run, logged there, own commit). Never let an improvement block or break the day's posts: if in doubt, revert it.
 
 ## Design (fixed)
 - Light "notebook" theme: cream ruled paper, ink text, one brand colour **SAP blue**, yellow highlighter, handwritten (Caveat) notes. All built into generate.py; do not change colours per post.
