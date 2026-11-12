@@ -71,6 +71,7 @@ Based on research (short-form retention guides + learning studies, see Log 2026-
 - [x] Snappy pace as default: tighter pauses, voice +3%, beat punch-ins every ~2.6 s (user approved 12 Nov)
 - [ ] Hook pattern interrupt: frame 1 starts already readable (title fully on screen at t=0) then a 1.08→1.0 punch-in in 0.4 s
 - [ ] Anticipation + overshoot: pops dip 3% before growing and settle with a small overshoot (ease_back tuned per element)
+- [x] Follow-through: rising text overshoots ~4.6 px once and settles (ease_back on position) (12 Nov)
 - [ ] Follow-through: after a block lands, its highlighter/underline settles 80 ms later (secondary motion)
 - [ ] Match cut: the highlighted key word of scene N flies/morphs into the heading position of scene N+1
 - [ ] Cut on action: start the next scene's transition while the last element is still moving (overlap 0.12 s)
@@ -84,7 +85,8 @@ Based on research (short-form retention guides + learning studies, see Log 2026-
 - [ ] Key-word emphasis: slow the sentence containing the *highlighted* word by 5% and add a 0.15 s pause before it
 - [ ] Pronunciation audit: render every SAY entry once, list any that sound wrong, fix spellings (e.g. sy-subrc, SM30, BSEG)
 - [ ] Per-sentence speed: hook sentence 1.05x, explanation 0.97x, CTA 1.0x
-- [ ] Gentle de-esser + warmer EQ (low-shelf +1.5 dB at 180 Hz) in VOICE_POLISH; keep loudness -14 LUFS
+- [x] De-esser after the compressor in VOICE_POLISH (deesser i=0.5): 5-9 kHz band ~5 dB lower vs. overall, no clipping (12 Nov)
+- [ ] Warmer EQ (low-shelf +1.5 dB at 180 Hz) in VOICE_POLISH; keep loudness -14 LUFS
 - [ ] Room tone: very quiet noise bed under the voice so gaps don't feel dead (no music, no whoosh)
 - [ ] Automatic pronunciation check: if a small offline ASR (pip-installable, no Hugging Face) is available, transcribe the reel and flag words that differ from the script
 
@@ -127,3 +129,5 @@ Based on research (short-form retention guides + learning studies, see Log 2026-
 | 2026-11-12 | All (static + reels) | Notebook grid: every text baseline on a ruled line, fixed line pitches (64/128), header/footer on rules, code & highlight boxes between rules, centring in whole lines, list rows with aligned description column, equal-height choice cards, matched code size in compare slides, footer/caption overflow check | User: text alignment and line height looked uneven against the ruled paper |
 | 2026-11-12 | pace (all) | Research: 140-160+ wpm for short-form, visual change every 2-3 s (3-4 s for educational), cut pauses (FlowShorts, Noiz, Kwebby, Lilach Bullock, SocialGrow; Tes/UCLA: comprehension intact up to 1.5x). Measured our reels: 14-18% silence, 6-7 s static scenes. New default pace "snappy": pauses tightened (silence 14% -> 5%), voice +3%, punch-in beat every 2.6 s. Announcement test 24.9 s -> 22.5 s | User compared and approved |
 | 2026-11-12 | animation/cuts | Keyword-synced punch-ins + fill beats (change every 2-3 s), reading scenes exempt; mid-reel re-hook stamp for reels > 20 s; automatic STATIC check (> 3 s without visible change) | User request from research findings |
+| 2026-11-12 | animation | Follow-through/settle: "up" blocks overshoot ~4.6 px and settle once (restrained bounce, 2-8 px, one rebound) — https://cursa.app/en/page/polish-pass-overlap-secondary-motion-and-subtle-texture | Motion feels considered, not mechanical; still readable |
+| 2026-11-12 | voice | De-esser after compression (deesser i=0.5 m=0.5 f=0.45); sibilance band vs. overall -13.3 dB -> -18.2 dB, peak -1.4 dB — https://www.finchley.co.uk/finchley-learning/visual-podcast/audio-engineering-in-a-professional-podcast-post-production-concepts-and-practices-mixing-domains-and-objectives | Softer harsh s/t sounds on phone speakers and earbuds |

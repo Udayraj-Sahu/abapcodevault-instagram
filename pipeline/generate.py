@@ -665,7 +665,7 @@ def tts(text, voice, lang, speed, out_wav):
     return len(samples) / sr
 
 
-VOICE_POLISH = "highpass=f=70,equalizer=f=3000:t=q:w=1.2:g=2.5,acompressor=threshold=-20dB:ratio=3:attack=5:release=60"
+VOICE_POLISH = "highpass=f=70,equalizer=f=3000:t=q:w=1.2:g=2.5,acompressor=threshold=-20dB:ratio=3:attack=5:release=60,deesser=i=0.5:m=0.5:f=0.45"   # de-esser after compression (12 Nov)
 
 
 def make_reel(frames, out_mp4, durations, audio=None):
@@ -1207,9 +1207,9 @@ def draw_blocks(content, blocks, tau, final=False):
         elif a == "fade":
             im = _alpha(im, ease_out(p))
         else:  # "up"
-            e = ease_out(p)
-            im = _alpha(im, e)
-            y = int(y + (1 - e) * 46)
+            # follow-through (12 Nov): rise, overshoot ~5 px once, settle (ease_back on position, ease_out on opacity)
+            im = _alpha(im, ease_out(p))
+            y = int(round(y + (1 - ease_back(p)) * 46))
         content.alpha_composite(im, (int(x), int(y)))
 
 
