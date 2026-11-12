@@ -4,7 +4,7 @@ Voiceovers are in **English** since 12 Nov 2026 (before that they were Hinglish)
 Read this before writing any `voiceover` / `spoken` line. The daily run improves it on "script" work:
 add glossary rows, fix awkward phrasings found in recent reels, and note the source of anything learned.
 
-## Voice (`voiceover`, spoken by Kokoro hm_psi, `"voice_lang": "en"`)
+## Voice (`voiceover`, spoken by Kokoro am_michael, `"voice_lang": "en"`)
 - Clear, conversational English, like a senior developer explaining to a colleague. Not a textbook.
 - Short sentences (5-14 words). One idea per sentence. Commas and full stops where a speaker breathes.
 - Contractions are good ("it's", "don't", "here's"). Active voice ("Activate it", not "It should be activated").

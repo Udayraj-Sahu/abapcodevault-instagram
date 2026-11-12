@@ -1,0 +1,12 @@
+Announcing a free SAP ABAP course, right here on reels. It starts tomorrow.
+
+Every day:
+1. 9 AM: a course lesson
+2. 1 PM: a quick tip, bug or interview question
+3. 7:30 PM: the next course lesson
+
+We go in order, from the Data Dictionary to CDS and RAP, and we look inside the real SAP screens, not just definitions.
+
+Lesson 1 is tomorrow at 9 AM: the Data Dictionary. Tag a friend who is learning ABAP.
+
+#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #sapcourse #abapcodevault

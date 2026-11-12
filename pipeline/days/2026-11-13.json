@@ -98,6 +98,54 @@
     },
     {
       "type": "reel",
+      "format": "live_coding",
+      "voice": "am_michael",
+      "voice_lang": "en",
+      "time": "13:00",
+      "slug": "salv-alv-5-lines",
+      "tag": "ALV",
+      "slides": [
+        {
+          "kind": "cover",
+          "kicker": "No field catalog",
+          "title": "A full *ALV report* in 5 lines",
+          "voiceover": "A full ALV report in five lines? No field catalog needed.",
+          "spoken": "A full ALV report in five lines? No field catalog needed."
+        },
+        {
+          "kind": "code",
+          "heading": "*CL_SALV_TABLE*",
+          "typewriter": true,
+          "filename": "zsalv_demo.abap",
+          "code": "cl_salv_table=>factory(\n  IMPORTING r_salv_table = DATA(lo_alv)\n  CHANGING  t_table      = lt_orders ).\nlo_alv->get_functions( )->set_all( ).\nlo_alv->display( ).",
+          "voiceover": "Call the SALV factory, pass your table, switch on the toolbar, and display.",
+          "spoken": "Call the SALV factory, pass your table, switch on the toolbar, and display."
+        },
+        {
+          "kind": "answer",
+          "label": "RECAP",
+          "heading": "*factory* then *display*",
+          "body": "Columns come from the table type automatically.",
+          "highlight": "Wrap it in TRY...CATCH cx_salv_msg",
+          "voiceover": "The columns are built automatically. Save this.",
+          "spoken": "The columns are built automatically. Save this."
+        }
+      ],
+      "caption": "Still building a field catalog for every simple report?\n\nCL_SALV_TABLE gives you a full ALV in a few lines:\n1. factory( ) with your internal table\n2. get_functions( )->set_all( ) for sort, filter and Excel export\n3. display( )\n\nColumns and headings come from the table type. Wrap the call in TRY...CATCH cx_salv_msg.\n\nWhich ALV do you use most: SALV or REUSE_ALV_GRID_DISPLAY?\n\nThe full template with hotspots, totals and layouts is in the ABAP Code Vault (link in bio).",
+      "hashtags": [
+        "#sap",
+        "#abap",
+        "#coding",
+        "#sapabap",
+        "#abapdeveloper",
+        "#saps4hana",
+        "#sapfresher",
+        "#alv",
+        "#abapcodevault"
+      ]
+    },
+    {
+      "type": "reel",
       "time": "19:30",
       "series": "course",
       "syllabus": "3.2",

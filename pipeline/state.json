@@ -17,7 +17,9 @@
     "VALUE #( ) operator quiz (reel)",
     "Interview: STANDARD vs SORTED vs HASHED (reel)",
     "Course 3.1 DDIC basics",
-    "Course 3.2 Domain part 1: Definition tab"
+    "Course 3.2 Domain part 1: Definition tab",
+    "Course announcement (12 Nov 1 PM)",
+    "Course roadmap: 13 modules (12 Nov 7:30 PM)"
   ],
   "recent_formats": {
     "reel": [
@@ -28,7 +30,9 @@
       "quiz",
       "interview_chat",
       "course_lesson",
-      "course_lesson"
+      "course_lesson",
+      "announcement",
+      "course_roadmap"
     ],
     "carousel": [],
     "post": [],

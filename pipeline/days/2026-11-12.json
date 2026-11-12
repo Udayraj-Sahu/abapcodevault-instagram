@@ -40,91 +40,48 @@
     },
     {
       "type": "reel",
-      "format": "before_after",
-      "voice": "am_michael",
-      "voice_lang": "en",
-      "slides": [
-        {
-          "kind": "cover",
-          "style": "question",
-          "kicker": "Performance killer",
-          "title": "Why is your *report so slow*",
-          "voiceover": "Is your report slow? Here's the likely reason.",
-          "spoken": "Is your report slow? Here's the likely reason."
-        },
-        {
-          "kind": "compare",
-          "heading": "*Slow* vs *fast*",
-          "left_title": "Slow",
-          "left": "LOOP AT lt_orders INTO DATA(ls).\n  SELECT SINGLE name1 FROM kna1\n    WHERE kunnr = @ls-kunnr\n    INTO @DATA(lv_name).\nENDLOOP.",
-          "right_title": "Fast",
-          "right": "SELECT kunnr, name1 FROM kna1\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE kunnr = @lt_orders-kunnr\n  INTO TABLE @DATA(lt_kna1).",
-          "voiceover": "A SELECT inside a loop means one database call for every row. Read the data once, then look it up in memory.",
-          "spoken": "A SELECT inside a loop means one database call for every row. Read the data once, then look it up in memory."
-        },
-        {
-          "kind": "fact",
-          "title": "Result",
-          "text": "*10,000 calls* become *1*",
-          "detail": "Then read lt_kna1 inside the loop.",
-          "voiceover": "Ten thousand calls become just one. Save this.",
-          "spoken": "Ten thousand calls become just one. Save this."
-        }
-      ],
-      "caption": "Is your report taking 20 minutes instead of 2?\n\nIn most cases the cause is the same: a SELECT inside a LOOP. Every iteration is a separate trip to the database.\n\nThe fix: read the data once before the loop (JOIN or FOR ALL ENTRIES), then look it up in an internal table inside the loop. For large volumes, use a SORTED or HASHED table.\n\nSave this for your next code review.",
-      "hashtags": [
-        "#sap",
-        "#abap",
-        "#coding",
-        "#sapabap",
-        "#abapdeveloper",
-        "#saps4hana",
-        "#sapfresher",
-        "#performance",
-        "#sapinterview",
-        "#abapcodevault"
-      ],
-      "slug": "select-in-loop",
-      "day": "Thu",
-      "tag": "Performance",
-      "time": "19:30"
-    },
-    {
-      "type": "reel",
-      "format": "live_coding",
-      "voice": "am_michael",
-      "voice_lang": "en",
       "time": "13:00",
-      "slug": "salv-alv-5-lines",
-      "tag": "ALV",
+      "format": "announcement",
+      "slug": "course-announcement",
+      "tag": "New series",
+      "max_len": 25,
+      "voice": "am_michael",
+      "voice_lang": "en",
       "slides": [
         {
           "kind": "cover",
-          "kicker": "No field catalog",
-          "title": "A full *ALV report* in 5 lines",
-          "voiceover": "A full ALV report in five lines? No field catalog needed.",
-          "spoken": "A full ALV report in five lines? No field catalog needed."
+          "kicker": "New series",
+          "title": "A free *SAP ABAP course* starts tomorrow",
+          "voiceover": "Starting tomorrow, a free SAP developer course, right here on reels."
         },
         {
-          "kind": "code",
-          "heading": "*CL_SALV_TABLE*",
-          "typewriter": true,
-          "filename": "zsalv_demo.abap",
-          "code": "cl_salv_table=>factory(\n  IMPORTING r_salv_table = DATA(lo_alv)\n  CHANGING  t_table      = lt_orders ).\nlo_alv->get_functions( )->set_all( ).\nlo_alv->display( ).",
-          "voiceover": "Call the SALV factory, pass your table, switch on the toolbar, and display.",
-          "spoken": "Call the SALV factory, pass your table, switch on the toolbar, and display."
+          "kind": "flow",
+          "heading": "*3 reels* every day",
+          "steps": [
+            "9 AM: course lesson",
+            "1 PM: tip of the day",
+            "7:30 PM: course lesson"
+          ],
+          "voiceover": "Three reels every day. Nine AM and seven thirty PM, a course lesson. One PM, a quick tip."
         },
         {
           "kind": "answer",
-          "label": "RECAP",
-          "heading": "*factory* then *display*",
-          "body": "Columns come from the table type automatically.",
-          "highlight": "Wrap it in TRY...CATCH cx_salv_msg",
-          "voiceover": "The columns are built automatically. Save this.",
-          "spoken": "The columns are built automatically. Save this."
+          "label": "WHAT YOU GET",
+          "heading": "From *SE11* to *CDS & RAP*",
+          "body": "Data Dictionary, internal tables, SQL, reports, OOP, forms, enhancements, interfaces, performance.",
+          "voiceover": "From the Data Dictionary to CDS and RAP, step by step, inside the real SAP screens."
+        },
+        {
+          "kind": "cta",
+          "title": "Lesson 1: *tomorrow 9 AM*",
+          "body": "Turn on notifications so you don't miss it.",
+          "actions": [
+            "Follow @abapcodevault"
+          ],
+          "voiceover": "Lesson one is tomorrow at nine AM. Follow so you don't miss it."
         }
       ],
-      "caption": "Still building a field catalog for every simple report?\n\nCL_SALV_TABLE gives you a full ALV in a few lines:\n1. factory( ) with your internal table\n2. get_functions( )->set_all( ) for sort, filter and Excel export\n3. display( )\n\nColumns and headings come from the table type. Wrap the call in TRY...CATCH cx_salv_msg.\n\nWhich ALV do you use most: SALV or REUSE_ALV_GRID_DISPLAY?\n\nThe full template with hotspots, totals and layouts is in the ABAP Code Vault (link in bio).",
+      "caption": "Announcing a free SAP ABAP course, right here on reels. It starts tomorrow.\n\nEvery day:\n1. 9 AM: a course lesson\n2. 1 PM: a quick tip, bug or interview question\n3. 7:30 PM: the next course lesson\n\nWe go in order, from the Data Dictionary to CDS and RAP, and we look inside the real SAP screens, not just definitions.\n\nLesson 1 is tomorrow at 9 AM: the Data Dictionary. Tag a friend who is learning ABAP.",
       "hashtags": [
         "#sap",
         "#abap",
@@ -133,7 +90,72 @@
         "#abapdeveloper",
         "#saps4hana",
         "#sapfresher",
-        "#alv",
+        "#sapcourse",
+        "#abapcodevault"
+      ]
+    },
+    {
+      "type": "reel",
+      "time": "19:30",
+      "series": "course",
+      "format": "course_roadmap",
+      "slug": "course-roadmap",
+      "tag": "Course roadmap",
+      "voice": "am_michael",
+      "voice_lang": "en",
+      "slides": [
+        {
+          "kind": "cover",
+          "kicker": "Course roadmap",
+          "title": "The full *roadmap*: 13 modules",
+          "voiceover": "Here's the full roadmap of the course. Thirteen modules."
+        },
+        {
+          "kind": "list",
+          "heading": "*Foundations*",
+          "items": [
+            "Data Dictionary - domains, tables, views",
+            "Internal tables - standard, sorted, hashed",
+            "Open SQL - joins, FOR ALL ENTRIES",
+            "Modularization - FMs, includes",
+            "Reports - selection screens, ALV",
+            "Module pool - screens, PBO/PAI"
+          ],
+          "voiceover": "First, the foundations. The Data Dictionary, internal tables, SQL, modularization, reports and module pool."
+        },
+        {
+          "kind": "list",
+          "heading": "*Advanced*",
+          "start": 7,
+          "items": [
+            "OO ABAP - classes, interfaces",
+            "Exceptions & debugging",
+            "Forms - SmartForms, Adobe",
+            "Enhancements - BAdIs, exits",
+            "Interfaces - BAPI, IDoc, OData",
+            "Performance - ST05, SAT",
+            "Modern ABAP - CDS, RAP"
+          ],
+          "voiceover": "Then the advanced side. Object oriented code, debugging, forms, enhancements, interfaces, performance, and finally CDS and RAP."
+        },
+        {
+          "kind": "answer",
+          "label": "SCHEDULE",
+          "heading": "*9 AM* and *7:30 PM* daily",
+          "body": "Two lessons a day, in order, inside the real SAP screens.",
+          "voiceover": "Two lessons every day, in order. Lesson one starts tomorrow morning."
+        }
+      ],
+      "caption": "The full roadmap of our free SAP ABAP course: 13 modules, in order.\n\nFoundations: 1. Data Dictionary 2. Internal tables 3. Open SQL 4. Modularization 5. Reports 6. Module pool\n\nAdvanced: 7. OO ABAP 8. Exceptions & debugging 9. Forms 10. Enhancements 11. Interfaces & migration 12. Performance 13. Modern ABAP (CDS, RAP, ABAP Cloud)\n\nLessons go live every day at 9 AM and 7:30 PM. Lesson 1 starts tomorrow: the Data Dictionary.\n\nSave this roadmap and follow the series so you don't miss a part.",
+      "hashtags": [
+        "#sap",
+        "#abap",
+        "#coding",
+        "#sapabap",
+        "#abapdeveloper",
+        "#saps4hana",
+        "#sapfresher",
+        "#sapcourse",
         "#abapcodevault"
       ]
     }

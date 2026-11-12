@@ -1,0 +1,11 @@
+The full roadmap of our free SAP ABAP course: 13 modules, in order.
+
+Foundations: 1. Data Dictionary 2. Internal tables 3. Open SQL 4. Modularization 5. Reports 6. Module pool
+
+Advanced: 7. OO ABAP 8. Exceptions & debugging 9. Forms 10. Enhancements 11. Interfaces & migration 12. Performance 13. Modern ABAP (CDS, RAP, ABAP Cloud)
+
+Lessons go live every day at 9 AM and 7:30 PM. Lesson 1 starts tomorrow: the Data Dictionary.
+
+Save this roadmap and follow the series so you don't miss a part.
+
+#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #sapcourse #abapcodevault

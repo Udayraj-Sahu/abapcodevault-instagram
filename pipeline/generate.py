@@ -925,7 +925,8 @@ def build_blocks(s, accent, top_z=None, bottom_z=None):
         if s.get("heading"):
             y = B.add(heading_img(s["heading"], F_HEAD(66), w, lh=76), x - 6, y, "up") + 40
         its = s.get("items", [])
-        rows = [list_row_img(i, it, w, accent, 42, 36, col=list_col(its, w, 42, 36)) for i, it in enumerate(its, 1)]
+        rows = [list_row_img(i, it, w, accent, 42, 36, col=list_col(its, w, 42, 36))
+                for i, it in enumerate(its, int(s.get("start", 1)))]
         need = sum(r.info["rows"] for r in rows) + len(rows) - 1
         gap = G if (need + 3) * G <= BOTZ - TOPZ - y else 0
         for r in rows:

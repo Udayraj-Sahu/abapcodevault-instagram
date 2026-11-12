@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-14",
+  "handle": "@abapcodevault",
+  "posts": [
+    {
+      "type": "reel",
+      "format": "before_after",
+      "voice": "am_michael",
+      "voice_lang": "en",
+      "slides": [
+        {
+          "kind": "cover",
+          "style": "question",
+          "kicker": "Performance killer",
+          "title": "Why is your *report so slow*",
+          "voiceover": "Is your report slow? Here's the likely reason.",
+          "spoken": "Is your report slow? Here's the likely reason."
+        },
+        {
+          "kind": "compare",
+          "heading": "*Slow* vs *fast*",
+          "left_title": "Slow",
+          "left": "LOOP AT lt_orders INTO DATA(ls).\n  SELECT SINGLE name1 FROM kna1\n    WHERE kunnr = @ls-kunnr\n    INTO @DATA(lv_name).\nENDLOOP.",
+          "right_title": "Fast",
+          "right": "SELECT kunnr, name1 FROM kna1\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE kunnr = @lt_orders-kunnr\n  INTO TABLE @DATA(lt_kna1).",
+          "voiceover": "A SELECT inside a loop means one database call for every row. Read the data once, then look it up in memory.",
+          "spoken": "A SELECT inside a loop means one database call for every row. Read the data once, then look it up in memory."
+        },
+        {
+          "kind": "fact",
+          "title": "Result",
+          "text": "*10,000 calls* become *1*",
+          "detail": "Then read lt_kna1 inside the loop.",
+          "voiceover": "Ten thousand calls become just one. Save this.",
+          "spoken": "Ten thousand calls become just one. Save this."
+        }
+      ],
+      "caption": "Is your report taking 20 minutes instead of 2?\n\nIn most cases the cause is the same: a SELECT inside a LOOP. Every iteration is a separate trip to the database.\n\nThe fix: read the data once before the loop (JOIN or FOR ALL ENTRIES), then look it up in an internal table inside the loop. For large volumes, use a SORTED or HASHED table.\n\nSave this for your next code review.",
+      "hashtags": [
+        "#sap",
+        "#abap",
+        "#coding",
+        "#sapabap",
+        "#abapdeveloper",
+        "#saps4hana",
+        "#sapfresher",
+        "#performance",
+        "#sapinterview",
+        "#abapcodevault"
+      ],
+      "slug": "select-in-loop",
+      "day": "Thu",
+      "tag": "Performance",
+      "time": "13:00"
+    }
+  ]
+}

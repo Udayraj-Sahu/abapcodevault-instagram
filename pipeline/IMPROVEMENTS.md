@@ -16,7 +16,7 @@ The goal: every reel looks and sounds a little more polished and natural than th
    generator's checks, and upcoming UNPUBLISHED day files (never published reels).
 3. Never change the fixed brand: palette (cream paper, ink, SAP blue, yellow highlighter), fonts, sizes,
    the notebook grid (text baselines on ruled lines), the JSON schema (old day files must still render),
-   voice model (hm_psi), 12-18 s length, the follow end card, captions or hashtag rules. No whoosh/swoosh on cuts.
+   voice model (am_michael), 12-18 s length, the follow end card, captions or hashtag rules. No whoosh/swoosh on cuts.
    Motion must stay readable: no text moving while the viewer needs to read it, nothing faster than ~0.25 s for text.
 4. Test EACH change before keeping it: render `pipeline/days/2026-11-12.json` (2 reels) and `pipeline/days/2026-11-21.json`
    (interview_chat) into a temp folder. Look at 8 frames per reel plus a strip of frames 0.1 s apart around one cut;

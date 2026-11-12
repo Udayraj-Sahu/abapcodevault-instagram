@@ -8,7 +8,7 @@ Each daily run creates tomorrow's **3 reels** (reels only since 12 Nov 2026).
 | 9:00 AM | `"09:00"` | **Course reel**: next part of the ABAP course (`pipeline/syllabus.json`, in order) | 15-30 s (never > 30) |
 | 1:00 PM | `"13:00"` | **Free topic** reel from topics.json (tips, bugs, interview, performance...). Even day-of-month: ABAP Code Vault plug in caption; odd: interview angle + ABAP Interview Pack plug | 12-18 s |
 | 7:30 PM | `"19:30"` | **Course reel**: the part after the 9 AM one | 15-30 s (never > 30) |
-All are 1080×1920 MP4 reels with English voiceover (voice hm_psi). Every post in a day file is `"type": "reel"` with a
+All are 1080×1920 MP4 reels with English voiceover (voice am_michael). Every post in a day file is `"type": "reel"` with a
 `"time"` field; `scripts/queue_day.py` reads it. Old day files with post/carousel still render.
 
 ## Course reels (9 AM + 7:30 PM) — the ABAP course
@@ -133,7 +133,7 @@ Rotate cover styles too: default, number, question, checklist, bug.
 
 ## Reel voiceover (English, every reel — since 12 Nov 2026)
 - **Read `pipeline/VOICEOVER.md` first** (style, glossary, natural vs stiff phrases); it improves over time.
-- Post sets `"voice": "hm_psi", "voice_lang": "en"` and a `"format"`. (Old Hinglish day files with "hi" still render.)
+- Post sets `"voice": "am_michael", "voice_lang": "en"` and a `"format"`. (Old Hinglish day files with "hi" still render.)
 - Every reel slide has `"voiceover"` in clear, conversational **English**, the way a senior developer explains to a friend:
   short sentences (5-14 words), contractions ("it's", "don't"), active voice. Example: "A SELECT inside a loop means one
   database call for every row."
