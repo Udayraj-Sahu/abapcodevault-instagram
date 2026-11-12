@@ -5,9 +5,15 @@ Each daily run creates tomorrow's **3 reels** (reels only since 12 Nov 2026).
 ## Daily rhythm (3 reels every day)
 | Time (IST) | Slot `time` | What | Length |
 | --- | --- | --- | --- |
-| 9:00 AM | `"09:00"` | **Course reel**: next part of the ABAP course (`pipeline/syllabus.json`, in order) | 15-30 s (never > 30) |
-| 1:00 PM | `"13:00"` | **Free topic** reel from topics.json (tips, bugs, interview, performance...). Even day-of-month: ABAP Code Vault plug in caption; odd: interview angle + ABAP Interview Pack plug | 12-18 s |
-| 7:30 PM | `"19:30"` | **Course reel**: the part after the 9 AM one | 15-30 s (never > 30) |
+| 9:00 AM | `"09:00"` | **Course reel**: next part of the ABAP course (`pipeline/syllabus.json`, in order) | any length, never > 30 s |
+| 1:00 PM | `"13:00"` | **Free topic** reel from topics.json (tips, bugs, interview, performance...). Even day-of-month: ABAP Code Vault plug in caption; odd: interview angle + ABAP Interview Pack plug | any length, never > 30 s |
+| 7:30 PM | `"19:30"` | **Course reel**: the part after the 9 AM one | any length, never > 30 s |
+**Length rule (every reel):** as long as the topic needs, never more than 30 s including the end card. If a topic needs
+more, split it into parts (Part 1/2, 2/2 ...) in the following slots.
+**"Next" rule (every reel):** set `"next": {"title": "The *Value Range* tab", "when": "tomorrow at 9 AM", "voice": "the Value Range tab"}`
+= the NEXT reel in the schedule (9 AM -> 1 PM, 1 PM -> 7:30 PM, 7:30 PM -> tomorrow 9 AM). The generator turns it into the end card
+("Next: …" + when + follow button; voice "Next: <voice>, <when>. Follow so you don't miss it.") and replaces any own follow CTA.
+The caption also gets a line before its last line: "Next: <title> (<when>)."
 All are 1080×1920 MP4 reels with English voiceover (voice am_michael). Every post in a day file is `"type": "reel"` with a
 `"time"` field; `scripts/queue_day.py` reads it. Old day files with post/carousel still render.
 

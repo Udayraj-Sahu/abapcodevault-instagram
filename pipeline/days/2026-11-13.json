@@ -83,7 +83,7 @@
           "spoken": "Program still behaving the old way? Check that you activated it."
         }
       ],
-      "caption": "Lesson 1 of the ABAP course: the Data Dictionary (DDIC).\n\nEvery table, structure, domain and data element your programs use is defined centrally in SE11.\n\n1. One transaction for tables, views, types, domains, search helps and lock objects\n2. Saving creates an inactive version only\n3. Activation generates the runtime object (nametab) that programs read\n\nNext lessons: domains and data elements, step by step.\n\nFollow the series so you don't miss a part.",
+      "caption": "Lesson 1 of the ABAP course: the Data Dictionary (DDIC).\n\nEvery table, structure, domain and data element your programs use is defined centrally in SE11.\n\n1. One transaction for tables, views, types, domains, search helps and lock objects\n2. Saving creates an inactive version only\n3. Activation generates the runtime object (nametab) that programs read\n\nNext: Inside a domain, the Definition tab (tonight at 7:30 PM).\n\nFollow the series so you don't miss a part.",
       "hashtags": [
         "#sap",
         "#abap",
@@ -94,7 +94,12 @@
         "#sapfresher",
         "#ddic",
         "#abapcodevault"
-      ]
+      ],
+      "next": {
+        "title": "Inside a *domain*",
+        "when": "tonight at 7:30 PM",
+        "voice": "inside a domain, the Definition tab"
+      }
     },
     {
       "type": "reel",
@@ -131,7 +136,7 @@
           "spoken": "The columns are built automatically. Save this."
         }
       ],
-      "caption": "Still building a field catalog for every simple report?\n\nCL_SALV_TABLE gives you a full ALV in a few lines:\n1. factory( ) with your internal table\n2. get_functions( )->set_all( ) for sort, filter and Excel export\n3. display( )\n\nColumns and headings come from the table type. Wrap the call in TRY...CATCH cx_salv_msg.\n\nWhich ALV do you use most: SALV or REUSE_ALV_GRID_DISPLAY?\n\nThe full template with hotspots, totals and layouts is in the ABAP Code Vault (link in bio).",
+      "caption": "Still building a field catalog for every simple report?\n\nCL_SALV_TABLE gives you a full ALV in a few lines:\n1. factory( ) with your internal table\n2. get_functions( )->set_all( ) for sort, filter and Excel export\n3. display( )\n\nColumns and headings come from the table type. Wrap the call in TRY...CATCH cx_salv_msg.\n\nWhich ALV do you use most: SALV or REUSE_ALV_GRID_DISPLAY?\n\nNext: Course lesson, inside a domain (tonight at 7:30 PM).\n\nThe full template with hotspots, totals and layouts is in the ABAP Code Vault (link in bio).",
       "hashtags": [
         "#sap",
         "#abap",
@@ -142,7 +147,12 @@
         "#sapfresher",
         "#alv",
         "#abapcodevault"
-      ]
+      ],
+      "next": {
+        "title": "Inside a *domain*",
+        "when": "tonight at 7:30 PM",
+        "voice": "the course, inside a domain"
+      }
     },
     {
       "type": "reel",
@@ -226,7 +236,7 @@
           "spoken": "One domain, many fields. Change the domain, and they all change."
         }
       ],
-      "caption": "Domains, Part 1 of 3: the Definition tab in SE11.\n\nA domain defines the technical attributes that every data element built on it inherits:\n1. Data type and number of characters\n2. Decimal places and output length\n3. Conversion routine, e.g. ALPHA, which stores 1234 as 0000001234\n4. Lowercase flag\n\nPart 2: the Value Range tab (fixed values, intervals, value table).\n\nFollow the series so you don't miss it.",
+      "caption": "Domains, Part 1 of 3: the Definition tab in SE11.\n\nA domain defines the technical attributes that every data element built on it inherits:\n1. Data type and number of characters\n2. Decimal places and output length\n3. Conversion routine, e.g. ALPHA, which stores 1234 as 0000001234\n4. Lowercase flag\n\nNext: Domains Part 2, the Value Range tab (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
       "hashtags": [
         "#sap",
         "#abap",
@@ -237,7 +247,12 @@
         "#sapfresher",
         "#ddic",
         "#abapcodevault"
-      ]
+      ],
+      "next": {
+        "title": "The *Value Range* tab",
+        "when": "tomorrow at 9 AM",
+        "voice": "the Value Range tab"
+      }
     }
   ]
 }

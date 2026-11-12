@@ -6,7 +6,7 @@ Every table, structure, domain and data element your programs use is defined cen
 2. Saving creates an inactive version only
 3. Activation generates the runtime object (nametab) that programs read
 
-Next lessons: domains and data elements, step by step.
+Next: Inside a domain, the Definition tab (tonight at 7:30 PM).
 
 Follow the series so you don't miss a part.
 

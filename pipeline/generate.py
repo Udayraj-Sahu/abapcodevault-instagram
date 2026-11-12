@@ -1929,8 +1929,8 @@ PACES = {   # reels are short (12-18 s), so even "calm" is brisk
     "fast": {"voice_speed": 1.1, "lead": 0.12, "tail": 0.22, "pause_k": 0.6, "push": 0.06, "trans": 0.26},
     "calm": {"voice_speed": 1.0, "lead": 0.2, "tail": 0.32, "pause_k": 0.85, "push": 0.035, "trans": 0.36},
 }
-REEL_MIN, REEL_MAX = 12.0, 18.0
-COURSE_MIN, COURSE_MAX = 15.0, 30.0   # 9 AM / 7:30 PM course reels (syllabus), never longer than 30 s
+REEL_MIN, REEL_MAX = 6.0, 30.0        # any length the topic needs, never over 30 s (else split into parts)
+COURSE_MIN, COURSE_MAX = 6.0, 30.0    # same rule for course reels
 FORMATS = {
     "bug_hunt":       {"pace": "fast", "transitions": ["whip", "zoom", "slide", "whip"]},
     "before_after":   {"pace": "fast", "transitions": ["slide", "wipe", "zoom", "slide"]},

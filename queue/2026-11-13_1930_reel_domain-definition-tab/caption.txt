@@ -6,7 +6,7 @@ A domain defines the technical attributes that every data element built on it in
 3. Conversion routine, e.g. ALPHA, which stores 1234 as 0000001234
 4. Lowercase flag
 
-Part 2: the Value Range tab (fixed values, intervals, value table).
+Next: Domains Part 2, the Value Range tab (tomorrow at 9 AM).
 
 Follow the series so you don't miss it.
 

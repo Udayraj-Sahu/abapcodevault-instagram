@@ -35,7 +35,7 @@
           "spoken": "Ten thousand calls become just one. Save this."
         }
       ],
-      "caption": "Is your report taking 20 minutes instead of 2?\n\nIn most cases the cause is the same: a SELECT inside a LOOP. Every iteration is a separate trip to the database.\n\nThe fix: read the data once before the loop (JOIN or FOR ALL ENTRIES), then look it up in an internal table inside the loop. For large volumes, use a SORTED or HASHED table.\n\nSave this for your next code review.",
+      "caption": "Is your report taking 20 minutes instead of 2?\n\nIn most cases the cause is the same: a SELECT inside a LOOP. Every iteration is a separate trip to the database.\n\nThe fix: read the data once before the loop (JOIN or FOR ALL ENTRIES), then look it up in an internal table inside the loop. For large volumes, use a SORTED or HASHED table.\n\nNext: Course lesson, inside a data element (tonight at 7:30 PM).\n\nSave this for your next code review.",
       "hashtags": [
         "#sap",
         "#abap",
@@ -51,7 +51,12 @@
       "slug": "select-in-loop",
       "day": "Thu",
       "tag": "Performance",
-      "time": "13:00"
+      "time": "13:00",
+      "next": {
+        "title": "Inside a *data element*",
+        "when": "tonight at 7:30 PM",
+        "voice": "the course, inside a data element"
+      }
     }
   ]
 }
