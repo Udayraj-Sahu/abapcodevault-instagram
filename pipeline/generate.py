@@ -1331,7 +1331,7 @@ def make_motion_reel(p, slides, folder, handle, accent):
     scenes = []
     for s, dur, (st, ln) in zip(slides, durations, speech):
         blocks = schedule_blocks(build_blocks(s, accent), st, ln, pace["pause_k"], dur)
-        sub = s.get("spoken") or ""
+        sub = s.get("spoken") or s.get("voiceover") or ""   # subtitles always on
         tl = word_timeline(sub, st, ln) if (sub and ln > 0) else []
         scenes.append((blocks, dur, tl))
     starts = [sum(durations[:i]) for i in range(len(durations))]
@@ -1957,13 +1957,30 @@ OUTRO_NEXT = {"kind": "cta", "title": "Part {n} is *next*",
               "spoken": "The next part is coming soon. Follow so you don't miss it."}
 
 
+def next_card(nx):
+    """End card that teases the next reel: {"title": "...", "when": "tomorrow at 9 AM", "voice": optional spoken title}."""
+    title = str(nx.get("title", "")).strip()
+    when = str(nx.get("when", "")).strip()
+    said = str(nx.get("voice") or title.replace("*", "")).strip()
+    vo = f"Next: {said}, {when}. Follow so you don't miss it." if when else f"Next: {said}. Follow so you don't miss it."
+    return {"kind": "cta", "label": "NEXT", "title": f"Next: {title if '*' in title else '*' + title + '*'}",
+            "body": (when[:1].upper() + when[1:] + ".") if when else "Follow so you don't miss it.",
+            "actions": ["Follow @abapcodevault"], "voiceover": vo, "spoken": vo}
+
+
 def with_outro(p, slides):
-    """Every reel ends with the follow card, unless it already ends with a CTA that asks to follow
-    or the post sets "outro": false. Course parts that continue get a "Part N is next" card."""
+    """Every reel ends with an end card:
+    - "next": {...} on the post -> a "Next: <title>" card (replaces a reel's own follow CTA at the end);
+    - otherwise course parts that continue get "Part N is next", everything else the follow card.
+    "outro": false turns it off."""
     if p.get("outro") is False or not slides:
         return slides
     last = slides[-1]
-    if last.get("kind") == "cta" and "follow" in json.dumps(last, ensure_ascii=False).lower():
+    own_cta = last.get("kind") == "cta" and "follow" in json.dumps(last, ensure_ascii=False).lower()
+    if p.get("next"):
+        base = list(slides[:-1]) if own_cta else list(slides)
+        return base + [next_card(p["next"])]
+    if own_cta:
         return slides
     part, parts = int(p.get("part") or 0), int(p.get("parts") or 0)
     if part and parts and part < parts:
