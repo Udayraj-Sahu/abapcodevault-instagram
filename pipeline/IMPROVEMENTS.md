@@ -2,17 +2,17 @@
 
 Every daily run ships ONE small, tested improvement to the REELS: animation, motion, cuts/transitions,
 kinetic typography, timing, **voiceover** (pronunciation, pacing, pauses, emphasis, audio clarity) or
-**translation** (natural Hinglish phrasing, caption accuracy, glossary in `pipeline/HINGLISH.md`).
+**script** (clear natural English wording, subtitle accuracy, glossary in `pipeline/VOICEOVER.md`).
 The goal: every reel looks and sounds a little more polished and natural than the last.
 
 ## Rules (must follow)
 1. **Every run improves ALL six areas** — one small change per area, in this order:
-   **animation → voice → cuts → translation → typography → sound/timing**.
+   **animation → voice → cuts → script → typography → sound/timing**.
    For each area: do 1-2 web searches for a current technique (short-form editing, motion design, TTS/narration,
-   Hinglish writing...), pick ONE idea that fits the clean notebook look and can be built with PIL + ffmpeg + Kokoro
+   script writing for short-form explainers...), pick ONE idea that fits the clean notebook look and can be built with PIL + ffmpeg + Kokoro
    (or take the top unchecked backlog item in that area), implement it, test it, then keep or revert it ON ITS OWN.
    A failed area never blocks the others or the day's reels. Aim for 6 kept changes; 4+ is a good day.
-2. Each change is small and focused (usually 10-80 lines). Translation changes go in `pipeline/HINGLISH.md`, the
+2. Each change is small and focused (usually 10-80 lines). Script changes go in `pipeline/VOICEOVER.md`, the
    generator's checks, and upcoming UNPUBLISHED day files (never published reels).
 3. Never change the fixed brand: palette (cream paper, ink, SAP blue, yellow highlighter), fonts, sizes,
    the notebook grid (text baselines on ruled lines), the JSON schema (old day files must still render),
@@ -67,12 +67,12 @@ The goal: every reel looks and sounds a little more polished and natural than th
 - [ ] Room tone: very quiet noise bed under the voice so gaps don't feel dead (no music, no whoosh)
 - [ ] Automatic pronunciation check: if a small offline ASR (pip-installable, no Hugging Face) is available, transcribe the reel and flag words that differ from the script
 
-### Translation (research-first)
-- [ ] generate.py check: warn if a `voiceover` contains Latin-script Hindi words (hai, karo, mein) or Devanagari-transliterated English (सेलेक्ट)
+### Script (research-first; was "Translation" while voiceovers were Hinglish)
+- [ ] generate.py check: warn if a `voiceover` sentence is longer than 16 words or uses passive voice heavily
 - [ ] generate.py check: warn if `spoken` and `voiceover` differ in word count by > 25% (captions out of sync)
 - [ ] generate.py check: warn on code symbols (@ = -> #( ) in a voiceover
-- [ ] Grow HINGLISH.md glossary with 10 more ABAP terms as developers say them (BAdI, user exit, IDoc, LUW, COMMIT WORK ...)
-- [ ] Hook library in HINGLISH.md: 15 proven Hinglish opening lines by format (bug_hunt, quiz, story ...)
+- [ ] Grow VOICEOVER.md glossary with 10 more ABAP terms as developers say them (BAdI, user exit, IDoc, LUW, COMMIT WORK ...)
+- [ ] Hook library in VOICEOVER.md: 15 proven English opening lines by format (bug_hunt, quiz, story ...)
 - [ ] Caption chunking: break captions at natural phrase boundaries, never between a number and its unit
 
 ### Carousel

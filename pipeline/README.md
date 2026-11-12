@@ -8,7 +8,7 @@ Each daily run creates tomorrow's **3 reels** (reels only since 12 Nov 2026).
 | 9:00 AM | `"09:00"` | **Course reel**: next part of the ABAP course (`pipeline/syllabus.json`, in order) | 15-30 s (never > 30) |
 | 1:00 PM | `"13:00"` | **Free topic** reel from topics.json (tips, bugs, interview, performance...). Even day-of-month: ABAP Code Vault plug in caption; odd: interview angle + ABAP Interview Pack plug | 12-18 s |
 | 7:30 PM | `"19:30"` | **Course reel**: the part after the 9 AM one | 15-30 s (never > 30) |
-All are 1080×1920 MP4 reels with Hinglish voiceover (voice hm_psi). Every post in a day file is `"type": "reel"` with a
+All are 1080×1920 MP4 reels with English voiceover (voice hm_psi). Every post in a day file is `"type": "reel"` with a
 `"time"` field; `scripts/queue_day.py` reads it. Old day files with post/carousel still render.
 
 ## Course reels (9 AM + 7:30 PM) — the ABAP course
@@ -26,7 +26,7 @@ All are 1080×1920 MP4 reels with Hinglish voiceover (voice hm_psi). Every post 
 - JSON per course reel: `"series": "course"`, `"syllabus": "3.2"`, `"part": 1`, `"parts": 3` (omit part/parts for single-part
   lessons), `"format": "course_lesson"`, `"tag": "DDIC · Domain 1/3"`, cover `kicker` like "Domains & data elements · Part 1/3".
   Frame plan: cover → screen / code / flow / table (the meat, 1-2 frames) → answer ("REMEMBER" / common mistake).
-- The end card is automatic: parts that continue get "Part N is *next*" + "Agla part jaldi aa raha hai, follow karo";
+- The end card is automatic: parts that continue get "Part N is *next*" + "The next part is coming soon. Follow so you don't miss it.";
   the last part gets the normal follow card.
 - Caption: start with "Lesson: <title>" or "<topic>, Part n of N", numbered list of what the reel covered, then
   "Next: <next part/lesson>" and "Follow the series so you don't miss it." Hashtags as usual (topic tag e.g. #ddic).
@@ -62,7 +62,7 @@ All are 1080×1920 MP4 reels with Hinglish voiceover (voice hm_psi). Every post 
 - The generator warns (OVERLAP WARNING) if text collides OR content runs into the footer/captions; shorten until it is gone.
 
 ## Captions (fixed)
-- **Professional English**, LinkedIn-like tone. No Hinglish in captions.
+- **Professional English**, LinkedIn-like tone.
 - Structure: hook question or bold statement on line 1 -> blank line -> 2-4 short lines or a numbered list with the substance -> blank line -> one engagement line (question or "Save this for ...") -> product line when the post plugs a product ("... ABAP Code Vault (link in bio)" / "ABAP Interview Pack (160 Q&A): link in bio").
 - 60-120 words. At most 1 emoji, or none. No invented statistics.
 
@@ -90,7 +90,7 @@ LENGTH_WARNING.txt if still too long: then shorten the script and re-render.
 | `live_coding` | calm | cover → code typewriter (≤ 6 lines, spotlight the key line) → answer (recap) |
 | `interview_chat` | calm | chat (question + answer) → answer (key point) → [cta] |
 | `story` | calm | story (time, place, 2 short lines) → bug or code → answer (lesson) |
-Every reel automatically ends with the follow card ("Follow for more *ABAP tricks*" + "Follow @abapcodevault", voice: "ऐसी और tips और tricks के लिए, follow करो।"),
+Every reel automatically ends with the follow card ("Follow for more *ABAP tricks*" + "Follow @abapcodevault", voice: "Follow for more tips and tricks."),
 unless its last slide is already a CTA that mentions follow. Budget ~2 s for it: keep your own frames to ~10-15 s.
 [cta] = optional 2-second end card with a 4-6 word voice line. Pace comes from the format; never set voice_speed.
 
@@ -131,20 +131,18 @@ Rotate cover styles too: default, number, question, checklist, bug.
 - code (extras): `"typewriter": true` (character typing + cursor, ≤ 8 lines), `"spotlight": 2` (dim other lines)
 - existing: text, code, compare, list, cta
 
-## Reel voiceover (Hinglish, every reel)
-- **Read `pipeline/HINGLISH.md` first** (style, caption spellings, glossary, natural vs stiff phrases); it improves over time.
-- Post sets `"voice": "hm_psi", "voice_lang": "hi"` and a `"format"`.
-- Every reel slide has `"voiceover"` written the way an Indian developer actually talks (Hinglish):
-  **Hindi words in Devanagari, English and technical words in Latin script**, exactly as people say them.
-  Example: `"Loop के अंदर SELECT SINGLE. हर row के लिए एक database call."`
-  The engine speaks Devanagari with Hindi pronunciation and Latin words with English pronunciation, in the same voice.
-- Never transliterate English terms into Devanagari (no सेलेक्ट) and never write Hindi words in Latin inside "voiceover".
+## Reel voiceover (English, every reel — since 12 Nov 2026)
+- **Read `pipeline/VOICEOVER.md` first** (style, glossary, natural vs stiff phrases); it improves over time.
+- Post sets `"voice": "hm_psi", "voice_lang": "en"` and a `"format"`. (Old Hinglish day files with "hi" still render.)
+- Every reel slide has `"voiceover"` in clear, conversational **English**, the way a senior developer explains to a friend:
+  short sentences (5-14 words), contractions ("it's", "don't"), active voice. Example: "A SELECT inside a loop means one
+  database call for every row."
 - Acronyms and T-codes are pronounced via the SAY table in generate.py (SAP, ALV, BAPI, SE38, ST22, VBAK, F8 ...).
   Add new ones there if needed. Do not put code lines or symbols like @, =, -> in the voiceover; describe them in words.
-- Every reel slide also gets `"spoken"`: the same line fully in Roman Hinglish (for on-screen captions).
+  Do not say the word "ABAP" in the voiceover (mispronounced); "ABAP" on screen and in captions is fine.
+- Every reel slide also gets `"spoken"`: exactly the same text as "voiceover" (used for the on-screen subtitles).
   Do NOT use the key `subtitle` for this (on a cover slide `subtitle` is the visible sub-heading).
-- Sound like a person talking to a friend: short sentences, a hook in the first 2 seconds ("Is code mein bug hai.",
-  "Aapki report slow hai?"), natural phrases ("dekho", "bas", "save kar lo").
+- Hook in the first 2 seconds ("This one line can read your entire table.", "Is your report slow?").
 - Check: voiceover_script.txt in the reel folder, and the reel duration (12-18 s) with ffprobe.
 - The engine animates automatically: blocks slide/pop in, code types in across the narration, camera push, scene transitions, progress bar, soft pop/stamp/tick SFX (no whoosh on cuts), loudness normalised.
 - Setup before rendering: `pip install --break-system-packages kokoro-onnx soundfile`, then download into a `tts` folder next to generate.py (or set ABAP_TTS_DIR):
