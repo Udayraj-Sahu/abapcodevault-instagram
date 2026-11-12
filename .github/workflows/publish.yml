@@ -2,10 +2,13 @@ name: Publish to Instagram
 
 on:
   schedule:
-    # GitHub often starts scheduled runs late (or skips them) at busy times like :00 / :30,
-    # so check every 10 minutes on off-minutes. Each run posts only what is due
-    # (date + time in post.json) and published.json prevents double posts.
-    - cron: "4,14,24,34,44,54 * * * *"
+    # GitHub starts scheduled runs late or skips them, so we start ~80 min BEFORE each
+    # slot and wait (scripts/wait_slot.py), then post on time:
+    - cron: "37 2 * * *"     # 8:07 AM IST  -> waits for 9:00 AM post
+    - cron: "37 6 * * *"     # 12:07 PM IST -> waits for 1:00 PM carousel
+    - cron: "7 13 * * *"     # 6:37 PM IST  -> waits for 7:30 PM reel
+    # backup checks; each run posts only what is due and published.json prevents doubles
+    - cron: "17,47 * * * *"
   workflow_dispatch:
     inputs:
       only:
@@ -27,16 +30,23 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 200
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+      - name: Wait for the slot (scheduled runs only)
+        if: github.event_name == 'schedule'
+        run: |
+          python scripts/wait_slot.py
+          git pull --ff-only || echo "pull skipped"
+          echo "MEDIA_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Publish due posts
         env:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
-          MEDIA_BASE_URL: https://cdn.jsdelivr.net/gh/${{ github.repository }}@${{ github.sha }}
+          MEDIA_BASE_URL: https://cdn.jsdelivr.net/gh/${{ github.repository }}@${{ env.MEDIA_SHA || github.sha }}
           ONLY: ${{ inputs.only }}
           DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
         run: python scripts/publish.py
