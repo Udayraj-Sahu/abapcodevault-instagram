@@ -1882,6 +1882,24 @@ FORMATS = {
 }
 
 
+OUTRO = {"kind": "cta", "title": "Follow for more *ABAP tricks*",
+         "body": "3 new ABAP reels every day.",
+         "actions": ["Follow @abapcodevault"],
+         "voiceover": "ऐसी और ABAP tricks के लिए, follow करो।",
+         "spoken": "Aisi aur ABAP tricks ke liye, follow karo."}
+
+
+def with_outro(p, slides):
+    """Every reel ends with the follow card, unless it already ends with a CTA that asks to follow
+    or the post sets "outro": false."""
+    if p.get("outro") is False or not slides:
+        return slides
+    last = slides[-1]
+    if last.get("kind") == "cta" and "follow" in json.dumps(last, ensure_ascii=False).lower():
+        return slides
+    return list(slides) + [dict(OUTRO)]
+
+
 def main():
     if len(sys.argv) != 3:
         print(__doc__)
@@ -1905,6 +1923,7 @@ def main():
                                    p.get("tag", "SAP ABAP"), accent, tall)
                 img.save(os.path.join(folder, f"slide_{i:02d}.png"), optimize=True)
         else:
+            slides = with_outro(p, slides)
             make_motion_reel(p, slides, folder, handle, accent)
             script = [s.get("voiceover", "") for s in slides if s.get("voiceover")]
             if script:
