@@ -46,6 +46,13 @@ All are 1080×1920 MP4 reels with English voiceover (voice am_michael). Every po
 `{"kind":"screen","heading":"Definition *tab*","tcode":"SE11","object":"Domain ZD_ORDER_NO","tabs":["Properties","Definition","Value Range"],"active":1,"fields":[["Data Type","CHAR"],["No. Characters","10"],["Convers. Routine","ALPHA"]],"focus":[2],"note":"runs on every input & output"}`
 — up to 7 fields; `tabs` optional; `focus` rows get a red outline; `note` is a handwritten remark under the screen.
 
+## When reels are made (user rule, 12 Nov)
+Reels are made only for the NEXT day, by the daily run at about 9 PM the evening before, so the user can still change
+them that evening/morning. Never queue reels further ahead. A day file `pipeline/days/<date>.json` may already exist
+as a DRAFT (script only, not queued): reuse and improve it, render it, then queue it at the 9 PM run before that date.
+If tomorrow's reels are already queued and unpublished, re-render them with the latest generator (same content)
+so they get today's improvements.
+
 ## Steps for a daily run (makes TOMORROW's reels)
 1. DATE = tomorrow (Asia/Kolkata). Read `pipeline/state.json`, `pipeline/topics.json`, `published.json` and list `queue/`.
 2. For each slot 09:00 / 13:00 / 19:30: if `queue/` already has an UNPUBLISHED folder starting with `DATE_HHMM_` (not a key in published.json), skip that slot. 09:00 and 19:30: next course parts (see "Course reels"). 13:00: next unused free topic (see topics.json how_to_use).
