@@ -42,15 +42,15 @@
       "type": "reel",
       "format": "before_after",
       "voice": "hm_psi",
-      "voice_lang": "hi",
+      "voice_lang": "en",
       "slides": [
         {
           "kind": "cover",
           "style": "question",
           "kicker": "Performance killer",
           "title": "Why is your *report so slow*",
-          "voiceover": "आपकी report slow है? वजह शायद ये है।",
-          "spoken": "Aapki report slow hai? Wajah shayad ye hai."
+          "voiceover": "Is your report slow? Here's the likely reason.",
+          "spoken": "Is your report slow? Here's the likely reason."
         },
         {
           "kind": "compare",
@@ -59,16 +59,16 @@
           "left": "LOOP AT lt_orders INTO DATA(ls).\n  SELECT SINGLE name1 FROM kna1\n    WHERE kunnr = @ls-kunnr\n    INTO @DATA(lv_name).\nENDLOOP.",
           "right_title": "Fast",
           "right": "SELECT kunnr, name1 FROM kna1\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE kunnr = @lt_orders-kunnr\n  INTO TABLE @DATA(lt_kna1).",
-          "voiceover": "Loop के अंदर SELECT, मतलब हर row पर database call. एक बार में पढ़ो, फिर memory से उठाओ।",
-          "spoken": "Loop ke andar SELECT, matlab har row par database call. Ek baar mein padho, phir memory se uthao."
+          "voiceover": "A SELECT inside a loop means one database call for every row. Read the data once, then look it up in memory.",
+          "spoken": "A SELECT inside a loop means one database call for every row. Read the data once, then look it up in memory."
         },
         {
           "kind": "fact",
           "title": "Result",
           "text": "*10,000 calls* become *1*",
           "detail": "Then read lt_kna1 inside the loop.",
-          "voiceover": "दस हज़ार calls की जगह, सिर्फ एक। Save कर लो।",
-          "spoken": "Das hazaar calls ki jagah, sirf ek. Save kar lo."
+          "voiceover": "Ten thousand calls become just one. Save this.",
+          "spoken": "Ten thousand calls become just one. Save this."
         }
       ],
       "caption": "Is your report taking 20 minutes instead of 2?\n\nIn most cases the cause is the same: a SELECT inside a LOOP. Every iteration is a separate trip to the database.\n\nThe fix: read the data once before the loop (JOIN or FOR ALL ENTRIES), then look it up in an internal table inside the loop. For large volumes, use a SORTED or HASHED table.\n\nSave this for your next code review.",
@@ -93,7 +93,7 @@
       "type": "reel",
       "format": "live_coding",
       "voice": "hm_psi",
-      "voice_lang": "hi",
+      "voice_lang": "en",
       "time": "13:00",
       "slug": "salv-alv-5-lines",
       "tag": "ALV",
@@ -102,8 +102,8 @@
           "kind": "cover",
           "kicker": "No field catalog",
           "title": "A full *ALV report* in 5 lines",
-          "voiceover": "ALV report सिर्फ पाँच lines में? Field catalog की ज़रूरत ही नहीं।",
-          "spoken": "ALV report sirf paanch lines mein? Field catalog ki zaroorat hi nahi."
+          "voiceover": "A full ALV report in five lines? No field catalog needed.",
+          "spoken": "A full ALV report in five lines? No field catalog needed."
         },
         {
           "kind": "code",
@@ -111,8 +111,8 @@
           "typewriter": true,
           "filename": "zsalv_demo.abap",
           "code": "cl_salv_table=>factory(\n  IMPORTING r_salv_table = DATA(lo_alv)\n  CHANGING  t_table      = lt_orders ).\nlo_alv->get_functions( )->set_all( ).\nlo_alv->display( ).",
-          "voiceover": "SALV table का factory call करो, अपनी table pass करो, toolbar on करो, और display.",
-          "spoken": "SALV table ka factory call karo, apni table pass karo, toolbar on karo, aur display."
+          "voiceover": "Call the SALV factory, pass your table, switch on the toolbar, and display.",
+          "spoken": "Call the SALV factory, pass your table, switch on the toolbar, and display."
         },
         {
           "kind": "answer",
@@ -120,8 +120,8 @@
           "heading": "*factory* then *display*",
           "body": "Columns come from the table type automatically.",
           "highlight": "Wrap it in TRY...CATCH cx_salv_msg",
-          "voiceover": "Columns अपने आप बन जाते हैं। Save कर लो।",
-          "spoken": "Columns apne aap ban jaate hain. Save kar lo."
+          "voiceover": "The columns are built automatically. Save this.",
+          "spoken": "The columns are built automatically. Save this."
         }
       ],
       "caption": "Still building a field catalog for every simple report?\n\nCL_SALV_TABLE gives you a full ALV in a few lines:\n1. factory( ) with your internal table\n2. get_functions( )->set_all( ) for sort, filter and Excel export\n3. display( )\n\nColumns and headings come from the table type. Wrap the call in TRY...CATCH cx_salv_msg.\n\nWhich ALV do you use most: SALV or REUSE_ALV_GRID_DISPLAY?\n\nThe full template with hotspots, totals and layouts is in the ABAP Code Vault (link in bio).",

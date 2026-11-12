@@ -657,7 +657,7 @@ def tts(text, voice, lang, speed, out_wav):
     Hinglish mode: Hindi words in Devanagari, English/technical words in Latin script."""
     import soundfile as sf
     k = _kokoro()
-    if lang == "hi":
+    if lang in ("hi", "en"):   # "en": English script, same SAY pronunciations for T-codes/acronyms
         samples, sr = k.create(phonemize_mixed(text), voice=voice, speed=speed, is_phonemes=True)
     else:
         samples, sr = k.create(text, voice=voice, speed=speed, lang=lang)
@@ -1945,15 +1945,15 @@ FORMATS = {
 OUTRO = {"kind": "cta", "title": "Follow for more *ABAP tricks*",
          "body": "3 new ABAP reels every day.",
          "actions": ["Follow @abapcodevault"],
-         "voiceover": "ऐसी और tips और tricks के लिए, follow करो।",
-         "spoken": "Aisi aur tips aur tricks ke liye, follow karo."}
+         "voiceover": "Follow for more tips and tricks.",
+         "spoken": "Follow for more tips and tricks."}
 
 
 OUTRO_NEXT = {"kind": "cta", "title": "Part {n} is *next*",
               "body": "Follow so you don't miss it.",
               "actions": ["Follow @abapcodevault"],
-              "voiceover": "अगला part जल्दी आ रहा है, follow करो।",
-              "spoken": "Agla part jaldi aa raha hai, follow karo."}
+              "voiceover": "The next part is coming soon. Follow so you don't miss it.",
+              "spoken": "The next part is coming soon. Follow so you don't miss it."}
 
 
 def with_outro(p, slides):
