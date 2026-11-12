@@ -1,23 +1,26 @@
 # @abapcodevault — daily Instagram pipeline
 
-Each daily run creates tomorrow's 3 posts.
+Each daily run creates tomorrow's **3 reels** (reels only since 12 Nov 2026).
 
-## Daily rhythm (3 posts every day)
-| Time (IST) | Type | Size | Purpose |
-| --- | --- | --- | --- |
-| 9:00 AM | post (1 slide) | 1080×1350 | Cheat sheet people save |
-| 1:00 PM | carousel (6–7 slides) | 1080×1350 | Even day-of-month: concept, ends with ABAP Code Vault plug. Odd day: interview question, ends with ABAP Interview Pack plug |
-| 7:30 PM | reel (5 frames, 30–60 s MP4 with voiceover) | 1080×1920 | Hook + problem + fix |
+## Daily rhythm (3 reels every day)
+| Time (IST) | Slot `time` | Purpose |
+| --- | --- | --- |
+| 9:00 AM | `"09:00"` | Quick win: cheat-sheet style tip, T-code, syntax trick (fast formats) |
+| 1:00 PM | `"13:00"` | Teach: concept / live coding / before-after. Even day-of-month: end with ABAP Code Vault plug in the caption. Odd day-of-month: interview angle + ABAP Interview Pack plug |
+| 7:30 PM | `"19:30"` | Story / bug hunt / interview chat / quiz (highest-effort reel of the day) |
+All three are 1080×1920 MP4 reels, 12-18 s, Hinglish voiceover (voice hm_psi). Every post in a day file is
+`"type": "reel"` with a `"time"` field; `scripts/queue_day.py` reads it. The three reels of a day must use
+three DIFFERENT formats and three different topics. Old day files with post/carousel still render.
 
-## Steps for a daily run (makes TOMORROW's posts)
+## Steps for a daily run (makes TOMORROW's reels)
 1. DATE = tomorrow (Asia/Kolkata). Read `pipeline/state.json`, `pipeline/topics.json`, `published.json` and list `queue/`.
-2. For each type (post, carousel, reel): if `queue/` already has an UNPUBLISHED folder for DATE with that type (folder name starts with DATE and contains `_<type>_`, and it is not a key in published.json), skip that type. Otherwise pick the next unused topic from topics.json (carousel list chosen by day-of-month parity; see topics.json how_to_use).
-3. Write `pipeline/days/DATE.json` (same schema as `pipeline/weeks/week01.json`, only the needed posts; set "day" to the weekday short name).
+2. For each slot 09:00 / 13:00 / 19:30: if `queue/` already has an UNPUBLISHED folder starting with `DATE_HHMM_` (not a key in published.json), skip that slot. Otherwise pick the next unused topic (see topics.json how_to_use).
+3. Write `pipeline/days/DATE.json` with only the needed reels (each with `"time"`, `"format"`, `"slug"`, `"tag"`, slides, caption, hashtags).
 4. `python3 pipeline/generate.py pipeline/days/DATE.json out/DATE`
-5. Contact-sheet check (carousel/post PNGs + 6–8 reel frames via ffmpeg); fix overflow and re-render. ffprobe the reel for video+audio. If the generator printed **OVERLAP WARNING** (also saved as out/DATE/OVERLAP_WARNING.txt), shorten or restructure that slide and re-render until it is gone.
+5. Check 8 frames per reel (ffmpeg) + ffprobe (video+audio, 12-18 s). If the generator printed **OVERLAP WARNING** or wrote LENGTH_WARNING.txt, shorten/restructure and re-render until gone.
 6. `python3 scripts/queue_day.py out/DATE DATE`
-7. Update `state.json`: `last_queued_date` = DATE, append the topics to `history`. Commit and push.
-8. **Improve one thing** in reels or posts, following `pipeline/IMPROVEMENTS.md` (one tested change per run, logged there, own commit). Never let an improvement block or break the day's posts: if in doubt, revert it.
+7. Update `state.json`: `last_queued_date` = DATE, append the topics to `history`, append formats to `recent_formats.reel`. Commit and push.
+8. **Improve the reels** (motion, animation, cuts) following `pipeline/IMPROVEMENTS.md`: research one technique on the web, implement it, test, log. Never let an improvement block or break the day's reels: if in doubt, revert it.
 
 ## Design (fixed)
 - Light "notebook" theme: cream ruled paper, ink text, one brand colour **SAP blue**, yellow highlighter, handwritten (Caveat) notes. All built into generate.py; do not change colours per post.
@@ -63,7 +66,7 @@ LENGTH_WARNING.txt if still too long: then shorten the script and re-render.
 | `story` | calm | story (time, place, 2 short lines) → bug or code → answer (lesson) |
 [cta] = optional 2-second end card with a 4-6 word voice line. Pace comes from the format; never set voice_speed.
 
-### Carousel formats (6-7 slides)
+### Carousel formats (6-7 slides) — legacy, not used since reels-only
 | Format | Slide plan |
 | --- | --- |
 | `step_by_step` | cover → code/text steps → cta (Code Vault plug) |
@@ -78,7 +81,7 @@ Even day-of-month: a teaching format (step_by_step, mistake_fix, myth_fact, chea
 Odd day-of-month: an interview format (quiz, interview_qa, myth_fact) + Interview Pack plug.
 Rotate cover styles too: default, number, question, checklist, bug.
 
-### Single post formats (1 slide)
+### Single post formats (1 slide) — legacy, not used since reels-only
 `list` (cheat sheet) · `table` · `tip` (quote card) · `fact` ("Did you know?") · `code` (snippet card) · `choice` (this or that) · `flow` · `checklist`
 
 ### Slide kinds reference (JSON)

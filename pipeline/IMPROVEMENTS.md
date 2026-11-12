@@ -1,27 +1,28 @@
 # Continuous design & motion improvements
 
-Every daily run ships ONE small, tested improvement to how reels and posts look and move,
-then logs it here. The goal: each week's content looks noticeably more polished than the last.
+Every daily run ships ONE small, tested improvement to how the REELS move: animation, motion, cuts/transitions,
+kinetic typography, timing/easing, sound timing. The goal: every reel feels a little more polished and alive than the last.
 
 ## Rules (must follow)
-1. Exactly one improvement per run, small and focused (usually 10-60 lines in `pipeline/generate.py`).
-   **Rotate the area every day: reel → carousel → single post → reel …** The area for today is
-   `improve_next` in `pipeline/state.json`; pick the top unchecked item from THAT section of the backlog
-   (or a clearly better idea for that area). After the run, set `improve_next` to the next area —
-   even if the improvement was skipped. A carousel/post improvement must show on the static PNGs
-   (layout, hierarchy, cover hook, code boxes, annotations, spacing), not only in reels.
-2. Never change the fixed brand: palette (cream paper, ink, SAP blue, yellow highlighter), fonts,
-   slide sizes (1080×1350 / 1080×1920), the JSON schema (old day files must still render), captions or hashtag rules.
-3. Allowed areas: reel animations, transitions/cuts, timing and easing, kinetic typography, caption pill
-   animation, code-typing effects, highlighter effects, sound-effect timing, layout polish, spacing,
-   annotations, visual hierarchy on static slides, carousel cover hooks.
-4. Test before keeping it: render `pipeline/days/2026-11-12.json` (it has a post, a carousel and a reel) into a temp folder AND today's new day file.
-   Look at contact sheets (slides + 8 reel frames). Confirm the reel still has video + audio.
-   No OVERLAP WARNING allowed, and text must stay on the notebook grid (baselines on ruled lines, see README). If anything is broken, overlapping, cut off, harder to read, or simply not better: `git checkout pipeline/generate.py` and skip.
-5. Log it below (date, area, what changed, why it is better) and commit it as its own commit:
-   `Improve: <short description>`.
+1. **Learn first:** run 1-2 web searches each day for a current short-form / motion-design technique
+   (e.g. "kinetic typography reels technique", "match cut motion design", "easing anticipation overshoot text",
+   "reel hook first frame pattern interrupt"). Pick ONE technique that fits a clean notebook look and can be built
+   in PIL + ffmpeg. Note the idea + source URL in the Log row. If nothing fits, take the top unchecked backlog item.
+2. Exactly one improvement per run, small and focused (usually 10-80 lines in `pipeline/generate.py`).
+   Rotate the focus so it never gets stuck: `improve_next` in `pipeline/state.json` cycles
+   **animation → cuts → typography → sound/timing → animation …**; set it to the next one after the run, even if skipped.
+3. Never change the fixed brand: palette (cream paper, ink, SAP blue, yellow highlighter), fonts, sizes,
+   the notebook grid (text baselines on ruled lines), the JSON schema (old day files must still render),
+   voice (hm_psi), 12-18 s length, captions or hashtag rules. No whoosh/swoosh sound on cuts (user disliked it).
+   Motion must stay readable: no text moving while the viewer needs to read it, nothing faster than ~0.25 s for text.
+4. Test before keeping it: render `pipeline/days/2026-11-12.json` (3 reels: before_after, live_coding + legacy post)
+   and `pipeline/days/2026-11-21.json` (interview_chat) into a temp folder AND today's new day file.
+   Look at 8 frames per reel plus a 0.1 s frame strip around one cut; confirm video + audio and 12-18 s.
+   No OVERLAP WARNING. If anything is broken, overlapping, harder to read, or simply not better: `git checkout pipeline/generate.py` and skip.
+5. Log it below (date, area, technique + source, what changed, why it is better) and commit it as its own commit:
+   `Improve (<area>): <short description>`.
 
-## Backlog (by area — pick the top unchecked item in today's area, or a better idea)
+## Backlog (reels; research-first — carousel/post sections are legacy)
 
 ### Reel
 - [x] Rotating reel transitions: rise, slide (page push), zoom (2026-11-11)
@@ -41,6 +42,17 @@ then logs it here. The goal: each week's content looks noticeably more polished 
 - [ ] Table: rows slide in with a pen-underline under the best option
 - [ ] Flow: arrows draw step by step synced to the voice
 - [ ] Sound polish: a tiny soft "tick" when each code line appears (no whoosh on cuts — user disliked it)
+
+### Reel — ideas from research (2026-11-12)
+- [ ] Hook pattern interrupt: frame 1 starts already readable (title fully on screen at t=0) then a 1.08→1.0 punch-in in 0.4 s
+- [ ] Anticipation + overshoot: pops dip 3% before growing and settle with a small overshoot (ease_back tuned per element)
+- [ ] Follow-through: after a block lands, its highlighter/underline settles 80 ms later (secondary motion)
+- [ ] Match cut: the highlighted key word of scene N flies/morphs into the heading position of scene N+1
+- [ ] Cut on action: start the next scene's transition while the last element is still moving (overlap 0.12 s)
+- [ ] Word-level emphasis synced to voice: the key word pulses (scale 1.06) exactly when it is spoken
+- [ ] Parallax: ruled paper drifts 6-10 px slower than content during slide/zoom transitions (depth)
+- [ ] Motion blur / smear on fast transitions (blend 2-3 sub-frames) for smoother 30 fps movement
+- [ ] Ease library: replace linear moves with easeOutExpo / easeInOutCubic consistently; test curves frame by frame
 
 ### Carousel
 - [ ] Carousel progress dots on every slide; "swipe" arrow nudges on the cover

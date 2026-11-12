@@ -1,6 +1,6 @@
 {
   "handle": "@abapcodevault",
-  "mode": "daily",
+  "mode": "reels_only",
   "last_queued_date": "2026-11-12",
   "history": [
     "4 ABAP 7.40 syntax tricks (old vs new)",
@@ -12,17 +12,23 @@
     "SELECT inside LOOP: why it kills performance + fix",
     "SD tables cheat sheet (VBAK, VBAP, LIKP, VBRK...)",
     "Interview: Domain vs Data element",
-    "Debugging trick: /h and breakpoint at statement MESSAGE"
+    "Debugging trick: /h and breakpoint at statement MESSAGE",
+    "ALV in 5 lines with CL_SALV_TABLE (reel)",
+    "VALUE #( ) operator quiz (reel)",
+    "Interview: STANDARD vs SORTED vs HASHED (reel)"
   ],
   "recent_formats": {
     "reel": [
       "three_things",
       "before_after",
-      "bug_hunt"
+      "bug_hunt",
+      "live_coding",
+      "quiz",
+      "interview_chat"
     ],
     "carousel": [],
     "post": [],
     "cover": []
   },
-  "improve_next": "carousel"
+  "improve_next": "animation"
 }
