@@ -110,15 +110,20 @@ def grid_box(y, h, pad=16):
     return top, hh
 
 
-def code_size_for(codes, w, avail, overhead):
-    """One mono size (30 -> 20) at which every code box fits side by side in height `avail`."""
+def code_size_for(codes, w, y, ylimit):
+    """Largest mono size (30 -> 20) at which the label + code-box pairs, laid out exactly as
+    s_compare/_code_blocks do (grid-snapped), end above `ylimit`."""
     d0 = ImageDraw.Draw(Image.new("RGB", (1, 1)))
     for size in range(30, 19, -1):
         f = F_MONO(size)
-        ok_w = all(max(d0.textlength(l, font=f) for l in c.rstrip("\n").split("\n")) <= w - 64 for c in codes)
-        tot = sum(grid_box(0, 70 + len(c.rstrip("\n").split("\n")) * int(size * 1.6) + 40)[1] + overhead
-                  for c in codes)
-        if ok_w and tot <= avail:
+        if any(max(d0.textlength(l, font=f) for l in c.rstrip("\n").split("\n")) > w - 64 for c in codes):
+            continue
+        yy = y
+        for c in codes:
+            top, _ = grid_box(yy + 66, 10)
+            _, h = grid_box(top, 70 + len(c.rstrip("\n").split("\n")) * int(size * 1.6) + 40)
+            yy = top + h + 34
+        if yy - 34 <= ylimit:
             return size
     return 20
 
@@ -483,7 +488,7 @@ def s_compare(img, s, y0, y1, accent, tall):
     if s.get("heading"):
         y = paste_heading(img, 72, y, s["heading"], F_HEAD(60), W - 144, lh=70) + 34
     pairs = ((s.get("left_title", "Old way"), s["left"], RED), (s.get("right_title", "New way"), s["right"], GREEN))
-    cs = code_size_for([c for _, c, _ in pairs], W - 144, y1 - y, 66 + 34 + 16)
+    cs = code_size_for([c for _, c, _ in pairs], W - 144, y, y1)
     for title, code, col in pairs:
         top, _ = grid_box(y + 66, 10)            # code box on the grid; label always 14 px above it
         pill(d, 72, top - 62, title, F_SEMI(28), (255, 255, 255), col)
@@ -906,7 +911,7 @@ def build_blocks(s, accent, top_z=None, bottom_z=None):
         if s.get("heading"):
             y = B.add(heading_img(s["heading"], F_HEAD(64), w, lh=74), x - 6, y, "up") + 34
         pairs = ((s.get("left_title", "Old way"), s["left"], RED), (s.get("right_title", "New way"), s["right"], GREEN))
-        cs = code_size_for([c for _, c, _ in pairs], w, BOTZ - TOPZ - y, 66 + 34 + 16)
+        cs = code_size_for([c for _, c, _ in pairs], w, y, BOTZ - TOPZ)
         for title, code, col in pairs:
             avail = 9999
             tw = int(d0.textlength(title, font=F_SEMI(30))) + 40
