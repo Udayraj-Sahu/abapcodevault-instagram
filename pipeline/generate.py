@@ -1108,6 +1108,9 @@ def sync_to_words(blocks, tl, dur):
                         and len(w_) >= 2), None)
             if hit is not None:
                 b["t"] = min(max(prev_t + 0.12, hit - 0.08), dur - 0.5)
+            elif prev_t > 0:                 # word not spoken: keep the order, follow the previous reveal
+                b["t"] = min(prev_t + 0.5, dur - 0.5)
+            if hit is not None or prev_t > 0:
                 prev_t = b["t"]
                 last = b["t"] + (b.get("dur") or 0.4)
     for i, b in enumerate(blocks):
