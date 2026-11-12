@@ -1,0 +1,195 @@
+{
+  "date": "2026-11-13",
+  "handle": "@abapcodevault",
+  "posts": [
+    {
+      "type": "reel",
+      "time": "09:00",
+      "series": "course",
+      "syllabus": "3.1",
+      "format": "course_lesson",
+      "slug": "ddic-basics",
+      "tag": "DDIC · Lesson 1",
+      "voice": "hm_psi",
+      "voice_lang": "hi",
+      "slides": [
+        {
+          "kind": "cover",
+          "kicker": "ABAP course · DDIC",
+          "title": "What is the *Data Dictionary*?",
+          "voiceover": "हर table और type की definition कहाँ रहती है? Data Dictionary में।",
+          "spoken": "Har table aur type ki definition kahan rehti hai? Data Dictionary mein."
+        },
+        {
+          "kind": "screen",
+          "heading": "One transaction: *SE11*",
+          "tcode": "SE11",
+          "object": "ABAP Dictionary: Initial Screen",
+          "fields": [
+            [
+              "Database table",
+              "ZORDERS"
+            ],
+            [
+              "View",
+              ""
+            ],
+            [
+              "Data type",
+              ""
+            ],
+            [
+              "Type Group",
+              ""
+            ],
+            [
+              "Domain",
+              ""
+            ],
+            [
+              "Search help",
+              ""
+            ],
+            [
+              "Lock object",
+              ""
+            ]
+          ],
+          "focus": [
+            0
+          ],
+          "note": "tables, types, domains: all here",
+          "voiceover": "SE11 में tables, views, domains, search helps, सब define होते हैं।",
+          "spoken": "SE11 mein tables, views, domains, search helps, sab define hote hain."
+        },
+        {
+          "kind": "flow",
+          "heading": "What *activation* does",
+          "steps": [
+            "Save: inactive version",
+            "Activate (Ctrl+F3)",
+            "Runtime object (nametab) created",
+            "Programs use the nametab"
+          ],
+          "voiceover": "Save से कुछ नहीं होता। Activate करो, तब nametab बनता है, और programs वही पढ़ते हैं।",
+          "spoken": "Save se kuch nahi hota. Activate karo, tab nametab banta hai, aur programs wahi padhte hain."
+        },
+        {
+          "kind": "answer",
+          "label": "REMEMBER",
+          "heading": "Inactive = *old version* runs",
+          "body": "Changed a table in SE11 but the program still behaves the old way? Check that it is activated.",
+          "voiceover": "Program पुराना चल रहा है? Check करो, activate किया या नहीं।",
+          "spoken": "Program purana chal raha hai? Check karo, activate kiya ya nahi."
+        }
+      ],
+      "caption": "Lesson 1 of the ABAP course: the Data Dictionary (DDIC).\n\nEvery table, structure, domain and data element your programs use is defined centrally in SE11.\n\n1. One transaction for tables, views, types, domains, search helps and lock objects\n2. Saving creates an inactive version only\n3. Activation generates the runtime object (nametab) that programs read\n\nNext lessons: domains and data elements, step by step.\n\nFollow the series so you don't miss a part.",
+      "hashtags": [
+        "#sap",
+        "#abap",
+        "#coding",
+        "#sapabap",
+        "#abapdeveloper",
+        "#saps4hana",
+        "#sapfresher",
+        "#ddic",
+        "#abapcodevault"
+      ]
+    },
+    {
+      "type": "reel",
+      "time": "19:30",
+      "series": "course",
+      "syllabus": "3.2",
+      "part": 1,
+      "parts": 3,
+      "format": "course_lesson",
+      "slug": "domain-definition-tab",
+      "tag": "DDIC · Domain 1/3",
+      "voice": "hm_psi",
+      "voice_lang": "hi",
+      "slides": [
+        {
+          "kind": "cover",
+          "kicker": "Domains & data elements · Part 1/3",
+          "title": "Inside a *domain*: the Definition tab",
+          "voiceover": "Domain सिर्फ data type नहीं है। SE11 में अंदर देखो।",
+          "spoken": "Domain sirf data type nahi hai. SE11 mein andar dekho."
+        },
+        {
+          "kind": "screen",
+          "heading": "Definition *tab*",
+          "tcode": "SE11",
+          "object": "Domain ZD_ORDER_NO",
+          "tabs": [
+            "Properties",
+            "Definition",
+            "Value Range"
+          ],
+          "active": 1,
+          "fields": [
+            [
+              "Data Type",
+              "CHAR"
+            ],
+            [
+              "No. Characters",
+              "10"
+            ],
+            [
+              "Decimal Places",
+              "0"
+            ],
+            [
+              "Output Length",
+              "10"
+            ],
+            [
+              "Convers. Routine",
+              "ALPHA"
+            ],
+            [
+              "Lowercase",
+              "No"
+            ]
+          ],
+          "focus": [
+            4
+          ],
+          "note": "runs on every input & output",
+          "voiceover": "Data type, length, output length. और सबसे important, conversion routine.",
+          "spoken": "Data type, length, output length. Aur sabse important, conversion routine."
+        },
+        {
+          "kind": "code",
+          "heading": "*ALPHA* adds the leading zeros",
+          "typewriter": true,
+          "filename": "alpha_demo.abap",
+          "code": "lv_order = '1234'.\nCALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'\n  EXPORTING input  = lv_order\n  IMPORTING output = lv_order.\n\" lv_order = '0000001234'",
+          "voiceover": "Screen पर 1234, database में आगे zeros के साथ। Code में convert करना हो, तो ALPHA INPUT call करो।",
+          "spoken": "Screen par 1234, database mein aage zeros ke saath. Code mein convert karna ho, to ALPHA INPUT call karo."
+        },
+        {
+          "kind": "answer",
+          "label": "REMEMBER",
+          "heading": "One domain, *many fields*",
+          "body": "Every data element on this domain gets the same type, length and conversion.",
+          "voiceover": "एक domain, कई fields. Domain बदला, सब बदल गए।",
+          "spoken": "Ek domain, kai fields. Domain badla, sab badal gaye."
+        }
+      ],
+      "caption": "Domains, Part 1 of 3: the Definition tab in SE11.\n\nA domain defines the technical attributes that every data element built on it inherits:\n1. Data type and number of characters\n2. Decimal places and output length\n3. Conversion routine, e.g. ALPHA, which stores 1234 as 0000001234\n4. Lowercase flag\n\nPart 2: the Value Range tab (fixed values, intervals, value table).\n\nFollow the series so you don't miss it.",
+      "hashtags": [
+        "#sap",
+        "#abap",
+        "#coding",
+        "#sapabap",
+        "#abapdeveloper",
+        "#saps4hana",
+        "#sapfresher",
+        "#ddic",
+        "#abapcodevault"
+      ]
+    }
+  ]
+}

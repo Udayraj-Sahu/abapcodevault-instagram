@@ -3,18 +3,44 @@
 Each daily run creates tomorrow's **3 reels** (reels only since 12 Nov 2026).
 
 ## Daily rhythm (3 reels every day)
-| Time (IST) | Slot `time` | Purpose |
-| --- | --- | --- |
-| 9:00 AM | `"09:00"` | Quick win: cheat-sheet style tip, T-code, syntax trick (fast formats) |
-| 1:00 PM | `"13:00"` | Teach: concept / live coding / before-after. Even day-of-month: end with ABAP Code Vault plug in the caption. Odd day-of-month: interview angle + ABAP Interview Pack plug |
-| 7:30 PM | `"19:30"` | Story / bug hunt / interview chat / quiz (highest-effort reel of the day) |
-All three are 1080×1920 MP4 reels, 12-18 s, Hinglish voiceover (voice hm_psi). Every post in a day file is
-`"type": "reel"` with a `"time"` field; `scripts/queue_day.py` reads it. The three reels of a day must use
-three DIFFERENT formats and three different topics. Old day files with post/carousel still render.
+| Time (IST) | Slot `time` | What | Length |
+| --- | --- | --- | --- |
+| 9:00 AM | `"09:00"` | **Course reel**: next part of the ABAP course (`pipeline/syllabus.json`, in order) | 15-30 s (never > 30) |
+| 1:00 PM | `"13:00"` | **Free topic** reel from topics.json (tips, bugs, interview, performance...). Even day-of-month: ABAP Code Vault plug in caption; odd: interview angle + ABAP Interview Pack plug | 12-18 s |
+| 7:30 PM | `"19:30"` | **Course reel**: the part after the 9 AM one | 15-30 s (never > 30) |
+All are 1080×1920 MP4 reels with Hinglish voiceover (voice hm_psi). Every post in a day file is `"type": "reel"` with a
+`"time"` field; `scripts/queue_day.py` reads it. Old day files with post/carousel still render.
+
+## Course reels (9 AM + 7:30 PM) — the ABAP course
+- Source: `pipeline/syllabus.json` (from the user's syllabus, `pipeline/syllabus.md`). Teach it **in order**:
+  section → lesson → every bullet point. Progress lives in `state.json` → `course`:
+  `pending_parts` (planned remaining parts of the current lesson — always do these first, in order) and `next`
+  (`{"section": S, "lesson": L}` = the next lesson to start). Section 16 (T-codes) is not a course lesson; use it for 1 PM reels.
+- **Plan a lesson before starting it:** list every bullet point and split them into parts so that each part fits ONE reel of
+  ≤ 30 s (your frames ≈ 24-27 s + the ~3 s end card ≈ 40-50 words of voiceover, 3-4 frames). Short lessons = 1 part;
+  big ones = 2-4 parts. Write the remaining parts into `pending_parts` with a `title` and a precise `focus`.
+- **Go deep, not just definitions.** Show what is actually inside: the real SE11/SE80/SE37/... screen, its tabs and field
+  names (use the `screen` kind), what each important field does, a real code example, a common mistake, and the interview
+  angle. Example: a domain is not "a data type" — it is the Definition tab (data type, length, decimals, output length,
+  conversion routine like ALPHA, lowercase) and the Value Range tab (fixed values, intervals, value table).
+- JSON per course reel: `"series": "course"`, `"syllabus": "3.2"`, `"part": 1`, `"parts": 3` (omit part/parts for single-part
+  lessons), `"format": "course_lesson"`, `"tag": "DDIC · Domain 1/3"`, cover `kicker` like "Domains & data elements · Part 1/3".
+  Frame plan: cover → screen / code / flow / table (the meat, 1-2 frames) → answer ("REMEMBER" / common mistake).
+- The end card is automatic: parts that continue get "Part N is *next*" + "Agla part jaldi aa raha hai, follow karo";
+  the last part gets the normal follow card.
+- Caption: start with "Lesson: <title>" or "<topic>, Part n of N", numbered list of what the reel covered, then
+  "Next: <next part/lesson>" and "Follow the series so you don't miss it." Hashtags as usual (topic tag e.g. #ddic).
+- Accuracy matters: SE11 field names, tab names and transaction codes must be exactly as in the SAP system. No invented facts.
+- After queueing: move the done part out of `pending_parts` (append "S.L part n …" to `course.done`), and when a lesson is
+  started advance `next` (next lesson, or lesson 1 of the next section).
+
+`screen` kind (simplified SAP GUI screen):
+`{"kind":"screen","heading":"Definition *tab*","tcode":"SE11","object":"Domain ZD_ORDER_NO","tabs":["Properties","Definition","Value Range"],"active":1,"fields":[["Data Type","CHAR"],["No. Characters","10"],["Convers. Routine","ALPHA"]],"focus":[2],"note":"runs on every input & output"}`
+— up to 7 fields; `tabs` optional; `focus` rows get a red outline; `note` is a handwritten remark under the screen.
 
 ## Steps for a daily run (makes TOMORROW's reels)
 1. DATE = tomorrow (Asia/Kolkata). Read `pipeline/state.json`, `pipeline/topics.json`, `published.json` and list `queue/`.
-2. For each slot 09:00 / 13:00 / 19:30: if `queue/` already has an UNPUBLISHED folder starting with `DATE_HHMM_` (not a key in published.json), skip that slot. Otherwise pick the next unused topic (see topics.json how_to_use).
+2. For each slot 09:00 / 13:00 / 19:30: if `queue/` already has an UNPUBLISHED folder starting with `DATE_HHMM_` (not a key in published.json), skip that slot. 09:00 and 19:30: next course parts (see "Course reels"). 13:00: next unused free topic (see topics.json how_to_use).
 3. Write `pipeline/days/DATE.json` with only the needed reels (each with `"time"`, `"format"`, `"slug"`, `"tag"`, slides, caption, hashtags).
 4. `python3 pipeline/generate.py pipeline/days/DATE.json out/DATE`
 5. Check 8 frames per reel (ffmpeg) + ffprobe (video+audio, 12-18 s). If the generator printed **OVERLAP WARNING** or wrote LENGTH_WARNING.txt, shorten/restructure and re-render until gone.

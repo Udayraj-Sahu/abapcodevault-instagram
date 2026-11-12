@@ -1,7 +1,7 @@
 {
   "handle": "@abapcodevault",
   "mode": "reels_only",
-  "last_queued_date": "2026-11-12",
+  "last_queued_date": "2026-11-13",
   "history": [
     "4 ABAP 7.40 syntax tricks (old vs new)",
     "sy-subrc cheat sheet",
@@ -15,7 +15,9 @@
     "Debugging trick: /h and breakpoint at statement MESSAGE",
     "ALV in 5 lines with CL_SALV_TABLE (reel)",
     "VALUE #( ) operator quiz (reel)",
-    "Interview: STANDARD vs SORTED vs HASHED (reel)"
+    "Interview: STANDARD vs SORTED vs HASHED (reel)",
+    "Course 3.1 DDIC basics",
+    "Course 3.2 Domain part 1: Definition tab"
   ],
   "recent_formats": {
     "reel": [
@@ -24,10 +26,39 @@
       "bug_hunt",
       "live_coding",
       "quiz",
-      "interview_chat"
+      "interview_chat",
+      "course_lesson",
+      "course_lesson"
     ],
     "carousel": [],
     "post": [],
     "cover": []
+  },
+  "course": {
+    "about": "9 AM and 7:30 PM reels teach pipeline/syllabus.json in order. 'next' = the next lesson to start; 'pending_parts' = planned remaining parts of the current lesson (do these first, in order).",
+    "next": {
+      "section": 3,
+      "lesson": 3
+    },
+    "pending_parts": [
+      {
+        "syllabus": "3.2",
+        "part": 2,
+        "parts": 3,
+        "title": "Inside a domain: the Value Range tab",
+        "focus": "Fixed values (single values + short texts, used as F4 and as input check on screens), intervals, value table (proposal for the check table of foreign keys; NOT a check by itself). Show SE11 Value Range tab with the screen kind."
+      },
+      {
+        "syllabus": "3.2",
+        "part": 3,
+        "parts": 3,
+        "title": "Inside a data element",
+        "focus": "Data Type tab (elementary type: domain vs predefined type, or reference type), Field Label tab (short/medium/long/heading with lengths; why labels matter in ALV/selection screens), Further Characteristics (search help + parameter ID SET/GET), documentation (F1 help). Show SE11 screens with the screen kind."
+      }
+    ],
+    "done": [
+      "3.1 DDIC basics",
+      "3.2 part 1 Domain Definition tab"
+    ]
   }
 }

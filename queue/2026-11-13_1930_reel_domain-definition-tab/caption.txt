@@ -1,0 +1,13 @@
+Domains, Part 1 of 3: the Definition tab in SE11.
+
+A domain defines the technical attributes that every data element built on it inherits:
+1. Data type and number of characters
+2. Decimal places and output length
+3. Conversion routine, e.g. ALPHA, which stores 1234 as 0000001234
+4. Lowercase flag
+
+Part 2: the Value Range tab (fixed values, intervals, value table).
+
+Follow the series so you don't miss it.
+
+#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #ddic #abapcodevault

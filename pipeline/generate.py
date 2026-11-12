@@ -1304,7 +1304,8 @@ def make_motion_reel(p, slides, folder, handle, accent):
     has_vo = any(s.get("voiceover") for s in slides)
     if has_vo:
         durations, vo_wav, speech = build_narration(slides, folder, p, default)
-        rmin, rmax = float(p.get("min_len", REEL_MIN)), float(p.get("max_len", REEL_MAX))
+        dmin, dmax = (COURSE_MIN, COURSE_MAX) if p.get("series") == "course" else (REEL_MIN, REEL_MAX)
+        rmin, rmax = float(p.get("min_len", dmin)), float(p.get("max_len", dmax))
         for _ in range(2):   # slightly long? speed the voice up (max +15%) and re-synthesize
             total0 = sum(durations)
             if total0 <= rmax:
@@ -1528,7 +1529,7 @@ def _stamp(text, color=EMPH_RED, size=56):
 
 
 NEW_KINDS = {"quiz", "answer", "chat", "myth", "number", "story", "bug", "table", "flow", "tip",
-             "fact", "choice", "checklist"}
+             "fact", "choice", "checklist", "screen"}
 
 
 def build_new_kind(B, s, accent, x, w, avail_h):
@@ -1735,6 +1736,64 @@ def build_new_kind(B, s, accent, x, w, avail_h):
                 B.add(nt, x + max(0, w - 60 - nt.size[0]), ny + 4, "fade", 0.3, nosnap=True)
                 y = ny + nt.size[1] + 10
 
+    elif kind == "screen":
+        # A simplified SAP GUI screen (e.g. SE11 domain) with tabs and field rows; key rows get an outline + note.
+        heading(s.get("heading", ""), 60)
+        fields = s.get("fields", [])
+        focus = s.get("focus", [])
+        focus = set(focus if isinstance(focus, list) else [focus])
+        lf, vf = F_BODY(34), F_MONO(30)
+        head_h, tab_h, row_h, pad = 64, (60 if s.get("tabs") else 0), 74, 22
+        h = head_h + tab_h + pad + len(fields) * row_h + pad
+        fr = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        dd = ImageDraw.Draw(fr)
+        dd.rounded_rectangle([0, 0, w - 1, h - 1], radius=18, fill=PANEL + (255,), outline=BORDER + (255,), width=2)
+        dd.rounded_rectangle([0, 0, w - 1, head_h], radius=18, fill=PANEL_TOP + (255,))
+        dd.rectangle([0, head_h - 20, w - 1, head_h], fill=PANEL_TOP + (255,))
+        tc = str(s.get("tcode", "SE11"))
+        tw_ = int(d0.textlength(tc, font=F_MONO_B(26))) + 28
+        dd.rounded_rectangle([20, 14, 20 + tw_, 50], radius=8, fill=accent + (255,))
+        dd.text((34, 18), tc, font=F_MONO_B(26), fill=(255, 255, 255))
+        dd.text((20 + tw_ + 18, 19), str(s.get("object", "")), font=F_MONO(26), fill=DIM)
+        dd.line([0, head_h, w, head_h], fill=BORDER + (255,), width=2)
+        tx = 24
+        for i, t in enumerate(s.get("tabs", [])):
+            tf = F_SEMI(28) if i == s.get("active", 0) else F_BODY(28)
+            tl = int(d0.textlength(t, font=tf))
+            col = accent if i == s.get("active", 0) else MUTED
+            dd.text((tx, head_h + 16), t, font=tf, fill=col)
+            if i == s.get("active", 0):
+                dd.rectangle([tx, head_h + tab_h - 6, tx + tl, head_h + tab_h - 2], fill=accent + (255,))
+            tx += tl + 40
+        if tab_h:
+            dd.line([0, head_h + tab_h, w, head_h + tab_h], fill=BORDER + (255,), width=2)
+        B.add(fr, x, y, "up", 0.25, "pop", container=True)
+        y0 = B.items[-1]["y"]
+        label_w = int(w * 0.44)
+        ry = y0 + head_h + tab_h + pad
+        rows_geo = []
+        for i, (lab, val) in enumerate(fields):
+            row = Image.new("RGBA", (w - 40, row_h - 10), (0, 0, 0, 0))
+            rd = ImageDraw.Draw(row)
+            rd.text((4, (row_h - 10 - 34) // 2), str(lab), font=lf, fill=MUTED)
+            vb0 = label_w
+            rd.rounded_rectangle([vb0, 4, w - 44, row_h - 14], radius=8, fill=(255, 255, 255, 255),
+                                 outline=BORDER + (255,), width=2)
+            rd.text((vb0 + 16, (row_h - 10 - 30) // 2), str(val), font=vf, fill=INK)
+            B.add(row, x + 20, ry, "type", 0.18 if i not in focus else 0.3, nosnap=True)
+            rows_geo.append(ry)
+            ry += row_h
+        for i in sorted(focus):
+            if 0 <= i < len(rows_geo):
+                B.overlay(ov_box(w - 40, row_h - 10, EMPH_RED, pad=6, width=5), x + 20, rows_geo[i], w - 40, row_h - 10,
+                          pause=0.2, dur=0.5)
+        y = y0 + h + 26
+        if s.get("note"):
+            nt = text_img([s["note"]], F_HAND(52), EMPH_RED, 56)
+            y = B.add(nt, x + max(0, w - nt.size[0]), y, "fade", 0.3, nosnap=True) + 16
+        if s.get("body"):
+            body(s["body"], 40)
+
     elif kind == "table":
         heading(s.get("heading", ""), 62)
         cols = s.get("columns", [])
@@ -1870,6 +1929,7 @@ PACES = {   # reels are short (12-18 s), so even "calm" is brisk
     "calm": {"voice_speed": 1.0, "lead": 0.2, "tail": 0.32, "pause_k": 0.85, "push": 0.035, "trans": 0.36},
 }
 REEL_MIN, REEL_MAX = 12.0, 18.0
+COURSE_MIN, COURSE_MAX = 15.0, 30.0   # 9 AM / 7:30 PM course reels (syllabus), never longer than 30 s
 FORMATS = {
     "bug_hunt":       {"pace": "fast", "transitions": ["whip", "zoom", "slide", "whip"]},
     "before_after":   {"pace": "fast", "transitions": ["slide", "wipe", "zoom", "slide"]},
@@ -1889,14 +1949,26 @@ OUTRO = {"kind": "cta", "title": "Follow for more *ABAP tricks*",
          "spoken": "Aisi aur tips aur tricks ke liye, follow karo."}
 
 
+OUTRO_NEXT = {"kind": "cta", "title": "Part {n} is *next*",
+              "body": "Follow so you don't miss it.",
+              "actions": ["Follow @abapcodevault"],
+              "voiceover": "अगला part जल्दी आ रहा है, follow करो।",
+              "spoken": "Agla part jaldi aa raha hai, follow karo."}
+
+
 def with_outro(p, slides):
     """Every reel ends with the follow card, unless it already ends with a CTA that asks to follow
-    or the post sets "outro": false."""
+    or the post sets "outro": false. Course parts that continue get a "Part N is next" card."""
     if p.get("outro") is False or not slides:
         return slides
     last = slides[-1]
     if last.get("kind") == "cta" and "follow" in json.dumps(last, ensure_ascii=False).lower():
         return slides
+    part, parts = int(p.get("part") or 0), int(p.get("parts") or 0)
+    if part and parts and part < parts:
+        card = dict(OUTRO_NEXT)
+        card["title"] = card["title"].format(n=part + 1)
+        return list(slides) + [card]
     return list(slides) + [dict(OUTRO)]
 
 

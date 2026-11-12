@@ -1,0 +1,1071 @@
+{
+  "about": "Course syllabus for the 9 AM and 7:30 PM reels, taught in order. Levels: B basic, I intermediate, A advanced. Sections 1-2 were not provided (course starts at section 3).",
+  "sections": [
+    {
+      "no": 3,
+      "title": "ABAP Data Dictionary (DDIC)",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "DDIC basics",
+          "level": "B",
+          "points": [
+            "Role of DDIC, SE11, activation, runtime objects (nametab)"
+          ]
+        },
+        {
+          "no": 2,
+          "title": "Domains & data elements",
+          "level": "B",
+          "points": [
+            "Domain: data type, length, value range, fixed values, value table, conversion routine",
+            "Data element: field labels, documentation, search help & parameter ID assignment"
+          ]
+        },
+        {
+          "no": 3,
+          "title": "Tables",
+          "level": "B",
+          "points": [
+            "Transparent, pooled, cluster tables (and their S/4HANA status)",
+            "Delivery class (A, C, L, G, E, S, W), data class, size category",
+            "Technical settings, buffering (single, generic, full), logging",
+            "Primary key, foreign keys, check tables, cardinality",
+            "Include structures and append structures; currency/quantity reference fields"
+          ]
+        },
+        {
+          "no": 4,
+          "title": "Structures & table types",
+          "level": "B",
+          "points": [
+            "Flat, nested and deep structures; table type with key definition"
+          ]
+        },
+        {
+          "no": 5,
+          "title": "Views",
+          "level": "I",
+          "points": [
+            "Database, projection, maintenance, help views",
+            "Maintenance view + table maintenance generator (SE54, SM30, SM34 view clusters)"
+          ]
+        },
+        {
+          "no": 6,
+          "title": "Search helps",
+          "level": "I",
+          "points": [
+            "Elementary vs collective, selection method, dialog types, search help exits"
+          ]
+        },
+        {
+          "no": 7,
+          "title": "Lock objects",
+          "level": "I",
+          "points": [
+            "Lock modes (E, S, X, O), generated ENQUEUE_/DEQUEUE_ function modules, SM12"
+          ]
+        },
+        {
+          "no": 8,
+          "title": "Indexes",
+          "level": "I",
+          "points": [
+            "Primary vs secondary indexes, when to create, unique index"
+          ]
+        },
+        {
+          "no": 9,
+          "title": "Type groups & enhancement categories",
+          "level": "A",
+          "points": [
+            "Type pools, enhancement category for append/include extensibility"
+          ]
+        },
+        {
+          "no": 10,
+          "title": "Database utility",
+          "level": "A",
+          "points": [
+            "SE14 adjust/convert, table conversion after structural change"
+          ]
+        }
+      ]
+    },
+    {
+      "no": 4,
+      "title": "Internal Tables",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "Concepts",
+          "level": "B",
+          "points": [
+            "Work area vs header line (obsolete), line type, table key, table kind"
+          ]
+        },
+        {
+          "no": 2,
+          "title": "Table kinds",
+          "level": "B",
+          "points": [
+            "Standard, sorted, hashed; when to use each; access cost (linear, binary, hash)",
+            "Unique vs non-unique keys; default key pitfalls"
+          ]
+        },
+        {
+          "no": 3,
+          "title": "Filling tables",
+          "level": "B",
+          "points": [
+            "APPEND, INSERT, COLLECT, APPEND LINES OF, SELECT ... INTO TABLE"
+          ]
+        },
+        {
+          "no": 4,
+          "title": "Reading & looping",
+          "level": "B",
+          "points": [
+            "READ TABLE ... WITH KEY / INDEX / BINARY SEARCH, TRANSPORTING NO FIELDS",
+            "LOOP AT ... WHERE, ASSIGNING <fs>, REFERENCE INTO"
+          ]
+        },
+        {
+          "no": 5,
+          "title": "Changing & deleting",
+          "level": "B",
+          "points": [
+            "MODIFY, MODIFY ... TRANSPORTING, DELETE ... WHERE, DELETE ADJACENT DUPLICATES",
+            "SORT, CLEAR, REFRESH, FREE (memory differences)"
+          ]
+        },
+        {
+          "no": 6,
+          "title": "Control-level processing",
+          "level": "I",
+          "points": [
+            "AT FIRST / AT NEW / AT END OF / AT LAST, SUM, sort-order prerequisites"
+          ]
+        },
+        {
+          "no": 7,
+          "title": "Secondary keys",
+          "level": "A",
+          "points": [
+            "Sorted/hashed secondary keys, USING KEY, key lazy update"
+          ]
+        },
+        {
+          "no": 8,
+          "title": "Nested & deep tables",
+          "level": "I",
+          "points": [
+            "Tables inside structures, parallel cursor technique for nested loops"
+          ]
+        },
+        {
+          "no": 9,
+          "title": "Modern table expressions",
+          "level": "I",
+          "points": [
+            "itab[ key = val ], line_exists( ), line_index( ), lines( )",
+            "VALUE #( ), FOR ... IN, REDUCE, FILTER, CORRESPONDING #( ), LOOP AT ... GROUP BY"
+          ]
+        },
+        {
+          "no": 10,
+          "title": "Ranges",
+          "level": "B",
+          "points": [
+            "RANGES / TYPE RANGE OF, SIGN / OPTION / LOW / HIGH, use in WHERE"
+          ]
+        }
+      ]
+    },
+    {
+      "no": 5,
+      "title": "Open SQL / ABAP SQL",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "SELECT basics",
+          "level": "B",
+          "points": [
+            "SELECT SINGLE, SELECT ... UP TO n ROWS, SELECT ... ENDSELECT (and why to avoid it)",
+            "INTO TABLE, INTO CORRESPONDING FIELDS OF, APPENDING TABLE"
+          ]
+        },
+        {
+          "no": 2,
+          "title": "WHERE conditions",
+          "level": "B",
+          "points": [
+            "=, IN (ranges/select-options), LIKE, BETWEEN, IS NULL, ORDER BY, DISTINCT"
+          ]
+        },
+        {
+          "no": 3,
+          "title": "Joins & subqueries",
+          "level": "I",
+          "points": [
+            "INNER JOIN, LEFT OUTER JOIN, joining on multiple keys, subqueries with EXISTS / IN"
+          ]
+        },
+        {
+          "no": 4,
+          "title": "FOR ALL ENTRIES",
+          "level": "I",
+          "points": [
+            "Empty driver table check, duplicate removal, key completeness"
+          ]
+        },
+        {
+          "no": 5,
+          "title": "Aggregates",
+          "level": "I",
+          "points": [
+            "COUNT, SUM, AVG, MIN, MAX, GROUP BY, HAVING"
+          ]
+        },
+        {
+          "no": 6,
+          "title": "DML statements",
+          "level": "B",
+          "points": [
+            "INSERT, UPDATE, MODIFY, DELETE on DB tables; SY-SUBRC & SY-DBCNT"
+          ]
+        },
+        {
+          "no": 7,
+          "title": "Transactions & LUW",
+          "level": "I",
+          "points": [
+            "COMMIT WORK, ROLLBACK WORK, DB LUW vs SAP LUW",
+            "Update function modules (CALL FUNCTION ... IN UPDATE TASK), PERFORM ... ON COMMIT"
+          ]
+        },
+        {
+          "no": 8,
+          "title": "New ABAP SQL syntax (7.40+)",
+          "level": "I",
+          "points": [
+            "Comma-separated fields, @ host variables, inline @DATA( ), CASE, COALESCE, string/arith functions",
+            "UNION, CTEs (WITH), window functions in newer releases"
+          ]
+        },
+        {
+          "no": 9,
+          "title": "Native & dynamic SQL",
+          "level": "A",
+          "points": [
+            "Dynamic WHERE / field lists, EXEC SQL, ADBC (cl_sql_statement)"
+          ]
+        },
+        {
+          "no": 10,
+          "title": "Database cursor",
+          "level": "A",
+          "points": [
+            "OPEN CURSOR, FETCH NEXT CURSOR ... PACKAGE SIZE, CLOSE CURSOR"
+          ]
+        }
+      ]
+    },
+    {
+      "no": 6,
+      "title": "Modularization Techniques",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "Includes",
+          "level": "B",
+          "points": [
+            "Top include, selection-screen include, forms include; include vs program"
+          ]
+        },
+        {
+          "no": 2,
+          "title": "Macros",
+          "level": "B",
+          "points": [
+            "DEFINE ... END-OF-DEFINITION, limitations, why to avoid in new code"
+          ]
+        },
+        {
+          "no": 3,
+          "title": "Subroutines",
+          "level": "B",
+          "points": [
+            "FORM / PERFORM, USING, CHANGING, TABLES; pass by value vs reference",
+            "External perform, obsolete status in modern ABAP"
+          ]
+        },
+        {
+          "no": 4,
+          "title": "Function modules",
+          "level": "B",
+          "points": [
+            "Function groups (SE80/SE37), global data in function groups",
+            "Import, export, changing, tables, exceptions; RAISE / MESSAGE ... RAISING",
+            "Normal vs remote-enabled vs update function modules",
+            "Calling: CALL FUNCTION, EXCEPTIONS, STARTING NEW TASK (asynchronous), IN BACKGROUND TASK"
+          ]
+        },
+        {
+          "no": 5,
+          "title": "Methods",
+          "level": "I",
+          "points": [
+            "Local vs global class methods (see OOP section) as the modern default"
+          ]
+        },
+        {
+          "no": 6,
+          "title": "Program calls",
+          "level": "I",
+          "points": [
+            "SUBMIT ... AND RETURN / VIA SELECTION-SCREEN / WITH, CALL TRANSACTION, LEAVE TO TRANSACTION"
+          ]
+        }
+      ]
+    },
+    {
+      "no": 7,
+      "title": "Reports",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "Selection screens",
+          "level": "B",
+          "points": [
+            "PARAMETERS, SELECT-OPTIONS, SELECTION-SCREEN BEGIN OF BLOCK / LINE, radio buttons, checkboxes, list boxes",
+            "OBLIGATORY, DEFAULT, NO INTERVALS, NO-EXTENSION, MODIF ID, MATCHCODE OBJECT",
+            "Variants, text elements (selection texts, text symbols), F4 help for custom fields"
+          ]
+        },
+        {
+          "no": 2,
+          "title": "Report events",
+          "level": "B",
+          "points": [
+            "LOAD-OF-PROGRAM, INITIALIZATION, AT SELECTION-SCREEN OUTPUT, AT SELECTION-SCREEN ON <field> / ON VALUE-REQUEST / ON HELP-REQUEST",
+            "START-OF-SELECTION, END-OF-SELECTION, TOP-OF-PAGE, END-OF-PAGE"
+          ]
+        },
+        {
+          "no": 3,
+          "title": "Classical reports",
+          "level": "B",
+          "points": [
+            "WRITE, ULINE, SKIP, NEW-PAGE, FORMAT COLOR / INTENSIFIED / HOTSPOT, LINE-SIZE, LINE-COUNT"
+          ]
+        },
+        {
+          "no": 4,
+          "title": "Interactive reports",
+          "level": "I",
+          "points": [
+            "AT LINE-SELECTION, AT USER-COMMAND, AT PFnn, HIDE, GET CURSOR, READ LINE, SY-LSIND (up to 20 secondary lists)",
+            "TOP-OF-PAGE DURING LINE-SELECTION, GUI status for lists (SE41)"
+          ]
+        },
+        {
+          "no": 5,
+          "title": "ALV — function module based",
+          "level": "B",
+          "points": [
+            "REUSE_ALV_GRID_DISPLAY, REUSE_ALV_LIST_DISPLAY, field catalog, layout, sort, events, top-of-page",
+            "Hierarchical & blocked ALV"
+          ]
+        },
+        {
+          "no": 6,
+          "title": "ALV — OO",
+          "level": "I",
+          "points": [
+            "CL_GUI_ALV_GRID with custom container: field catalog, toolbar, HANDLE_USER_COMMAND, DOUBLE_CLICK, HOTSPOT_CLICK, editable ALV, DATA_CHANGED",
+            "CL_SALV_TABLE (SALV): functions, columns, sorts, aggregations, events, popups",
+            "CL_SALV_TREE, CL_SALV_HIERSEQ_TABLE"
+          ]
+        },
+        {
+          "no": 7,
+          "title": "Background processing",
+          "level": "I",
+          "points": [
+            "SM36/SM37, JOB_OPEN / JOB_SUBMIT / JOB_CLOSE, SY-BATCH, spool output (SP01)"
+          ]
+        },
+        {
+          "no": 8,
+          "title": "Logical databases (legacy)",
+          "level": "A",
+          "points": [
+            "LDB concept, GET events, NODES — read only for legacy support (e.g. HR PNP/PNPCE)"
+          ]
+        }
+      ]
+    },
+    {
+      "no": 8,
+      "title": "Dialog / Module Pool Programming",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "Basics",
+          "level": "I",
+          "points": [
+            "Module pool program (type M), transaction code (SE93), screen numbers, screen flow"
+          ]
+        },
+        {
+          "no": 2,
+          "title": "Screen Painter (SE51)",
+          "level": "I",
+          "points": [
+            "Layout editor, element list, attributes, flow logic",
+            "Screen elements: input/output fields, text fields, push buttons, radio buttons, checkboxes, frames, subscreen areas, custom controls"
+          ]
+        },
+        {
+          "no": 3,
+          "title": "Flow logic events",
+          "level": "I",
+          "points": [
+            "PROCESS BEFORE OUTPUT (PBO), PROCESS AFTER INPUT (PAI), PROCESS ON VALUE-REQUEST (POV), PROCESS ON HELP-REQUEST (POH)",
+            "MODULE, FIELD ... MODULE, CHAIN ... ENDCHAIN, ON INPUT / ON REQUEST, AT EXIT-COMMAND"
+          ]
+        },
+        {
+          "no": 4,
+          "title": "GUI status & title (SE41)",
+          "level": "I",
+          "points": [
+            "Function codes, SET PF-STATUS, SET TITLEBAR, OK_CODE handling, function types (E for exit)"
+          ]
+        },
+        {
+          "no": 5,
+          "title": "Screen navigation",
+          "level": "I",
+          "points": [
+            "CALL SCREEN, SET SCREEN, LEAVE SCREEN, LEAVE TO SCREEN, modal dialog boxes (STARTING AT)"
+          ]
+        },
+        {
+          "no": 6,
+          "title": "Dynamic screen modification",
+          "level": "I",
+          "points": [
+            "LOOP AT SCREEN, SCREEN-INPUT / ACTIVE / INVISIBLE / REQUIRED, MODIFY SCREEN, screen groups"
+          ]
+        },
+        {
+          "no": 7,
+          "title": "Table control & step loops",
+          "level": "I",
+          "points": [
+            "CONTROLS ... TYPE TABLEVIEW, LOOP AT itab WITH CONTROL, scrolling, line selection, insert/delete rows"
+          ]
+        },
+        {
+          "no": 8,
+          "title": "Tabstrip control",
+          "level": "I",
+          "points": [
+            "Tabstrips with subscreens, scrolling at application server vs SAPGUI"
+          ]
+        },
+        {
+          "no": 9,
+          "title": "Subscreens",
+          "level": "I",
+          "points": [
+            "CALL SUBSCREEN, INCLUDING, subscreen data transfer"
+          ]
+        },
+        {
+          "no": 10,
+          "title": "Controls framework",
+          "level": "A",
+          "points": [
+            "Custom container, docking/splitter containers, text editor, picture control, tree control, HTML viewer"
+          ]
+        },
+        {
+          "no": 11,
+          "title": "Validations & locking",
+          "level": "I",
+          "points": [
+            "Field validations, error messages in PAI, lock objects in dialog transactions"
+          ]
+        }
+      ]
+    },
+    {
+      "no": 9,
+      "title": "Object-Oriented ABAP",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "OOP concepts",
+          "level": "I",
+          "points": [
+            "Class, object, encapsulation, inheritance, polymorphism, abstraction"
+          ]
+        },
+        {
+          "no": 2,
+          "title": "Local & global classes",
+          "level": "I",
+          "points": [
+            "CLASS ... DEFINITION / IMPLEMENTATION, SE24 class builder, DEFERRED, LOAD",
+            "Visibility sections: PUBLIC, PROTECTED, PRIVATE; friends"
+          ]
+        },
+        {
+          "no": 3,
+          "title": "Attributes & methods",
+          "level": "I",
+          "points": [
+            "Instance vs static (CLASS-DATA, CLASS-METHODS), constants, read-only attributes",
+            "Parameters: importing, exporting, changing, returning; OPTIONAL, DEFAULT, functional methods"
+          ]
+        },
+        {
+          "no": 4,
+          "title": "Constructors",
+          "level": "I",
+          "points": [
+            "Instance CONSTRUCTOR, CLASS_CONSTRUCTOR, order of execution, NEW #( ) vs CREATE OBJECT"
+          ]
+        },
+        {
+          "no": 5,
+          "title": "Inheritance",
+          "level": "I",
+          "points": [
+            "INHERITING FROM, REDEFINITION, super->, FINAL, ABSTRACT classes/methods"
+          ]
+        },
+        {
+          "no": 6,
+          "title": "Interfaces",
+          "level": "I",
+          "points": [
+            "INTERFACES, alias names, interface methods, compound interfaces"
+          ]
+        },
+        {
+          "no": 7,
+          "title": "Polymorphism & casting",
+          "level": "I",
+          "points": [
+            "Up-cast (narrowing) and down-cast (widening) with ?= / CAST #( ), IS INSTANCE OF, CASE TYPE OF"
+          ]
+        },
+        {
+          "no": 8,
+          "title": "Events",
+          "level": "I",
+          "points": [
+            "EVENTS, RAISE EVENT, SET HANDLER, instance vs static events"
+          ]
+        },
+        {
+          "no": 9,
+          "title": "Object instantiation control",
+          "level": "A",
+          "points": [
+            "CREATE PRIVATE / PROTECTED / PUBLIC, singleton pattern, factory methods"
+          ]
+        },
+        {
+          "no": 10,
+          "title": "Design patterns in ABAP",
+          "level": "A",
+          "points": [
+            "Singleton, factory, MVC, observer, strategy, decorator, persistence layer"
+          ]
+        },
+        {
+          "no": 11,
+          "title": "Persistent & transaction services",
+          "level": "A",
+          "points": [
+            "Persistent classes, object services, CL_OS_SYSTEM"
+          ]
+        },
+        {
+          "no": 12,
+          "title": "RTTS (Run Time Type Services)",
+          "level": "A",
+          "points": [
+            "RTTI: CL_ABAP_TYPEDESCR, CL_ABAP_STRUCTDESCR; RTTC: dynamic structure/table creation"
+          ]
+        },
+        {
+          "no": 13,
+          "title": "Clean ABAP & SOLID",
+          "level": "A",
+          "points": [
+            "SAP Clean ABAP style guide, SOLID principles, dependency injection"
+          ]
+        }
+      ]
+    },
+    {
+      "no": 10,
+      "title": "Exceptions, Debugging & Testing",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "Classical exceptions",
+          "level": "B",
+          "points": [
+            "SY-SUBRC checks, function module EXCEPTIONS, CATCH SYSTEM-EXCEPTIONS (obsolete)"
+          ]
+        },
+        {
+          "no": 2,
+          "title": "Class-based exceptions",
+          "level": "I",
+          "points": [
+            "TRY / CATCH / CLEANUP / ENDTRY, RAISE EXCEPTION TYPE, RETRY, RESUME",
+            "Exception classes: CX_STATIC_CHECK, CX_DYNAMIC_CHECK, CX_NO_CHECK; exception texts via message class/OTR"
+          ]
+        },
+        {
+          "no": 3,
+          "title": "Debugger",
+          "level": "B",
+          "points": [
+            "/h, breakpoints (session, external, BREAK-POINT, BREAK <user>), watchpoints",
+            "Step F5/F6/F7/F8, changing variable values, table/structure view, call stack",
+            "Debugging update tasks, background jobs (JDBG / SM50), popups (debug via shortcut file), system debugging"
+          ]
+        },
+        {
+          "no": 4,
+          "title": "Runtime analysis & logs",
+          "level": "I",
+          "points": [
+            "ST22 (short dumps), SM21 (system log), SLG1 / SLG0 (application log via BAL_* FMs)",
+            "Checkpoint groups (SAAB): ASSERT, LOG-POINT"
+          ]
+        },
+        {
+          "no": 5,
+          "title": "Static checks",
+          "level": "I",
+          "points": [
+            "Extended program check (SLIN), Code Inspector (SCI), ATC"
+          ]
+        },
+        {
+          "no": 6,
+          "title": "Unit testing",
+          "level": "A",
+          "points": [
+            "ABAP Unit: test classes FOR TESTING, RISK LEVEL, DURATION, cl_abap_unit_assert, setup/teardown",
+            "Test doubles: test seams, cl_abap_testdouble, OSQL test environment, CDS test environment"
+          ]
+        }
+      ]
+    },
+    {
+      "no": 11,
+      "title": "Forms & Output",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "SAPscript",
+          "level": "I",
+          "points": [
+            "SE71 form painter: pages, windows (main, variable, constant), page windows, paragraph & character formats",
+            "Print program: OPEN_FORM, START_FORM, WRITE_FORM, END_FORM, CLOSE_FORM",
+            "Standard texts (SO10), INCLUDE, PERFORM in SAPscript, logo upload (SE78)"
+          ]
+        },
+        {
+          "no": 2,
+          "title": "SmartForms",
+          "level": "I",
+          "points": [
+            "SMARTFORMS transaction: global settings, form interface, global definitions, initialization",
+            "Pages, windows, text nodes, tables, templates, loops, alternatives, commands, program lines",
+            "Styles (SMARTSTYLES), calling via SSF_FUNCTION_MODULE_NAME, control & output parameters",
+            "Converting to PDF: CONVERT_OTF, emailing with CL_BCS"
+          ]
+        },
+        {
+          "no": 3,
+          "title": "Adobe Forms (SFP)",
+          "level": "I",
+          "points": [
+            "Interface (ABAP dictionary / XML), context, Adobe LiveCycle Designer layout",
+            "Print program: FP_JOB_OPEN, FP_FUNCTION_MODULE_NAME, FP_JOB_CLOSE; ADS configuration",
+            "FormCalc / JavaScript scripting, interactive forms, PDF output & email"
+          ]
+        },
+        {
+          "no": 4,
+          "title": "Output management",
+          "level": "I",
+          "points": [
+            "NACE output types / condition records (ECC), BRF+ output management (S/4HANA)",
+            "Spool & printer setup (SPAD), SP01/SP02"
+          ]
+        },
+        {
+          "no": 5,
+          "title": "File & email output",
+          "level": "I",
+          "points": [
+            "GUI_DOWNLOAD / GUI_UPLOAD, OPEN DATASET (application server, AL11), Excel export, CL_BCS email with attachments"
+          ]
+        }
+      ]
+    },
+    {
+      "no": 12,
+      "title": "Enhancements & Modifications",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "Enhancement concept",
+          "level": "I",
+          "points": [
+            "Why enhance not modify; modification assistant (SPAU/SPDD) and access keys"
+          ]
+        },
+        {
+          "no": 2,
+          "title": "User exits",
+          "level": "I",
+          "points": [
+            "Form-based exits (e.g. MV45AFZZ in SD), finding them via includes"
+          ]
+        },
+        {
+          "no": 3,
+          "title": "Customer exits",
+          "level": "I",
+          "points": [
+            "SMOD / CMOD projects; function exits (CALL CUSTOMER-FUNCTION), screen exits, menu exits"
+          ]
+        },
+        {
+          "no": 4,
+          "title": "BAdIs",
+          "level": "I",
+          "points": [
+            "Classic BAdI (SE18/SE19, CL_EXITHANDLER), kernel/new BAdI (GET BADI, CALL BADI)",
+            "Single vs multiple use, filter-dependent BAdIs, fallback class"
+          ]
+        },
+        {
+          "no": 5,
+          "title": "Enhancement Framework",
+          "level": "I",
+          "points": [
+            "Implicit enhancement points (start/end of FM, form, method), explicit enhancement points & sections",
+            "Enhancement spots and composite enhancement spots"
+          ]
+        },
+        {
+          "no": 6,
+          "title": "Class/FM enhancements",
+          "level": "A",
+          "points": [
+            "Pre-, post- and overwrite methods, additional parameters"
+          ]
+        },
+        {
+          "no": 7,
+          "title": "Business Transaction Events (BTE)",
+          "level": "A",
+          "points": [
+            "FIBF, P&S vs process interfaces (mainly FI)"
+          ]
+        },
+        {
+          "no": 8,
+          "title": "Validations & substitutions",
+          "level": "A",
+          "points": [
+            "GGB0 / GGB1 (FI/CO)"
+          ]
+        },
+        {
+          "no": 9,
+          "title": "Finding enhancements",
+          "level": "I",
+          "points": [
+            "Techniques: CL_EXITHANDLER breakpoint, SE84, package search, ST05 trace, “find BAdI” reports"
+          ]
+        },
+        {
+          "no": 10,
+          "title": "Key S/4HANA extensibility",
+          "level": "A",
+          "points": [
+            "Key user extensibility (custom fields & logic), developer extensibility, side-by-side on BTP"
+          ]
+        }
+      ]
+    },
+    {
+      "no": 13,
+      "title": "Interfaces & Data Migration",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "File handling",
+          "level": "B",
+          "points": [
+            "Presentation server (GUI_UPLOAD, cl_gui_frontend_services), application server (OPEN / READ / TRANSFER / CLOSE DATASET), Excel upload (TEXT_CONVERT_XLS_TO_SAP, ALSM_EXCEL_TO_INTERNAL_TABLE)"
+          ]
+        },
+        {
+          "no": 2,
+          "title": "BDC (Batch Data Communication)",
+          "level": "I",
+          "points": [
+            "Recording (SHDB), BDCDATA structure",
+            "Call transaction method (modes A/E/N, update S/A/L, MESSAGES INTO), session method (BDC_OPEN_GROUP / INSERT / CLOSE, SM35)",
+            "Table control handling in BDC, CTU_PARAMS"
+          ]
+        },
+        {
+          "no": 3,
+          "title": "LSMW",
+          "level": "I",
+          "points": [
+            "14 steps, recording / batch input / BAPI / IDoc methods (legacy in S/4)"
+          ]
+        },
+        {
+          "no": 4,
+          "title": "S/4HANA Migration Cockpit",
+          "level": "A",
+          "points": [
+            "LTMC / Migrate Your Data app, staging tables, migration objects"
+          ]
+        },
+        {
+          "no": 5,
+          "title": "BAPI",
+          "level": "I",
+          "points": [
+            "BOR (SWO1), finding BAPIs (BAPI transaction), BAPIRET2 return handling",
+            "BAPI_TRANSACTION_COMMIT / ROLLBACK, extension structures (EXTENSIONIN), custom BAPI creation"
+          ]
+        },
+        {
+          "no": 6,
+          "title": "RFC",
+          "level": "I",
+          "points": [
+            "Remote-enabled FMs, RFC destinations (SM59), sRFC, aRFC, tRFC, qRFC, bgRFC"
+          ]
+        },
+        {
+          "no": 7,
+          "title": "ALE & IDocs",
+          "level": "A",
+          "points": [
+            "IDoc structure: control, data, status records; basic types, extensions, message types",
+            "WE30, WE31, WE81, WE82, WE20 partner profiles, BD64 distribution model, WE02/WE05, BD87",
+            "Inbound/outbound process codes, custom IDoc FMs, change pointers (BD50, BD52, BD21)"
+          ]
+        },
+        {
+          "no": 8,
+          "title": "Web services & APIs",
+          "level": "A",
+          "points": [
+            "SOAP services (SE80 / SOAMANAGER), REST via CL_HTTP_CLIENT, JSON (/ui2/cl_json, xco_cp_json)",
+            "OData with SAP Gateway: SEGW, DPC_EXT / MPC_EXT, CRUD-Q methods, $expand, deep insert, /IWFND/MAINT_SERVICE, /IWFND/GW_CLIENT"
+          ]
+        },
+        {
+          "no": 9,
+          "title": "XML & transformations",
+          "level": "A",
+          "points": [
+            "CALL TRANSFORMATION, XSLT & Simple Transformations (STRANS), iXML library"
+          ]
+        },
+        {
+          "no": 10,
+          "title": "Workflow basics",
+          "level": "A",
+          "points": [
+            "SWDD workflow builder, business objects, events, agents, SWI1 / SWEL"
+          ]
+        }
+      ]
+    },
+    {
+      "no": 14,
+      "title": "Performance Tuning",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "Analysis tools",
+          "level": "I",
+          "points": [
+            "ST05 (SQL / buffer / RFC trace), SAT / SE30 (runtime analysis), ST12, SQLM, SWLT, STAD, ST04"
+          ]
+        },
+        {
+          "no": 2,
+          "title": "Database access rules",
+          "level": "I",
+          "points": [
+            "Select only needed fields (no SELECT *), use full/primary keys and indexes, avoid SELECT in LOOP",
+            "Use joins or FOR ALL ENTRIES correctly, aggregate in DB, use UP TO n ROWS, avoid nested SELECTs",
+            "Table buffering and BYPASSING BUFFER"
+          ]
+        },
+        {
+          "no": 3,
+          "title": "Internal table rules",
+          "level": "I",
+          "points": [
+            "Sorted/hashed tables for lookups, BINARY SEARCH, field symbols over work areas, avoid nested loops (parallel cursor)",
+            "DELETE ... WHERE instead of loop + delete, FREE large tables"
+          ]
+        },
+        {
+          "no": 4,
+          "title": "Code pushdown (HANA)",
+          "level": "A",
+          "points": [
+            "Move logic to DB via CDS / AMDP, avoid data-to-code transfer"
+          ]
+        },
+        {
+          "no": 5,
+          "title": "Parallel processing",
+          "level": "A",
+          "points": [
+            "CALL FUNCTION ... STARTING NEW TASK with server groups (RZ12), SPTA framework, background packaging"
+          ]
+        },
+        {
+          "no": 6,
+          "title": "Memory management",
+          "level": "A",
+          "points": [
+            "Memory Inspector (S_MEMORY_INSPECTOR), shared objects (SHMA), sharing vs copying of tables"
+          ]
+        }
+      ]
+    },
+    {
+      "no": 15,
+      "title": "Modern ABAP (7.40 / 7.50+, S/4HANA, ABAP Cloud)",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "New syntax (7.40+)",
+          "level": "I",
+          "points": [
+            "Inline declarations DATA( ), FIELD-SYMBOL( )",
+            "Constructor operators: NEW, VALUE, CORRESPONDING, CONV, CAST, REF, EXACT, COND, SWITCH, REDUCE, FILTER",
+            "Table expressions, FOR iterations, LET, BASE, string templates with formatting options",
+            "Predicate functions, xsdbool( ), boolc( )"
+          ]
+        },
+        {
+          "no": 2,
+          "title": "ABAP CDS views",
+          "level": "A",
+          "points": [
+            "DDIC-based (DEFINE VIEW) vs CDS view entities (DEFINE VIEW ENTITY)",
+            "Joins, associations & path expressions, CASE, CAST, built-in functions, aggregates",
+            "Parameters, session variables, annotations (@AbapCatalog, @UI, @OData.publish, @Analytics)",
+            "Access control (DCL, @AccessControl.authorizationCheck), table functions",
+            "VDM layers: basic / interface (I_), composite, consumption (C_)"
+          ]
+        },
+        {
+          "no": 3,
+          "title": "AMDP",
+          "level": "A",
+          "points": [
+            "IF_AMDP_MARKER_HDB, BY DATABASE PROCEDURE / FUNCTION, SQLScript basics, debugging AMDP"
+          ]
+        },
+        {
+          "no": 4,
+          "title": "RAP (ABAP RESTful Application Programming Model)",
+          "level": "A",
+          "points": [
+            "Data model (CDS), behavior definition (BDEF), behavior pool, service definition & binding",
+            "Managed vs unmanaged, draft handling, determinations, validations, actions, feature control",
+            "EML: READ ENTITIES, MODIFY ENTITIES, COMMIT ENTITIES",
+            "Fiori Elements preview, metadata extensions"
+          ]
+        },
+        {
+          "no": 5,
+          "title": "ABAP Cloud & clean core",
+          "level": "A",
+          "points": [
+            "ABAP Cloud language version, released APIs (C1 contract), BTP ABAP Environment, embedded Steampunk",
+            "Tier model (Tier 1/2/3), ATC cloud readiness checks"
+          ]
+        },
+        {
+          "no": 6,
+          "title": "S/4HANA data model changes",
+          "level": "A",
+          "points": [
+            "MATDOC, ACDOCA, Business Partner (BP) replacing customer/vendor, simplified tables, compatibility views"
+          ]
+        },
+        {
+          "no": 7,
+          "title": "Tooling",
+          "level": "I",
+          "points": [
+            "Eclipse ADT (mandatory for CDS/RAP), abapGit, ABAP Doc, quick fixes & refactoring"
+          ]
+        }
+      ]
+    },
+    {
+      "no": 16,
+      "title": "Key Transaction Codes",
+      "lessons": [],
+      "raw": [
+        "Area",
+        "T-codes",
+        "Development",
+        "SE80, SE38, SE37, SE24, SE11, SE51, SE41, SE93, SE91",
+        "DDIC & data",
+        "SE11, SE14, SE16N, SE54, SM30, SM34",
+        "Transports",
+        "SE09, SE10, SE01, STMS",
+        "Forms",
+        "SE71, SE78, SO10, SMARTFORMS, SMARTSTYLES, SFP, NACE, SPAD, SP01",
+        "Enhancements",
+        "SMOD, CMOD, SE18, SE19, SE20, SE84, SPAU, SPDD",
+        "Migration",
+        "SHDB, SM35, LSMW, LTMC, BAPI",
+        "Interfaces",
+        "SM59, SWO1, WE02, WE05, WE19, WE20, WE30, WE31, WE81, WE82, BD64, BD87, SEGW, SOAMANAGER, /IWFND/MAINT_SERVICE, /IWFND/GW_CLIENT",
+        "Debug & analysis",
+        "ST22, SM21, SLG1, SAAB, ST05, SAT, ST12, SM50, SM66, SM12, SM13",
+        "Jobs",
+        "SM36, SM37",
+        "Quality",
+        "SCI, ATC, SLIN, SE30"
+      ]
+    }
+  ]
+}
