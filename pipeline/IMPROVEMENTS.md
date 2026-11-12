@@ -17,12 +17,13 @@ Based on research (short-form retention guides + learning studies, see Log 2026-
   motion every 2-3 s (word-synced emphasis, step reveals, outlines), never motion that makes text hard to read.
 
 ## Rules (must follow)
-1. **Every run improves ALL six areas** — one small change per area, in this order:
-   **animation → voice → cuts → script → typography → sound/timing**.
-   For each area: do 1-2 web searches for a current technique (short-form editing, motion design, TTS/narration,
-   script writing for short-form explainers...), pick ONE idea that fits the clean notebook look and can be built with PIL + ffmpeg + Kokoro
-   (or take the top unchecked backlog item in that area), implement it, test it, then keep or revert it ON ITS OWN.
-   A failed area never blocks the others or the day's reels. Aim for 6 kept changes; 4+ is a good day.
+1. **Every run ships TWO improvements (user decision, 12 Nov):** one VISUAL + one AUDIO/WORDS.
+   - Visual rotates: animation → cuts → typography → animation … (`state.json` → `improve_next.visual`)
+   - Audio/words rotates: voice → script → sound/timing → voice … (`state.json` → `improve_next.audio`)
+   For each: do 1-2 web searches for a current technique, pick ONE idea that fits the clean notebook look and can be
+   built with PIL + ffmpeg + Kokoro (or the top unchecked backlog item in that area), implement, test, keep or revert
+   it ON ITS OWN. After the run advance both pointers, even if a change was skipped. A failed improvement never
+   blocks the other one or tomorrow's reels.
 2. Each change is small and focused (usually 10-80 lines). Script changes go in `pipeline/VOICEOVER.md`, the
    generator's checks, and upcoming UNPUBLISHED day files (never published reels).
 3. Never change the fixed brand: palette (cream paper, ink, SAP blue, yellow highlighter), fonts, sizes,

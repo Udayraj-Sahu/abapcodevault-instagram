@@ -64,5 +64,9 @@
       "3.1 DDIC basics",
       "3.2 part 1 Domain Definition tab"
     ]
+  },
+  "improve_next": {
+    "visual": "animation",
+    "audio": "voice"
   }
 }
