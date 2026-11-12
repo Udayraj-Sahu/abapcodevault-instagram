@@ -170,3 +170,8 @@ Rotate cover styles too: default, number, question, checklist, bug.
   - https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx
   - https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin
 - Check the MP4 has an audio stream (ffprobe) before delivering.
+
+## Motion graphics (approved 12 Nov, from the 14 Nov reels)
+Automatic per scene kind, no per-reel work: `screen` = cursor click + typed value in each `focus` field;
+`flow` = side rail with a running packet; stamps = short landing shake. Do not add drifting background
+symbols (rejected). New effects or variations can come in through the daily visual improvement.

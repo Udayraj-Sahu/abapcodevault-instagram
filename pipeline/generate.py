@@ -1022,13 +1022,15 @@ def check_overlaps(items, s):
 def schedule_blocks(blocks, speech_start, speech_len, pace_k=1.0, scene_dur=None):
     """Give every block an appear time. Code lines type in across the narration."""
     t = 0.12
-    n_type = sum(1 for b in blocks if b["anim"] in ("type", "typec"))
+    n_type = sum(1 for b in blocks if b["anim"] in ("type", "typec") and b.get("step") is None)
     type_step = 0.1
     if n_type:
         type_step = min(0.45, max(0.09, (speech_len * 0.6) / n_type))
     for b in blocks:
         b["t"] = t
-        if b["anim"] == "type":
+        if b.get("step") is not None:          # fixed spacing (e.g. SE11 rows: quick, leave time for the click)
+            t += b["step"]
+        elif b["anim"] == "type":
             t += type_step
         elif b["anim"] == "typec":
             t += max(type_step, b.get("dur", 0.3) + 0.05)
@@ -1165,7 +1167,10 @@ def draw_blocks(content, blocks, tau, final=False):
         x, y = b["x"], b["y"]
         a = b["anim"]
         if a == "overlay":
-            b["overlay"](content, ease_out(p), x, y)
+            if b.get("live") and not final:
+                b["overlay"](content, ease_out(p), x, y, tau - b["t"])
+            else:
+                b["overlay"](content, ease_out(p), x, y)
             continue
         if a == "type":
             e = ease_out(p)
@@ -1429,7 +1434,15 @@ def render_scene(base, blocks, tau, dur, sub_tl, accent, push=0.04, beat=0.0, st
         lvl = int(2.5 + 2.5 * math.sin(tau * 2.1))
         g_rgb, g_mask = mood_glow(glow, lvl)
         frame.paste(g_rgb, (0, 0), g_mask)
-    frame.paste(content, (0, 0), content)
+    sx = sy = 0
+    for b in blocks:
+        if b.get("anim") == "stamp" and not b.get("decor"):
+            k = tau - (b["t"] + (b.get("dur") or ANIM_DUR["stamp"]))
+            if 0 <= k < 0.2:
+                import math
+                amp = 9 * (1 - k / 0.2)
+                sx, sy = int(amp * math.sin(k * 90)), int(amp * 0.6 * math.cos(k * 70))
+    frame.paste(content, (sx, sy), content)
     if stamp is not None:   # mid-reel re-hook stamp, pops in under the header
         img, t0 = stamp
         if tau >= t0:
@@ -1788,6 +1801,164 @@ def ov_arrow(x0, y0, x1, y1, color=EMPH_RED):
     return fn
 
 
+def _lighten(c, k):
+    return tuple(int(v + (255 - v) * k) for v in c)
+
+
+def ov_cursor_click(box, target, dur=0.8):
+    """MOTION: pointer glides in on a curve, presses (squash + double ripple), the field gets
+    SAP-style focus, then the pointer slides away and fades so the typed value stays clear.
+    box = (x0, y0, x1, y1) of the input field, target = click point; all relative to the overlay origin."""
+    bx0, by0, bx1, by1 = box
+    tx, ty = target
+    def fn(img, p, ox, oy, el=None):
+        import math
+        d = ImageDraw.Draw(img)
+        lin = p if el is None else min(1.0, el / dur)        # linear timeline (p is eased)
+        # field focus: from the click onwards
+        if lin >= 0.6:
+            f = min(1.0, (lin - 0.6) / 0.12)
+            d.rounded_rectangle([ox + bx0, oy + by0, ox + bx1, oy + by1], radius=8,
+                                fill=_lighten(SAP_BLUE, 0.9) + (int(255 * f),),
+                                outline=SAP_BLUE + (int(255 * f),), width=4)
+        # ripple: two rings
+        lr = p if el is None else el / dur                  # unclamped, so ripples finish
+        if 0.58 <= lr:
+            for k, lag in enumerate((0.0, 0.1)):
+                q = (lr - 0.58 - lag) / 0.4
+                if 0 < q < 1:
+                    r = 8 + 52 * (1 - (1 - q) ** 2)
+                    d.ellipse([ox + tx - r, oy + ty - r, ox + tx + r, oy + ty + r],
+                              outline=SAP_BLUE + (int(170 * (1 - q)),), width=5 - 2 * k)
+        # pointer position: cubic ease-in-out along a curve from lower-right
+        sx, sy = tx + 330, ty + 260
+        m = min(1.0, lin / 0.58)
+        e = 4 * m ** 3 if m < 0.5 else 1 - (-2 * m + 2) ** 3 / 2
+        cx = ox + sx + (tx - sx) * e + math.sin(e * math.pi) * 60
+        cy = oy + sy + (ty - sy) * e + math.sin(e * math.pi) * 30
+        alpha = 255
+        if el is not None and el > dur + 0.1:             # after the click: slide off + fade
+            g = min(1.0, (el - dur - 0.1) / 0.3)
+            cx += 40 * g; cy += 30 * g
+            alpha = int(255 * (1 - g))
+        if lin < 0.04 or alpha <= 0:
+            return
+        press = 0.82 if 0.58 <= lin < 0.7 else 1.0
+        s = 1.5 * press
+        pts = [(0, 0), (0, 34), (8, 27), (14, 41), (21, 38), (15, 25), (25, 25)]
+        poly = [(cx + px * s, cy + py * s) for px, py in pts]
+        d.polygon([(a + 4, b + 6) for a, b in poly], fill=(0, 0, 0, int(alpha * 0.22)))
+        d.line(poly + [poly[0]], fill=(255, 255, 255, alpha), width=7, joint="curve")
+        d.polygon(poly, fill=(25, 25, 28, alpha))
+    return fn
+
+
+def ov_type_value(text, font, tx, ty, color=INK, caret=SAP_BLUE):
+    """MOTION: value typed into the focused field, char by char, with a blinking caret."""
+    def fn(img, p, ox, oy, el=None):
+        d = ImageDraw.Draw(img)
+        n = int(round(len(text) * p))
+        shown = text[:n]
+        d.text((ox + tx, oy + ty), shown, font=font, fill=color + (255,))
+        cx = ox + tx + d.textlength(shown, font=font) + 3
+        on = p < 1 or (el is not None and int(el * 2.4) % 2 == 0 and el < 2.6)
+        if on:
+            d.rectangle([cx, oy + ty - 2, cx + 3, oy + ty + font.size + 4], fill=caret + (255,))
+    return fn
+
+
+def ov_flow_arrow(length, color):
+    """MOTION: arrow draws on over a soft track, then a glowing 'packet' with a fading tail
+    keeps travelling down it; the arrowhead pulses each time the packet arrives."""
+    track = _lighten(color, 0.78)
+    def fn(img, p, ox, oy, el=None):
+        d = ImageDraw.Draw(img)
+        y0, y1 = oy + 4, oy + length - 8
+        d.line([ox, y0, ox, y0 + (y1 - y0) * p], fill=track + (255,), width=14)
+        _hand_line(d, ox, y0, ox, y1, p, color + (255,), 5, head=True)
+        if el is None or p < 1:
+            return
+        period = 1.0
+        q = ((el - 0.3) % period) / period
+        if el < 0.3:
+            return
+        travel = min(1.0, q / 0.8)                        # 80% travelling, 20% arrival pulse
+        yy = y0 + 6 + (y1 - y0 - 18) * (1 - (1 - travel) ** 2)
+        if q < 0.8:
+            for k in range(5, -1, -1):                     # tail
+                ty_ = yy - k * 7
+                if ty_ < y0:
+                    continue
+                r = 9 - k * 1.2
+                a = int(255 * (1 - k / 6))
+                d.ellipse([ox - r, ty_ - r, ox + r, ty_ + r], fill=color + (a,))
+            d.ellipse([ox - 4, yy - 4, ox + 4, yy + 4], fill=(255, 255, 255, 230))
+        else:                                              # arrival pulse at the tip
+            g = (q - 0.8) / 0.2
+            r = 8 + 20 * g
+            d.ellipse([ox - r, y1 - r, ox + r, y1 + r], outline=color + (int(200 * (1 - g)),), width=4)
+    return fn
+
+
+class Draw_shift:
+    """ImageDraw wrapper that offsets every coordinate by (ox, oy)."""
+    def __init__(self, img, ox, oy):
+        self.d, self.ox, self.oy = ImageDraw.Draw(img), ox, oy
+    def _m(self, xy):
+        return [(v + (self.ox if i % 2 == 0 else self.oy)) for i, v in enumerate(xy)]
+    def line(self, xy, **k): self.d.line(self._m(xy), **k)
+    def ellipse(self, xy, **k): self.d.ellipse(self._m(xy), **k)
+    def rounded_rectangle(self, xy, **k): self.d.rounded_rectangle(self._m(xy), **k)
+
+
+def ov_flow_rail(spans, bx, bw, color):
+    """MOTION: a rail beside the flow steps; a glowing packet runs down it on a loop and each
+    step lights up (node fills + accent bar on the card) as the packet passes."""
+    import math
+    rx = bx - 36
+    cys = [(a + b) / 2 for a, b in spans]
+    light = _lighten(color, 0.8)
+    step_t = 0.55
+    def fn(img, p, ox, oy, el=None):
+        d = Draw_shift(img, ox, oy)
+        y0, y1 = cys[0], cys[-1]
+        d.line([rx, y0, rx, y0 + (y1 - y0) * p], fill=light + (255,), width=8)
+        n = len(cys)
+        pos = None
+        if el is not None and p >= 1 and el > 0.5:
+            loop = n * step_t + 0.6
+            u = ((el - 0.5) % loop) / step_t                 # 0..n (+pause)
+            if u <= n - 1:
+                k = int(u); f = u - k
+                f = f * f * (3 - 2 * f)
+                pos = cys[k] + (cys[min(k + 1, n - 1)] - cys[k]) * f
+                d.line([rx, y0, rx, pos], fill=color + (255,), width=8)
+        for i, cy in enumerate(cys):
+            if p * (n - 1) + 1e-6 < i:
+                continue
+            lit = pos is not None and pos >= cy - 2
+            r = 13
+            if lit:
+                d.ellipse([rx - r, cy - r, rx + r, cy + r], fill=color + (255,))
+                top, bot = spans[i]
+                d.rounded_rectangle([bx + 2, top + 10, bx + 9, bot - 10], radius=3, fill=color + (255,))
+                if pos - cy < 30:                             # arrival ring
+                    g = (pos - cy) / 30 if pos > cy else 0
+                    rr = r + 4 + 14 * g
+                    d.ellipse([rx - rr, cy - rr, rx + rr, cy + rr], outline=color + (int(180 * (1 - g)),), width=3)
+            else:
+                d.ellipse([rx - r, cy - r, rx + r, cy + r], fill=(255, 255, 255, 255), outline=color + (255,), width=4)
+        if pos is not None:
+            for k in range(5, -1, -1):
+                yy = pos - k * 8
+                if yy < y0:
+                    continue
+                rr = 11 - k * 1.5
+                d.ellipse([rx - rr, yy - rr, rx + rr, yy + rr], fill=color + (int(255 * (1 - k / 6)),))
+            d.ellipse([rx - 4, pos - 4, rx + 4, pos + 4], fill=(255, 255, 255, 240))
+    return fn
+
+
 def ov_tick(size, color=GREEN):
     def fn(img, p, ox, oy):
         d = ImageDraw.Draw(img)
@@ -2107,12 +2278,22 @@ def build_new_kind(B, s, accent, x, w, avail_h):
             vb0 = label_w
             rd.rounded_rectangle([vb0, 4, w - 44, row_h - 14], radius=8, fill=(255, 255, 255, 255),
                                  outline=BORDER + (255,), width=2)
-            rd.text((vb0 + 16, (row_h - 10 - 30) // 2), str(val), font=vf, fill=INK)
-            B.add(row, x + 20, ry, "type", 0.18 if i not in focus else 0.3, nosnap=True)
+            if i not in focus or not str(val):
+                rd.text((vb0 + 16, (row_h - 10 - 30) // 2), str(val), font=vf, fill=INK)
+            B.add(row, x + 20, ry, "type", 0.18 if i not in focus else 0.3, nosnap=True, step=0.07)
             rows_geo.append(ry)
             ry += row_h
         for i in sorted(focus):
             if 0 <= i < len(rows_geo):
+                val = str(fields[i][1])
+                fbox = (label_w, 4, w - 44, row_h - 14)
+                tw_v = int(d0.textlength(val, font=vf))
+                tgt = (label_w + 16 + max(tw_v, 120) + 50, (row_h - 10) // 2)
+                B.overlay(ov_cursor_click(fbox, tgt, 0.8), x + 20, rows_geo[i], w - 40, row_h - 10,
+                          pause=0.95, dur=0.8, sfx="tick", live=True)
+                if val:
+                    B.overlay(ov_type_value(val, vf, label_w + 16, (row_h - 10 - 30) // 2), x + 20, rows_geo[i],
+                              w - 40, row_h - 10, pause=0.1 + 0.07 * len(val), dur=0.07 * len(val), sfx="tick", live=True)
                 B.overlay(ov_box(w - 40, row_h - 10, EMPH_RED, pad=6, width=5), x + 20, rows_geo[i], w - 40, row_h - 10,
                           pause=0.2, dur=0.5)
         y = y0 + h + 26
@@ -2155,12 +2336,18 @@ def build_new_kind(B, s, accent, x, w, avail_h):
         bw = int(w * 0.86)
         bx = x + (w - bw) // 2
         gap = 64
+        spans = []
         for i, st_ in enumerate(steps):
             card = _card(bw, wrap(d0, st_, F_SEMI(40), bw - 60), F_SEMI(40), pad=24)
             y = B.add(card, bx, y, "pop", 0.25, "pop")
+            spans.append((B.items[-1]["y"], y))
             if i < len(steps) - 1:
                 B.overlay(ov_arrow(0, 6, 0, gap - 6, accent), x + w // 2, y, 2, gap, pause=0.2, dur=0.35, sfx=None)
                 y += gap
+        if len(spans) > 1:
+            o_y = spans[0][0]
+            rel = [(a - o_y, b - o_y) for a, b in spans]
+            B.overlay(ov_flow_rail(rel, 0, bw, accent), bx, o_y, 2, 2, pause=0.1, dur=0.5, sfx=None, live=True, nosnap=True)
 
     elif kind == "tip":
         if s.get("kicker"):
