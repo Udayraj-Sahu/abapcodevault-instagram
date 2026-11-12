@@ -1,9 +1,0 @@
-One missing IF, and the report read the entire VBAP table.
-
-With FOR ALL ENTRIES, an empty driver table means the WHERE condition is ignored and every row is selected. Always check IS NOT INITIAL first, and remove duplicates from the driver table.
-
-This is a classic interview question, so save it.
-
-160 more interview questions with answers: ABAP Interview Pack, link in bio.
-
-#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #performance #sapinterview #abapcodevault
