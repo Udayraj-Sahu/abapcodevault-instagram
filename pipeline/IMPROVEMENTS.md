@@ -17,7 +17,7 @@ then logs it here. The goal: each week's content looks noticeably more polished 
    annotations, visual hierarchy on static slides, carousel cover hooks.
 4. Test before keeping it: render `pipeline/days/2026-11-12.json` (it has a post, a carousel and a reel) into a temp folder AND today's new day file.
    Look at contact sheets (slides + 8 reel frames). Confirm the reel still has video + audio.
-   No OVERLAP WARNING allowed. If anything is broken, overlapping, cut off, harder to read, or simply not better: `git checkout pipeline/generate.py` and skip.
+   No OVERLAP WARNING allowed, and text must stay on the notebook grid (baselines on ruled lines, see README). If anything is broken, overlapping, cut off, harder to read, or simply not better: `git checkout pipeline/generate.py` and skip.
 5. Log it below (date, area, what changed, why it is better) and commit it as its own commit:
    `Improve: <short description>`.
 
@@ -70,3 +70,4 @@ then logs it here. The goal: each week's content looks noticeably more polished 
 | 2026-11-11 | Reel cuts | Transitions rotate between rise, slide (header stays fixed) and zoom | Same fade every cut felt repetitive; variety keeps attention |
 | 2026-11-11 | Variety engine | 8 reel formats, 8 carousel formats, 8 post formats; 13 new slide kinds; stamp/typewriter/draw-on/slide anims; circle/arrow/strike/tick/spotlight overlays; whip/flip/wipe transitions; fast/calm pacing; stamp/tick/scratch SFX | Every post feels different while the brand stays fixed |
 | 2026-11-11 | Static slides | Light notebook theme, highlighter on key words, handwritten notes, auto-fit lists | Final brand design; lists never overflow |
+| 2026-11-12 | All (static + reels) | Notebook grid: every text baseline on a ruled line, fixed line pitches (64/128), header/footer on rules, code & highlight boxes between rules, centring in whole lines, list rows with aligned description column, equal-height choice cards, matched code size in compare slides, footer/caption overflow check | User: text alignment and line height looked uneven against the ruled paper |

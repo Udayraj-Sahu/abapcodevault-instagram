@@ -24,6 +24,13 @@ Each daily run creates tomorrow's 3 posts.
 - Wrap 1-3 key words of every title/heading in `*asterisks*` to get the yellow highlighter, e.g. `"A full *ALV report* in 10 lines"`. Use it on every cover title, heading and CTA title; never on more than half the words.
 - Cover `kicker` is a short handwritten note (2-5 words), e.g. "No field catalog needed".
 - Slide kinds: cover, text, code, compare, list, cta. Slide text English, short. Max ~12 code lines per panel, ~45 characters per code line.
+- **Notebook grid (fixed, built into generate.py):** ruled lines every 64 px and every text baseline sits ON a ruled line.
+  Body text = 1 line pitch (64 px); headings = 58 px on 1 pitch or 108 px on 2 pitches; header/footer sit on rules;
+  code boxes and highlight boxes start/end between rules; content is centred in whole-line steps.
+  Never add layout code that places text at arbitrary y: use `snap_base()`, `grid_box()`, `heading_img()`, `text_img()`.
+  If text looks "off the lines" or spacing is uneven in a render, that is a bug to fix, not to ship.
+- List items ("Label - description") render one per ruled line with descriptions in one aligned column; keep labels short.
+- The generator warns (OVERLAP WARNING) if text collides OR content runs into the footer/captions; shorten until it is gone.
 
 ## Captions (fixed)
 - **Professional English**, LinkedIn-like tone. No Hinglish in captions.
