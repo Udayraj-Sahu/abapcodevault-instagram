@@ -700,7 +700,7 @@ def make_reel(frames, out_mp4, durations, audio=None):
 
 def build_narration(slides, folder, p, default_secs):
     """Synthesize one clip per slide that has 'voiceover'. Returns (durations, wav path or None)."""
-    voice = p.get("voice", "hm_psi")
+    voice = p.get("voice", "am_michael")
     lang = p.get("voice_lang", "hi")
     speed = float(p.get("voice_speed", 1.0))
     if not any(s.get("voiceover") for s in slides):

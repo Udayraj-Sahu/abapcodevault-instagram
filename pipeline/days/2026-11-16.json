@@ -5,7 +5,7 @@
     {
       "type": "reel",
       "format": "quiz",
-      "voice": "hm_psi",
+      "voice": "am_michael",
       "voice_lang": "en",
       "time": "13:00",
       "slug": "value-operator-quiz",

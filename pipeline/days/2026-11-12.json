@@ -41,7 +41,7 @@
     {
       "type": "reel",
       "format": "before_after",
-      "voice": "hm_psi",
+      "voice": "am_michael",
       "voice_lang": "en",
       "slides": [
         {
@@ -92,7 +92,7 @@
     {
       "type": "reel",
       "format": "live_coding",
-      "voice": "hm_psi",
+      "voice": "am_michael",
       "voice_lang": "en",
       "time": "13:00",
       "slug": "salv-alv-5-lines",
