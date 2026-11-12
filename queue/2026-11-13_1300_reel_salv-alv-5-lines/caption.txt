@@ -9,7 +9,7 @@ Columns and headings come from the table type. Wrap the call in TRY...CATCH cx_s
 
 Which ALV do you use most: SALV or REUSE_ALV_GRID_DISPLAY?
 
-Next: Course lesson, inside a domain (tonight at 7:30 PM).
+Next: why SAP adds zeros to your order numbers (tonight at 7:30 PM).
 
 The full template with hotspots, totals and layouts is in the ABAP Code Vault (link in bio).
 

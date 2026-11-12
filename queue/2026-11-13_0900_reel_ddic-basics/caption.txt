@@ -1,13 +1,13 @@
+Added a field to your table, but your program says it is unknown?
+
 Lesson 1 of the ABAP course: the Data Dictionary (DDIC).
 
-Every table, structure, domain and data element your programs use is defined centrally in SE11.
-
-1. One transaction for tables, views, types, domains, search helps and lock objects
+1. Tables, views, types, domains and search helps are all defined in SE11
 2. Saving creates an inactive version only
-3. Activation generates the runtime object (nametab) that programs read
+3. Activation rebuilds the runtime object (nametab) that programs read
+
+Quiz: what does Ctrl+F3 do? The answer is in the reel. Drop it in the comments.
 
 Next: Inside a domain, the Definition tab (tonight at 7:30 PM).
-
-Follow the series so you don't miss a part.
 
 #sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #ddic #abapcodevault

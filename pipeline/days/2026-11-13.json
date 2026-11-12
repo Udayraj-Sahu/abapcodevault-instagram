@@ -15,14 +15,31 @@
    "slides": [
     {
      "kind": "cover",
-     "kicker": "ABAP course · DDIC",
-     "title": "What is the *Data Dictionary*?",
-     "voiceover": "Where do your tables and types actually live? In the Data Dictionary.",
-     "spoken": "Where do your tables and types actually live? In the Data Dictionary."
+     "kicker": "ABAP course · DDIC · Lesson 1",
+     "title": "Your program can't see your *new field*?",
+     "voiceover": "You added a field to your table, but your program can't see it. Here's why.",
+     "spoken": "You added a field to your table, but your program can't see it. Here's why."
+    },
+    {
+     "kind": "sap_error",
+     "label": "THE PROBLEM",
+     "heading": "The field is *right there*...",
+     "tcode": "SE38",
+     "title": "ZORDER_REPORT",
+     "code": [
+      "SELECT order_no, zz_priority",
+      "  FROM zorders",
+      "  INTO TABLE @lt_orders."
+     ],
+     "bad_line": 0,
+     "message": "Field \"ZZ_PRIORITY\" is unknown.",
+     "say": "unknown",
+     "voiceover": "The field is in SE11, but the syntax check says it's unknown.",
+     "spoken": "The field is in SE11, but the syntax check says it's unknown."
     },
     {
      "kind": "screen",
-     "heading": "One transaction: *SE11*",
+     "heading": "Where it lives: *SE11*",
      "tcode": "SE11",
      "object": "ABAP Dictionary: Initial Screen",
      "fields": [
@@ -59,8 +76,8 @@
       0
      ],
      "note": "tables, types, domains: all here",
-     "voiceover": "In SE11 you define tables, views, domains and search helps, all in one place.",
-     "spoken": "In SE11 you define tables, views, domains and search helps, all in one place."
+     "voiceover": "Tables, types and domains all live in SE11, the Data Dictionary.",
+     "spoken": "Tables, types and domains all live in SE11, the Data Dictionary."
     },
     {
      "kind": "flow",
@@ -71,28 +88,28 @@
       "Runtime object (nametab) created",
       "Programs use the nametab"
      ],
-     "voiceover": "Saving does nothing on its own. Activate it, the runtime object is created, and programs read that.",
-     "spoken": "Saving does nothing on its own. Activate it, the runtime object is created, and programs read that."
+     "voiceover": "Saving only creates an inactive version. Activate it, and the runtime object programs read is rebuilt.",
+     "spoken": "Saving only creates an inactive version. Activate it, and the runtime object programs read is rebuilt."
     },
     {
      "kind": "versus",
      "label": "REMEMBER",
-     "heading": "Inactive = *old version* runs",
+     "heading": "Saved is *not* active",
      "bad": {
       "title": "Only saved",
       "sub": "old version runs",
-      "say": "old"
+      "say": "saved"
      },
      "good": {
       "title": "Activated",
-      "sub": "new version runs",
-      "say": "check"
+      "sub": "new field works",
+      "say": "activate"
      },
-     "spoken": "Program still behaving the old way? Check that you activated it.",
-     "voiceover": "Program still behaving the old way? Check that you activated it."
+     "voiceover": "Only saved? The old version runs. Activate, and the new field works.",
+     "spoken": "Only saved? The old version runs. Activate, and the new field works."
     }
    ],
-   "caption": "Lesson 1 of the ABAP course: the Data Dictionary (DDIC).\n\nEvery table, structure, domain and data element your programs use is defined centrally in SE11.\n\n1. One transaction for tables, views, types, domains, search helps and lock objects\n2. Saving creates an inactive version only\n3. Activation generates the runtime object (nametab) that programs read\n\nNext: Inside a domain, the Definition tab (tonight at 7:30 PM).\n\nFollow the series so you don't miss a part.",
+   "caption": "Added a field to your table, but your program says it is unknown?\n\nLesson 1 of the ABAP course: the Data Dictionary (DDIC).\n\n1. Tables, views, types, domains and search helps are all defined in SE11\n2. Saving creates an inactive version only\n3. Activation rebuilds the runtime object (nametab) that programs read\n\nQuiz: what does Ctrl+F3 do? The answer is in the reel. Drop it in the comments.\n\nNext: Inside a domain, the Definition tab (tonight at 7:30 PM).",
    "hashtags": [
     "#sap",
     "#abap",
@@ -107,7 +124,15 @@
    "next": {
     "title": "Inside a *domain*",
     "when": "tonight at 7:30 PM",
-    "voice": "inside a domain, the Definition tab"
+    "quiz": {
+     "question": "Quiz: what does *Ctrl+F3* do?",
+     "options": [
+      "Save",
+      "Activate",
+      "Check"
+     ]
+    },
+    "vo": "Quiz: what does Control F3 do? The answer is in this reel. Comment it."
    },
    "comment_word": "DDIC"
   },
@@ -122,31 +147,79 @@
    "slides": [
     {
      "kind": "cover",
-     "kicker": "No field catalog",
-     "title": "A full *ALV report* in 5 lines",
-     "voiceover": "A full ALV report in five lines? No field catalog needed.",
-     "spoken": "A full ALV report in five lines? No field catalog needed."
+     "kicker": "ALV in 5 lines",
+     "title": "Stop writing *field catalogs*",
+     "voiceover": "Still writing a field catalog for every simple report? Stop.",
+     "spoken": "Still writing a field catalog for every simple report? Stop."
+    },
+    {
+     "kind": "versus",
+     "label": "THE MISTAKE",
+     "heading": "Same report, *two ways*",
+     "bad": {
+      "title": "Field catalog",
+      "sub": "40+ lines",
+      "say": "old"
+     },
+     "good": {
+      "title": "CL_SALV_TABLE",
+      "sub": "5 lines",
+      "say": "salv"
+     },
+     "voiceover": "The old way takes forty lines. SALV does it in five.",
+     "spoken": "The old way takes forty lines. SALV does it in five."
     },
     {
      "kind": "code",
-     "heading": "*CL_SALV_TABLE*",
+     "heading": "The fix: *CL_SALV_TABLE*",
      "typewriter": true,
      "filename": "zsalv_demo.abap",
      "code": "cl_salv_table=>factory(\n  IMPORTING r_salv_table = DATA(lo_alv)\n  CHANGING  t_table      = lt_orders ).\nlo_alv->get_functions( )->set_all( ).\nlo_alv->display( ).",
-     "voiceover": "Call the SALV factory, pass your table, switch on the toolbar, and display.",
-     "spoken": "Call the SALV factory, pass your table, switch on the toolbar, and display."
+     "voiceover": "Call factory, pass your table, switch on the toolbar, and display.",
+     "spoken": "Call factory, pass your table, switch on the toolbar, and display."
     },
     {
-     "kind": "answer",
-     "label": "RECAP",
-     "heading": "*factory* then *display*",
-     "body": "Columns come from the table type automatically.",
-     "highlight": "Wrap it in TRY...CATCH cx_salv_msg",
-     "voiceover": "The columns are built automatically. Save this.",
-     "spoken": "The columns are built automatically. Save this."
+     "kind": "output",
+     "label": "RESULT",
+     "heading": "Full ALV, *zero setup*",
+     "tcode": "ALV",
+     "title": "Orders",
+     "columns": [
+      "Order",
+      "Customer",
+      "Amount"
+     ],
+     "rows": [
+      [
+       "0000001234",
+       "ACME Ltd",
+       "1,250.00"
+      ],
+      [
+       "0000001235",
+       "Globex",
+       "980.50"
+      ],
+      [
+       "0000001236",
+       "Initech",
+       "2,400.00"
+      ],
+      [
+       "0000001237",
+       "Umbrella",
+       "310.75"
+      ]
+     ],
+     "verdict": {
+      "text": "5 LINES",
+      "good": true
+     },
+     "voiceover": "Sorting, filters and Excel export, all included. Save this.",
+     "spoken": "Sorting, filters and Excel export, all included. Save this."
     }
    ],
-   "caption": "Still building a field catalog for every simple report?\n\nCL_SALV_TABLE gives you a full ALV in a few lines:\n1. factory( ) with your internal table\n2. get_functions( )->set_all( ) for sort, filter and Excel export\n3. display( )\n\nColumns and headings come from the table type. Wrap the call in TRY...CATCH cx_salv_msg.\n\nWhich ALV do you use most: SALV or REUSE_ALV_GRID_DISPLAY?\n\nNext: Course lesson, inside a domain (tonight at 7:30 PM).\n\nThe full template with hotspots, totals and layouts is in the ABAP Code Vault (link in bio).",
+   "caption": "Still building a field catalog for every simple report?\n\nCL_SALV_TABLE gives you a full ALV in a few lines:\n1. factory( ) with your internal table\n2. get_functions( )->set_all( ) for sort, filter and Excel export\n3. display( )\n\nColumns and headings come from the table type. Wrap the call in TRY...CATCH cx_salv_msg.\n\nWhich ALV do you use most: SALV or REUSE_ALV_GRID_DISPLAY?\n\nNext: why SAP adds zeros to your order numbers (tonight at 7:30 PM).\n\nThe full template with hotspots, totals and layouts is in the ABAP Code Vault (link in bio).",
    "hashtags": [
     "#sap",
     "#abap",
@@ -159,9 +232,9 @@
     "#abapcodevault"
    ],
    "next": {
-    "title": "Inside a *domain*",
+    "title": "Why SAP adds *zeros*",
     "when": "tonight at 7:30 PM",
-    "voice": "the course, inside a domain"
+    "vo": "Tonight: why SAP adds zeros to your order numbers. Follow so you don't miss it."
    },
    "comment_word": "ALV"
   },
@@ -180,10 +253,10 @@
    "slides": [
     {
      "kind": "cover",
-     "kicker": "Domains & data elements · Part 1/3",
-     "title": "Inside a *domain*: the Definition tab",
-     "voiceover": "A domain is more than a data type. Let's look inside SE11.",
-     "spoken": "A domain is more than a data type. Let's look inside SE11."
+     "kicker": "Domains · Part 1/3",
+     "title": "Why does SAP add *zeros* to your number?",
+     "voiceover": "You type one two three four. SAP saves it with six zeros in front. Why?",
+     "spoken": "You type 1234. SAP saves it with six zeros in front. Why?"
     },
     {
      "kind": "screen",
@@ -226,28 +299,37 @@
       4
      ],
      "note": "runs on every input & output",
-     "voiceover": "Data type, length, output length. And the most important field, the conversion routine.",
-     "spoken": "Data type, length, output length. And the most important field, the conversion routine."
+     "voiceover": "It's in the domain. Definition tab: type, length, and the conversion routine.",
+     "spoken": "It's in the domain. Definition tab: type, length, and the conversion routine."
     },
     {
      "kind": "code",
-     "heading": "*ALPHA* adds the leading zeros",
+     "heading": "*ALPHA* adds the zeros",
      "typewriter": true,
      "filename": "alpha_demo.abap",
      "code": "lv_order = '1234'.\nCALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'\n  EXPORTING input  = lv_order\n  IMPORTING output = lv_order.\n\" lv_order = '0000001234'",
-     "voiceover": "You type 1234, the database stores leading zeros. In code, call ALPHA INPUT.",
-     "spoken": "You type 1234, the database stores leading zeros. In code, call ALPHA INPUT."
+     "voiceover": "ALPHA adds leading zeros on input and removes them on output.",
+     "spoken": "ALPHA adds leading zeros on input and removes them on output."
     },
     {
-     "kind": "answer",
-     "label": "REMEMBER",
-     "heading": "One domain, *many fields*",
-     "body": "Every data element on this domain gets the same type, length and conversion.",
-     "voiceover": "One domain, many fields. Change the domain, and they all change.",
-     "spoken": "One domain, many fields. Change the domain, and they all change."
+     "kind": "versus",
+     "label": "THE MISTAKE",
+     "heading": "SELECT with *1234*",
+     "bad": {
+      "title": "WHERE = '1234'",
+      "sub": "no rows found",
+      "say": "select"
+     },
+     "good": {
+      "title": "ALPHA INPUT first",
+      "sub": "'0000001234' found",
+      "say": "convert"
+     },
+     "voiceover": "Classic mistake: select with one two three four, and you find nothing. Convert it first.",
+     "spoken": "Classic mistake: select with 1234, and you find nothing. Convert it first."
     }
    ],
-   "caption": "Domains, Part 1 of 3: the Definition tab in SE11.\n\nA domain defines the technical attributes that every data element built on it inherits:\n1. Data type and number of characters\n2. Decimal places and output length\n3. Conversion routine, e.g. ALPHA, which stores 1234 as 0000001234\n4. Lowercase flag\n\nNext: Part 2, the Value Range tab (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
+   "caption": "You type 1234. SAP stores 0000001234. Why?\n\nDomains, Part 1 of 3: the Definition tab in SE11.\n\n1. Data type and number of characters\n2. Decimal places and output length\n3. Conversion routine: ALPHA adds leading zeros on input and removes them on output\n\nClassic mistake: SELECT ... WHERE order_no = '1234' finds nothing. Convert with CONVERSION_EXIT_ALPHA_INPUT first.\n\nNext: Part 2, the Value Range tab (tomorrow at 9 AM).",
    "hashtags": [
     "#sap",
     "#abap",
@@ -262,7 +344,7 @@
    "next": {
     "title": "Part 2 · The *Value Range* tab",
     "when": "tomorrow at 9 AM",
-    "voice": "part two, the Value Range tab"
+    "vo": "Part 2, tomorrow at 9 AM: how SAP blocks wrong values before your code even runs."
    },
    "comment_word": "DOMAIN"
   }

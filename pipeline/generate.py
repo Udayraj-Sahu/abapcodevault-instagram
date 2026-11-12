@@ -970,6 +970,21 @@ def build_blocks(s, accent, top_z=None, bottom_z=None):
     elif kind == "cta":
         y = B.add(heading_img(s.get("title", "Save this post"), F_HEAD(92), w, lh=100), x - 6, y, "pop", 0.3, "pop") + 40
         y = B.add(text_img(wrap(d0, s.get("body", ""), F_BODY(44), w), F_BODY(44), MUTED, 62, w), x, y, "up") + 60
+        if s.get("options"):               # 5: quiz options as chips (answer is NOT shown: viewers comment)
+            cx_, letters = x, "ABCD"
+            row_y = y
+            for k, o in enumerate(s["options"][:4]):
+                lab = f"{letters[k]}  {o}"
+                tw = int(d0.textlength(lab, font=F_SEMI(38))) + 60
+                if cx_ + tw > x + w:
+                    cx_, row_y = x, row_y + 96
+                pimg = Image.new("RGBA", (tw, 80), (0, 0, 0, 0))
+                dd = ImageDraw.Draw(pimg)
+                dd.rounded_rectangle([0, 0, tw - 1, 79], radius=20, fill=PANEL + (255,), outline=(214, 120, 24, 255), width=3)
+                dd.text((30, 17), lab, font=F_SEMI(38), fill=INK)
+                B.add(pimg, cx_, row_y, "pop", 0.22, "pop", nosnap=True)
+                cx_ += tw + 22
+            y = row_y + 110
         for a in s.get("actions", ["Save", "Share", "Follow"]):
             tw = int(d0.textlength(a, font=F_SEMI(38))) + 64
             pimg = Image.new("RGBA", (tw, 80), (0, 0, 0, 0))
@@ -1308,6 +1323,10 @@ def section_for(s, i, n, p):
         sec, mood = "HOW IT WORKS", "green"
     elif kind == "versus":
         sec, mood = (lab or "BEFORE → AFTER"), "green"
+    elif kind == "sap_error":
+        sec, mood = (lab or "THE PROBLEM"), "red"
+    elif kind == "output":
+        sec, mood = (lab or "RESULT"), ("red" if (s.get("verdict") or {}).get("good") is False else "green")
     elif kind == "answer":
         sec = lab or "KEY POINT"
         mood = "red" if ("MISTAKE" in sec or "TRAP" in sec) else ("orange" if ("TIP" in sec or "TRICK" in sec) else "green")
@@ -1537,8 +1556,8 @@ def render_scene(base, blocks, tau, dur, sub_tl, accent, push=0.04, beat=0.0, st
         frame.paste(g_rgb, (0, 0), g_mask)
     sx = sy = 0
     for b in blocks:
-        if b.get("anim") == "stamp" and (not b.get("decor") or b.get("shake")):
-            k = tau - (b["t"] + (b.get("dur") or ANIM_DUR["stamp"]))
+        if (b.get("anim") == "stamp" and not b.get("decor")) or b.get("shake"):
+            k = tau - (b["t"] + (b.get("dur") or ANIM_DUR.get(b.get("anim"), 0.5)))
             if 0 <= k < 0.2:
                 import math
                 amp = 9 * (1 - k / 0.2)
@@ -1574,6 +1593,29 @@ def synth_sfx(kind, sr=24000):
         thud = np.sin(2 * np.pi * 95 * t) * np.exp(-t * 22) * 0.5
         click = np.random.default_rng(3).standard_normal(n) * np.exp(-t * 160) * 0.18
         return (thud + click).astype("float32")
+    if kind == "sig_cut":      # signature cut: soft two-note pluck (G5 -> D6), same on every reel
+        n = int(0.32 * sr)
+        t = np.arange(n) / sr
+        out = np.zeros(n, dtype="float32")
+        for f0, d0_ in ((784.0, 0.0), (1175.0, 0.07)):
+            k = t - d0_
+            m = k >= 0
+            out[m] += (np.sin(2 * np.pi * f0 * k[m]) + 0.3 * np.sin(4 * np.pi * f0 * k[m])) * np.exp(-k[m] * 18) * 0.06
+        return out.astype("float32")
+    if kind == "sig_stamp":    # signature "Remember" stamp: thud + bright bell
+        n = int(0.5 * sr)
+        t = np.arange(n) / sr
+        thud = np.sin(2 * np.pi * 95 * t) * np.exp(-t * 22) * 0.45
+        click = np.random.default_rng(3).standard_normal(n) * np.exp(-t * 160) * 0.15
+        bell = (np.sin(2 * np.pi * 1568 * t) + 0.4 * np.sin(2 * np.pi * 2352 * t)) * np.exp(-t * 7) * 0.07
+        return (thud + click + bell).astype("float32")
+    if kind == "error":        # SAP-style error: two short low buzzes
+        n = int(0.34 * sr)
+        t = np.arange(n) / sr
+        sq = np.sign(np.sin(2 * np.pi * 196 * t)) * 0.5 + np.sin(2 * np.pi * 196 * t) * 0.5
+        env = ((t < 0.12) | ((t > 0.17) & (t < 0.30))).astype("float32")
+        env = np.convolve(env, np.ones(60) / 60, mode="same")
+        return (sq * env * 0.07).astype("float32")
     if kind == "tick":
         n = int(0.04 * sr)
         t = np.arange(n) / sr
@@ -1765,11 +1807,15 @@ def make_motion_reel(p, slides, folder, handle, accent):
     mix = np.zeros(int(total * sr) + sr, dtype="float32")
     mix[: len(voice)] += voice
     whoosh = synth_sfx("whoosh", sr)
-    sfx_bank = {k: synth_sfx(k, sr) for k in ("pop", "stamp", "tick", "scratch")}
+    sfx_bank = {k: synth_sfx(k, sr) for k in ("pop", "stamp", "tick", "scratch", "sig_cut", "sig_stamp", "error")}
     use_whoosh = bool(p.get("whoosh", False))   # transition whoosh removed by default (sounded odd)
     for i, st0 in enumerate(starts):
+        if i > 0 and p.get("signature", True):          # 4b: the same soft signature on every cut
+            snd = sfx_bank["sig_cut"]
+            a = max(0, int((st0 - 0.04) * sr))
+            mix[a:a + len(snd)] += snd[: max(0, len(mix) - a)]
         if stamps[i] is not None:
-            snd = sfx_bank["stamp"]
+            snd = sfx_bank["sig_stamp"]
             a = int((st0 + stamps[i][1]) * sr)
             mix[a:a + len(snd)] += snd[: max(0, len(mix) - a)]
         if i > 0 and use_whoosh:
@@ -1825,6 +1871,11 @@ def make_motion_reel(p, slides, folder, handle, accent):
             prev = render_scene(base, pb, pd + tau, pd, ptl, accent, pace["push"], scene_beats[i - 1], stamps[i - 1],
                                 secs[i - 1][1] if live else None)
             frame = apply_transition(kind_t, prev, frame, base, tau / tlen)
+        if p.get("loop", True) and t > total - 0.35:            # 5: seamless loop back to the first frame
+            if "_first" not in locals():
+                _first = render_scene(base, scenes[0][0], 0.0, durations[0], [], accent, pace["push"], [], None,
+                                      secs[0][1] if live else None)
+            frame = Image.blend(frame, _first, ease_out(min(1.0, (t - (total - 0.35)) / 0.35)))
         # progress bar
         if live:
             draw_segments(frame, starts, durations, t, [c for _, c in secs])
@@ -1833,7 +1884,8 @@ def make_motion_reel(p, slides, folder, handle, accent):
             else:
                 draw_section_chip(frame, secs[i][0], secs[i][1], tau + (0.22 if i > 0 else 0))
             if engage_last and i == len(slides) - 1:
-                draw_engagement(frame, tau, accent, p.get("comment_word"))
+                draw_engagement(frame, tau, accent,
+                                None if slides[-1].get("options") else p.get("comment_word"))
         else:
             d = ImageDraw.Draw(frame)
             d.rounded_rectangle([72, 100, REEL_W - 72, 106], radius=3, fill=BORDER)
@@ -2150,7 +2202,7 @@ def _stamp(text, color=EMPH_RED, size=56):
     return im.rotate(-6, expand=True, resample=Image.BICUBIC)
 
 
-NEW_KINDS = {"quiz", "answer", "versus", "chat", "myth", "number", "story", "bug", "table", "flow", "tip",
+NEW_KINDS = {"quiz", "answer", "versus", "sap_error", "output", "chat", "myth", "number", "story", "bug", "table", "flow", "tip",
              "fact", "choice", "checklist", "screen"}
 
 
@@ -2289,6 +2341,118 @@ def build_new_kind(B, s, accent, x, w, avail_h):
             st = _stamp("CORRECT: " + "ABCD"[int(ans)], GREEN, 52)
             B.add(st, x + (w - st.size[0]) // 2, area_y + 20, "stamp", 0.3, "stamp")
 
+    elif kind == "sap_error":
+        # 3: a mocked SAP GUI moment: window with code/fields, then a red error lands in the status bar (or a dump)
+        kin_heading(s.get("heading", ""), 62)
+        style = s.get("style", "status")
+        lines = [str(l) for l in s.get("code", [])]
+        head_h, sb_h, lh = 64, 78, 46
+        body_h = 24 + max(2, len(lines)) * lh + 20
+        h = head_h + body_h + sb_h
+        fr = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        dd = ImageDraw.Draw(fr)
+        dd.rounded_rectangle([0, 0, w - 1, h - 1], radius=18, fill=PANEL + (255,), outline=BORDER + (255,), width=2)
+        dd.rounded_rectangle([0, 0, w - 1, head_h], radius=18, fill=PANEL_TOP + (255,))
+        dd.rectangle([0, head_h - 20, w - 1, head_h], fill=PANEL_TOP + (255,))
+        tc = str(s.get("tcode", "SE38"))
+        tw_ = int(d0.textlength(tc, font=F_MONO_B(26))) + 28
+        dd.rounded_rectangle([20, 14, 20 + tw_, 50], radius=8, fill=accent + (255,))
+        dd.text((34, 18), tc, font=F_MONO_B(26), fill=(255, 255, 255))
+        dd.text((20 + tw_ + 18, 19), str(s.get("title", "")), font=F_MONO(26), fill=DIM)
+        dd.line([0, head_h, w, head_h], fill=BORDER + (255,), width=2)
+        dd.line([0, h - sb_h, w, h - sb_h], fill=BORDER + (255,), width=2)
+        B.add(fr, x, y, "grow", 0.25, "pop", container=True, flash=accent, dur=0.4)
+        y0 = B.items[-1]["y"]
+        bad = s.get("bad_line")
+        ly = y0 + head_h + 24
+        for i, ln in enumerate(lines):
+            im = text_img([ln], F_MONO(30), INK if i != bad else EMPH_RED, lh)
+            B.add(im, x + 28, ly, "type", 0.15, nosnap=True, step=0.12)
+            if i == bad:
+                lw_ = int(d0.textlength(ln, font=F_MONO(30)))
+                def squiggle(img, p, ox, oy, _w=lw_):
+                    d_ = ImageDraw.Draw(img)
+                    pts = [(ox + k, oy + (4 if (k // 9) % 2 else -4)) for k in range(0, int(_w * p) + 1, 9)]
+                    if len(pts) > 1:
+                        d_.line(pts, fill=EMPH_RED + (255,), width=4)
+                B.overlay(squiggle, x + 28, ly + 40, lw_, 10, pause=0.2, dur=0.35, sfx="scratch", after_say=True)
+            ly += lh
+        # the error lands
+        msg = str(s.get("message", "Error"))
+        if style == "dump":
+            bar = Image.new("RGBA", (w - 4, sb_h - 6), (0, 0, 0, 0))
+        else:
+            bar = Image.new("RGBA", (w - 4, sb_h - 6), (0, 0, 0, 0))
+        bd = ImageDraw.Draw(bar)
+        bd.rectangle([0, 0, bar.size[0], bar.size[1]], fill=_lighten(EMPH_RED, 0.86) + (255,))
+        bd.rectangle([0, 0, 8, bar.size[1]], fill=EMPH_RED + (255,))
+        cy_ = bar.size[1] // 2
+        bd.ellipse([24, cy_ - 20, 64, cy_ + 20], fill=EMPH_RED + (255,))
+        bd.line([(36, cy_ - 8), (52, cy_ + 8)], fill=(255, 255, 255), width=5)
+        bd.line([(52, cy_ - 8), (36, cy_ + 8)], fill=(255, 255, 255), width=5)
+        mf = F_SEMI(32)
+        while d0.textlength(msg, font=mf) > bar.size[0] - 110 and mf.size > 22:
+            mf = F_SEMI(mf.size - 2)
+        bd.text((84, cy_ - mf.size // 2 - 4), msg, font=mf, fill=EMPH_RED + (255,))
+        B.add(bar, x + 2, y0 + h - sb_h + 3, "slide", 0.3, "error", nosnap=True, shake=True, dur=0.3,
+              say=str(s.get("say") or "").lower() or None, decor=True)
+        y = y0 + h + 26
+        if s.get("note"):
+            nt = text_img([s["note"]], F_HAND(52), EMPH_RED, 56)
+            y = B.add(nt, x + max(0, w - nt.size[0]), y, "fade", 0.3, nosnap=True, after_say=True) + 16
+
+    elif kind == "output":
+        # 3: report output (ALV-like list) that fills row by row, optional highlighted row + verdict stamp
+        kin_heading(s.get("heading", ""), 62)
+        cols = [str(c) for c in s.get("columns", [])]
+        rows = s.get("rows", [])
+        n = max(1, len(cols))
+        head_h, tb_h, rh = 64, (60 if s.get("toolbar", True) else 0), 58
+        h = head_h + tb_h + rh + len(rows) * rh + 18
+        fr = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        dd = ImageDraw.Draw(fr)
+        dd.rounded_rectangle([0, 0, w - 1, h - 1], radius=18, fill=PANEL + (255,), outline=BORDER + (255,), width=2)
+        dd.rounded_rectangle([0, 0, w - 1, head_h], radius=18, fill=PANEL_TOP + (255,))
+        dd.rectangle([0, head_h - 20, w - 1, head_h], fill=PANEL_TOP + (255,))
+        tc = str(s.get("tcode", "Output"))
+        tw_ = int(d0.textlength(tc, font=F_MONO_B(26))) + 28
+        dd.rounded_rectangle([20, 14, 20 + tw_, 50], radius=8, fill=accent + (255,))
+        dd.text((34, 18), tc, font=F_MONO_B(26), fill=(255, 255, 255))
+        dd.text((20 + tw_ + 18, 19), str(s.get("title", "")), font=F_MONO(26), fill=DIM)
+        if tb_h:
+            for k in range(7):
+                bx_ = 24 + k * 58
+                dd.rounded_rectangle([bx_, head_h + 12, bx_ + 44, head_h + 48], radius=8, fill=(255, 255, 255, 255),
+                                     outline=BORDER + (255,), width=2)
+                dd.line([bx_ + 12, head_h + 30, bx_ + 32, head_h + 30], fill=MUTED + (255,), width=3)
+        cw = (w - 48) // n
+        hy = head_h + tb_h
+        dd.rectangle([2, hy, w - 3, hy + rh], fill=_lighten(accent, 0.85) + (255,))
+        for i, c in enumerate(cols):
+            dd.text((24 + i * cw, hy + 13), c, font=F_SEMI(30), fill=accent)
+        B.add(fr, x, y, "grow", 0.25, "pop", container=True, flash=accent, dur=0.4)
+        y0 = B.items[-1]["y"]
+        ry = y0 + hy + rh
+        hl = s.get("highlight")
+        for r_i, r in enumerate(rows):
+            row = Image.new("RGBA", (w - 4, rh), (0, 0, 0, 0))
+            rd = ImageDraw.Draw(row)
+            if r_i == hl:
+                rd.rectangle([0, 0, w - 5, rh - 1], fill=(255, 236, 140, 255))
+            elif r_i % 2:
+                rd.rectangle([0, 0, w - 5, rh - 1], fill=(255, 255, 255, 140))
+            for i, c in enumerate(list(r)[:n]):
+                rd.text((22 + i * cw, 12), str(c), font=F_MONO(30), fill=INK)
+            B.add(row, x + 2, ry, "type", 0.12, nosnap=True, step=0.12)
+            ry += rh
+        v = s.get("verdict")
+        if v:
+            good = v.get("good", True)
+            st = _stamp(str(v.get("text", "OK")), (46, 125, 50) if good else EMPH_RED, 46)
+            B.add(st, x + w - st.size[0] - 10, y0 + h - st.size[1] // 2, "stamp", 0.3, "stamp", nosnap=True,
+                  decor=True, shake=True, after_say=True)
+        y = y0 + h + 40
+
     elif kind == "versus":
         kin_heading(s.get("heading", ""), 66)
         y += 10
@@ -2346,7 +2510,7 @@ def build_new_kind(B, s, accent, x, w, avail_h):
 
     elif kind == "answer":
         st = _stamp(s.get("label", "ANSWER"), GREEN, 52)
-        y = B.add(st, x, y, "stamp", 0.35, "stamp") + 20
+        y = B.add(st, x, y, "stamp", 0.35, "sig_stamp" if "REMEMBER" in str(s.get("label", "")).upper() else "stamp") + 20
         heading(s.get("heading", ""), 72)
         body(s.get("body", ""))
         if s.get("highlight"):
@@ -2684,9 +2848,18 @@ def next_card(nx):
     when = str(nx.get("when", "")).strip()
     said = str(nx.get("voice") or title.replace("*", "")).strip()
     vo = f"Next: {said}, {when}. Follow so you don't miss it." if when else f"Next: {said}. Follow so you don't miss it."
-    return {"kind": "cta", "label": "NEXT", "title": f"Next: {title if '*' in title else '*' + title + '*'}",
+    vo = str(nx.get("vo") or vo)          # 2: open-loop line, e.g. "Part 2 shows the trap everyone falls into..."
+    card = {"kind": "cta", "label": "NEXT", "title": f"Next: {title if '*' in title else '*' + title + '*'}",
             "body": (when[:1].upper() + when[1:] + ".") if when else "Follow so you don't miss it.",
             "actions": ["Follow @abapcodevault"], "voiceover": vo, "spoken": vo}
+    q = nx.get("quiz")
+    if q:                                  # 5: end on a quiz; the next reel is named in the small line
+        card["title"] = str(q.get("question", ""))
+        card["options"] = list(q.get("options", []))
+        plain = title.replace("*", "")
+        card["body"] = f"Next: {plain}" + (f" · {when}" if when else "")
+        card["section"], card["mood"] = "QUIZ", "orange"
+    return card
 
 
 def with_outro(p, slides):

@@ -187,3 +187,25 @@ symbols (rejected). New effects or variations can come in through the daily visu
   -> red card, VS, green card on its word, strike-through + ✗/✓ badges. Use it in course reels where a mistake/fix fits.
 - E: every reel sets `"comment_word"` (one short keyword, e.g. "DDIC"): the end card types it into a comment box.
   Do NOT promise anything for commenting in the caption or voice.
+
+## Story rules (approved 12 Nov, live from the 13 Nov reels)
+1. **Hook first.** The cover opens on the problem the lesson solves, never a definition
+   ("Your program can't see your *new field*?", not "What is the Data Dictionary?"). The syllabus order and the
+   lesson content stay the same; the kicker still names it ("ABAP course · DDIC · Lesson 1").
+2. **Story arc:** problem -> mistake -> fix -> payoff. Use `versus` for the mistake/fix wherever it fits.
+   End on an **open loop** for the next reel via `"next": {..., "vo": "Part 2, tomorrow at 9 AM: how SAP blocks
+   wrong values before your code even runs."}` instead of a plain "Next: ...".
+3. **Real SAP moments:**
+   - `{"kind":"sap_error","label":"THE PROBLEM","heading":"...","tcode":"SE38","title":"ZPROG","code":["..."],
+     "bad_line":0,"message":"Field \"ZZ_X\" is unknown.","say":"<spoken word when the error lands>"}`
+     -> window grows, code types in, red status-bar error slides in with an error buzz + shake, red squiggle.
+   - `{"kind":"output","label":"RESULT","heading":"...","tcode":"ALV","title":"...","columns":[...],"rows":[[...]],
+     "highlight":<row>,"verdict":{"text":"5 LINES","good":true}}` -> report output fills row by row + verdict stamp.
+     Two output slides (wrong -> fixed) make a before/after.
+4. **Signature sounds (4b, automatic):** the same soft two-note pluck on every cut, and a thud + bell on every
+   "Remember" stamp. Do not add whooshes.
+5. **Rewatch:** about one course reel a day ends on a quiz whose answer is IN the reel:
+   `"next": {"title":..., "when":..., "quiz": {"question":"Quiz: what does *Ctrl+F3* do?","options":["Save","Activate","Check"]},
+   "vo":"Quiz: what does Control F3 do? The answer is in this reel. Comment it."}` (no comment box on quiz cards).
+   Every reel fades back to its empty opening page in the last 0.35 s, so the loop is seamless (automatic).
+6. Numbers in the voiceover are written as words ("one two three four"), digits stay in `spoken` (subtitles).

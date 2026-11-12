@@ -1,13 +1,13 @@
+You type 1234. SAP stores 0000001234. Why?
+
 Domains, Part 1 of 3: the Definition tab in SE11.
 
-A domain defines the technical attributes that every data element built on it inherits:
 1. Data type and number of characters
 2. Decimal places and output length
-3. Conversion routine, e.g. ALPHA, which stores 1234 as 0000001234
-4. Lowercase flag
+3. Conversion routine: ALPHA adds leading zeros on input and removes them on output
+
+Classic mistake: SELECT ... WHERE order_no = '1234' finds nothing. Convert with CONVERSION_EXIT_ALPHA_INPUT first.
 
 Next: Part 2, the Value Range tab (tomorrow at 9 AM).
-
-Follow the series so you don't miss it.
 
 #sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #ddic #abapcodevault
