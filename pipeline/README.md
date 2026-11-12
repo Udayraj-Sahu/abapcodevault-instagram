@@ -20,7 +20,7 @@ three DIFFERENT formats and three different topics. Old day files with post/caro
 5. Check 8 frames per reel (ffmpeg) + ffprobe (video+audio, 12-18 s). If the generator printed **OVERLAP WARNING** or wrote LENGTH_WARNING.txt, shorten/restructure and re-render until gone.
 6. `python3 scripts/queue_day.py out/DATE DATE`
 7. Update `state.json`: `last_queued_date` = DATE, append the topics to `history`, append formats to `recent_formats.reel`. Commit and push.
-8. **Improve the reels** (motion, animation, cuts, voiceover, translation) following `pipeline/IMPROVEMENTS.md`: research one technique on the web, implement it, test, log. Never let an improvement block or break the day's reels: if in doubt, revert it.
+8. **Improve the reels in ALL six areas** (animation, voice, cuts, translation, typography, sound/timing) following `pipeline/IMPROVEMENTS.md`: per area research a technique on the web, implement, test, keep or revert on its own, log. Never let an improvement block or break the day's reels: if in doubt, revert it.
 
 ## Design (fixed)
 - Light "notebook" theme: cream ruled paper, ink text, one brand colour **SAP blue**, yellow highlighter, handwritten (Caveat) notes. All built into generate.py; do not change colours per post.

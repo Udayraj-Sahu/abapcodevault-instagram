@@ -6,33 +6,25 @@ kinetic typography, timing, **voiceover** (pronunciation, pacing, pauses, emphas
 The goal: every reel looks and sounds a little more polished and natural than the last.
 
 ## Rules (must follow)
-1. **Learn first:** run 1-2 web searches each day for a current short-form / motion-design technique
-   (e.g. "kinetic typography reels technique", "match cut motion design", "easing anticipation overshoot text",
-   "reel hook first frame pattern interrupt"). Pick ONE technique that fits a clean notebook look and can be built
-   in PIL + ffmpeg. Note the idea + source URL in the Log row. If nothing fits, take the top unchecked backlog item.
-2. Exactly one improvement per run, small and focused (usually 10-80 lines in `pipeline/generate.py`).
-   Rotate the focus so it never gets stuck: `improve_next` in `pipeline/state.json` cycles
-   **animation → voice → cuts → translation → typography → sound/timing → animation …**;
-   set it to the next one after the run, even if skipped.
-   - **voice** day: research (e.g. "TTS prosody pauses natural narration", "kokoro tts tips", "voiceover pacing short form")
-     and improve how it sounds: SAY pronunciations, pause lengths between sentences/scenes, emphasis on the key word,
-     speed per sentence, EQ/compression/de-ess chain, loudness, breath-like gaps. Voice stays hm_psi.
-   - **translation** day: research (e.g. "Hinglish content writing tips", "code-mixed Hindi English natural phrasing",
-     "Hinglish subtitle style") and improve the words: update `pipeline/HINGLISH.md` (glossary, spellings, natural vs
-     stiff phrases), fix stiff lines in recent day files' upcoming (unpublished) reels, and/or add an automatic check in
-     generate.py (e.g. warn if `spoken` and `voiceover` word counts differ a lot, Latin words written in Devanagari,
-     code symbols in voiceover). Never change already-published reels.
+1. **Every run improves ALL six areas** — one small change per area, in this order:
+   **animation → voice → cuts → translation → typography → sound/timing**.
+   For each area: do 1-2 web searches for a current technique (short-form editing, motion design, TTS/narration,
+   Hinglish writing...), pick ONE idea that fits the clean notebook look and can be built with PIL + ffmpeg + Kokoro
+   (or take the top unchecked backlog item in that area), implement it, test it, then keep or revert it ON ITS OWN.
+   A failed area never blocks the others or the day's reels. Aim for 6 kept changes; 4+ is a good day.
+2. Each change is small and focused (usually 10-80 lines). Translation changes go in `pipeline/HINGLISH.md`, the
+   generator's checks, and upcoming UNPUBLISHED day files (never published reels).
 3. Never change the fixed brand: palette (cream paper, ink, SAP blue, yellow highlighter), fonts, sizes,
    the notebook grid (text baselines on ruled lines), the JSON schema (old day files must still render),
-   voice (hm_psi), 12-18 s length, captions or hashtag rules. No whoosh/swoosh sound on cuts (user disliked it).
+   voice model (hm_psi), 12-18 s length, the follow end card, captions or hashtag rules. No whoosh/swoosh on cuts.
    Motion must stay readable: no text moving while the viewer needs to read it, nothing faster than ~0.25 s for text.
-4. Test before keeping it: render `pipeline/days/2026-11-12.json` (3 reels: before_after, live_coding + legacy post)
-   and `pipeline/days/2026-11-21.json` (interview_chat) into a temp folder AND today's new day file.
-   Look at 8 frames per reel plus a 0.1 s frame strip around one cut; confirm video + audio and 12-18 s.
-   No OVERLAP WARNING. For voice changes, also compare voiceover_script.txt + duration before/after and check the
-   audio is not clipped (ffmpeg volumedetect max_volume < -0.5 dB). If anything is broken, overlapping, harder to read, or simply not better: `git checkout pipeline/generate.py` and skip.
-5. Log it below (date, area, technique + source, what changed, why it is better) and commit it as its own commit:
-   `Improve (<area>): <short description>`.
+4. Test EACH change before keeping it: render `pipeline/days/2026-11-12.json` (2 reels) and `pipeline/days/2026-11-21.json`
+   (interview_chat) into a temp folder. Look at 8 frames per reel plus a strip of frames 0.1 s apart around one cut;
+   confirm video + audio and 12-18 s; no OVERLAP/other WARNING. Voice changes: compare voiceover_script.txt and
+   durations before/after and confirm no clipping (ffmpeg volumedetect max_volume < -0.5 dB).
+   If broken, overlapping, harder to read/hear, or simply not better: revert just that change (git checkout / git stash it).
+5. Commit each kept change separately as `Improve (<area>): <short description>` and add one Log row per change
+   (date, area, technique + source URL, what changed, why it is better). Keep backlog boxes ticked.
 
 ## Backlog (reels; research-first — carousel/post sections are legacy)
 
