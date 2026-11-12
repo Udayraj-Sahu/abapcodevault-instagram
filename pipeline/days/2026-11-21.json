@@ -6,7 +6,7 @@
       "type": "reel",
       "format": "interview_chat",
       "voice": "hm_psi",
-      "voice_lang": "hi",
+      "voice_lang": "en",
       "time": "13:00",
       "slug": "itab-types-interview",
       "tag": "Interview Q",
@@ -24,16 +24,16 @@
               "text": "HASHED. A read by the full unique key takes the same time at any size."
             }
           ],
-          "voiceover": "Interview में पूछा गया: बड़े lookups के लिए कौन सी table? जवाब: HASHED.",
-          "spoken": "Interview mein poocha gaya: bade lookups ke liye kaun si table? Jawaab: HASHED."
+          "voiceover": "Interview question: which table for big lookups? Answer: HASHED.",
+          "spoken": "Interview question: which table for big lookups? Answer: HASHED."
         },
         {
           "kind": "answer",
           "label": "KEY POINT",
           "heading": "*SORTED* for partial keys",
           "body": "STANDARD: index access. SORTED: binary search, partial key. HASHED: full unique key only.",
-          "voiceover": "Partial key से पढ़ना है तो SORTED, और index चाहिए तो STANDARD.",
-          "spoken": "Partial key se padhna hai to SORTED, aur index chahiye to STANDARD."
+          "voiceover": "Reading by a partial key? Use SORTED. Need index access? Use STANDARD.",
+          "spoken": "Reading by a partial key? Use SORTED. Need index access? Use STANDARD."
         },
         {
           "kind": "cta",
@@ -43,8 +43,8 @@
             "Save",
             "Follow @abapcodevault"
           ],
-          "voiceover": "Interview से पहले save कर लो।",
-          "spoken": "Interview se pehle save kar lo."
+          "voiceover": "Save this before your interview.",
+          "spoken": "Save this before your interview."
         }
       ],
       "caption": "\"STANDARD, SORTED or HASHED?\" comes up in almost every ABAP interview.\n\n1. STANDARD: index access, linear search by key. Fine for small tables and ALV output.\n2. SORTED: kept sorted by its key, binary search, supports partial keys.\n3. HASHED: full unique key only, constant read time at any size.\n\nWhich one do you use inside loops?\n\nABAP Interview Pack (160 Q&A, Fresher to Senior): link in bio.",

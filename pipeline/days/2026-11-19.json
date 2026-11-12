@@ -6,7 +6,7 @@
       "type": "reel",
       "format": "bug_hunt",
       "voice": "hm_psi",
-      "voice_lang": "hi",
+      "voice_lang": "en",
       "slides": [
         {
           "kind": "cover",
@@ -15,8 +15,8 @@
           "title": "This can read your *ENTIRE* table",
           "code": "SELECT vbeln, posnr FROM vbap\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE vbeln = @lt_orders-vbeln\n  INTO TABLE @DATA(lt_items).",
           "bug_line": 1,
-          "voiceover": "ये एक line आपकी पूरी table पढ़ सकती है।",
-          "spoken": "Ye ek line aapki poori table padh sakti hai."
+          "voiceover": "This one line can read your entire table.",
+          "spoken": "This one line can read your entire table."
         },
         {
           "kind": "bug",
@@ -24,16 +24,16 @@
           "code": "SELECT vbeln, posnr FROM vbap\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE vbeln = @lt_orders-vbeln\n  INTO TABLE @DATA(lt_items).",
           "bug_line": 1,
           "note": "lt_orders is empty!",
-          "voiceover": "अगर lt_orders खाली है, तो WHERE condition ignore हो जाती है। पूरी VBAP table पढ़ी जाती है।",
-          "spoken": "Agar lt_orders khaali hai, to WHERE condition ignore ho jaati hai. Poori VBAP table padhi jaati hai."
+          "voiceover": "If the driver table is empty, the WHERE condition is ignored, and the whole VBAP table is read.",
+          "spoken": "If the driver table is empty, the WHERE condition is ignored, and the whole VBAP table is read."
         },
         {
           "kind": "code",
           "heading": "The fix: *one IF*",
           "typewriter": true,
           "code": "IF lt_orders IS NOT INITIAL.\n  SELECT ... FOR ALL ENTRIES ...\nENDIF.",
-          "voiceover": "Fix simple है। पहले IS NOT INITIAL check करो।",
-          "spoken": "Fix simple hai. Pehle IS NOT INITIAL check karo."
+          "voiceover": "The fix is simple. Check IS NOT INITIAL first.",
+          "spoken": "The fix is simple. Check IS NOT INITIAL first."
         },
         {
           "kind": "cta",
@@ -42,8 +42,8 @@
             "Save",
             "Follow @abapcodevault"
           ],
-          "voiceover": "Interview में भी पूछते हैं। Save करो।",
-          "spoken": "Interview mein bhi poochte hain. Save karo."
+          "voiceover": "Interviewers ask this too. Save it.",
+          "spoken": "Interviewers ask this too. Save it."
         }
       ],
       "caption": "One missing IF, and the report read the entire VBAP table.\n\nWith FOR ALL ENTRIES, an empty driver table means the WHERE condition is ignored and every row is selected. Always check IS NOT INITIAL first, and remove duplicates from the driver table.\n\nThis is a classic interview question, so save it.\n\n160 more interview questions with answers: ABAP Interview Pack, link in bio.",

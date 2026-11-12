@@ -11,14 +11,14 @@
       "slug": "ddic-basics",
       "tag": "DDIC · Lesson 1",
       "voice": "hm_psi",
-      "voice_lang": "hi",
+      "voice_lang": "en",
       "slides": [
         {
           "kind": "cover",
           "kicker": "ABAP course · DDIC",
           "title": "What is the *Data Dictionary*?",
-          "voiceover": "हर table और type की definition कहाँ रहती है? Data Dictionary में।",
-          "spoken": "Har table aur type ki definition kahan rehti hai? Data Dictionary mein."
+          "voiceover": "Where do your tables and types actually live? In the Data Dictionary.",
+          "spoken": "Where do your tables and types actually live? In the Data Dictionary."
         },
         {
           "kind": "screen",
@@ -59,8 +59,8 @@
             0
           ],
           "note": "tables, types, domains: all here",
-          "voiceover": "SE11 में tables, views, domains, search helps, सब define होते हैं।",
-          "spoken": "SE11 mein tables, views, domains, search helps, sab define hote hain."
+          "voiceover": "In SE11 you define tables, views, domains and search helps, all in one place.",
+          "spoken": "In SE11 you define tables, views, domains and search helps, all in one place."
         },
         {
           "kind": "flow",
@@ -71,16 +71,16 @@
             "Runtime object (nametab) created",
             "Programs use the nametab"
           ],
-          "voiceover": "Save से कुछ नहीं होता। Activate करो, तब nametab बनता है, और programs वही पढ़ते हैं।",
-          "spoken": "Save se kuch nahi hota. Activate karo, tab nametab banta hai, aur programs wahi padhte hain."
+          "voiceover": "Saving does nothing on its own. Activate it, the runtime object is created, and programs read that.",
+          "spoken": "Saving does nothing on its own. Activate it, the runtime object is created, and programs read that."
         },
         {
           "kind": "answer",
           "label": "REMEMBER",
           "heading": "Inactive = *old version* runs",
           "body": "Changed a table in SE11 but the program still behaves the old way? Check that it is activated.",
-          "voiceover": "Program पुराना चल रहा है? Check करो, activate किया या नहीं।",
-          "spoken": "Program purana chal raha hai? Check karo, activate kiya ya nahi."
+          "voiceover": "Program still behaving the old way? Check that you activated it.",
+          "spoken": "Program still behaving the old way? Check that you activated it."
         }
       ],
       "caption": "Lesson 1 of the ABAP course: the Data Dictionary (DDIC).\n\nEvery table, structure, domain and data element your programs use is defined centrally in SE11.\n\n1. One transaction for tables, views, types, domains, search helps and lock objects\n2. Saving creates an inactive version only\n3. Activation generates the runtime object (nametab) that programs read\n\nNext lessons: domains and data elements, step by step.\n\nFollow the series so you don't miss a part.",
@@ -107,14 +107,14 @@
       "slug": "domain-definition-tab",
       "tag": "DDIC · Domain 1/3",
       "voice": "hm_psi",
-      "voice_lang": "hi",
+      "voice_lang": "en",
       "slides": [
         {
           "kind": "cover",
           "kicker": "Domains & data elements · Part 1/3",
           "title": "Inside a *domain*: the Definition tab",
-          "voiceover": "Domain सिर्फ data type नहीं है। SE11 में अंदर देखो।",
-          "spoken": "Domain sirf data type nahi hai. SE11 mein andar dekho."
+          "voiceover": "A domain is more than a data type. Let's look inside SE11.",
+          "spoken": "A domain is more than a data type. Let's look inside SE11."
         },
         {
           "kind": "screen",
@@ -157,8 +157,8 @@
             4
           ],
           "note": "runs on every input & output",
-          "voiceover": "Data type, length, output length. और सबसे important, conversion routine.",
-          "spoken": "Data type, length, output length. Aur sabse important, conversion routine."
+          "voiceover": "Data type, length, output length. And the most important field, the conversion routine.",
+          "spoken": "Data type, length, output length. And the most important field, the conversion routine."
         },
         {
           "kind": "code",
@@ -166,16 +166,16 @@
           "typewriter": true,
           "filename": "alpha_demo.abap",
           "code": "lv_order = '1234'.\nCALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'\n  EXPORTING input  = lv_order\n  IMPORTING output = lv_order.\n\" lv_order = '0000001234'",
-          "voiceover": "Screen पर 1234, database में आगे zeros के साथ। Code में convert करना हो, तो ALPHA INPUT call करो।",
-          "spoken": "Screen par 1234, database mein aage zeros ke saath. Code mein convert karna ho, to ALPHA INPUT call karo."
+          "voiceover": "The screen shows 1234, the database stores it with leading zeros. To convert in code, call ALPHA INPUT.",
+          "spoken": "The screen shows 1234, the database stores it with leading zeros. To convert in code, call ALPHA INPUT."
         },
         {
           "kind": "answer",
           "label": "REMEMBER",
           "heading": "One domain, *many fields*",
           "body": "Every data element on this domain gets the same type, length and conversion.",
-          "voiceover": "एक domain, कई fields. Domain बदला, सब बदल गए।",
-          "spoken": "Ek domain, kai fields. Domain badla, sab badal gaye."
+          "voiceover": "One domain, many fields. Change the domain, and they all change.",
+          "spoken": "One domain, many fields. Change the domain, and they all change."
         }
       ],
       "caption": "Domains, Part 1 of 3: the Definition tab in SE11.\n\nA domain defines the technical attributes that every data element built on it inherits:\n1. Data type and number of characters\n2. Decimal places and output length\n3. Conversion routine, e.g. ALPHA, which stores 1234 as 0000001234\n4. Lowercase flag\n\nPart 2: the Value Range tab (fixed values, intervals, value table).\n\nFollow the series so you don't miss it.",

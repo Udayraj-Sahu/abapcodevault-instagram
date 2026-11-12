@@ -6,7 +6,7 @@
       "type": "reel",
       "format": "quiz",
       "voice": "hm_psi",
-      "voice_lang": "hi",
+      "voice_lang": "en",
       "time": "13:00",
       "slug": "value-operator-quiz",
       "tag": "Modern ABAP",
@@ -22,8 +22,8 @@
           "answer": 1,
           "countdown": true,
           "reveal": true,
-          "voiceover": "Seven forty syntax में, एक ही statement में table कैसे भरोगे? सोचो।",
-          "spoken": "Seven forty syntax mein, ek hi statement mein table kaise bharoge? Socho."
+          "voiceover": "In seven forty syntax, how do you fill a table in one statement? Think.",
+          "spoken": "In seven forty syntax, how do you fill a table in one statement? Think."
         },
         {
           "kind": "code",
@@ -31,8 +31,8 @@
           "typewriter": true,
           "filename": "value_demo.abap",
           "code": "lt_items = VALUE #(\n  ( matnr = 'MAT-01' menge = 10 )\n  ( matnr = 'MAT-02' menge = 5 ) ).",
-          "voiceover": "Answer है VALUE. हर row अपने brackets में, कोई APPEND नहीं।",
-          "spoken": "Answer hai VALUE. Har row apne brackets mein, koi APPEND nahi."
+          "voiceover": "The answer is VALUE. Each row in its own brackets, no APPEND.",
+          "spoken": "The answer is VALUE. Each row in its own brackets, no APPEND."
         },
         {
           "kind": "cta",
@@ -42,8 +42,8 @@
             "Save",
             "Follow @abapcodevault"
           ],
-          "voiceover": "ऐसी tricks के लिए follow करो।",
-          "spoken": "Aisi tricks ke liye follow karo."
+          "voiceover": "Follow for more tricks like this.",
+          "spoken": "Follow for more tricks like this."
         }
       ],
       "caption": "Quick quiz: how do you fill an internal table in a single statement?\n\nSince ABAP 7.40, the VALUE operator builds the whole table inline. Each row goes in its own brackets, so there is no work area and no APPEND.\n\nIt also works for structures, nested tables and with BASE to add rows to an existing table.\n\nDid you get it right? Tell me in the comments.\n\nMore 7.40 syntax tricks are in the ABAP Code Vault (link in bio).",
