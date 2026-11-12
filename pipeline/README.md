@@ -9,6 +9,12 @@ Each daily run creates tomorrow's **3 reels** (reels only since 12 Nov 2026).
 | 1:00 PM | `"13:00"` | **Free topic** reel from topics.json (tips, bugs, interview, performance...). Even day-of-month: ABAP Code Vault plug in caption; odd: interview angle + ABAP Interview Pack plug | any length, never > 30 s |
 | 7:30 PM | `"19:30"` | **Course reel**: the part after the 9 AM one | any length, never > 30 s |
 **Pacing rule (every reel, approved 12 Nov):** the screen must visibly change at least every 3 seconds (new element, highlight, outline, typing, word emphasis, punch-in or cut); keep pauses short. Default pace "snappy" does the audio side and adds punch-ins on highlighted words / every ~2.6 s (not on code, screen, compare, table, bug slides); reels over 20 s get an automatic mid-reel re-hook stamp (override with `"rehook": {"stamp": "Common mistake", "slide": 2}` or turn off with `"rehook": false`; best: make that slide's voiceover start with the same words). The generator warns "STATIC: ..." if the picture is still for more than 3 s — fix it; plan 1 visual beat per 2-3 s when writing slides (e.g. more fields revealed one by one, focus outlines, step lists).
+**Live style (default since 12 Nov, user approved, inspired by a reference reel):** segmented progress bar (one
+segment per scene); a section chip at top-left per scene (HOOK, INSIDE SE11, CODE, HOW IT WORKS, REMEMBER, COMMON MISTAKE,
+NEXT ... — derived from the slide kind/label, override with slide "section"); a mood colour per section (red = hook/mistake,
+blue = SE11/code, green = rule/next, orange = tip/quiz; override with slide "mood": red|green|orange|blue) on the chip, its
+segment and a soft breathing glow behind the content; an animated heart "+1" and Follow -> Following on the end card; and a
+soft generated lo-fi music bed ducked under the voice. Turn off per reel with "style": "classic" or "no_music": true.
 **Length rule (every reel):** as long as the topic needs, never more than 30 s including the end card. If a topic needs
 more, split it into parts (Part 1/2, 2/2 ...) in the following slots.
 **"Next" rule (every reel):** set `"next": {"title": "The *Value Range* tab", "when": "tomorrow at 9 AM", "voice": "the Value Range tab"}`

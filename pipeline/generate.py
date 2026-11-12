@@ -1051,11 +1051,12 @@ def schedule_blocks(blocks, speech_start, speech_len, pace_k=1.0, scene_dur=None
     return blocks
 
 
-def reel_chrome(handle, tag, accent):
+def reel_chrome(handle, tag, accent, live=False):
     img = Image.new("RGB", (REEL_W, REEL_H), BG)
     paper(img)
     d = ImageDraw.Draw(img)
-    pill(d, 72, 150, tag.upper(), F_MONO_B(28), (255, 255, 255), accent)
+    if not live:   # live style shows a per-section chip instead (drawn per frame)
+        pill(d, 72, 150, tag.upper(), F_MONO_B(28), (255, 255, 255), accent)
     hx = REEL_W - 72 - d.textlength(handle, font=F_MONO(30))
     d.text((hx, 160), handle, font=F_MONO(30), fill=DIM)
     return img
@@ -1213,7 +1214,196 @@ def draw_blocks(content, blocks, tau, final=False):
         content.alpha_composite(im, (int(x), int(y)))
 
 
-def render_scene(base, blocks, tau, dur, sub_tl, accent, push=0.04, beat=0.0, stamp=None):
+# ===================== "live" style (12 Nov, inspired by user's reference reel) =====================
+def _moods():
+    return {"red": EMPH_RED, "green": (46, 125, 50), "orange": (214, 120, 24), "blue": SAP_BLUE}
+
+
+def section_for(s, i, n, p):
+    """(label, mood) for a slide: section chip text + mood colour. Slides may set "section" / "mood"."""
+    kind = s.get("kind")
+    lab = str(s.get("label") or "").upper()
+    if kind == "cta" and i == n - 1:
+        sec, mood = ("NEXT" if s.get("label") == "NEXT" else "FOLLOW"), "green"
+    elif kind == "cover":
+        sec, mood = ("HOOK" if i == 0 else "TOPIC"), "red"
+    elif kind == "screen":
+        sec, mood = "INSIDE " + str(s.get("tcode", "SAP")).upper(), "blue"
+    elif kind in ("code", "live_code"):
+        sec, mood = "CODE", "blue"
+    elif kind == "flow":
+        sec, mood = "HOW IT WORKS", "green"
+    elif kind == "answer":
+        sec = lab or "KEY POINT"
+        mood = "red" if ("MISTAKE" in sec or "TRAP" in sec) else ("orange" if ("TIP" in sec or "TRICK" in sec) else "green")
+    elif kind == "quiz":
+        sec, mood = "QUIZ", "orange"
+    elif kind in ("myth", "bug"):
+        sec, mood = ("MYTH VS FACT" if kind == "myth" else "BUG HUNT"), "red"
+    elif kind in ("compare", "choice"):
+        sec, mood = "BEFORE → AFTER" if kind == "compare" else "WHICH ONE?", "orange"
+    elif kind == "chat":
+        sec, mood = "INTERVIEW", "orange"
+    elif kind in ("list", "checklist", "table"):
+        sec, mood = "KEY POINTS", "blue"
+    else:
+        sec, mood = (lab or kind or "").upper(), "blue"
+    return str(s.get("section") or sec), _moods().get(s.get("mood") or mood, SAP_BLUE)
+
+
+_GLOW_CACHE = {}
+
+
+def mood_glow(color, level):
+    """Soft radial tint of the mood colour behind the content (cached in 6 brightness levels)."""
+    import numpy as np
+    key = (color, level)
+    if key not in _GLOW_CACHE:
+        W, H = REEL_W // 4, REEL_H // 4
+        yy, xx = np.mgrid[0:H, 0:W]
+        d = np.sqrt(((xx - W / 2) / (W * 0.62)) ** 2 + ((yy - 760 / 4) / (H * 0.30)) ** 2)
+        a = np.clip(1 - d, 0, 1) ** 1.5 * (26 + 5 * level)
+        mask = Image.fromarray(a.astype("uint8"), "L").resize((REEL_W, REEL_H), Image.BILINEAR)
+        _GLOW_CACHE[key] = (Image.new("RGB", (REEL_W, REEL_H), color), mask)
+    return _GLOW_CACHE[key]
+
+
+def draw_section_chip(frame, label, color, tau):
+    """Section label at top-left: outlined chip with a pulsing dot; pops in at each scene start."""
+    f = F_MONO_B(30)
+    d0 = ImageDraw.Draw(frame)
+    tw = int(d0.textlength(label, font=f))
+    w, h = tw + 80, 60
+    chip = Image.new("RGBA", (w + 8, h + 8), (0, 0, 0, 0))
+    d = ImageDraw.Draw(chip)
+    light = tuple(int(c + (255 - c) * 0.88) for c in color)
+    d.rounded_rectangle([4, 4, w + 3, h + 3], radius=28, fill=light + (255,), outline=color + (255,), width=3)
+    import math
+    r = 7 + 1.8 * math.sin(tau * 5.0)
+    d.ellipse([30 - r, 4 + h / 2 - r, 30 + r, 4 + h / 2 + r], fill=color + (255,))
+    d.text((52, 4 + (h - 30) // 2 - 2), label, font=f, fill=color + (255,))
+    a = min(1.0, tau / 0.22)
+    sc = 0.8 + 0.2 * ease_back(a)
+    if a < 1:
+        chip = chip.resize((max(1, int(chip.size[0] * sc)), max(1, int(chip.size[1] * sc))), Image.BICUBIC)
+        chip = _alpha(chip, min(1.0, a * 1.6))
+    frame.paste(chip, (68, 146 + (h + 8 - chip.size[1]) // 2), chip)
+
+
+def draw_segments(frame, starts, durations, t, colors):
+    """Instagram-stories style segmented progress bar: one segment per scene."""
+    d = ImageDraw.Draw(frame)
+    n = len(durations)
+    gap, x0, x1 = 10, 72, REEL_W - 72
+    sw = (x1 - x0 - gap * (n - 1)) / n
+    for k in range(n):
+        a = x0 + k * (sw + gap)
+        d.rounded_rectangle([a, 100, a + sw, 108], radius=4, fill=BORDER)
+        fr = min(1.0, max(0.0, (t - starts[k]) / max(durations[k], 0.01)))
+        if fr > 0:
+            d.rounded_rectangle([a, 100, a + max(8, sw * fr), 108], radius=4, fill=colors[k] if fr < 1 else INK)
+
+
+def draw_engagement(frame, tau, accent):
+    """End-card engagement moment: heart '+1' pops, then FOLLOW -> FOLLOWING."""
+    import math
+    y = 1160
+    d = ImageDraw.Draw(frame)
+    t1, t2 = 0.45, 1.25
+    if tau >= t1:   # heart
+        a = min(1.0, (tau - t1) / 0.3)
+        sc = 0.4 + 0.6 * ease_back(a)
+        cx, cy, r = 300, y + 34, 30 * sc
+        heart = [(cx, cy + r * 1.6), (cx - r * 1.55, cy + r * 0.1), (cx + r * 1.55, cy + r * 0.1)]
+        d.ellipse([cx - r * 1.6, cy - r * 0.9, cx, cy + r * 0.7], fill=EMPH_RED)
+        d.ellipse([cx, cy - r * 0.9, cx + r * 1.6, cy + r * 0.7], fill=EMPH_RED)
+        d.polygon(heart, fill=EMPH_RED)
+        lift = min(1.0, (tau - t1) / 0.9)
+        txt = Image.new("RGBA", (120, 50), (0, 0, 0, 0))
+        ImageDraw.Draw(txt).text((0, 0), "+1", font=F_HEAD(40), fill=EMPH_RED + (255,))
+        frame.paste(_alpha(txt, 1 - lift * 0.6), (cx + 44, int(cy - 30 - 40 * ease_out(lift))), _alpha(txt, 1 - lift * 0.6))
+    if tau >= 0.25:   # follow button
+        on = tau >= t2
+        f = F_SEMI(40)
+        lab = "Following" if on else "Follow +"
+        tw = d.textlength(lab, font=f)
+        bw = tw + 64 + (34 if on else 0)
+        x = 420
+        pop = 1.0 + (0.12 * (1 - ease_out(min(1.0, (tau - t2) / 0.25))) if on else 0)
+        h = 80 * pop
+        top = y + 34 - h / 2
+        if on:
+            d.rounded_rectangle([x, top, x + bw * pop, top + h], radius=40, fill=(46, 125, 50))
+            d.line([(x + 28, y + 36), (x + 42, y + 50), (x + 64, y + 20)], fill=(255, 255, 255), width=7)
+            d.text((x + 78, y + 34 - 26), lab, font=f, fill=(255, 255, 255))
+        else:
+            d.rounded_rectangle([x, top, x + bw, top + h], radius=40, fill=BG, outline=accent, width=3)
+            d.text((x + 32, y + 34 - 26), lab, font=f, fill=accent)
+
+
+def synth_music(total, sr, seed=3):
+    """Soft lo-fi bed (no samples): Am7-Fmaj7-Cmaj7-G pads + gentle pluck arpeggio + soft kick, ~84 bpm."""
+    import numpy as np
+    n = int(total * sr) + sr
+    out = np.zeros(n, dtype="float32")
+    bpm = 84.0
+    beat = 60.0 / bpm
+    chords = [[57, 60, 64, 67], [53, 57, 60, 64], [48, 52, 55, 59], [55, 59, 62, 67]]
+    hz = lambda m: 440.0 * 2 ** ((m - 69) / 12)
+    bar = beat * 4
+    t_all = np.arange(n) / sr
+    rng = np.random.default_rng(seed)
+    k = 0
+    tb = 0.0
+    while tb < total + bar:
+        ch = chords[k % 4]
+        a, b = int(tb * sr), min(n, int((tb + bar) * sr))
+        if a >= n:
+            break
+        tt = t_all[a:b] - tb
+        env = np.minimum(1, tt / 0.6) * np.minimum(1, (bar - tt) / 0.4)
+        pad = sum(np.sin(2 * np.pi * hz(m) * tt) + 0.3 * np.sin(2 * np.pi * hz(m) * 2.003 * tt) for m in ch)
+        out[a:b] += (0.035 * env * pad).astype("float32")
+        for j in range(8):   # eighth-note arpeggio
+            st = tb + j * beat / 2
+            m = ch[[0, 2, 1, 3, 2, 1, 3, 2][j]] + 12
+            s0 = int(st * sr)
+            L = int(0.45 * sr)
+            if s0 >= n:
+                break
+            ts = np.arange(min(L, n - s0)) / sr
+            pl = np.sin(2 * np.pi * hz(m) * ts) * np.exp(-ts * 7) * (0.05 + 0.01 * rng.random())
+            out[s0:s0 + len(ts)] += pl.astype("float32")
+        for j in (0, 2):     # soft kick
+            s0 = int((tb + j * beat) * sr)
+            if s0 >= n:
+                break
+            ts = np.arange(min(int(0.25 * sr), n - s0)) / sr
+            kk = np.sin(2 * np.pi * (55 + 60 * np.exp(-ts * 30)) * ts) * np.exp(-ts * 14) * 0.12
+            out[s0:s0 + len(ts)] += kk.astype("float32")
+        tb += bar
+        k += 1
+    fade = np.minimum(1, t_all / 0.8) * np.minimum(1, np.maximum(0, total - t_all) / 1.2)
+    return out * fade.astype("float32")
+
+
+def duck_under(voice, music, sr, depth=0.35):
+    """Lower the music while the voice speaks (smoothed envelope sidechain)."""
+    import numpy as np
+    m = music[: len(voice)] if len(music) >= len(voice) else np.pad(music, (0, len(voice) - len(music)))
+    hop = int(0.02 * sr)
+    nfr = len(voice) // hop + 1
+    env = np.array([np.abs(voice[i * hop:(i + 1) * hop]).max() if i * hop < len(voice) else 0 for i in range(nfr)])
+    on = (env > 0.02).astype("float32")
+    sm = np.zeros_like(on)
+    for i in range(nfr):   # fast attack, slow release
+        prev = sm[i - 1] if i else 0
+        sm[i] = max(on[i], prev * 0.93)
+    g = 1 - (1 - depth) * np.repeat(sm, hop)[: len(voice)]
+    return (m * g).astype("float32")
+
+
+def render_scene(base, blocks, tau, dur, sub_tl, accent, push=0.04, beat=0.0, stamp=None, glow=None):
     content = Image.new("RGBA", (REEL_W, REEL_H), (0, 0, 0, 0))
     draw_blocks(content, blocks, tau)
     # slow camera push on the content
@@ -1234,6 +1424,11 @@ def render_scene(base, blocks, tau, dur, sub_tl, accent, push=0.04, beat=0.0, st
         cx, cy = (zw - REEL_W) // 2, int((zh - REEL_H) * 0.42)
         content = content.crop((cx, cy, cx + REEL_W, cy + REEL_H))
     frame = base.copy()
+    if glow is not None:   # breathing mood tint behind the content
+        import math
+        lvl = int(2.5 + 2.5 * math.sin(tau * 2.1))
+        g_rgb, g_mask = mood_glow(glow, lvl)
+        frame.paste(g_rgb, (0, 0), g_mask)
     frame.paste(content, (0, 0), content)
     if stamp is not None:   # mid-reel re-hook stamp, pops in under the header
         img, t0 = stamp
@@ -1383,7 +1578,10 @@ def make_motion_reel(p, slides, folder, handle, accent):
     else:
         durations, speech, sr = [default] * len(slides), [(0.2, default - 0.6)] * len(slides), 24000
         voice = np.zeros(int(sum(durations) * sr), dtype="float32")
-    base = reel_chrome(handle, p.get("tag", "SAP ABAP"), accent)
+    live = p.get("style", "live") == "live"
+    base = reel_chrome(handle, p.get("tag", "SAP ABAP"), accent, live)
+    secs = [section_for(s_, k, len(slides), p) for k, s_ in enumerate(slides)]
+    engage_last = live and slides and slides[-1].get("kind") == "cta"
     scenes = []
     for s, dur, (st, ln) in zip(slides, durations, speech):
         blocks = schedule_blocks(build_blocks(s, accent), st, ln, pace["pause_k"], dur)
@@ -1451,6 +1649,17 @@ def make_motion_reel(p, slides, folder, handle, accent):
             if snd is not None and b["t"] < durations[i]:
                 a = int((st0 + b["t"]) * sr)
                 mix[a:a + len(snd)] += snd[: max(0, len(mix) - a)]
+    if live and not p.get("no_music"):
+        music = synth_music(total, sr)
+        mix[: len(voice)] += 0.55 * duck_under(voice, music, sr)
+        if len(music) > len(voice):
+            tail = music[len(voice): len(mix)] * 0.55
+            mix[len(voice): len(voice) + len(tail)] += tail
+    if engage_last:
+        for tt, k in ((0.45, "pop"), (1.25, "tick")):
+            a = int((starts[-1] + tt) * sr)
+            snd = sfx_bank[k]
+            mix[a:a + len(snd)] += snd[: max(0, len(mix) - a)]
     mix = np.clip(mix, -1, 1)
     mix_wav = os.path.join(folder, "_mix.wav")
     sf.write(mix_wav, mix, sr)
@@ -1472,19 +1681,27 @@ def make_motion_reel(p, slides, folder, handle, accent):
         i = max(k for k, st0 in enumerate(starts) if st0 <= t + 1e-9)
         tau = t - starts[i]
         blocks, dur, tl = scenes[i]
-        frame = render_scene(base, blocks, tau, dur, tl, accent, pace["push"], scene_beats[i], stamps[i])
+        frame = render_scene(base, blocks, tau, dur, tl, accent, pace["push"], scene_beats[i], stamps[i],
+                             secs[i][1] if live else None)
         kind_t = transitions[(i - 1) % len(transitions)] if i > 0 else None
         tlen = trans + (0.1 if kind_t in ("slide", "zoom", "flip", "wipe") else 0)
         if kind_t == "whip":
             tlen = 0.28
         if i > 0 and tau < tlen:
             pb, pd, ptl = scenes[i - 1]
-            prev = render_scene(base, pb, pd + tau, pd, ptl, accent, pace["push"], scene_beats[i - 1], stamps[i - 1])
+            prev = render_scene(base, pb, pd + tau, pd, ptl, accent, pace["push"], scene_beats[i - 1], stamps[i - 1],
+                                secs[i - 1][1] if live else None)
             frame = apply_transition(kind_t, prev, frame, base, tau / tlen)
         # progress bar
-        d = ImageDraw.Draw(frame)
-        d.rounded_rectangle([72, 100, REEL_W - 72, 106], radius=3, fill=BORDER)
-        d.rounded_rectangle([72, 100, 72 + int((REEL_W - 144) * (t / total)), 106], radius=3, fill=accent)
+        if live:
+            draw_segments(frame, starts, durations, t, [c for _, c in secs])
+            draw_section_chip(frame, secs[i][0], secs[i][1], tau)
+            if engage_last and i == len(slides) - 1:
+                draw_engagement(frame, tau, accent)
+        else:
+            d = ImageDraw.Draw(frame)
+            d.rounded_rectangle([72, 100, REEL_W - 72, 106], radius=3, fill=BORDER)
+            d.rounded_rectangle([72, 100, 72 + int((REEL_W - 144) * (t / total)), 106], radius=3, fill=accent)
         proc.stdin.write(frame.tobytes())
         if fi % 15 == 0:   # static-hold check: sample every 0.5 s
             small = np.asarray(frame.convert("L").resize((108, 192)), dtype=np.int16)
@@ -2092,7 +2309,10 @@ def with_outro(p, slides):
     own_cta = last.get("kind") == "cta" and "follow" in json.dumps(last, ensure_ascii=False).lower()
     if p.get("next"):
         base = list(slides[:-1]) if own_cta else list(slides)
-        return base + [next_card(p["next"])]
+        card = next_card(p["next"])
+        if p.get("style", "live") == "live":
+            card["actions"] = []   # the animated like/follow moment replaces the static button
+        return base + [card]
     if own_cta:
         return slides
     part, parts = int(p.get("part") or 0), int(p.get("parts") or 0)
