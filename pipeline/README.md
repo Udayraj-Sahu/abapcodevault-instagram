@@ -20,7 +20,7 @@ three DIFFERENT formats and three different topics. Old day files with post/caro
 5. Check 8 frames per reel (ffmpeg) + ffprobe (video+audio, 12-18 s). If the generator printed **OVERLAP WARNING** or wrote LENGTH_WARNING.txt, shorten/restructure and re-render until gone.
 6. `python3 scripts/queue_day.py out/DATE DATE`
 7. Update `state.json`: `last_queued_date` = DATE, append the topics to `history`, append formats to `recent_formats.reel`. Commit and push.
-8. **Improve the reels** (motion, animation, cuts) following `pipeline/IMPROVEMENTS.md`: research one technique on the web, implement it, test, log. Never let an improvement block or break the day's reels: if in doubt, revert it.
+8. **Improve the reels** (motion, animation, cuts, voiceover, translation) following `pipeline/IMPROVEMENTS.md`: research one technique on the web, implement it, test, log. Never let an improvement block or break the day's reels: if in doubt, revert it.
 
 ## Design (fixed)
 - Light "notebook" theme: cream ruled paper, ink text, one brand colour **SAP blue**, yellow highlighter, handwritten (Caveat) notes. All built into generate.py; do not change colours per post.
@@ -104,6 +104,7 @@ Rotate cover styles too: default, number, question, checklist, bug.
 - existing: text, code, compare, list, cta
 
 ## Reel voiceover (Hinglish, every reel)
+- **Read `pipeline/HINGLISH.md` first** (style, caption spellings, glossary, natural vs stiff phrases); it improves over time.
 - Post sets `"voice": "hm_psi", "voice_lang": "hi"` and a `"format"`.
 - Every reel slide has `"voiceover"` written the way an Indian developer actually talks (Hinglish):
   **Hindi words in Devanagari, English and technical words in Latin script**, exactly as people say them.

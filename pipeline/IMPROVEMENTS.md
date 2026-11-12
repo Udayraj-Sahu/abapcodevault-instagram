@@ -1,7 +1,9 @@
 # Continuous design & motion improvements
 
-Every daily run ships ONE small, tested improvement to how the REELS move: animation, motion, cuts/transitions,
-kinetic typography, timing/easing, sound timing. The goal: every reel feels a little more polished and alive than the last.
+Every daily run ships ONE small, tested improvement to the REELS: animation, motion, cuts/transitions,
+kinetic typography, timing, **voiceover** (pronunciation, pacing, pauses, emphasis, audio clarity) or
+**translation** (natural Hinglish phrasing, caption accuracy, glossary in `pipeline/HINGLISH.md`).
+The goal: every reel looks and sounds a little more polished and natural than the last.
 
 ## Rules (must follow)
 1. **Learn first:** run 1-2 web searches each day for a current short-form / motion-design technique
@@ -10,7 +12,16 @@ kinetic typography, timing/easing, sound timing. The goal: every reel feels a li
    in PIL + ffmpeg. Note the idea + source URL in the Log row. If nothing fits, take the top unchecked backlog item.
 2. Exactly one improvement per run, small and focused (usually 10-80 lines in `pipeline/generate.py`).
    Rotate the focus so it never gets stuck: `improve_next` in `pipeline/state.json` cycles
-   **animation → cuts → typography → sound/timing → animation …**; set it to the next one after the run, even if skipped.
+   **animation → voice → cuts → translation → typography → sound/timing → animation …**;
+   set it to the next one after the run, even if skipped.
+   - **voice** day: research (e.g. "TTS prosody pauses natural narration", "kokoro tts tips", "voiceover pacing short form")
+     and improve how it sounds: SAY pronunciations, pause lengths between sentences/scenes, emphasis on the key word,
+     speed per sentence, EQ/compression/de-ess chain, loudness, breath-like gaps. Voice stays hm_psi.
+   - **translation** day: research (e.g. "Hinglish content writing tips", "code-mixed Hindi English natural phrasing",
+     "Hinglish subtitle style") and improve the words: update `pipeline/HINGLISH.md` (glossary, spellings, natural vs
+     stiff phrases), fix stiff lines in recent day files' upcoming (unpublished) reels, and/or add an automatic check in
+     generate.py (e.g. warn if `spoken` and `voiceover` word counts differ a lot, Latin words written in Devanagari,
+     code symbols in voiceover). Never change already-published reels.
 3. Never change the fixed brand: palette (cream paper, ink, SAP blue, yellow highlighter), fonts, sizes,
    the notebook grid (text baselines on ruled lines), the JSON schema (old day files must still render),
    voice (hm_psi), 12-18 s length, captions or hashtag rules. No whoosh/swoosh sound on cuts (user disliked it).
@@ -18,7 +29,8 @@ kinetic typography, timing/easing, sound timing. The goal: every reel feels a li
 4. Test before keeping it: render `pipeline/days/2026-11-12.json` (3 reels: before_after, live_coding + legacy post)
    and `pipeline/days/2026-11-21.json` (interview_chat) into a temp folder AND today's new day file.
    Look at 8 frames per reel plus a 0.1 s frame strip around one cut; confirm video + audio and 12-18 s.
-   No OVERLAP WARNING. If anything is broken, overlapping, harder to read, or simply not better: `git checkout pipeline/generate.py` and skip.
+   No OVERLAP WARNING. For voice changes, also compare voiceover_script.txt + duration before/after and check the
+   audio is not clipped (ffmpeg volumedetect max_volume < -0.5 dB). If anything is broken, overlapping, harder to read, or simply not better: `git checkout pipeline/generate.py` and skip.
 5. Log it below (date, area, technique + source, what changed, why it is better) and commit it as its own commit:
    `Improve (<area>): <short description>`.
 
@@ -53,6 +65,23 @@ kinetic typography, timing/easing, sound timing. The goal: every reel feels a li
 - [ ] Parallax: ruled paper drifts 6-10 px slower than content during slide/zoom transitions (depth)
 - [ ] Motion blur / smear on fast transitions (blend 2-3 sub-frames) for smoother 30 fps movement
 - [ ] Ease library: replace linear moves with easeOutExpo / easeInOutCubic consistently; test curves frame by frame
+
+### Voice (research-first)
+- [ ] Pause map: 0.25 s after commas, 0.45 s after full stops, 0.6 s between scenes (instead of one fixed gap)
+- [ ] Key-word emphasis: slow the sentence containing the *highlighted* word by 5% and add a 0.15 s pause before it
+- [ ] Pronunciation audit: render every SAY entry once, list any that sound wrong, fix spellings (e.g. sy-subrc, SM30, BSEG)
+- [ ] Per-sentence speed: hook sentence 1.05x, explanation 0.97x, CTA 1.0x
+- [ ] Gentle de-esser + warmer EQ (low-shelf +1.5 dB at 180 Hz) in VOICE_POLISH; keep loudness -14 LUFS
+- [ ] Room tone: very quiet noise bed under the voice so gaps don't feel dead (no music, no whoosh)
+- [ ] Automatic pronunciation check: if a small offline ASR (pip-installable, no Hugging Face) is available, transcribe the reel and flag words that differ from the script
+
+### Translation (research-first)
+- [ ] generate.py check: warn if a `voiceover` contains Latin-script Hindi words (hai, karo, mein) or Devanagari-transliterated English (सेलेक्ट)
+- [ ] generate.py check: warn if `spoken` and `voiceover` differ in word count by > 25% (captions out of sync)
+- [ ] generate.py check: warn on code symbols (@ = -> #( ) in a voiceover
+- [ ] Grow HINGLISH.md glossary with 10 more ABAP terms as developers say them (BAdI, user exit, IDoc, LUW, COMMIT WORK ...)
+- [ ] Hook library in HINGLISH.md: 15 proven Hinglish opening lines by format (bug_hunt, quiz, story ...)
+- [ ] Caption chunking: break captions at natural phrase boundaries, never between a number and its unit
 
 ### Carousel
 - [ ] Carousel progress dots on every slide; "swipe" arrow nudges on the cover
