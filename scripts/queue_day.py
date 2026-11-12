@@ -2,7 +2,8 @@
 """Queue one generated day (output of pipeline/generate.py) for a date.
 
 Usage: python3 scripts/queue_day.py OUT_DAY_DIR YYYY-MM-DD [HH:MM]
-Times (IST) by type: post 09:00, carousel 13:00, reel 19:30.
+Times (IST): a post's "time" in pipeline/days/DATE.json wins ("09:00", "13:00", "19:30");
+otherwise by type: post 09:00, carousel 13:00, reel 19:30.
 Optional HH:MM puts every post of that day at the same time (e.g. a one-off 21:00 launch).
 PNG slides become JPEG (the Instagram API only accepts JPEG images).
 """
@@ -19,7 +20,16 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TIMES = {"post": "09:00", "carousel": "13:00", "reel": "19:30"}
 
 
+def slot_times(date):
+    p = os.path.join(ROOT, "pipeline", "days", f"{date}.json")
+    if not os.path.exists(p):
+        return {}
+    spec = json.load(open(p, encoding="utf-8"))
+    return {x.get("slug"): x["time"] for x in spec.get("posts", []) if x.get("time")}
+
+
 def main(day_dir, date, at=None):
+    times = slot_times(date)
     for src in sorted(glob.glob(os.path.join(day_dir, "*"))):
         if not os.path.isdir(src):
             continue
@@ -27,7 +37,7 @@ def main(day_dir, date, at=None):
         if not m:
             continue
         kind, slug = m.group(1), m.group(2)
-        when = at or TIMES[kind]
+        when = at or times.get(slug) or TIMES[kind]
         dst = os.path.join(ROOT, "queue", f"{date}_{when.replace(':', '')}_{kind}_{slug}")
         if os.path.exists(dst):
             shutil.rmtree(dst)

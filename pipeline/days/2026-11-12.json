@@ -39,68 +39,6 @@
       ]
     },
     {
-      "day": "Thu",
-      "type": "carousel",
-      "slug": "salv-alv-10-lines",
-      "tag": "ALV",
-      "slides": [
-        {
-          "kind": "cover",
-          "kicker": "No field catalog needed",
-          "title": "A full *ALV report* in 10 lines",
-          "subtitle": "CL_SALV_TABLE, step by step. Swipe."
-        },
-        {
-          "kind": "code",
-          "heading": "Step 1: *Get your data*",
-          "code": "SELECT vbeln, erdat, kunnr, netwr\n  FROM vbak\n  INTO TABLE @DATA(lt_orders)\n  UP TO 100 ROWS.",
-          "filename": "zsalv_demo.abap"
-        },
-        {
-          "kind": "code",
-          "heading": "Step 2: *Create and show* the ALV",
-          "code": "cl_salv_table=>factory(\n  IMPORTING r_salv_table = DATA(lo_alv)\n  CHANGING  t_table      = lt_orders ).\n\nlo_alv->display( ).",
-          "filename": "zsalv_demo.abap",
-          "note": "That's a working ALV. Columns come from the table type automatically."
-        },
-        {
-          "kind": "code",
-          "heading": "Step 3: Add the *toolbar*",
-          "code": "lo_alv->get_functions( )->set_all( ).\nlo_alv->get_columns( )->set_optimize( ).\nlo_alv->get_display_settings(\n  )->set_striped_pattern( abap_true ).",
-          "filename": "zsalv_demo.abap",
-          "note": "Sort, filter, Excel export and zebra stripes in 3 lines."
-        },
-        {
-          "kind": "text",
-          "heading": "Don't forget *TRY...CATCH*",
-          "body": "factory( ) raises CX_SALV_MSG, and get_column( ) raises CX_SALV_NOT_FOUND for a wrong column name.\n\nWrap the ALV code in TRY...CATCH and show the error text.",
-          "highlight": "Column names must be UPPER CASE"
-        },
-        {
-          "kind": "cta",
-          "title": "Want the *full template*?",
-          "body": "Hotspots, totals, popup ALV and saved layouts are in the ABAP Code Vault. Link in bio.",
-          "actions": [
-            "Save",
-            "Share with your team",
-            "Follow @abapcodevault"
-          ]
-        }
-      ],
-      "caption": "Still building a field catalog by hand for every ALV?\n\nCL_SALV_TABLE gives you a complete ALV report in about 10 lines:\n1. Select your data\n2. Call factory( )\n3. Call display( )\n\nAdd the toolbar, optimized columns and zebra stripes with three more lines. Just remember to wrap it in TRY...CATCH.\n\nSave this for your next report.\nThe full template with hotspots, totals and saved layouts is in the ABAP Code Vault (link in bio).",
-      "hashtags": [
-        "#sap",
-        "#abap",
-        "#coding",
-        "#sapabap",
-        "#abapdeveloper",
-        "#saps4hana",
-        "#sapfresher",
-        "#alv",
-        "#abapcodevault"
-      ]
-    },
-    {
       "type": "reel",
       "format": "before_after",
       "voice": "hm_psi",
@@ -148,7 +86,56 @@
       ],
       "slug": "select-in-loop",
       "day": "Thu",
-      "tag": "Performance"
+      "tag": "Performance",
+      "time": "19:30"
+    },
+    {
+      "type": "reel",
+      "format": "live_coding",
+      "voice": "hm_psi",
+      "voice_lang": "hi",
+      "time": "13:00",
+      "slug": "salv-alv-5-lines",
+      "tag": "ALV",
+      "slides": [
+        {
+          "kind": "cover",
+          "kicker": "No field catalog",
+          "title": "A full *ALV report* in 5 lines",
+          "voiceover": "ALV report सिर्फ पाँच lines में? Field catalog की ज़रूरत ही नहीं।",
+          "spoken": "ALV report sirf paanch lines mein? Field catalog ki zaroorat hi nahi."
+        },
+        {
+          "kind": "code",
+          "heading": "*CL_SALV_TABLE*",
+          "typewriter": true,
+          "filename": "zsalv_demo.abap",
+          "code": "cl_salv_table=>factory(\n  IMPORTING r_salv_table = DATA(lo_alv)\n  CHANGING  t_table      = lt_orders ).\nlo_alv->get_functions( )->set_all( ).\nlo_alv->display( ).",
+          "voiceover": "SALV table का factory call करो, अपनी table pass करो, toolbar on करो, और display.",
+          "spoken": "SALV table ka factory call karo, apni table pass karo, toolbar on karo, aur display."
+        },
+        {
+          "kind": "answer",
+          "label": "RECAP",
+          "heading": "*factory* then *display*",
+          "body": "Columns come from the table type automatically.",
+          "highlight": "Wrap it in TRY...CATCH cx_salv_msg",
+          "voiceover": "Columns अपने आप बन जाते हैं। Save कर लो।",
+          "spoken": "Columns apne aap ban jaate hain. Save kar lo."
+        }
+      ],
+      "caption": "Still building a field catalog for every simple report?\n\nCL_SALV_TABLE gives you a full ALV in a few lines:\n1. factory( ) with your internal table\n2. get_functions( )->set_all( ) for sort, filter and Excel export\n3. display( )\n\nColumns and headings come from the table type. Wrap the call in TRY...CATCH cx_salv_msg.\n\nWhich ALV do you use most: SALV or REUSE_ALV_GRID_DISPLAY?\n\nThe full template with hotspots, totals and layouts is in the ABAP Code Vault (link in bio).",
+      "hashtags": [
+        "#sap",
+        "#abap",
+        "#coding",
+        "#sapabap",
+        "#abapdeveloper",
+        "#saps4hana",
+        "#sapfresher",
+        "#alv",
+        "#abapcodevault"
+      ]
     }
   ]
 }

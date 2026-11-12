@@ -3,61 +3,50 @@
   "handle": "@abapcodevault",
   "posts": [
     {
-      "day": "Mon",
-      "type": "carousel",
-      "slug": "740-syntax-tricks",
+      "type": "reel",
+      "format": "quiz",
+      "voice": "hm_psi",
+      "voice_lang": "hi",
+      "time": "13:00",
+      "slug": "value-operator-quiz",
       "tag": "Modern ABAP",
       "slides": [
         {
-          "kind": "cover",
-          "kicker": "ABAP 7.40+",
-          "title": "4 syntax tricks that *cut your code in half*",
-          "subtitle": "Old way vs new way. Swipe and save."
+          "kind": "quiz",
+          "question": "Fill a table in *one statement* (ABAP 7.40)?",
+          "options": [
+            "APPEND ... TO lt_items",
+            "VALUE #( ( ... ) ( ... ) )",
+            "INSERT ... INTO TABLE"
+          ],
+          "answer": 1,
+          "countdown": true,
+          "reveal": true,
+          "voiceover": "ABAP seven forty में, एक ही statement में table कैसे भरोगे? सोचो।",
+          "spoken": "ABAP seven forty mein, ek hi statement mein table kaise bharoge? Socho."
         },
         {
-          "kind": "compare",
-          "heading": "1. *Inline* declarations",
-          "left_title": "Old way",
-          "left": "DATA lv_count TYPE i.\nlv_count = lines( lt_orders ).",
-          "right_title": "New way",
-          "right": "DATA(lv_count) = lines( lt_orders )."
-        },
-        {
-          "kind": "compare",
-          "heading": "2. *Table* expressions",
-          "left_title": "Old way",
-          "left": "READ TABLE lt_mara INTO ls_mara\n  WITH KEY matnr = lv_matnr.\nIF sy-subrc = 0.\n  lv_mtart = ls_mara-mtart.\nENDIF.",
-          "right_title": "New way",
-          "right": "lv_mtart = VALUE #(\n  lt_mara[ matnr = lv_matnr ]-mtart\n  OPTIONAL )."
-        },
-        {
-          "kind": "compare",
-          "heading": "3. Fill a table with *VALUE*",
-          "left_title": "Old way",
-          "left": "ls_item-matnr = 'MAT-01'.\nls_item-menge = 10.\nAPPEND ls_item TO lt_items.",
-          "right_title": "New way",
-          "right": "lt_items = VALUE #(\n  ( matnr = 'MAT-01' menge = 10 ) )."
-        },
-        {
-          "kind": "compare",
-          "heading": "4. *String* templates",
-          "left_title": "Old way",
-          "left": "CONCATENATE 'Order' lv_vbeln\n  'saved' INTO lv_msg\n  SEPARATED BY space.",
-          "right_title": "New way",
-          "right": "lv_msg = |Order { lv_vbeln } saved|."
+          "kind": "code",
+          "heading": "Answer: *VALUE #( )*",
+          "typewriter": true,
+          "filename": "value_demo.abap",
+          "code": "lt_items = VALUE #(\n  ( matnr = 'MAT-01' menge = 10 )\n  ( matnr = 'MAT-02' menge = 5 ) ).",
+          "voiceover": "Answer है VALUE. हर row अपने brackets में, कोई APPEND नहीं।",
+          "spoken": "Answer hai VALUE. Har row apne brackets mein, koi APPEND nahi."
         },
         {
           "kind": "cta",
-          "title": "Which one do you *use daily*?",
-          "body": "Comment the number. Full code and cheat sheets are in the ABAP Code Vault (link in bio).",
+          "title": "Follow for *daily ABAP*",
+          "body": "One modern ABAP trick every day.",
           "actions": [
             "Save",
-            "Share with your team",
             "Follow @abapcodevault"
-          ]
+          ],
+          "voiceover": "ऐसी tricks के लिए follow करो।",
+          "spoken": "Aisi tricks ke liye follow karo."
         }
       ],
-      "caption": "Still writing CONCATENATE and READ TABLE in 2026?\n\nThese 4 ABAP 7.40 features cut your code in half and make reviews easier:\n1. Inline DATA( )\n2. Table expressions itab[ ]\n3. VALUE #( ) to fill tables\n4. String templates | |\n\nSave this for your next project. Which one do you use every day? Comment the number.\n\nFull code and cheat sheets: link in bio.",
+      "caption": "Quick quiz: how do you fill an internal table in a single statement?\n\nSince ABAP 7.40, the VALUE operator builds the whole table inline. Each row goes in its own brackets, so there is no work area and no APPEND.\n\nIt also works for structures, nested tables and with BASE to add rows to an existing table.\n\nDid you get it right? Tell me in the comments.\n\nMore 7.40 syntax tricks are in the ABAP Code Vault (link in bio).",
       "hashtags": [
         "#sap",
         "#abap",

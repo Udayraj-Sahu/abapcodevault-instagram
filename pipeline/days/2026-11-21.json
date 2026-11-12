@@ -3,53 +3,51 @@
   "handle": "@abapcodevault",
   "posts": [
     {
-      "day": "Sat",
-      "type": "carousel",
+      "type": "reel",
+      "format": "interview_chat",
+      "voice": "hm_psi",
+      "voice_lang": "hi",
+      "time": "13:00",
       "slug": "itab-types-interview",
       "tag": "Interview Q",
       "slides": [
         {
-          "kind": "cover",
-          "kicker": "Asked in almost every interview",
-          "title": "*Standard* vs *Sorted* vs *Hashed* table",
-          "subtitle": "Explain it in 30 seconds. Swipe."
+          "kind": "chat",
+          "heading": "Interview *round 1*",
+          "messages": [
+            {
+              "from": "Interviewer",
+              "text": "STANDARD, SORTED or HASHED: which one for big lookups?"
+            },
+            {
+              "from": "You",
+              "text": "HASHED. A read by the full unique key takes the same time at any size."
+            }
+          ],
+          "voiceover": "Interview में पूछा गया: बड़े lookups के लिए कौन सी table? जवाब: HASHED.",
+          "spoken": "Interview mein poocha gaya: bade lookups ke liye kaun si table? Jawaab: HASHED."
         },
         {
-          "kind": "text",
-          "heading": "*STANDARD* table",
-          "body": "Access by index or linear search on key. Duplicates allowed.\n\nUse for small tables and ALV output.",
-          "highlight": "Read cost grows with table size"
-        },
-        {
-          "kind": "text",
-          "heading": "*SORTED* table",
-          "body": "Always kept sorted by its key. Reads use binary search automatically.\n\nUse when you read by a partial key or need data in order.",
-          "highlight": "Fast reads, slower inserts"
-        },
-        {
-          "kind": "text",
-          "heading": "*HASHED* table",
-          "body": "Access only by the full unique key. Constant read time, no index access.\n\nUse for big lookup tables inside loops.",
-          "highlight": "Same speed for 100 or 1,000,000 rows"
-        },
-        {
-          "kind": "code",
-          "heading": "Declare *all three*",
-          "code": "DATA lt_std TYPE STANDARD TABLE OF mara\n  WITH EMPTY KEY.\nDATA lt_srt TYPE SORTED TABLE OF mara\n  WITH NON-UNIQUE KEY mtart.\nDATA lt_hsh TYPE HASHED TABLE OF mara\n  WITH UNIQUE KEY matnr.",
-          "filename": "itab_types.abap"
+          "kind": "answer",
+          "label": "KEY POINT",
+          "heading": "*SORTED* for partial keys",
+          "body": "STANDARD: index access. SORTED: binary search, partial key. HASHED: full unique key only.",
+          "voiceover": "Partial key से पढ़ना है तो SORTED, और index चाहिए तो STANDARD.",
+          "spoken": "Partial key se padhna hai to SORTED, aur index chahiye to STANDARD."
         },
         {
           "kind": "cta",
-          "title": "Want *159 more* like this?",
-          "body": "ABAP Interview Pack: 160 questions with answers, Fresher to Senior. Link in bio.",
+          "title": "Save for your *interview*",
+          "body": "160 more answers in the ABAP Interview Pack.",
           "actions": [
-            "Save for your interview",
-            "Tag a job seeker",
+            "Save",
             "Follow @abapcodevault"
-          ]
+          ],
+          "voiceover": "Interview से पहले save कर लो।",
+          "spoken": "Interview se pehle save kar lo."
         }
       ],
-      "caption": "Interviewer: \"What's the difference between standard, sorted and hashed tables?\"\n\nLearn to answer it in 30 seconds:\n- Standard: small tables, ALV output, index access\n- Sorted: reads by partial key, data kept in order\n- Hashed: lookups by full unique key, constant speed\n\nThen add one real example from your own project. Save this before your next interview.\n\nABAP Interview Pack (160 Q&A): link in bio.",
+      "caption": "\"STANDARD, SORTED or HASHED?\" comes up in almost every ABAP interview.\n\n1. STANDARD: index access, linear search by key. Fine for small tables and ALV output.\n2. SORTED: kept sorted by its key, binary search, supports partial keys.\n3. HASHED: full unique key only, constant read time at any size.\n\nWhich one do you use inside loops?\n\nABAP Interview Pack (160 Q&A, Fresher to Senior): link in bio.",
       "hashtags": [
         "#sap",
         "#abap",

@@ -1,0 +1,11 @@
+Quick quiz: how do you fill an internal table in a single statement?
+
+Since ABAP 7.40, the VALUE operator builds the whole table inline. Each row goes in its own brackets, so there is no work area and no APPEND.
+
+It also works for structures, nested tables and with BASE to add rows to an existing table.
+
+Did you get it right? Tell me in the comments.
+
+More 7.40 syntax tricks are in the ABAP Code Vault (link in bio).
+
+#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #cleancode #abapcodevault

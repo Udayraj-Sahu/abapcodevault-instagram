@@ -1,0 +1,14 @@
+Still building a field catalog for every simple report?
+
+CL_SALV_TABLE gives you a full ALV in a few lines:
+1. factory( ) with your internal table
+2. get_functions( )->set_all( ) for sort, filter and Excel export
+3. display( )
+
+Columns and headings come from the table type. Wrap the call in TRY...CATCH cx_salv_msg.
+
+Which ALV do you use most: SALV or REUSE_ALV_GRID_DISPLAY?
+
+The full template with hotspots, totals and layouts is in the ABAP Code Vault (link in bio).
+
+#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #alv #abapcodevault
