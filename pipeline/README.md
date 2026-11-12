@@ -175,3 +175,15 @@ Rotate cover styles too: default, number, question, checklist, bug.
 Automatic per scene kind, no per-reel work: `screen` = cursor click + typed value in each `focus` field;
 `flow` = side rail with a running packet; stamps = short landing shake. Do not add drifting background
 symbols (rejected). New effects or variations can come in through the daily visual improvement.
+
+## Reference-reel motion set A-E (approved 12 Nov, live from the 13 Nov reels)
+- A: transitions are "soft" by default (old scene shrinks + fades, mood colour shifts, new scene builds on an empty page);
+  the section chip switches to the next label ~0.2 s before the cut.
+- B: SE11 panels and flow steps "grow" in with a white outline flash; flow steps appear when their first word is spoken
+  (automatic). Any block can take `say` to sync to a spoken word.
+- C: flow / versus headings build word by word.
+- D: slide kind `versus` for wrong-vs-right: `{"kind":"versus","label":"REMEMBER","heading":"...",
+  "bad":{"title":"...","sub":"...","say":"<spoken word>"},"good":{"title":"...","sub":"...","say":"<spoken word>"}}`
+  -> red card, VS, green card on its word, strike-through + ✗/✓ badges. Use it in course reels where a mistake/fix fits.
+- E: every reel sets `"comment_word"` (one short keyword, e.g. "DDIC"): the end card types it into a comment box.
+  Do NOT promise anything for commenting in the caption or voice.

@@ -1080,6 +1080,45 @@ def chunk_words(text, max_words=4, max_chars=24):
     return chunks
 
 
+def sync_to_words(blocks, tl, dur):
+    """B: a block with say='word' appears the moment that word is spoken; arrows lead into the next
+    card, after_say blocks follow the last spoken reveal; kin headings align words that are spoken."""
+    words = [(w_.strip("*?,.!:;'\"").lower(), t0) for c in tl for (w_, t0, t1) in c]
+    last, prev_t = None, 0.0
+    for b in blocks:
+        key = b.get("say")
+        if key:
+            k5 = key[:5]
+            hit = next((t0 for w_, t0 in words if t0 >= prev_t - 0.05 and (w_.startswith(k5) or k5.startswith(w_[:5]))
+                        and len(w_) >= 2), None)
+            if hit is not None:
+                b["t"] = min(max(prev_t + 0.12, hit - 0.08), dur - 0.5)
+                prev_t = b["t"]
+                last = b["t"] + (b.get("dur") or 0.4)
+    for i, b in enumerate(blocks):
+        if b.get("link_next"):
+            nxt = next((c for c in blocks[i + 1:] if c.get("say")), None)
+            if nxt is not None:
+                b["t"] = max(0.05, nxt["t"] - 0.28)
+    if last is not None:
+        t = last + 0.15
+        for b in blocks:
+            if b.get("after_say"):
+                b["t"] = min(t, dur - 0.45)
+                t += 0.3
+    for b in blocks:                 # kinetic heading: spoken words land on their voice timing
+        if b.get("anim") == "kin":
+            new, pt = [], 0.0
+            for j, wd in enumerate(b["words"]):
+                hit = next((t0 for w_, t0 in words if wd and len(wd) > 2 and w_.startswith(wd[:5])
+                            and b["t"] <= t0 <= b["t"] + 1.6), None)
+                tt = (hit - b["t"]) if hit is not None else b["wtimes"][j]
+                tt = max(pt + (0.12 if j else 0), tt)
+                new.append(tt)
+                pt = tt
+            b["wtimes"] = new
+
+
 def word_timeline(text, start, length):
     """[(chunk_words, [(word, t0, t1), ...])] with times proportional to word length."""
     chunks = chunk_words(text)
@@ -1203,6 +1242,35 @@ def draw_blocks(content, blocks, tau, final=False):
                 im = _alpha(im, min(1.0, p * 3))
                 x = int(x + (w0 - im.size[0]) / 2)
                 y = int(y + (h0 - im.size[1]) / 2)
+        elif a == "grow":
+            import math
+            e = ease_out(p)
+            sc = 0.42 + 0.58 * e + 0.025 * math.sin(math.pi * min(1.0, p))   # ~2% overshoot, one settle
+            if abs(sc - 1) > 0.002:
+                w0, h0 = im.size
+                im = im.resize((max(1, int(w0 * sc)), max(1, int(h0 * sc))), Image.BILINEAR)
+                x = int(x + (w0 - im.size[0]) / 2)
+                y = int(y + (h0 - im.size[1]) / 2)
+            im = _alpha(im, min(1.0, p * 2.5))
+            if not final and b.get("flash") is not None:
+                since = tau - b["t"] - dur_b
+                if 0 <= since < 0.4:                 # outline flashes white, then settles into the colour
+                    k = since / 0.4
+                    col = tuple(int(255 + (c - 255) * k) for c in b["flash"])
+                    dd = ImageDraw.Draw(content)
+                    w0, h0 = b["img"].size
+                    dd.rounded_rectangle([b["x"] - 5, b["y"] - 5, b["x"] + w0 + 4, b["y"] + h0 + 4], radius=20,
+                                         outline=col + (int(255 * (1 - k * 0.7)),), width=5)
+        elif a == "kin":
+            frames, wt = b["frames"], b["wtimes"]
+            el = 99 if final else tau - b["t"]
+            k = 0
+            for j, t_ in enumerate(wt):
+                if el >= t_:
+                    k = j
+            im = frames[k]
+            if not final and k > 0 and el - wt[k] < 0.12:    # newest word lands with a tiny punch
+                im = _alpha(im, 0.75 + 0.25 * (el - wt[k]) / 0.12)
         elif a == "draw":
             if p < 1:
                 im = im.crop((0, 0, max(1, int(im.size[0] * ease_out(p))), im.size[1]))
@@ -1238,6 +1306,8 @@ def section_for(s, i, n, p):
         sec, mood = "CODE", "blue"
     elif kind == "flow":
         sec, mood = "HOW IT WORKS", "green"
+    elif kind == "versus":
+        sec, mood = (lab or "BEFORE → AFTER"), "green"
     elif kind == "answer":
         sec = lab or "KEY POINT"
         mood = "red" if ("MISTAKE" in sec or "TRAP" in sec) else ("orange" if ("TIP" in sec or "TRICK" in sec) else "green")
@@ -1309,11 +1379,42 @@ def draw_segments(frame, starts, durations, t, colors):
             d.rounded_rectangle([a, 100, a + max(8, sw * fr), 108], radius=4, fill=colors[k] if fr < 1 else INK)
 
 
-def draw_engagement(frame, tau, accent):
-    """End-card engagement moment: heart '+1' pops, then FOLLOW -> FOLLOWING."""
+def draw_engagement(frame, tau, accent, word=None):
+    """End-card engagement moment: heart '+1' pops, then FOLLOW -> FOLLOWING,
+    then (E) a comment box types a keyword and gets a small heart."""
     import math
     y = 1160
     d = ImageDraw.Draw(frame)
+    t3 = 1.75
+    if word and tau >= t3 - 0.3:          # E: comment box
+        a = min(1.0, (tau - t3 + 0.3) / 0.3)
+        bx0, by0, bw_, bh_ = 180, 1040, 720, 76
+        box = Image.new("RGBA", (bw_, bh_), (0, 0, 0, 0))
+        bd = ImageDraw.Draw(box)
+        bd.rounded_rectangle([0, 0, bw_ - 1, bh_ - 1], radius=38, fill=(255, 255, 255, 255), outline=BORDER + (255,), width=3)
+        # avatar dot
+        bd.ellipse([18, 16, 62, 60], fill=_lighten(accent, 0.75) + (255,))
+        bd.ellipse([32, 24, 48, 40], fill=accent + (255,))
+        bd.pieslice([26, 40, 54, 68], 180, 360, fill=accent + (255,))
+        n = 0 if tau < t3 else min(len(word), int((tau - t3) / 0.13) + 1)
+        f = F_SEMI(36)
+        if n == 0:
+            bd.text((84, 18), "Add a comment...", font=F_BODY(34), fill=MUTED)
+        else:
+            bd.text((84, 18), word[:n], font=f, fill=INK)
+        cx = 84 + (bd.textlength(word[:n], font=f) if n else 0) + 4
+        if n < len(word) or int(tau * 2.4) % 2 == 0:
+            bd.rectangle([cx, 20, cx + 3, 58], fill=accent + (255,))
+        done = t3 + 0.13 * len(word) + 0.15
+        if tau >= done:                    # sent: small heart pops on the right
+            h = min(1.0, (tau - done) / 0.25)
+            r = 11 * (0.5 + 0.5 * ease_back(h))
+            hx, hy = bw_ - 50, bh_ // 2
+            bd.ellipse([hx - r * 1.6, hy - r * 0.9, hx, hy + r * 0.7], fill=EMPH_RED + (255,))
+            bd.ellipse([hx, hy - r * 0.9, hx + r * 1.6, hy + r * 0.7], fill=EMPH_RED + (255,))
+            bd.polygon([(hx, hy + r * 1.6), (hx - r * 1.55, hy + r * 0.1), (hx + r * 1.55, hy + r * 0.1)], fill=EMPH_RED + (255,))
+        box = _alpha(box, a)
+        frame.paste(box, (bx0, int(by0 + (1 - ease_out(a)) * 30)), box)
     t1, t2 = 0.45, 1.25
     if tau >= t1:   # heart
         a = min(1.0, (tau - t1) / 0.3)
@@ -1436,7 +1537,7 @@ def render_scene(base, blocks, tau, dur, sub_tl, accent, push=0.04, beat=0.0, st
         frame.paste(g_rgb, (0, 0), g_mask)
     sx = sy = 0
     for b in blocks:
-        if b.get("anim") == "stamp" and not b.get("decor"):
+        if b.get("anim") == "stamp" and (not b.get("decor") or b.get("shake")):
             k = tau - (b["t"] + (b.get("dur") or ANIM_DUR["stamp"]))
             if 0 <= k < 0.2:
                 import math
@@ -1490,7 +1591,7 @@ def synth_sfx(kind, sr=24000):
     return (np.sin(phase) * np.exp(-t * 55) * 0.16).astype("float32")
 
 
-TRANSITIONS = ["rise", "slide", "zoom", "rise"]   # rotated cut by cut; a post may set "transitions"
+TRANSITIONS = ["soft"]   # rotated cut by cut; a post may set "transitions"
 HEADER_H = 230   # tag + handle + progress bar stay fixed during transitions
 
 
@@ -1498,6 +1599,22 @@ def apply_transition(kind, prev, nxt, base, p):
     """Blend outgoing frame `prev` into incoming `nxt`; p goes 0 -> 1."""
     e = ease_out(min(1.0, max(0.0, p)))
     W, H = nxt.size
+    if kind == "soft":
+        out = base.copy()
+        W_, H_ = nxt.size
+        if p < 0.5:
+            q = ease_out(p / 0.5)
+            body = prev.crop((0, HEADER_H, W_, H_))
+            sc = 1.0 - 0.05 * q
+            bw_, bh_ = body.size
+            zb = body.resize((int(bw_ * sc), int(bh_ * sc)), Image.BILINEAR)
+            canvas = base.crop((0, HEADER_H, W_, H_))
+            canvas.paste(zb, ((bw_ - zb.size[0]) // 2, int((bh_ - zb.size[1]) * 0.42)))
+            out.paste(Image.blend(canvas, base.crop((0, HEADER_H, W_, H_)), q), (0, HEADER_H))
+        else:
+            q = ease_out((p - 0.5) / 0.5)
+            out.paste(Image.blend(base.crop((0, HEADER_H, W_, H_)), nxt.crop((0, HEADER_H, W_, H_)), q), (0, HEADER_H))
+        return out
     if kind == "slide":
         # page push: content slides left, header stays put
         out = base.copy()
@@ -1600,6 +1717,7 @@ def make_motion_reel(p, slides, folder, handle, accent):
         blocks = schedule_blocks(build_blocks(s, accent), st, ln, pace["pause_k"], dur)
         sub = s.get("spoken") or s.get("voiceover") or ""   # subtitles always on
         tl = word_timeline(sub, st, ln) if (sub and ln > 0) else []
+        sync_to_words(blocks, tl, dur)
         scenes.append((blocks, dur, tl))
     starts = [sum(durations[:i]) for i in range(len(durations))]
     total = sum(durations)
@@ -1698,6 +1816,8 @@ def make_motion_reel(p, slides, folder, handle, accent):
                              secs[i][1] if live else None)
         kind_t = transitions[(i - 1) % len(transitions)] if i > 0 else None
         tlen = trans + (0.1 if kind_t in ("slide", "zoom", "flip", "wipe") else 0)
+        if kind_t == "soft":
+            tlen = 0.4
         if kind_t == "whip":
             tlen = 0.28
         if i > 0 and tau < tlen:
@@ -1708,9 +1828,12 @@ def make_motion_reel(p, slides, folder, handle, accent):
         # progress bar
         if live:
             draw_segments(frame, starts, durations, t, [c for _, c in secs])
-            draw_section_chip(frame, secs[i][0], secs[i][1], tau)
+            if i + 1 < len(slides) and t >= starts[i + 1] - 0.22:      # A: chip announces the next section early
+                draw_section_chip(frame, secs[i + 1][0], secs[i + 1][1], t - (starts[i + 1] - 0.22))
+            else:
+                draw_section_chip(frame, secs[i][0], secs[i][1], tau + (0.22 if i > 0 else 0))
             if engage_last and i == len(slides) - 1:
-                draw_engagement(frame, tau, accent)
+                draw_engagement(frame, tau, accent, p.get("comment_word"))
         else:
             d = ImageDraw.Draw(frame)
             d.rounded_rectangle([72, 100, REEL_W - 72, 106], radius=3, fill=BORDER)
@@ -2027,7 +2150,7 @@ def _stamp(text, color=EMPH_RED, size=56):
     return im.rotate(-6, expand=True, resample=Image.BICUBIC)
 
 
-NEW_KINDS = {"quiz", "answer", "chat", "myth", "number", "story", "bug", "table", "flow", "tip",
+NEW_KINDS = {"quiz", "answer", "versus", "chat", "myth", "number", "story", "bug", "table", "flow", "tip",
              "fact", "choice", "checklist", "screen"}
 
 
@@ -2040,6 +2163,29 @@ def build_new_kind(B, s, accent, x, w, avail_h):
         nonlocal y
         if text:
             y = B.add(heading_img(text, F_HEAD(size), w, lh=int(size * 1.14)), x - 6, y, anim) + 34
+
+    def kin_heading(text, size=66, step=0.2):
+        """C: heading builds word by word (prefix images share the same wrapping)."""
+        nonlocal y
+        if not text:
+            return
+        toks = str(text).split()
+        frames = []
+        for k in range(1, len(toks) + 1):
+            pre = " ".join(toks[:k])
+            if pre.count("*") % 2:
+                pre += "*"
+            frames.append(heading_img(pre, F_HEAD(size), w, lh=int(size * 1.14)))
+        full = frames[-1]
+        frames = [f.crop((0, 0) + full.size) if f.size != full.size else f for f in frames]
+        fixed = []
+        for f in frames:
+            c = Image.new("RGBA", full.size, (0, 0, 0, 0))
+            c.paste(f, (0, 0))
+            fixed.append(c)
+        words = [t.strip("*?,.!:").lower() for t in toks]
+        y = B.add(full, x - 6, y, "kin", 0.15 + step * len(toks), frames=fixed,
+                  wtimes=[step * j for j in range(len(toks))], words=words, dur=step * len(toks)) + 34
 
     def body(text, size=44, pause=0.35, color=MUTED):
         nonlocal y
@@ -2142,6 +2288,61 @@ def build_new_kind(B, s, accent, x, w, avail_h):
             B.overlay(ov_box(w, bh), x, by, w, bh, pause=0.2, dur=0.6)
             st = _stamp("CORRECT: " + "ABCD"[int(ans)], GREEN, 52)
             B.add(st, x + (w - st.size[0]) // 2, area_y + 20, "stamp", 0.3, "stamp")
+
+    elif kind == "versus":
+        kin_heading(s.get("heading", ""), 66)
+        y += 10
+        gapx = 110
+        half = (w - gapx) // 2
+        cards = []
+        for key, col in (("bad", EMPH_RED), ("good", (46, 125, 50))):
+            o = s.get(key, {}) or {}
+            tl_ = wrap(d0, o.get("title", ""), F_SEMI(46), half - 50)
+            sl_ = wrap(d0, o.get("sub", ""), F_BODY(34), half - 50) if o.get("sub") else []
+            cards.append((key, col, o, tl_, sl_))
+        ch = max(70 + len(c[3]) * 58 + len(c[4]) * 46 + 40 for c in cards)
+        ys = y
+        built = {}
+        for n_, (key, col, o, tl_, sl_) in enumerate(cards):
+            im = Image.new("RGBA", (half, ch), (0, 0, 0, 0))
+            d = ImageDraw.Draw(im)
+            d.rounded_rectangle([0, 0, half - 1, ch - 1], radius=22, fill=PANEL + (255,), outline=col + (255,), width=4)
+            ty = 46
+            for ln in tl_:
+                d.text((28, ty), ln, font=F_SEMI(46), fill=col)
+                ty += 58
+            title_y = (46, ty - 58)
+            for ln in sl_:
+                d.text((28, ty + 4), ln, font=F_BODY(34), fill=MUTED)
+                ty += 46
+            cx_ = x + n_ * (half + gapx)
+            B.add(im, cx_, ys, "grow", 0.3, "pop", flash=col, dur=0.4, nosnap=True,
+                  say=str(o.get("say") or "").lower() or None)
+            built[key] = (cx_, ys, half, ch, tl_, title_y)
+            if n_ == 0:
+                vs = text_img(["VS"], F_HEAD(54), MUTED, 60)
+                B.add(vs, x + half + (gapx - vs.size[0]) // 2, ys + (ch - vs.size[1]) // 2, "pop", 0.25, "pop", nosnap=True)
+        # strike-through on the wrong side's title, then badges
+        cx_, cy_, hw_, hh_, tl_, (t0, t1) = built["bad"]
+        lw = int(max(d0.textlength(l, font=F_SEMI(46)) for l in tl_)) if tl_ else hw_ - 60
+        mid = (t0 + t1) // 2 + 30
+        B.overlay((lambda img, p, ox, oy, _w=lw + 16:
+                  _hand_line(ImageDraw.Draw(img), ox, oy, ox + _w, oy, p, EMPH_RED + (255,), 6)),
+                  cx_ + 20, cy_ + mid, lw + 16, 4, pause=0.25, dur=0.3, sfx="scratch", after_say=True)
+        for key, sym in (("bad", "x"), ("good", "v")):
+            bx_, by_, hw_, _, _, _ = built[key]
+            col = EMPH_RED if key == "bad" else (46, 125, 50)
+            bd = Image.new("RGBA", (64, 64), (0, 0, 0, 0))
+            dd = ImageDraw.Draw(bd)
+            dd.ellipse([0, 0, 63, 63], fill=col + (255,))
+            if sym == "x":
+                dd.line([(20, 20), (44, 44)], fill=(255, 255, 255), width=7)
+                dd.line([(44, 20), (20, 44)], fill=(255, 255, 255), width=7)
+            else:
+                dd.line([(17, 33), (28, 44), (47, 21)], fill=(255, 255, 255), width=7)
+            B.add(bd, bx_ + hw_ - 44, by_ - 22, "stamp", 0.3, "stamp" if key == "bad" else "pop", nosnap=True,
+                  after_say=True, decor=True, shake=True)
+        y = ys + ch + 30
 
     elif kind == "answer":
         st = _stamp(s.get("label", "ANSWER"), GREEN, 52)
@@ -2266,7 +2467,7 @@ def build_new_kind(B, s, accent, x, w, avail_h):
             tx += tl + 40
         if tab_h:
             dd.line([0, head_h + tab_h, w, head_h + tab_h], fill=BORDER + (255,), width=2)
-        B.add(fr, x, y, "up", 0.25, "pop", container=True)
+        B.add(fr, x, y, "grow", 0.25, "pop", container=True, flash=accent, dur=0.4)
         y0 = B.items[-1]["y"]
         label_w = int(w * 0.44)
         ry = y0 + head_h + tab_h + pad
@@ -2331,7 +2532,7 @@ def build_new_kind(B, s, accent, x, w, avail_h):
             y = B.add(row, x, y, "up", 0.2) + 0
 
     elif kind == "flow":
-        heading(s.get("heading", ""), 62)
+        kin_heading(s.get("heading", ""), 62)
         steps = s.get("steps", [])
         bw = int(w * 0.86)
         bx = x + (w - bw) // 2
@@ -2339,15 +2540,18 @@ def build_new_kind(B, s, accent, x, w, avail_h):
         spans = []
         for i, st_ in enumerate(steps):
             card = _card(bw, wrap(d0, st_, F_SEMI(40), bw - 60), F_SEMI(40), pad=24)
-            y = B.add(card, bx, y, "pop", 0.25, "pop")
+            y = B.add(card, bx, y, "grow", 0.25, "pop", flash=accent, dur=0.4,
+                      say=str(st_).split()[0].strip(":,.").lower())
             spans.append((B.items[-1]["y"], y))
             if i < len(steps) - 1:
-                B.overlay(ov_arrow(0, 6, 0, gap - 6, accent), x + w // 2, y, 2, gap, pause=0.2, dur=0.35, sfx=None)
+                B.overlay(ov_arrow(0, 6, 0, gap - 6, accent), x + w // 2, y, 2, gap, pause=0.2, dur=0.3, sfx=None,
+                          link_next=True)
                 y += gap
         if len(spans) > 1:
             o_y = spans[0][0]
             rel = [(a - o_y, b - o_y) for a, b in spans]
-            B.overlay(ov_flow_rail(rel, 0, bw, accent), bx, o_y, 2, 2, pause=0.1, dur=0.5, sfx=None, live=True, nosnap=True)
+            B.overlay(ov_flow_rail(rel, 0, bw, accent), bx, o_y, 2, 2, pause=0.1, dur=0.5, sfx=None, live=True, nosnap=True,
+                      after_say=True)
 
     elif kind == "tip":
         if s.get("kicker"):
