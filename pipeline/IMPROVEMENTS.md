@@ -5,6 +5,17 @@ kinetic typography, timing, **voiceover** (pronunciation, pacing, pauses, emphas
 **script** (clear natural English wording, subtitle accuracy, glossary in `pipeline/VOICEOVER.md`).
 The goal: every reel looks and sounds a little more polished and natural than the last.
 
+## Pacing standard (approved by the user, 12 Nov 2026 — must hold in every reel)
+Based on research (short-form retention guides + learning studies, see Log 2026-11-12):
+- **The screen must visibly change at least every 3 seconds**: a new element appearing, a highlight/outline/arrow,
+  a word emphasis, a code line typing, a punch-in zoom, or a cut. A static hold longer than 3 s is a bug.
+  Code panels and SAP screen slides may hold the layout 3-4 s, but something inside them must still move
+  (typing, outline, highlighter) so the viewer can read without the frame feeling frozen.
+- Long pauses (> 0.25 s) at most ~5-8% of the reel; speaking rate ~155-170 wpm overall (default pace "snappy":
+  voice +3%, tightened pauses, "beat" punch-in every ~2.6 s on longer scenes).
+- Every improvement must keep or improve this; animation/cuts/typography work should add MORE meaningful
+  motion every 2-3 s (word-synced emphasis, step reveals, outlines), never motion that makes text hard to read.
+
 ## Rules (must follow)
 1. **Every run improves ALL six areas** — one small change per area, in this order:
    **animation → voice → cuts → script → typography → sound/timing**.
@@ -48,6 +59,15 @@ The goal: every reel looks and sounds a little more polished and natural than th
 - [ ] Sound polish: a tiny soft "tick" when each code line appears (no whoosh on cuts — user disliked it)
 
 ### Reel — ideas from research (2026-11-12)
+- [x] Automatic "static hold" check in generate.py: samples frames every 0.5 s, warns "STATIC: ..." if the picture
+      barely changes for more than 3 s (12 Nov)
+- [x] Keyword beats: punch-in exactly when a *highlighted* title/heading word is spoken, plus fill beats every ~2.6 s;
+      no beats on code/screen/compare/table/bug scenes (reading time 3-4 s, motion comes from typing/outlines) (12 Nov)
+- [x] Mid-reel re-hook: reels > 20 s get a stamp ("Remember this" for course, "Watch this" otherwise, or
+      post "rehook": {"stamp": "Common mistake", "slide": 2}) + stamp sound near 45% of the reel (12 Nov)
+- [ ] Re-hook stamp text from the content: write a matching voice line on that slide ("Common mistake: ...")
+- [ ] SE11 screen: move the outline to each field exactly when the voice names it (word-timed focus)
+- [x] Snappy pace as default: tighter pauses, voice +3%, beat punch-ins every ~2.6 s (user approved 12 Nov)
 - [ ] Hook pattern interrupt: frame 1 starts already readable (title fully on screen at t=0) then a 1.08→1.0 punch-in in 0.4 s
 - [ ] Anticipation + overshoot: pops dip 3% before growing and settle with a small overshoot (ease_back tuned per element)
 - [ ] Follow-through: after a block lands, its highlighter/underline settles 80 ms later (secondary motion)
@@ -104,3 +124,5 @@ The goal: every reel looks and sounds a little more polished and natural than th
 | 2026-11-11 | Variety engine | 8 reel formats, 8 carousel formats, 8 post formats; 13 new slide kinds; stamp/typewriter/draw-on/slide anims; circle/arrow/strike/tick/spotlight overlays; whip/flip/wipe transitions; fast/calm pacing; stamp/tick/scratch SFX | Every post feels different while the brand stays fixed |
 | 2026-11-11 | Static slides | Light notebook theme, highlighter on key words, handwritten notes, auto-fit lists | Final brand design; lists never overflow |
 | 2026-11-12 | All (static + reels) | Notebook grid: every text baseline on a ruled line, fixed line pitches (64/128), header/footer on rules, code & highlight boxes between rules, centring in whole lines, list rows with aligned description column, equal-height choice cards, matched code size in compare slides, footer/caption overflow check | User: text alignment and line height looked uneven against the ruled paper |
+| 2026-11-12 | pace (all) | Research: 140-160+ wpm for short-form, visual change every 2-3 s (3-4 s for educational), cut pauses (FlowShorts, Noiz, Kwebby, Lilach Bullock, SocialGrow; Tes/UCLA: comprehension intact up to 1.5x). Measured our reels: 14-18% silence, 6-7 s static scenes. New default pace "snappy": pauses tightened (silence 14% -> 5%), voice +3%, punch-in beat every 2.6 s. Announcement test 24.9 s -> 22.5 s | User compared and approved |
+| 2026-11-12 | animation/cuts | Keyword-synced punch-ins + fill beats (change every 2-3 s), reading scenes exempt; mid-reel re-hook stamp for reels > 20 s; automatic STATIC check (> 3 s without visible change) | User request from research findings |

@@ -698,6 +698,39 @@ def make_reel(frames, out_mp4, durations, audio=None):
     subprocess.run(cmd, check=True, capture_output=True)
 
 
+def tighten_audio(data, sr, max_gap=0.2, thresh=0.012):
+    """Trim silence at both ends and shorten pauses inside a TTS clip to at most max_gap seconds."""
+    import numpy as np
+    if len(data) == 0:
+        return data
+    hop = int(0.01 * sr)
+    n = len(data) // hop
+    if n < 3:
+        return data
+    env = np.abs(data[: n * hop]).reshape(n, hop).max(axis=1)
+    loud = env > thresh
+    idx = np.flatnonzero(loud)
+    if len(idx) == 0:
+        return data
+    first, last = max(0, idx[0] - 2), min(n, idx[-1] + 4)
+    keep, gap = [], int(max_gap / 0.01)
+    run = 0
+    for f in range(first, last):
+        if loud[f]:
+            run = 0
+            keep.append(f)
+        else:
+            run += 1
+            if run <= gap:
+                keep.append(f)
+    out = np.concatenate([data[f * hop:(f + 1) * hop] for f in keep])
+    fade = min(len(out), int(0.006 * sr))
+    if fade:
+        out[:fade] *= np.linspace(0, 1, fade, dtype=out.dtype)
+        out[-fade:] *= np.linspace(1, 0, fade, dtype=out.dtype)
+    return out
+
+
 def build_narration(slides, folder, p, default_secs):
     """Synthesize one clip per slide that has 'voiceover'. Returns (durations, wav path or None)."""
     voice = p.get("voice", "am_michael")
@@ -716,6 +749,9 @@ def build_narration(slides, folder, p, default_secs):
             secs = tts(text, voice, lang, speed, wav)
             data, sr = sf.read(wav, dtype="float32")
             os.remove(wav)
+            if p.get("_tighten"):
+                data = tighten_audio(data, sr)
+                secs = len(data) / sr
         else:
             data, secs = np.zeros(0, dtype="float32"), 0.0
         shown = max(default_secs if not text else 0.0, lead + secs + tail)
@@ -1177,11 +1213,21 @@ def draw_blocks(content, blocks, tau, final=False):
         content.alpha_composite(im, (int(x), int(y)))
 
 
-def render_scene(base, blocks, tau, dur, sub_tl, accent, push=0.04):
+def render_scene(base, blocks, tau, dur, sub_tl, accent, push=0.04, beat=0.0, stamp=None):
     content = Image.new("RGBA", (REEL_W, REEL_H), (0, 0, 0, 0))
     draw_blocks(content, blocks, tau)
     # slow camera push on the content
     z = 1.0 + push * ease_out(min(1.0, tau / max(dur, 0.1)))
+    # "beat" punch-ins: on long scenes, a quick 1.5% step-zoom every `beat` seconds (a visual change every 2-3 s)
+    # beats: list of times (keyword spoken / every ~2.6 s), each a quick 1.5% punch-in; or a number = interval
+    times = beat if isinstance(beat, (list, tuple)) else []
+    if not times and beat and dur > beat + 0.8:
+        t = beat
+        while t < dur - 0.6:
+            times.append(t)
+            t += beat
+    if times:
+        z += 0.015 * sum(ease_out(min(1.0, max(0.0, (tau - t) / 0.22))) for t in times)
     if z > 1.001:
         zw, zh = int(REEL_W * z), int(REEL_H * z)
         content = content.resize((zw, zh), Image.BILINEAR)
@@ -1189,6 +1235,15 @@ def render_scene(base, blocks, tau, dur, sub_tl, accent, push=0.04):
         content = content.crop((cx, cy, cx + REEL_W, cy + REEL_H))
     frame = base.copy()
     frame.paste(content, (0, 0), content)
+    if stamp is not None:   # mid-reel re-hook stamp, pops in under the header
+        img, t0 = stamp
+        if tau >= t0:
+            a = min(1.0, (tau - t0) / 0.18)
+            sc = 1.0 + 0.35 * (1 - ease_out(a))
+            im = img.resize((max(1, int(img.size[0] * sc)), max(1, int(img.size[1] * sc))), Image.BICUBIC)
+            x = REEL_W - 72 - img.size[0] - (im.size[0] - img.size[0]) // 2
+            y = 214 - (im.size[1] - img.size[1]) // 2
+            frame.paste(im, (x, y), im)
     draw_subtitle(frame, sub_tl, tau, accent)
     return frame
 
@@ -1296,12 +1351,13 @@ def make_motion_reel(p, slides, folder, handle, accent):
     import soundfile as sf
     default = float(p.get("seconds_per_slide", 3.5))
     fmt = FORMATS.get(p.get("format", ""), {})
-    pace = PACES.get(p.get("pace") or fmt.get("pace") or "calm", PACES["calm"])
+    # approved 12 Nov: the research-based "snappy" pace is the default for every reel (old "fast"/"calm" only if set explicitly)
+    pace = PACES.get(p.get("pace") or "snappy", PACES["snappy"])
     p = dict(p)
     p.setdefault("voice_speed", pace["voice_speed"])
-    if p.get("pace") or fmt:
-        p["voice_speed"] = p.get("voice_speed_override", pace["voice_speed"])
+    p["voice_speed"] = p.get("voice_speed_override", pace["voice_speed"])
     p["_lead"], p["_tail"] = pace["lead"], pace["tail"]
+    p["_tighten"] = pace.get("tighten", False)
     has_vo = any(s.get("voiceover") for s in slides)
     if has_vo:
         durations, vo_wav, speech = build_narration(slides, folder, p, default)
@@ -1337,6 +1393,45 @@ def make_motion_reel(p, slides, folder, handle, accent):
     starts = [sum(durations[:i]) for i in range(len(durations))]
     total = sum(durations)
 
+    # ---- visual beats (approved 12 Nov): something changes every 2-3 s
+    READ_KINDS = {"code", "screen", "compare", "table", "bug"}
+    beat_iv = pace.get("beat", 0.0)
+    scene_beats = []
+    for s, dur, (st, ln) in zip(slides, durations, speech):
+        bt = []
+        if beat_iv and s.get("kind") not in READ_KINDS:
+            # punch exactly when a *highlighted* word of the title/heading is spoken
+            vo = (s.get("voiceover") or "").lower()
+            for word in re.findall(r"\*([^*]+)\*", (s.get("title") or "") + " " + (s.get("heading") or "")):
+                pos = vo.find(word.lower().split()[0]) if word.split() else -1
+                if pos >= 0 and ln > 0 and len(vo):
+                    bt.append(st + ln * pos / len(vo))
+            # fill gaps so there is a visual change at least every ~beat_iv seconds
+            t = beat_iv
+            while t < dur - 0.6:
+                if all(abs(t - b) > 1.2 for b in bt):
+                    bt.append(t)
+                t += beat_iv
+            bt = sorted(b for b in bt if 0.5 < b < dur - 0.4)
+        scene_beats.append(bt)
+
+    # ---- mid-reel re-hook stamp for reels over ~20 s
+    rehook = p.get("rehook")
+    stamps = [None] * len(slides)
+    if rehook is not False and total > 20 and len(slides) >= 4:
+        mid = total * 0.45
+        cand = [i for i in range(1, len(slides) - 1) if slides[i].get("kind") != "cta"]
+        if isinstance(rehook, dict) and isinstance(rehook.get("slide"), int):
+            idx = rehook["slide"]
+        elif cand:
+            idx = min(cand, key=lambda i: abs(starts[i] - mid))
+        else:
+            idx = None
+        if idx is not None and 0 <= idx < len(slides):
+            text = (rehook.get("stamp") if isinstance(rehook, dict) else None) or \
+                   ("Remember this" if p.get("series") == "course" else "Watch this")
+            stamps[idx] = (_stamp(text, EMPH_RED, 40), 0.25)
+
     # ---- audio: voice + sfx, loudness-normalised later by ffmpeg
     mix = np.zeros(int(total * sr) + sr, dtype="float32")
     mix[: len(voice)] += voice
@@ -1344,6 +1439,10 @@ def make_motion_reel(p, slides, folder, handle, accent):
     sfx_bank = {k: synth_sfx(k, sr) for k in ("pop", "stamp", "tick", "scratch")}
     use_whoosh = bool(p.get("whoosh", False))   # transition whoosh removed by default (sounded odd)
     for i, st0 in enumerate(starts):
+        if stamps[i] is not None:
+            snd = sfx_bank["stamp"]
+            a = int((st0 + stamps[i][1]) * sr)
+            mix[a:a + len(snd)] += snd[: max(0, len(mix) - a)]
         if i > 0 and use_whoosh:
             a = max(0, int((st0 - 0.2) * sr))
             mix[a:a + len(whoosh)] += whoosh[: len(mix) - a]
@@ -1367,29 +1466,40 @@ def make_motion_reel(p, slides, folder, handle, accent):
     trans = pace["trans"]
     transitions = p.get("transitions") or fmt.get("transitions") or TRANSITIONS
     n_frames = int(total * FPS)
+    last_small, static_run, worst_static = None, 0.0, 0.0
     for fi in range(n_frames):
         t = fi / FPS
         i = max(k for k, st0 in enumerate(starts) if st0 <= t + 1e-9)
         tau = t - starts[i]
         blocks, dur, tl = scenes[i]
-        frame = render_scene(base, blocks, tau, dur, tl, accent, pace["push"])
+        frame = render_scene(base, blocks, tau, dur, tl, accent, pace["push"], scene_beats[i], stamps[i])
         kind_t = transitions[(i - 1) % len(transitions)] if i > 0 else None
         tlen = trans + (0.1 if kind_t in ("slide", "zoom", "flip", "wipe") else 0)
         if kind_t == "whip":
             tlen = 0.28
         if i > 0 and tau < tlen:
             pb, pd, ptl = scenes[i - 1]
-            prev = render_scene(base, pb, pd + tau, pd, ptl, accent, pace["push"])
+            prev = render_scene(base, pb, pd + tau, pd, ptl, accent, pace["push"], scene_beats[i - 1], stamps[i - 1])
             frame = apply_transition(kind_t, prev, frame, base, tau / tlen)
         # progress bar
         d = ImageDraw.Draw(frame)
         d.rounded_rectangle([72, 100, REEL_W - 72, 106], radius=3, fill=BORDER)
         d.rounded_rectangle([72, 100, 72 + int((REEL_W - 144) * (t / total)), 106], radius=3, fill=accent)
         proc.stdin.write(frame.tobytes())
+        if fi % 15 == 0:   # static-hold check: sample every 0.5 s
+            small = np.asarray(frame.convert("L").resize((108, 192)), dtype=np.int16)
+            if last_small is not None:
+                changed = (np.abs(small - last_small) > 12).mean()
+                static_run = static_run + 0.5 if changed < 0.0015 else 0.0
+                worst_static = max(worst_static, static_run)
+            last_small = small
         if fi == int((starts[i] + dur * 0.9) * FPS):
             frame.save(os.path.join(folder, f"frame_{i + 1:02d}.png"), optimize=True)
     proc.stdin.close()
     proc.wait()
+    if worst_static > 3.0:
+        OVERLAPS.append(f"STATIC: the picture barely changes for {worst_static:.1f}s in {p.get('slug')} "
+                        f"- add a reveal/highlight/outline in that scene (rule: a visible change every 3 s)")
     for f_ in (mix_wav, os.path.join(folder, "voiceover.wav")):
         if os.path.exists(f_):
             os.remove(f_)
@@ -1928,6 +2038,9 @@ def build_new_kind(B, s, accent, x, w, avail_h):
 PACES = {   # reels are short (12-18 s), so even "calm" is brisk
     "fast": {"voice_speed": 1.1, "lead": 0.12, "tail": 0.22, "pause_k": 0.6, "push": 0.06, "trans": 0.26},
     "calm": {"voice_speed": 1.0, "lead": 0.2, "tail": 0.32, "pause_k": 0.85, "push": 0.035, "trans": 0.36},
+    # research-based pace (12 Nov): ~6% silence instead of ~16%, +5% voice, a visual "beat" every ~2.6 s
+    "snappy": {"voice_speed": 1.03, "lead": 0.1, "tail": 0.22, "pause_k": 0.55, "push": 0.03, "trans": 0.24,
+               "tighten": True, "beat": 2.6},
 }
 REEL_MIN, REEL_MAX = 6.0, 30.0        # any length the topic needs, never over 30 s (else split into parts)
 COURSE_MIN, COURSE_MAX = 6.0, 30.0    # same rule for course reels
