@@ -1885,8 +1885,8 @@ FORMATS = {
 OUTRO = {"kind": "cta", "title": "Follow for more *ABAP tricks*",
          "body": "3 new ABAP reels every day.",
          "actions": ["Follow @abapcodevault"],
-         "voiceover": "ऐसी और ABAP tricks के लिए, follow करो।",
-         "spoken": "Aisi aur ABAP tricks ke liye, follow karo."}
+         "voiceover": "ऐसी और tips और tricks के लिए, follow करो।",
+         "spoken": "Aisi aur tips aur tricks ke liye, follow karo."}
 
 
 def with_outro(p, slides):

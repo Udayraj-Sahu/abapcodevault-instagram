@@ -11,6 +11,9 @@ add glossary rows, fix awkward phrasings found in recent reels, and note the sou
 - No code symbols in the voiceover (`@`, `=`, `->`, `#( )`); say them in words ("VALUE operator", "arrow", "equals").
 - Numbers: say them the natural way ("दस हज़ार calls", "seven forty"), not digits glued to units.
 - Acronyms / T-codes / table names are pronounced via the `SAY` table in `generate.py`; add new ones there.
+- **Do not say "ABAP" in the voiceover** (the voice mispronounces it; user feedback 12 Nov). Say "code", "report",
+  "seven forty syntax", "developer" instead. "ABAP" on screen and in captions is fine. A voice-day improvement may
+  fix the SAY entry for ABAP; only lift this rule after it sounds right.
 
 ## Captions (`spoken`, shown on screen)
 - The same sentence fully in **Roman Hinglish**, word for word, so captions match the audio.

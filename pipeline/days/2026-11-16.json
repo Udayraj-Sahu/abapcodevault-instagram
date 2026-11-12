@@ -22,8 +22,8 @@
           "answer": 1,
           "countdown": true,
           "reveal": true,
-          "voiceover": "ABAP seven forty में, एक ही statement में table कैसे भरोगे? सोचो।",
-          "spoken": "ABAP seven forty mein, ek hi statement mein table kaise bharoge? Socho."
+          "voiceover": "Seven forty syntax में, एक ही statement में table कैसे भरोगे? सोचो।",
+          "spoken": "Seven forty syntax mein, ek hi statement mein table kaise bharoge? Socho."
         },
         {
           "kind": "code",

@@ -64,7 +64,7 @@ LENGTH_WARNING.txt if still too long: then shorten the script and re-render.
 | `live_coding` | calm | cover → code typewriter (≤ 6 lines, spotlight the key line) → answer (recap) |
 | `interview_chat` | calm | chat (question + answer) → answer (key point) → [cta] |
 | `story` | calm | story (time, place, 2 short lines) → bug or code → answer (lesson) |
-Every reel automatically ends with the follow card ("Follow for more *ABAP tricks*" + "Follow @abapcodevault", voice: "ऐसी और ABAP tricks के लिए, follow करो।"),
+Every reel automatically ends with the follow card ("Follow for more *ABAP tricks*" + "Follow @abapcodevault", voice: "ऐसी और tips और tricks के लिए, follow करो।"),
 unless its last slide is already a CTA that mentions follow. Budget ~2 s for it: keep your own frames to ~10-15 s.
 [cta] = optional 2-second end card with a 4-6 word voice line. Pace comes from the format; never set voice_speed.
 
