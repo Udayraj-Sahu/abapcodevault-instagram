@@ -224,8 +224,8 @@
           "typewriter": true,
           "filename": "alpha_demo.abap",
           "code": "lv_order = '1234'.\nCALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'\n  EXPORTING input  = lv_order\n  IMPORTING output = lv_order.\n\" lv_order = '0000001234'",
-          "voiceover": "The screen shows 1234, the database stores it with leading zeros. To convert in code, call ALPHA INPUT.",
-          "spoken": "The screen shows 1234, the database stores it with leading zeros. To convert in code, call ALPHA INPUT."
+          "voiceover": "You type 1234, the database stores leading zeros. In code, call ALPHA INPUT.",
+          "spoken": "You type 1234, the database stores leading zeros. In code, call ALPHA INPUT."
         },
         {
           "kind": "answer",
@@ -236,7 +236,7 @@
           "spoken": "One domain, many fields. Change the domain, and they all change."
         }
       ],
-      "caption": "Domains, Part 1 of 3: the Definition tab in SE11.\n\nA domain defines the technical attributes that every data element built on it inherits:\n1. Data type and number of characters\n2. Decimal places and output length\n3. Conversion routine, e.g. ALPHA, which stores 1234 as 0000001234\n4. Lowercase flag\n\nNext: Domains Part 2, the Value Range tab (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
+      "caption": "Domains, Part 1 of 3: the Definition tab in SE11.\n\nA domain defines the technical attributes that every data element built on it inherits:\n1. Data type and number of characters\n2. Decimal places and output length\n3. Conversion routine, e.g. ALPHA, which stores 1234 as 0000001234\n4. Lowercase flag\n\nNext: Part 2, the Value Range tab (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
       "hashtags": [
         "#sap",
         "#abap",
@@ -249,9 +249,9 @@
         "#abapcodevault"
       ],
       "next": {
-        "title": "The *Value Range* tab",
+        "title": "Part 2 · The *Value Range* tab",
         "when": "tomorrow at 9 AM",
-        "voice": "the Value Range tab"
+        "voice": "part two, the Value Range tab"
       }
     }
   ]

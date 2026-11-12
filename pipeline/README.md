@@ -14,6 +14,7 @@ more, split it into parts (Part 1/2, 2/2 ...) in the following slots.
 = the NEXT reel in the schedule (9 AM -> 1 PM, 1 PM -> 7:30 PM, 7:30 PM -> tomorrow 9 AM). The generator turns it into the end card
 ("Next: …" + when + follow button; voice "Next: <voice>, <when>. Follow so you don't miss it.") and replaces any own follow CTA.
 The caption also gets a line before its last line: "Next: <title> (<when>)."
+When the next reel is a part of a multi-part topic, start its title with the part: "Part 2 · The *Value Range* tab" (voice: "part two, the Value Range tab").
 All are 1080×1920 MP4 reels with English voiceover (voice am_michael). Every post in a day file is `"type": "reel"` with a
 `"time"` field; `scripts/queue_day.py` reads it. Old day files with post/carousel still render.
 
