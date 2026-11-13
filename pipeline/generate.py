@@ -1095,11 +1095,16 @@ def chunk_words(text, max_words=4, max_chars=24):
     return chunks
 
 
+FIRST_CONTENT_MAX = 0.9   # s after the cut by which the first content block must be on screen
+
+
 def sync_to_words(blocks, tl, dur):
     """B: a block with say='word' appears the moment that word is spoken; arrows lead into the next
     card, after_say blocks follow the last spoken reveal; kin headings align words that are spoken."""
     words = [(w_.strip("*?,.!:;'\"").lower(), t0) for c in tl for (w_, t0, t1) in c]
     last, prev_t = None, 0.0
+    first_say = next((b for b in blocks if b.get("say")), None)
+    first_t0 = first_say.get("t", 0.5) if first_say else None
     for b in blocks:
         key = b.get("say")
         if key:
@@ -1113,6 +1118,10 @@ def sync_to_words(blocks, tl, dur):
             if hit is not None or prev_t > 0:
                 prev_t = b["t"]
                 last = b["t"] + (b.get("dur") or 0.4)
+    # NO EMPTY SCENE (user rule 13 Nov): the first synced block (e.g. flow step 1) never waits for a word
+    # spoken late in the sentence; it lands right after the heading, later blocks keep their word sync.
+    if first_say is not None and first_say.get("t", 0) > FIRST_CONTENT_MAX:
+        first_say["t"] = min(max(first_t0 or 0.5, 0.35), FIRST_CONTENT_MAX)
     for i, b in enumerate(blocks):
         if b.get("link_next"):
             nxt = next((c for c in blocks[i + 1:] if c.get("say")), None)

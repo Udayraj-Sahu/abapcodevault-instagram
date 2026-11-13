@@ -172,6 +172,7 @@ Rotate cover styles too: default, number, question, checklist, bug.
 - Check the MP4 has an audio stream (ffprobe) before delivering.
 
 ## Motion graphics (approved 12 Nov, live from the 13 Nov reels)
+**No empty scene (user rule, 13 Nov):** the first content block of a scene (e.g. flow step 1) must be on screen within 0.9 s of the cut, even if its sync word is spoken later; the engine enforces this (`FIRST_CONTENT_MAX` in generate.py). Never weaken it.
 Automatic per scene kind, no per-reel work: `screen` = cursor click + typed value in each `focus` field;
 `flow` = side rail with a running packet; stamps = short landing shake. Do not add drifting background
 symbols (rejected). New effects or variations can come in through the daily visual improvement.
