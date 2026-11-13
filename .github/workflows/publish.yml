@@ -36,8 +36,8 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - name: Wait for the slot (scheduled runs only)
-        if: github.event_name == 'schedule'
+      - name: Wait for the slot (scheduled and early-dispatched runs)
+        if: ${{ !inputs.only }}
         run: |
           python scripts/wait_slot.py
           git pull --ff-only || echo "pull skipped"
