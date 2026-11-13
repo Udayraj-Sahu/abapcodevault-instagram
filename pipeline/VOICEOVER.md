@@ -16,7 +16,7 @@ add glossary rows, fix awkward phrasings found in recent reels, and note the sou
   "developer" instead. "ABAP" on screen and in captions is fine. Lift this rule only after a voice improvement makes it sound right.
 
 ## Teaching clarity (since 14 Nov, see README "Teaching rules")
-- Course reels: hook, then a recap line ("Last time: the Definition tab. Now, the values it allows.").
+- Course reels: hook, then a recap line in exactly this pattern: "Last time we learned <last topic>. Now, <this topic>." (e.g. "Last time we learned the Definition tab. Now, the values it allows."). Never "Last time: <topic>."
 - Say WHY before HOW. Define each new term once, in one plain sentence. ~2.3-2.5 words per second; fewer ideas, not faster speech.
 - End the meat on a one-sentence takeaway.
 

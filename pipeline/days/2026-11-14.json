@@ -20,8 +20,8 @@
      "kind": "cover",
      "kicker": "Domains · Part 2/11",
      "title": "Why not just type *CHAR 10* on every field?",
-     "voiceover": "Why not just type CHAR ten on every field? Last time: the Definition tab.",
-     "spoken": "Why not just type CHAR ten on every field? Last time: the Definition tab."
+     "voiceover": "Why not just type CHAR ten on every field? Last time we learned the Definition tab. Now, why we need a domain at all.",
+     "spoken": "Why not just type CHAR ten on every field? Last time we learned the Definition tab. Now, why we need a domain at all."
     },
     {
      "kind": "versus",
@@ -156,8 +156,8 @@
      "kind": "cover",
      "kicker": "Domains · Part 3/11",
      "title": "You change one domain. *What changes?*",
-     "voiceover": "You change one domain. Which fields change with it? Last time: why domains exist.",
-     "spoken": "You change one domain. Which fields change with it? Last time: why domains exist."
+     "voiceover": "You change one domain. Which fields change with it? Last time we learned why domains exist. Now, where they're used.",
+     "spoken": "You change one domain. Which fields change with it? Last time we learned why domains exist. Now, where they're used."
     },
     {
      "kind": "flow",
@@ -246,8 +246,8 @@
      "kind": "cover",
      "kicker": "Domains · Part 4/11",
      "title": "Create your first *domain*",
-     "voiceover": "Last time: where domains are used. Now, create one, click by click.",
-     "spoken": "Last time: where domains are used. Now, create one, click by click."
+     "voiceover": "Last time we learned where domains are used. Now, let's create one, click by click.",
+     "spoken": "Last time we learned where domains are used. Now, let's create one, click by click."
     },
     {
      "kind": "flow",

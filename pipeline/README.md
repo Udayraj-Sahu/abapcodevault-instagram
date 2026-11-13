@@ -231,8 +231,9 @@ Goal: every reel explains its one idea so clearly that a fresher understands it 
 the Story rules and the 30 s limit; when they clash with cramming, **make more parts** rather than talking faster.
 1. **One idea per reel.** A course part teaches ONE concept (one tab, one field group, one statement). If a part has more,
    split it and update `pending_parts`. At most 3-4 fields/terms explained per reel; voiceover ≈ 2.3-2.5 words per second.
-2. **Recap first (course reels, from the second part/lesson on).** After the hook, one short line links to the last reel:
-   "Last time: the Definition tab. Now, the values it allows." (≤ 10 words, in the cover or first slide voiceover).
+2. **Recap first (course reels, from the second part/lesson on).** After the hook, one line in exactly this pattern
+   (user rule, 13 Nov): "Last time we learned <last topic>. Now, <this topic>." e.g. "Last time we learned the Definition tab.
+   Now, the values it allows." Never the short "Last time: <topic>." form.
 3. **Why before how.** Say what problem the thing solves before showing fields or code ("Without a domain, every field
    repeats its own type and length. Change one, miss ten.").
 4. **Define every new term the first time it appears**, in one plain sentence ("A check table is the table SAP checks your
