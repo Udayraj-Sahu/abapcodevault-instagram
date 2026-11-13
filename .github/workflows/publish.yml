@@ -6,6 +6,7 @@ on:
     # slot and wait (scripts/wait_slot.py), then post on time:
     - cron: "37 2 * * *"     # 8:07 AM IST  -> waits for 9:00 AM post
     - cron: "37 6 * * *"     # 12:07 PM IST -> waits for 1:00 PM carousel
+    - cron: "7 11 * * *"     # 4:37 PM IST  -> waits for 5:00 PM reel
     - cron: "7 13 * * *"     # 6:37 PM IST  -> waits for 7:30 PM reel
     # backup checks; each run posts only what is due and published.json prevents doubles
     - cron: "17,47 * * * *"

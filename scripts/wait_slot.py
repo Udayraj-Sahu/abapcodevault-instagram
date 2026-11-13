@@ -7,7 +7,7 @@ If no slot is within WINDOW minutes, return at once (normal catch-up run).
 import datetime as dt, time
 
 IST = dt.timezone(dt.timedelta(hours=5, minutes=30))
-SLOTS = ["09:00", "13:00", "19:30"]
+SLOTS = ["09:00", "13:00", "17:00", "19:30"]
 WINDOW = 20  # minutes: early dispatches (keeper ~3 min, scheduled tasks ~12 min before) wait; catch-ups post at once
 
 now = dt.datetime.now(IST)

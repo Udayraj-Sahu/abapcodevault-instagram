@@ -1,5 +1,7 @@
 # @abapcodevault — daily Instagram pipeline
 
+**Since 14 Nov: 4 reels a day** (9:00 course, 13:00 additional concepts / Sunday FAQ, 17:00 course, 19:30 course). Course parts go 09:00 -> 17:00 -> 19:30.
+
 Each daily run creates tomorrow's **3 reels** (reels only since 12 Nov 2026).
 
 ## Daily rhythm (3 reels every day, all 7 days of the week)
@@ -7,6 +9,7 @@ Each daily run creates tomorrow's **3 reels** (reels only since 12 Nov 2026).
 | --- | --- | --- | --- |
 | 9:00 AM | `"09:00"` | **Course reel**: next part of the ABAP course (`pipeline/syllabus.json`, in order) | any length, never > 30 s |
 | 1:00 PM | `"13:00"` | **Free topic** reel from topics.json (tips, bugs, interview, performance...). Even day-of-month: ABAP Code Vault plug in caption; odd: interview angle + ABAP Interview Pack plug | any length, never > 30 s |
+| 5:00 PM | `"17:00"` | **Course reel** (since 14 Nov): the part after the 9 AM one | any length, never > 30 s |
 | 7:30 PM | `"19:30"` | **Course reel**: the part after the 9 AM one | any length, never > 30 s |
 **Pacing rule (every reel, approved 12 Nov):** the screen must visibly change at least every 3 seconds (new element, highlight, outline, typing, word emphasis, punch-in or cut); keep pauses short. Default pace "snappy" does the audio side and adds punch-ins on highlighted words / every ~2.6 s (not on code, screen, compare, table, bug slides); reels over 20 s get an automatic mid-reel re-hook stamp (override with `"rehook": {"stamp": "Common mistake", "slide": 2}` or turn off with `"rehook": false`; best: make that slide's voiceover start with the same words). The generator warns "STATIC: ..." if the picture is still for more than 3 s — fix it; plan 1 visual beat per 2-3 s when writing slides (e.g. more fields revealed one by one, focus outlines, step lists).
 **Live style (default since 12 Nov, user approved, inspired by a reference reel):** segmented progress bar (one
@@ -210,6 +213,18 @@ symbols (rejected). New effects or variations can come in through the daily visu
    "vo":"Quiz: what does Control F3 do? The answer is in this reel. Comment it."}` (no comment box on quiz cards).
    Every reel fades back to its empty opening page in the last 0.35 s, so the loop is seamless (automatic).
 6. Numbers in the voiceover are written as words ("one two three four"), digits stay in `spoken` (subtitles).
+
+## Deep-dive topic map (user rule, 13 Nov — overrides any shorter lesson plan)
+Every course topic (domain, data element, table, view, ...) is taught COMPLETELY, so the viewer never stays confused and
+knows every little detail at the end. Before the first reel of a topic, plan it through these 10 questions, in order;
+each question gets one or more reels (one idea per reel), as many parts as needed:
+1. What is it? (one plain sentence)  2. Why do we need it? (the problem without it)  3. Where is it used? (how it connects)
+4. How do you open / create it? (every click)  5. What's inside? (every tab and every field, with a real example value)
+6. Special features, and why each exists  7. Key points / rules  8. Common mistakes  9. Interview questions  10. Recap + quiz.
+Store the plan in `state.json` -> `course.pending_parts` (title + precise focus per part). The free PDF notes follow the same map.
+Example (Domain, 11 parts): what + why · where used (domain -> data element -> table field, Where-Used List) · create step
+by step · Definition tab Format block · Output Characteristics · Single values · Intervals · Value table (why) · key points ·
+mistakes + interview · recap quiz.
 
 ## Teaching rules (approved 13 Nov, live from the 14 Nov reels; inspired by the teaching method of the "SAP ABAP by Rahul Mehta" YouTube channel. Copy the method, never his words, slides or examples)
 Goal: every reel explains its one idea so clearly that a fresher understands it on the first watch. These rules sit on top of

@@ -8,7 +8,7 @@ the workflow can start the next keeper run before the 6 h job limit.
 import datetime as dt, json, os, subprocess, time
 
 IST = dt.timezone(dt.timedelta(hours=5, minutes=30))
-SLOTS = [(9, 0), (13, 0), (19, 30)]
+SLOTS = [(9, 0), (13, 0), (17, 0), (19, 30)]
 LEAD = 180                      # dispatch 3 min before the slot
 BUDGET = 5 * 3600 + 40 * 60     # leave margin before the 355 min timeout
 REPO = os.environ["REPO"]
