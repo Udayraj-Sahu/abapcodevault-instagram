@@ -1,5 +1,5 @@
 {
-  "how_to_use": "REELS ONLY. The 9 AM and 7:30 PM reels are the ABAP course from pipeline/syllabus.json (see README 'Course reels'); these topic lists are for the 1:00 PM free-topic reel only (12-18 s). Take the first unused topic: first the 'reel' list, then 'post', 'carousel_concept', 'carousel_interview' (unused = not in state.json history). Prefer topics the course has not just covered. When lists run out, invent new ones (tips, bugs, interview questions, performance, T-codes from syllabus section 16). Never repeat a topic in history. Even day-of-month: plug ABAP Code Vault in the caption; odd day-of-month: interview angle + ABAP Interview Pack plug.",
+  "how_to_use": "REELS ONLY. The 9 AM and 7:30 PM reels are the ABAP course from pipeline/syllabus.json (see README 'Course reels'); these topic lists are for the 1:00 PM free-topic reel only (12-18 s). Take the first unused topic: first the 'reel' list, then 'post', 'carousel_concept', 'carousel_interview' (unused = not in state.json history). Prefer topics the course has not just covered. When lists run out, invent new ones (tips, bugs, interview questions, performance, T-codes from syllabus section 16). Never repeat a topic in history. Even day-of-month: plug ABAP Code Vault in the caption; odd day-of-month: interview angle + ABAP Interview Pack plug. Sunday 1 PM is the FAQ reel: use the 'faq' list (see README '1 PM slot').",
   "post": [
     "sy-subrc cheat sheet",
     "Top 10 developer T-codes",
@@ -64,5 +64,15 @@
     "Reprocess a failed IDoc in 3 steps",
     "READ TABLE without BINARY SEARCH on a sorted table",
     "Forgetting BAPI_TRANSACTION_COMMIT"
+  ],
+  "faq": [
+    "Where should a fresher start learning SAP ABAP, and in what order?",
+    "How can I get an SAP system to practise ABAP for free?",
+    "Should I learn classic ABAP or jump straight to ABAP on HANA / RAP?",
+    "SE80 or Eclipse ADT: which editor should I use?",
+    "Is SAP ABAP certification worth it for a fresher?",
+    "What does an ABAP developer actually do day to day?",
+    "How do I read and fix a short dump in ST22?",
+    "Which T-codes should every ABAP fresher know first?"
   ]
 }

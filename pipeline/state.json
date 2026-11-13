@@ -63,10 +63,19 @@
     "done": [
       "3.1 DDIC basics",
       "3.2 part 1 Domain Definition tab"
+    ],
+    "terms": [
+      "Data Dictionary (DDIC)",
+      "domain",
+      "data type",
+      "length",
+      "conversion routine"
     ]
   },
   "improve_next": {
     "visual": "cuts",
     "audio": "script"
-  }
+  },
+  "faq_done": [],
+  "notes_link_live": false
 }

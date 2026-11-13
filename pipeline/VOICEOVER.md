@@ -15,6 +15,11 @@ add glossary rows, fix awkward phrasings found in recent reels, and note the sou
 - **Do not say "ABAP"** (the voice mispronounces it; user feedback 12 Nov). Say "code", "report", "seven forty syntax",
   "developer" instead. "ABAP" on screen and in captions is fine. Lift this rule only after a voice improvement makes it sound right.
 
+## Teaching clarity (since 14 Nov, see README "Teaching rules")
+- Course reels: hook, then a recap line ("Last time: the Definition tab. Now, the values it allows.").
+- Say WHY before HOW. Define each new term once, in one plain sentence. ~2.3-2.5 words per second; fewer ideas, not faster speech.
+- End the meat on a one-sentence takeaway.
+
 ## Subtitles (`spoken`, shown on screen)
 - Exactly the same text as `voiceover`, so subtitles match the audio word for word.
 - Technical words keep their normal casing: SELECT, LOOP, ALV, BAPI, SE38, internal table.

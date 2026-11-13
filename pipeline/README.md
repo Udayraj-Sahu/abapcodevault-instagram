@@ -210,6 +210,44 @@ symbols (rejected). New effects or variations can come in through the daily visu
    Every reel fades back to its empty opening page in the last 0.35 s, so the loop is seamless (automatic).
 6. Numbers in the voiceover are written as words ("one two three four"), digits stay in `spoken` (subtitles).
 
+## Teaching rules (approved 13 Nov, live from the 14 Nov reels; inspired by the teaching method of the "SAP ABAP by Rahul Mehta" YouTube channel. Copy the method, never his words, slides or examples)
+Goal: every reel explains its one idea so clearly that a fresher understands it on the first watch. These rules sit on top of
+the Story rules and the 30 s limit; when they clash with cramming, **make more parts** rather than talking faster.
+1. **One idea per reel.** A course part teaches ONE concept (one tab, one field group, one statement). If a part has more,
+   split it and update `pending_parts`. At most 3-4 fields/terms explained per reel; voiceover ≈ 2.3-2.5 words per second.
+2. **Recap first (course reels, from the second part/lesson on).** After the hook, one short line links to the last reel:
+   "Last time: the Definition tab. Now, the values it allows." (≤ 10 words, in the cover or first slide voiceover).
+3. **Why before how.** Say what problem the thing solves before showing fields or code ("Without a domain, every field
+   repeats its own type and length. Change one, miss ten.").
+4. **Define every new term the first time it appears**, in one plain sentence ("A check table is the table SAP checks your
+   value against."). Track defined terms in `state.json` -> `course.terms` (append new ones); don't redefine them later,
+   just use them.
+5. **Show every click.** When a reel shows SAP, show the path in order: T-code -> what you type -> which button/tab -> the
+   field. Use `screen` with `focus` / cursor, or a `flow` of the steps. Never jump from "open SE11" to a finished object.
+6. **Simple analogy only when it is accurate** (e.g. domain = the template, data element = the label + meaning on top of it).
+7. **One-sentence takeaway** on the REMEMBER slide: the single line the viewer should keep.
+8. **Beginner-clean course.** Course reels (9 AM / 7:30 PM) never go into advanced, cross-topic detail; if it comes up,
+   say it in one line and leave it for a 1 PM reel ("We'll do performance in a separate reel.").
+
+## 1 PM slot = "Additional concepts" + Sunday FAQ (approved 13 Nov)
+- **Monday-Saturday 1 PM:** advanced / cross-topic reels that need knowledge from several areas (performance, FOR ALL ENTRIES,
+  SELECT in LOOP, debugging, interview traps, 7.40+ syntax), taken from topics.json as before. Prefer topics whose basics the
+  course has already covered. Kicker like "Additional concepts".
+- **Sunday 1 PM: FAQ reel** (`"format": "faq"`, tag "FAQ"). Answer ONE common learner question from topics.json `faq`
+  (first one not in `state.json` -> `faq_done`; append it after queueing). Hook = the question itself. Answer in 3-4 clear
+  steps. Facts that change over time (trial systems, certification, versions) MUST be checked with WebSearch on the day and
+  stated without invented numbers. When the list runs out, write new common questions.
+
+## Free PDF notes per lesson (approved 13 Nov)
+- When the run queues the LAST part of a course lesson, also create `notes/<S.L>-<slug>.pdf` (A4, 1-3 pages) with PIL
+  (render pages as images with the reel fonts and notebook look, save as one multi-page PDF; `pip install reportlab` is also fine).
+- Contents: lesson title, why it matters, every tab/field/statement covered with its meaning, the code example, the common
+  mistake, 2-3 interview questions with short answers, terms defined in the lesson, and a footer
+  "More snippets & cheat sheets: ABAP Code Vault (link in bio) · @abapcodevault". Same accuracy rules as the reels.
+- Commit it to `notes/`, send it to the user with SendUserFile and mention it in the summary message (the user uploads it).
+- Only while `state.json` -> `notes_link_live` is true, the caption of that last part adds "Free notes for this lesson: link in bio."
+  The user switches that flag on once the notes link is live. A failed PDF never blocks the reels.
+
 ## Posting reliability (13 Nov)
 Layers, any one of which is enough: (1) **keeper.yml**, a self-restarting GitHub Actions loop that dispatches
 publish.yml 3 min before 09:00 / 13:00 / 19:30 IST and re-dispatches anything overdue (restarted by its own
