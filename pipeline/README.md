@@ -209,3 +209,11 @@ symbols (rejected). New effects or variations can come in through the daily visu
    "vo":"Quiz: what does Control F3 do? The answer is in this reel. Comment it."}` (no comment box on quiz cards).
    Every reel fades back to its empty opening page in the last 0.35 s, so the loop is seamless (automatic).
 6. Numbers in the voiceover are written as words ("one two three four"), digits stay in `spoken` (subtitles).
+
+## Posting reliability (13 Nov)
+Layers, any one of which is enough: (1) **keeper.yml**, a self-restarting GitHub Actions loop that dispatches
+publish.yml 3 min before 09:00 / 13:00 / 19:30 IST and re-dispatches anything overdue (restarted by its own
+2-hourly cron if the chain ever breaks); (2) Claude scheduled publish tasks at 8:48 / 12:48 / 19:18;
+(3) Claude backup checks at 9:05 / 13:05 / 19:35; (4) publish.yml's own crons. publish.yml waits for the slot
+when started up to 20 min early (wait_slot.py) and posts at once when catching up. published.json + the
+concurrency group prevent double posts.
