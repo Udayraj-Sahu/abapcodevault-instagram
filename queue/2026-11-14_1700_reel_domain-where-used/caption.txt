@@ -1,0 +1,16 @@
+You change one domain. Which fields change with it?
+
+Domain, Part 3 of 11: where a domain is used.
+
+1. Domain = the technical shape (type, length)
+2. Data element = adds the field labels and the meaning
+3. Table fields, structure components and program variables use the data element
+4. SE11 Where-Used List (Ctrl+Shift+F3) shows everything that uses your domain
+
+Quiz: do programs use the domain or the data element? Answer in the comments.
+
+Next: Part 4, create a domain step by step (tonight at 7:30 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #ddic #abapcodevault

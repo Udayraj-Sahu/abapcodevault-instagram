@@ -1,155 +1,148 @@
 {
-  "handle": "@abapcodevault",
-  "mode": "reels_only",
-  "last_queued_date": "2026-11-13",
-  "history": [
-    "4 ABAP 7.40 syntax tricks (old vs new)",
-    "sy-subrc cheat sheet",
-    "FOR ALL ENTRIES empty-table trap",
-    "Interview: Standard vs Sorted vs Hashed tables",
-    "Top 10 developer T-codes",
-    "ALV in 10 lines with CL_SALV_TABLE",
-    "SELECT inside LOOP: why it kills performance + fix",
-    "SD tables cheat sheet (VBAK, VBAP, LIKP, VBRK...)",
-    "Interview: Domain vs Data element",
-    "Debugging trick: /h and breakpoint at statement MESSAGE",
-    "ALV in 5 lines with CL_SALV_TABLE (reel)",
-    "VALUE #( ) operator quiz (reel)",
-    "Interview: STANDARD vs SORTED vs HASHED (reel)",
-    "Course 3.1 DDIC basics",
-    "Course 3.2 Domain part 1: Definition tab",
-    "Course announcement (12 Nov 1 PM)",
-    "Course roadmap: 13 modules (12 Nov 7:30 PM)"
+ "handle": "@abapcodevault",
+ "mode": "reels_only",
+ "last_queued_date": "2026-11-14",
+ "history": [
+  "4 ABAP 7.40 syntax tricks (old vs new)",
+  "sy-subrc cheat sheet",
+  "FOR ALL ENTRIES empty-table trap",
+  "Interview: Standard vs Sorted vs Hashed tables",
+  "Top 10 developer T-codes",
+  "ALV in 10 lines with CL_SALV_TABLE",
+  "SELECT inside LOOP: why it kills performance + fix",
+  "SD tables cheat sheet (VBAK, VBAP, LIKP, VBRK...)",
+  "Interview: Domain vs Data element",
+  "Debugging trick: /h and breakpoint at statement MESSAGE",
+  "ALV in 5 lines with CL_SALV_TABLE (reel)",
+  "VALUE #( ) operator quiz (reel)",
+  "Interview: STANDARD vs SORTED vs HASHED (reel)",
+  "Course 3.1 DDIC basics",
+  "Course 3.2 Domain part 1: Definition tab",
+  "Course announcement (12 Nov 1 PM)",
+  "Course roadmap: 13 modules (12 Nov 7:30 PM)",
+  "domain-what-why",
+  "select-in-loop",
+  "domain-where-used",
+  "domain-create"
+ ],
+ "recent_formats": {
+  "reel": [
+   "three_things",
+   "before_after",
+   "bug_hunt",
+   "live_coding",
+   "quiz",
+   "interview_chat",
+   "course_lesson",
+   "course_lesson",
+   "announcement",
+   "course_roadmap",
+   "course_lesson",
+   "before_after",
+   "course_lesson",
+   "course_lesson"
   ],
-  "recent_formats": {
-    "reel": [
-      "three_things",
-      "before_after",
-      "bug_hunt",
-      "live_coding",
-      "quiz",
-      "interview_chat",
-      "course_lesson",
-      "course_lesson",
-      "announcement",
-      "course_roadmap"
-    ],
-    "carousel": [],
-    "post": [],
-    "cover": []
+  "carousel": [],
+  "post": [],
+  "cover": []
+ },
+ "course": {
+  "about": "9 AM and 7:30 PM reels teach pipeline/syllabus.json in order. 'next' = the next lesson to start; 'pending_parts' = planned remaining parts of the current lesson (do these first, in order).",
+  "next": {
+   "section": 3,
+   "lesson": 3
   },
-  "course": {
-    "about": "9 AM and 7:30 PM reels teach pipeline/syllabus.json in order. 'next' = the next lesson to start; 'pending_parts' = planned remaining parts of the current lesson (do these first, in order).",
-    "next": {
-      "section": 3,
-      "lesson": 3
-    },
-    "pending_parts": [
-      {
-        "syllabus": "3.2",
-        "topic": "Domain",
-        "part": 2,
-        "parts": 11,
-        "title": "What a domain is and why we need it",
-        "focus": "Map Q1+Q2. A domain = the technical attributes of a field (data type, length, decimals, output) defined ONCE. Problem without it: every field repeats type/length; change one, miss ten. Recap: Part 1 showed the Definition tab and ALPHA. Accurate analogy: domain = template/technical shape."
-      },
-      {
-        "syllabus": "3.2",
-        "topic": "Domain",
-        "part": 3,
-        "parts": 11,
-        "title": "Where a domain is used",
-        "focus": "Map Q3. Chain: domain -> data element -> table field / structure component / program variable (TYPE data element). One domain, many data elements. Show SE11 Where-Used List (button in the SE11 toolbar) on a domain."
-      },
-      {
-        "syllabus": "3.2",
-        "topic": "Domain",
-        "part": 4,
-        "parts": 11,
-        "title": "Create a domain step by step",
-        "focus": "Map Q4. SE11 -> radio button Domain -> Z/Y name -> Create -> Short Description -> Definition tab (type + length) -> Save -> package + transport request (or Local Object $TMP) -> Check -> Activate (Ctrl+F3). Show every click."
-      },
-      {
-        "syllabus": "3.2",
-        "topic": "Domain",
-        "part": 5,
-        "parts": 11,
-        "title": "Definition tab: the Format block",
-        "focus": "Map Q5. Data Type (built-in DDIC types: CHAR, NUMC, DEC, INT4, DATS, TIMS, CURR, QUAN — what each stores, CHAR vs NUMC), No. Characters, Decimal Places. Real example values."
-      },
-      {
-        "syllabus": "3.2",
-        "topic": "Domain",
-        "part": 6,
-        "parts": 11,
-        "title": "Definition tab: Output Characteristics",
-        "focus": "Map Q5. Output Length, Convers. Routine (ALPHA: zeros in on input, out on output; other routines exist), Sign (negative values allowed), Lower Case (otherwise input is converted to upper case)."
-      },
-      {
-        "syllabus": "3.2",
-        "topic": "Domain",
-        "part": 7,
-        "parts": 11,
-        "title": "Value Range tab: single values (fixed values)",
-        "focus": "Map Q6. Fixed values + short descriptions: become the F4 list and an automatic input check on screens; NOT checked in your own SELECT/UPDATE. Example values. Why they exist."
-      },
-      {
-        "syllabus": "3.2",
-        "topic": "Domain",
-        "part": 8,
-        "parts": 11,
-        "title": "Value Range tab: intervals",
-        "focus": "Map Q6. Intervals with Lower Limit / Upper Limit; combine with single values; checked on screen input like fixed values."
-      },
-      {
-        "syllabus": "3.2",
-        "topic": "Domain",
-        "part": 9,
-        "parts": 11,
-        "title": "Value table: why it exists",
-        "focus": "Map Q6. Value Table field on the Value Range tab: it is only the PROPOSED check table when you create a foreign key on a field using this domain; it does not check anything by itself. Example: domain LAND1 -> value table T005. Value table vs check table."
-      },
-      {
-        "syllabus": "3.2",
-        "topic": "Domain",
-        "part": 10,
-        "parts": 11,
-        "title": "Domain key points",
-        "focus": "Map Q7. One domain serves many data elements; changing a domain changes every field using it (length change on tables with data -> adjust with SE14); fixed values check only on screens; domains are not used directly in programs (use the data element)."
-      },
-      {
-        "syllabus": "3.2",
-        "topic": "Domain",
-        "part": 11,
-        "parts": 11,
-        "title": "Domain mistakes + interview questions",
-        "focus": "Map Q8+Q9 (+ recap quiz Q10 as quiz end card). Mistakes: SELECT with unconverted ALPHA value, expecting fixed values to block a program UPDATE, confusing value table with check table. Interview: domain vs data element, fixed values vs value table vs check table, can one domain be used by several data elements."
-      },
-      {
-        "syllabus": "3.2",
-        "topic": "Data element",
-        "part": 1,
-        "parts": "planned by the next run with the deep-dive map",
-        "title": "Data element: plan with the 10-question map",
-        "focus": "After Domain is done, plan the data element topic with the deep-dive topic map (what, why, where used, create, Data Type tab, Field Label tab short/medium/long/heading, Further Characteristics: search help + parameter ID SET/GET, documentation F1, key points, mistakes, interview, recap) and replace this entry with the planned parts."
-      }
-    ],
-    "done": [
-      "3.1 DDIC basics",
-      "3.2 part 1 Domain Definition tab"
-    ],
-    "terms": [
-      "Data Dictionary (DDIC)",
-      "domain",
-      "data type",
-      "length",
-      "conversion routine"
-    ]
-  },
-  "improve_next": {
-    "visual": "cuts",
-    "audio": "script"
-  },
-  "faq_done": [],
-  "notes_link_live": false
+  "pending_parts": [
+   {
+    "syllabus": "3.2",
+    "topic": "Domain",
+    "part": 5,
+    "parts": 11,
+    "title": "Definition tab: the Format block",
+    "focus": "Map Q5. Data Type (built-in DDIC types: CHAR, NUMC, DEC, INT4, DATS, TIMS, CURR, QUAN — what each stores, CHAR vs NUMC), No. Characters, Decimal Places. Real example values."
+   },
+   {
+    "syllabus": "3.2",
+    "topic": "Domain",
+    "part": 6,
+    "parts": 11,
+    "title": "Definition tab: Output Characteristics",
+    "focus": "Map Q5. Output Length, Convers. Routine (ALPHA: zeros in on input, out on output; other routines exist), Sign (negative values allowed), Lower Case (otherwise input is converted to upper case)."
+   },
+   {
+    "syllabus": "3.2",
+    "topic": "Domain",
+    "part": 7,
+    "parts": 11,
+    "title": "Value Range tab: single values (fixed values)",
+    "focus": "Map Q6. Fixed values + short descriptions: become the F4 list and an automatic input check on screens; NOT checked in your own SELECT/UPDATE. Example values. Why they exist."
+   },
+   {
+    "syllabus": "3.2",
+    "topic": "Domain",
+    "part": 8,
+    "parts": 11,
+    "title": "Value Range tab: intervals",
+    "focus": "Map Q6. Intervals with Lower Limit / Upper Limit; combine with single values; checked on screen input like fixed values."
+   },
+   {
+    "syllabus": "3.2",
+    "topic": "Domain",
+    "part": 9,
+    "parts": 11,
+    "title": "Value table: why it exists",
+    "focus": "Map Q6. Value Table field on the Value Range tab: it is only the PROPOSED check table when you create a foreign key on a field using this domain; it does not check anything by itself. Example: domain LAND1 -> value table T005. Value table vs check table."
+   },
+   {
+    "syllabus": "3.2",
+    "topic": "Domain",
+    "part": 10,
+    "parts": 11,
+    "title": "Domain key points",
+    "focus": "Map Q7. One domain serves many data elements; changing a domain changes every field using it (length change on tables with data -> adjust with SE14); fixed values check only on screens; domains are not used directly in programs (use the data element)."
+   },
+   {
+    "syllabus": "3.2",
+    "topic": "Domain",
+    "part": 11,
+    "parts": 11,
+    "title": "Domain mistakes + interview questions",
+    "focus": "Map Q8+Q9 (+ recap quiz Q10 as quiz end card). Mistakes: SELECT with unconverted ALPHA value, expecting fixed values to block a program UPDATE, confusing value table with check table. Interview: domain vs data element, fixed values vs value table vs check table, can one domain be used by several data elements."
+   },
+   {
+    "syllabus": "3.2",
+    "topic": "Data element",
+    "part": 1,
+    "parts": "planned by the next run with the deep-dive map",
+    "title": "Data element: plan with the 10-question map",
+    "focus": "After Domain is done, plan the data element topic with the deep-dive topic map (what, why, where used, create, Data Type tab, Field Label tab short/medium/long/heading, Further Characteristics: search help + parameter ID SET/GET, documentation F1, key points, mistakes, interview, recap) and replace this entry with the planned parts."
+   }
+  ],
+  "done": [
+   "3.1 DDIC basics",
+   "3.2 part 1 Domain Definition tab",
+   "3.2 Domain part 2 What a domain is and why we need it",
+   "3.2 Domain part 3 Where a domain is used",
+   "3.2 Domain part 4 Create a domain step by step"
+  ],
+  "terms": [
+   "Data Dictionary (DDIC)",
+   "domain",
+   "data type",
+   "length",
+   "conversion routine",
+   "technical shape (domain)",
+   "data element",
+   "Where-Used List",
+   "package",
+   "Local Object ($TMP)",
+   "FOR ALL ENTRIES"
+  ]
+ },
+ "improve_next": {
+  "visual": "cuts",
+  "audio": "script"
+ },
+ "faq_done": [],
+ "notes_link_live": false
 }

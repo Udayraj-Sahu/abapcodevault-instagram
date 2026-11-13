@@ -1,0 +1,13 @@
+Your report takes minutes? Look for a SELECT inside a LOOP.
+
+1. SELECT SINGLE inside LOOP AT = one database call per row
+2. Read everything once with FOR ALL ENTRIES IN (or a JOIN), then READ TABLE inside the loop
+3. Always check IF lt_orders IS NOT INITIAL first: an empty driver table makes FOR ALL ENTRIES read the whole table
+
+Have you found this in old code? Tell me in the comments.
+
+Next: where a domain is used (today at 5 PM).
+
+More performance-safe templates are in the ABAP Code Vault (link in bio).
+
+#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #performance #abapcodevault

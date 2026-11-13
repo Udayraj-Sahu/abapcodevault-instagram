@@ -1,0 +1,15 @@
+Never created a domain? Do it click by click.
+
+Domain, Part 4 of 11: create a domain in SE11.
+
+1. SE11: select Domain, enter a Z/Y name (e.g. ZD_PRIORITY), click Create
+2. Enter a short description
+3. Definition tab: data type (e.g. CHAR) and number of characters
+4. Save: a package + transport request, or Local Object ($TMP) for tests
+5. Check, then activate (Ctrl+F3)
+
+Next: Part 5, the Format block (tomorrow at 9 AM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #ddic #abapcodevault

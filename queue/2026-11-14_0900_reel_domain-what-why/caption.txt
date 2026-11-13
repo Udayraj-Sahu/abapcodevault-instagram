@@ -1,0 +1,14 @@
+Why not just type CHAR 10 on every field?
+
+Domain, Part 2 of 11: what a domain is and why we need it.
+
+1. Without a domain, every field repeats its own data type and length
+2. Change one field and you miss ten others
+3. A domain is the technical shape of a field: data type, length, decimals, output format
+4. Defined once in SE11, reused by many fields
+
+Next: why your report is slow (today at 1 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher #ddic #abapcodevault

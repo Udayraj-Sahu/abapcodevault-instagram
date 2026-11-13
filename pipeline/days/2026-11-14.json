@@ -1,62 +1,294 @@
 {
-  "date": "2026-11-14",
-  "handle": "@abapcodevault",
-  "posts": [
+ "date": "2026-11-14",
+ "handle": "@abapcodevault",
+ "posts": [
+  {
+   "type": "reel",
+   "series": "course",
+   "syllabus": "3.2",
+   "parts": 11,
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "time": "09:00",
+   "part": 2,
+   "slug": "domain-what-why",
+   "tag": "DDIC · Domain 2/11",
+   "comment_word": "DOMAIN",
+   "slides": [
     {
-      "type": "reel",
-      "format": "before_after",
-      "voice": "am_michael",
-      "voice_lang": "en",
-      "slides": [
-        {
-          "kind": "cover",
-          "style": "question",
-          "kicker": "Performance killer",
-          "title": "Why is your *report so slow*",
-          "voiceover": "Is your report slow? Here's the likely reason.",
-          "spoken": "Is your report slow? Here's the likely reason."
-        },
-        {
-          "kind": "compare",
-          "heading": "*Slow* vs *fast*",
-          "left_title": "Slow",
-          "left": "LOOP AT lt_orders INTO DATA(ls).\n  SELECT SINGLE name1 FROM kna1\n    WHERE kunnr = @ls-kunnr\n    INTO @DATA(lv_name).\nENDLOOP.",
-          "right_title": "Fast",
-          "right": "SELECT kunnr, name1 FROM kna1\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE kunnr = @lt_orders-kunnr\n  INTO TABLE @DATA(lt_kna1).",
-          "voiceover": "A SELECT inside a loop means one database call for every row. Read the data once, then look it up in memory.",
-          "spoken": "A SELECT inside a loop means one database call for every row. Read the data once, then look it up in memory."
-        },
-        {
-          "kind": "fact",
-          "title": "Result",
-          "text": "*10,000 calls* become *1*",
-          "detail": "Then read lt_kna1 inside the loop.",
-          "voiceover": "Ten thousand calls become just one. Save this.",
-          "spoken": "Ten thousand calls become just one. Save this."
-        }
-      ],
-      "caption": "Is your report taking 20 minutes instead of 2?\n\nIn most cases the cause is the same: a SELECT inside a LOOP. Every iteration is a separate trip to the database.\n\nThe fix: read the data once before the loop (JOIN or FOR ALL ENTRIES), then look it up in an internal table inside the loop. For large volumes, use a SORTED or HASHED table.\n\nNext: Course lesson, inside a data element (tonight at 7:30 PM).\n\nSave this for your next code review.",
-      "hashtags": [
-        "#sap",
-        "#abap",
-        "#coding",
-        "#sapabap",
-        "#abapdeveloper",
-        "#saps4hana",
-        "#sapfresher",
-        "#performance",
-        "#sapinterview",
-        "#abapcodevault"
-      ],
-      "slug": "select-in-loop",
-      "day": "Thu",
-      "tag": "Performance",
-      "time": "13:00",
-      "next": {
-        "title": "Inside a *data element*",
-        "when": "tonight at 7:30 PM",
-        "voice": "the course, inside a data element"
-      }
+     "kind": "cover",
+     "kicker": "Domains · Part 2/11",
+     "title": "Why not just type *CHAR 10* on every field?",
+     "voiceover": "Why not just type CHAR ten on every field? Last time: the Definition tab.",
+     "spoken": "Why not just type CHAR ten on every field? Last time: the Definition tab."
+    },
+    {
+     "kind": "versus",
+     "label": "THE PROBLEM",
+     "heading": "Without a *domain*",
+     "bad": {
+      "title": "Type on every field",
+      "sub": "change one, miss ten",
+      "say": "without"
+     },
+     "good": {
+      "title": "One domain",
+      "sub": "change once, all follow",
+      "say": "use"
+     },
+     "voiceover": "Without a domain, every field repeats its own type and length. Change one, miss ten. Use one domain, and you change it once.",
+     "spoken": "Without a domain, every field repeats its own type and length. Change one, miss ten. Use one domain, and you change it once."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Domain = the *technical shape*",
+     "body": "Data type, length, decimals and output format: defined once, reused by many fields.",
+     "voiceover": "A domain is a field's technical shape: type, length, decimals and output. Defined once, reused everywhere.",
+     "spoken": "A domain is a field's technical shape: type, length, decimals and output. Defined once, reused everywhere."
     }
-  ]
+   ],
+   "next": {
+    "title": "Why your *report is slow*",
+    "when": "today at 1 PM",
+    "vo": "At 1 PM: the one line that makes your reports crawl."
+   },
+   "caption": "Why not just type CHAR 10 on every field?\n\nDomain, Part 2 of 11: what a domain is and why we need it.\n\n1. Without a domain, every field repeats its own data type and length\n2. Change one field and you miss ten others\n3. A domain is the technical shape of a field: data type, length, decimals, output format\n4. Defined once in SE11, reused by many fields\n\nNext: why your report is slow (today at 1 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#coding",
+    "#sapabap",
+    "#abapdeveloper",
+    "#saps4hana",
+    "#sapfresher",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "time": "13:00",
+   "format": "before_after",
+   "slug": "select-in-loop",
+   "tag": "Additional concepts",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "comment_word": "FAE",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Additional concepts",
+     "title": "Why is your *report so slow*?",
+     "voiceover": "Your report takes minutes? Look for this one line.",
+     "spoken": "Your report takes minutes? Look for this one line."
+    },
+    {
+     "kind": "compare",
+     "heading": "The *mistake*",
+     "left_title": "Slow",
+     "left": "LOOP AT lt_orders INTO DATA(ls).\n  SELECT SINGLE name1 FROM kna1\n    WHERE kunnr = @ls-kunnr\n    INTO @DATA(lv_name).\nENDLOOP.",
+     "right_title": "Fast",
+     "right": "SELECT kunnr, name1 FROM kna1\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE kunnr = @lt_orders-kunnr\n  INTO TABLE @DATA(lt_kna1).",
+     "voiceover": "A SELECT inside a loop calls the database once per row. FOR ALL ENTRIES reads them all in one go.",
+     "spoken": "A SELECT inside a loop calls the database once per row. FOR ALL ENTRIES reads them all in one go."
+    },
+    {
+     "kind": "versus",
+     "label": "THE FIX",
+     "heading": "10,000 orders = ?",
+     "bad": {
+      "title": "SELECT in LOOP",
+      "sub": "10,000 database calls",
+      "say": "loop"
+     },
+     "good": {
+      "title": "FOR ALL ENTRIES",
+      "sub": "1 database call",
+      "say": "for"
+     },
+     "voiceover": "Ten thousand orders in a loop: ten thousand calls. For all entries needs just one.",
+     "spoken": "Ten thousand orders in a loop: ten thousand calls. FOR ALL ENTRIES needs just one."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Check it's *not empty*",
+     "body": "IF lt_orders IS NOT INITIAL first. An empty table makes FOR ALL ENTRIES read every row.",
+     "voiceover": "One catch: check the table isn't empty first, or it reads every row. Save this.",
+     "spoken": "One catch: check the table isn't empty first, or it reads every row. Save this."
+    }
+   ],
+   "next": {
+    "title": "Part 3 · Where a *domain* is used",
+    "when": "today at 5 PM",
+    "vo": "At 5 PM: where a domain actually shows up in SAP."
+   },
+   "caption": "Your report takes minutes? Look for a SELECT inside a LOOP.\n\n1. SELECT SINGLE inside LOOP AT = one database call per row\n2. Read everything once with FOR ALL ENTRIES IN (or a JOIN), then READ TABLE inside the loop\n3. Always check IF lt_orders IS NOT INITIAL first: an empty driver table makes FOR ALL ENTRIES read the whole table\n\nHave you found this in old code? Tell me in the comments.\n\nNext: where a domain is used (today at 5 PM).\n\nMore performance-safe templates are in the ABAP Code Vault (link in bio).",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#coding",
+    "#sapabap",
+    "#abapdeveloper",
+    "#saps4hana",
+    "#sapfresher",
+    "#performance",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "syllabus": "3.2",
+   "parts": 11,
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "time": "17:00",
+   "part": 3,
+   "slug": "domain-where-used",
+   "tag": "DDIC · Domain 3/11",
+   "comment_word": "CHAIN",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Domains · Part 3/11",
+     "title": "You change one domain. *What changes?*",
+     "voiceover": "You change one domain. Which fields change with it? Last time: why domains exist.",
+     "spoken": "You change one domain. Which fields change with it? Last time: why domains exist."
+    },
+    {
+     "kind": "flow",
+     "label": "HOW IT CONNECTS",
+     "heading": "The *chain*",
+     "steps": [
+      "Domain: the technical shape",
+      "Data element: labels + meaning",
+      "Table field: uses the data element",
+      "Program variable: TYPE data element"
+     ],
+     "voiceover": "Domain gives the shape. A data element adds labels and meaning. Tables and programs use the data element.",
+     "spoken": "Domain gives the shape. A data element adds labels and meaning. Tables and programs use the data element."
+    },
+    {
+     "kind": "screen",
+     "heading": "*Where-Used List*",
+     "tcode": "SE11",
+     "object": "Domain ZD_ORDER_NO",
+     "tabs": [
+      "Where-Used List"
+     ],
+     "active": 0,
+     "fields": [
+      [
+       "Data element",
+       "ZDE_ORDER_NO"
+      ],
+      [
+       "Table field",
+       "ZORDERS-ORDER_NO"
+      ],
+      [
+       "Structure",
+       "ZS_ORDER-ORDER_NO"
+      ]
+     ],
+     "focus": [
+      0
+     ],
+     "note": "toolbar button · Ctrl+Shift+F3",
+     "voiceover": "To see them all, open the domain in SE11 and click Where-Used List.",
+     "spoken": "To see them all, open the domain in SE11 and click Where-Used List."
+    }
+   ],
+   "next": {
+    "title": "Part 4 · Create a *domain*",
+    "when": "tonight at 7:30 PM",
+    "quiz": {
+     "question": "Quiz: programs use the *domain* or the *data element*?",
+     "options": [
+      "Domain",
+      "Data element"
+     ]
+    },
+    "vo": "Quiz: do programs use the domain or the data element? The answer is in this reel. Comment it."
+   },
+   "caption": "You change one domain. Which fields change with it?\n\nDomain, Part 3 of 11: where a domain is used.\n\n1. Domain = the technical shape (type, length)\n2. Data element = adds the field labels and the meaning\n3. Table fields, structure components and program variables use the data element\n4. SE11 Where-Used List (Ctrl+Shift+F3) shows everything that uses your domain\n\nQuiz: do programs use the domain or the data element? Answer in the comments.\n\nNext: Part 4, create a domain step by step (tonight at 7:30 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#coding",
+    "#sapabap",
+    "#abapdeveloper",
+    "#saps4hana",
+    "#sapfresher",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "syllabus": "3.2",
+   "parts": 11,
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "time": "19:30",
+   "part": 4,
+   "slug": "domain-create",
+   "tag": "DDIC · Domain 4/11",
+   "comment_word": "CREATED",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Domains · Part 4/11",
+     "title": "Create your first *domain*",
+     "voiceover": "Last time: where domains are used. Now, create one, click by click.",
+     "spoken": "Last time: where domains are used. Now, create one, click by click."
+    },
+    {
+     "kind": "flow",
+     "label": "STEP BY STEP",
+     "heading": "Click by *click*",
+     "steps": [
+      "SE11: Domain, type ZD_PRIORITY",
+      "Create: short description",
+      "Definition tab: CHAR, length 1",
+      "Save: package or Local Object",
+      "Activate: Ctrl+F3"
+     ],
+     "voiceover": "SE11, choose Domain, type a Z name. Create, add a description. Definition tab: CHAR, length one. Save to a package, then activate.",
+     "spoken": "SE11, choose Domain, type a Z name. Create, add a description. Definition tab: CHAR, length one. Save to a package, then activate."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Package vs *Local Object*",
+     "body": "A package lets the domain travel to other systems with a transport. Local Object ($TMP) stays on this system only.",
+     "voiceover": "A package lets the domain travel to other systems. Local object stays here, for tests.",
+     "spoken": "A package lets the domain travel to other systems. Local object stays here, for tests."
+    }
+   ],
+   "next": {
+    "title": "Part 5 · The *Format* block",
+    "when": "tomorrow at 9 AM",
+    "vo": "Tomorrow at 9 AM: which data type to pick, and why."
+   },
+   "caption": "Never created a domain? Do it click by click.\n\nDomain, Part 4 of 11: create a domain in SE11.\n\n1. SE11: select Domain, enter a Z/Y name (e.g. ZD_PRIORITY), click Create\n2. Enter a short description\n3. Definition tab: data type (e.g. CHAR) and number of characters\n4. Save: a package + transport request, or Local Object ($TMP) for tests\n5. Check, then activate (Ctrl+F3)\n\nNext: Part 5, the Format block (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#coding",
+    "#sapabap",
+    "#abapdeveloper",
+    "#saps4hana",
+    "#sapfresher",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  }
+ ]
 }
