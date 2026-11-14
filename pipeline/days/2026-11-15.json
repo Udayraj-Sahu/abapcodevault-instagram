@@ -17,7 +17,7 @@
    "comment_word": "NUMC",
    "rehook": {
     "stamp": "Common mistake",
-    "slide": 3
+    "slide": 4
    },
    "slides": [
     {
@@ -71,6 +71,42 @@
      ],
      "voiceover": "CHAR takes any characters, like a sales order number. NUMC takes digits only, padded with zeros, like an item number. DEC is a packed number. That's a number SAP can calculate with, decimals included.",
      "spoken": "CHAR takes any characters, like a sales order number. NUMC takes digits only, padded with zeros, like an item number. DEC is a packed number. That's a number SAP can calculate with, decimals included."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "Same input, *three types*",
+     "tcode": "DEMO",
+     "title": "What SAP stores",
+     "columns": [
+      "Type",
+      "You type",
+      "Stored"
+     ],
+     "rows": [
+      [
+       "CHAR 10",
+       "AB-12",
+       "AB-12"
+      ],
+      [
+       "NUMC 6",
+       "10",
+       "000010"
+      ],
+      [
+       "DEC 5,2",
+       "12.5",
+       "12.50"
+      ]
+     ],
+     "row_say": [
+      "char",
+      "numc",
+      "dec"
+     ],
+     "voiceover": "Here's an example. CHAR ten keeps AB dash twelve as typed. NUMC six turns ten into zero zero zero zero one zero. DEC with two decimals stores twelve point five as twelve point five zero.",
+     "spoken": "Here's an example. CHAR 10 keeps AB-12 as typed. NUMC 6 turns 10 into 0 0 0 0 1 0. DEC with 2 decimals stores 12.5 as 12.50."
     },
     {
      "kind": "versus",
@@ -248,6 +284,48 @@
      "spoken": "DATS stores a date, year, month, day. TIMS stores a time, hours, minutes, seconds. CURR holds an amount. QUAN holds a quantity."
     },
     {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "A real *sales order*",
+     "tcode": "VBAK",
+     "title": "Sales order header · stored values",
+     "columns": [
+      "Field",
+      "Type",
+      "Value"
+     ],
+     "rows": [
+      [
+       "ERDAT",
+       "DATS",
+       "20261115"
+      ],
+      [
+       "ERZET",
+       "TIMS",
+       "143000"
+      ],
+      [
+       "NETWR",
+       "CURR",
+       "1250.00"
+      ],
+      [
+       "WAERK",
+       "CUKY",
+       "INR"
+      ]
+     ],
+     "row_say": [
+      "created",
+      "entry",
+      "net",
+      "currency"
+     ],
+     "voiceover": "A real example: the sales order header, VBAK. Created on is a DATS. Entry time is a TIMS. Net value is a CURR. And its currency key field says INR.",
+     "spoken": "A real example: the sales order header, VBAK. Created on is a DATS. Entry time is a TIMS. Net value is a CURR. And its currency key field says INR."
+    },
+    {
      "kind": "flow",
      "label": "WHY IT MATTERS",
      "heading": "100 of *what*?",
@@ -309,7 +387,7 @@
    "comment_word": "SIGN",
    "rehook": {
     "stamp": "Common mistake",
-    "slide": 3
+    "slide": 4
    },
    "slides": [
     {
@@ -361,8 +439,38 @@
       5
      ],
      "note": "Definition tab · lower block",
-     "voiceover": "The Format block says what's stored. Output Characteristics say how it's shown and typed. Output length is its width on screen. Separators count too.",
-     "spoken": "The Format block says what's stored. Output Characteristics say how it's shown and typed. Output length is its width on screen. Separators count too."
+     "voiceover": "The Format block says what's stored. Output Characteristics say how it's shown and typed. Output length is its width on screen.",
+     "spoken": "The Format block says what's stored. Output Characteristics say how it's shown and typed. Output length is its width on screen."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "Output length, *counted*",
+     "tcode": "SCREEN",
+     "title": "What the user sees",
+     "columns": [
+      "Domain",
+      "Shown as",
+      "Length"
+     ],
+     "rows": [
+      [
+       "DEC 5, 2 dec.",
+       "123.45",
+       "6"
+      ],
+      [
+       "DEC 7, 2 dec.",
+       "12,345.67",
+       "9"
+      ]
+     ],
+     "row_say": [
+      "dec",
+      "needs"
+     ],
+     "voiceover": "Example. DEC five with two decimals shows one two three point four five. That's six characters. DEC seven needs nine. The point and the comma count too.",
+     "spoken": "Example. DEC 5 with 2 decimals shows 123.45. That's 6 characters. DEC 7 needs 9. The point and the comma count too."
     },
     {
      "kind": "list",

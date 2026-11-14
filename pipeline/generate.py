@@ -1000,8 +1000,8 @@ def build_blocks(s, accent, top_z=None, bottom_z=None):
                 for i, it in enumerate(its, int(s.get("start", 1)))]
         need = sum(r.info["rows"] for r in rows) + len(rows) - 1
         gap = G if (need + 3) * G <= BOTZ - TOPZ - y else 0
-        for r in rows:
-            y = B.add(r, x, y, "up", 0.45) + gap
+        for it, r in zip(its, rows):      # each item lands when the voice names it (15 Nov)
+            y = B.add(r, x, y, "up", 0.45, say=say_word(str(it).partition(" - ")[0])) + gap
     elif kind == "cta":
         y = B.add(heading_img(s.get("title", "Save this post"), F_HEAD(92), w, lh=100), x - 6, y, "pop", 0.3, "pop") + 40
         y = B.add(text_img(wrap(d0, s.get("body", ""), F_BODY(44), w), F_BODY(44), MUTED, 62, w), x, y, "up") + 60
@@ -1133,15 +1133,32 @@ def chunk_words(text, max_words=4, max_chars=24):
 FIRST_CONTENT_MAX = 0.9   # s after the cut by which the first content block must be on screen
 
 
+def say_word(text, min_len=1):
+    """Spoken key of a label for word sync (15 Nov): first word (>= min_len letters), lower case, no punctuation;
+    'No.' is read as 'number'."""
+    for w_ in str(text).replace("*", "").split():
+        k = w_.strip(":,.;!?()'\"").lower()
+        if k in ("no", "no."):
+            k = "number"
+        if len(k) >= min_len:
+            return k
+    return None
+
+
 def sync_to_words(blocks, tl, dur):
     """B: a block with say='word' appears the moment that word is spoken; arrows lead into the next
     card, after_say blocks follow the last spoken reveal; kin headings align words that are spoken."""
     words = [(w_.strip("*?,.!:;'\"").lower(), t0) for c in tl for (w_, t0, t1) in c]
     last, prev_t = None, 0.0
-    first_say = next((b for b in blocks if b.get("say")), None)
+    first_say = next((b for b in blocks if b.get("say") and not b.get("late_ok")), None)
     first_t0 = first_say.get("t", 0.5) if first_say else None
     for b in blocks:
         key = b.get("say")
+        if b.get("follow") is not None and prev_t > 0:   # rides on the previous synced block (e.g. click -> type)
+            b["t"] = min(prev_t + b["follow"], dur - 0.4)
+            prev_t = b["t"]
+            last = b["t"] + (b.get("dur") or 0.4)
+            continue
         if key:
             k5 = key[:5]
             hit = next((t0 for w_, t0 in words if t0 >= prev_t - 0.05 and (w_.startswith(k5) or k5.startswith(w_[:5]))
@@ -1940,7 +1957,7 @@ def make_motion_reel(p, slides, folder, handle, accent):
             d.rounded_rectangle([72, 100, 72 + int((REEL_W - 144) * (t / total)), 106], radius=3, fill=accent)
         proc.stdin.write(frame.tobytes())
         if fi % 15 == 0:   # static-hold check: sample every 0.5 s
-            small = np.asarray(frame.convert("L").resize((108, 192)), dtype=np.int16)
+            small = np.asarray(frame.convert("L").resize((108, 192)), dtype=np.int16)[26:132]   # content only: subtitles never count as motion (15 Nov)
             if last_small is not None:
                 changed = (np.abs(small - last_small) > 12).mean()
                 static_run = static_run + 0.5 if changed < 0.0015 else 0.0
@@ -2306,7 +2323,7 @@ def build_new_kind(B, s, accent, x, w, avail_h):
         for ln in hl:
             dd.text((36, yy), ln, font=F_SEMI(size), fill=INK)
             yy += int(size * 1.36)
-        y = B.add(box, x, y + 10, "pop", 0.3, "pop") + 10
+        y = B.add(box, x, y + 10, "pop", 0.3, "pop", say=say_word(text, 4), late_ok=True) + 10
 
     if kind == "cover":
         style = s.get("style")
@@ -2491,7 +2508,9 @@ def build_new_kind(B, s, accent, x, w, avail_h):
                 rd.rectangle([0, 0, w - 5, rh - 1], fill=(255, 255, 255, 140))
             for i, c in enumerate(list(r)[:n]):
                 rd.text((22 + i * cw, 12), str(c), font=F_MONO(30), fill=INK)
-            B.add(row, x + 2, ry, "type", 0.12, nosnap=True, step=0.12)
+            rs = s.get("row_say") or []
+            B.add(row, x + 2, ry, "type", 0.12, nosnap=True, step=0.12,
+                  say=(str(rs[r_i]).lower() if r_i < len(rs) and rs[r_i] else None))
             ry += rh
         v = s.get("verdict")
         if v:
@@ -2696,19 +2715,23 @@ def build_new_kind(B, s, accent, x, w, avail_h):
             B.add(row, x + 20, ry, "type", 0.18 if i not in focus else 0.3, nosnap=True, step=0.07)
             rows_geo.append(ry)
             ry += row_h
+        fsay = s.get("focus_say") or {}
         for i in sorted(focus):
             if 0 <= i < len(rows_geo):
                 val = str(fields[i][1])
+                key = fsay.get(str(i)) if isinstance(fsay, dict) else None
+                key = str(key).lower() if key else (say_word(fields[i][0]) if s.get("sync", True) else None)
                 fbox = (label_w, 4, w - 44, row_h - 14)
                 tw_v = int(d0.textlength(val, font=vf))
                 tgt = (label_w + 16 + max(tw_v, 120) + 50, (row_h - 10) // 2)
                 B.overlay(ov_cursor_click(fbox, tgt, 0.8), x + 20, rows_geo[i], w - 40, row_h - 10,
-                          pause=0.95, dur=0.8, sfx="tick", live=True)
+                          pause=0.95, dur=0.8, sfx="tick", live=True, say=key, late_ok=True)
                 if val:
                     B.overlay(ov_type_value(val, vf, label_w + 16, (row_h - 10 - 30) // 2), x + 20, rows_geo[i],
-                              w - 40, row_h - 10, pause=0.1 + 0.07 * len(val), dur=0.07 * len(val), sfx="tick", live=True)
+                              w - 40, row_h - 10, pause=0.1 + 0.07 * len(val), dur=0.07 * len(val), sfx="tick", live=True,
+                              follow=0.75 if key else None)
                 B.overlay(ov_box(w - 40, row_h - 10, EMPH_RED, pad=6, width=5), x + 20, rows_geo[i], w - 40, row_h - 10,
-                          pause=0.2, dur=0.5)
+                          pause=0.2, dur=0.5, follow=(0.12 + 0.07 * len(val)) if key else None)
         y = y0 + h + 26
         if s.get("note"):
             nt = text_img([s["note"]], F_HAND(52), EMPH_RED, 56)
@@ -2741,7 +2764,7 @@ def build_new_kind(B, s, accent, x, w, avail_h):
                 while d0.textlength(txt, font=font) > cw - 30 and len(txt) > 3:
                     txt = txt[:-2] + "…"
                 d.text((i * cw + 22, (rh - fs) // 2 - 4), txt, font=font, fill=INK if i else accent)
-            y = B.add(row, x, y, "up", 0.2) + 0
+            y = B.add(row, x, y, "up", 0.2, say=say_word(r[0]) if r and s.get("sync", True) else None) + 0
 
     elif kind == "flow":
         kin_heading(s.get("heading", ""), 62)
@@ -2844,9 +2867,9 @@ def build_new_kind(B, s, accent, x, w, avail_h):
                 d.text((84, yy), ln, font=F_BODY(34), fill=MUTED)
                 yy += 46
             row.info["base"] = 4 + asc(F_SEMI(42))
-            B.add(row, x, y, "up", 0.15)
+            B.add(row, x, y, "up", 0.15, say=say_word(title))
             y = B.items[-1]["y"]
-            B.overlay(ov_tick(56), x - 2, y + 4, 60, 60, pause=0.35, dur=0.35, sfx="tick")
+            B.overlay(ov_tick(56), x - 2, y + 4, 60, 60, pause=0.35, dur=0.35, sfx="tick", follow=0.3)
             y += row.size[1] + 24
     if not B.items:
         B.add(text_img([" "], F_BODY(20), INK, 20), x, 0)

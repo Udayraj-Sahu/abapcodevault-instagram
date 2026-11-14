@@ -18,6 +18,15 @@ NEXT ... — derived from the slide kind/label, override with slide "section"); 
 blue = SE11/code, green = rule/next, orange = tip/quiz; override with slide "mood": red|green|orange|blue) on the chip, its
 segment and a soft breathing glow behind the content; an animated heart "+1" and Follow -> Following on the end card; and a
 soft generated lo-fi music bed ducked under the voice. Turn off per reel with "style": "classic" or "no_music": true.
+**No still screen while talking (user, 15 Nov):** whatever the voice names must appear or light up at that moment, never all at once
+followed by talking over a frozen picture. The engine does this automatically (15 Nov): `list`, `table` and `checklist` items land when
+their first word is spoken (write the voiceover in the same order and with the same first word as the item label, e.g. item "NUMC - digits
+only" + voice "NUMC takes digits only"); `screen` focus fields get the cursor click when the field name is spoken (first word of the label,
+"No." = "number"; override per row with `"focus_say": {"2": "output"}`); `output` rows fill on `"row_say": ["created", "entry", ...]` (words as written in `spoken`, 2+ letters: digits like "7" never match, use a neighbour word);
+answer highlights pop when their first word of 4+ letters is spoken. Set `"sync": false` on a slide to turn it off. The STATIC check now
+measures only the content area (subtitles no longer count as motion), so a frozen slide is reported - fix it, don't ignore it.
+**Example rule (user, 15 Nov):** every course reel shows at least one concrete EXAMPLE with real values (usually an `output` slide,
+label "EXAMPLE", rows synced with `row_say`): e.g. what SAP stores for each type, a real table's fields (VBAK ERDAT/ERZET/NETWR/WAERK).
 **Length rule (every reel, user 14 Nov):** explain the ONE idea well, but keep it watchable to the end: aim for 30-60 s, never over 90 s (the generator warns above 90 s and never speeds up the voice). If an idea needs more, split it into the next part. Never pad, never rush.
 **"Next" rule (every reel):** set `"next": {"title": "The *Value Range* tab", "when": "tomorrow at 9 AM", "voice": "the Value Range tab"}`
 = the NEXT reel in the schedule (9 AM -> 1 PM, 1 PM -> 7:30 PM, 7:30 PM -> tomorrow 9 AM). The generator turns it into the end card
