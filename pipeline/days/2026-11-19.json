@@ -24,8 +24,8 @@
           "code": "SELECT vbeln, posnr FROM vbap\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE vbeln = @lt_orders-vbeln\n  INTO TABLE @DATA(lt_items).",
           "bug_line": 1,
           "note": "lt_orders is empty!",
-          "voiceover": "If the driver table is empty, the WHERE condition is ignored, and the whole VBAP table is read.",
-          "spoken": "If the driver table is empty, the WHERE condition is ignored, and the whole VBAP table is read."
+          "voiceover": "If the driver table is empty, the WHERE condition is ignored. The whole VBAP table is read.",
+          "spoken": "If the driver table is empty, the WHERE condition is ignored. The whole VBAP table is read."
         },
         {
           "kind": "code",

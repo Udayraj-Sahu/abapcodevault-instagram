@@ -733,6 +733,39 @@ def tighten_audio(data, sr, max_gap=0.2, thresh=0.012):
     return out
 
 
+SCRIPT_MAX_WORDS = 16   # longest voiceover sentence before the script check complains
+
+
+def script_lint(p):
+    """Script check (15 Nov): voiceover rules from VOICEOVER.md, so a bad line is caught before rendering.
+    Flags code symbols, bare digits (numbers must be words), the word ABAP, sentences over SCRIPT_MAX_WORDS
+    words, and spoken/voiceover word counts that differ by more than 25 % (subtitles out of sync)."""
+    msgs, slug = [], p.get("slug", "?")
+    for i, s in enumerate(p.get("slides", []), 1):
+        vo = (s.get("voiceover") or "").strip()
+        if not vo:
+            continue
+        where = f"{slug} slide {i}"
+        sym = sorted(set(re.findall(r"@|->|=>|#\(|[={}<>\[\]]", vo)))
+        if sym:
+            msgs.append(f"SCRIPT: code symbol(s) {' '.join(sym)} in the voiceover of {where}; say them in words")
+        digits = [w for w in re.findall(r"[\w/]+", vo) if w.isdigit()]
+        if digits:
+            msgs.append(f"SCRIPT: digits {', '.join(digits[:3])} in the voiceover of {where}; write numbers as words")
+        if re.search(r"\bABAP\b", vo, re.I):
+            msgs.append(f"SCRIPT: the word ABAP is spoken in {where}; the voice mispronounces it")
+        for sent in re.split(r"(?<=[.?!])\s+", vo):
+            n = len(sent.split())
+            if n > SCRIPT_MAX_WORDS:
+                msgs.append(f"SCRIPT: {n}-word sentence in {where} (max {SCRIPT_MAX_WORDS}): '{sent[:50]}...'")
+        sp = (s.get("spoken") or "").strip()
+        if sp:
+            a, b = len(vo.split()), len(sp.split())
+            if abs(a - b) > 0.25 * max(a, b):
+                msgs.append(f"SCRIPT: spoken has {b} words but voiceover {a} in {where}; subtitles drift")
+    return msgs
+
+
 def build_narration(slides, folder, p, default_secs):
     """Synthesize one clip per slide that has 'voiceover'. Returns (durations, wav path or None)."""
     voice = p.get("voice", "am_michael")
@@ -1741,6 +1774,7 @@ def make_motion_reel(p, slides, folder, handle, accent):
     p["_tighten"] = pace.get("tighten", False)
     has_vo = any(s.get("voiceover") for s in slides)
     if has_vo:
+        OVERLAPS.extend(script_lint(p))
         durations, vo_wav, speech = build_narration(slides, folder, p, default)
         dmin, dmax = (COURSE_MIN, COURSE_MAX) if p.get("series") == "course" else (REEL_MIN, REEL_MAX)
         rmin, rmax = float(p.get("min_len", dmin)), float(p.get("max_len", dmax))

@@ -74,7 +74,7 @@ Based on research (short-form retention guides + learning studies, see Log 2026-
 - [x] Follow-through: rising text overshoots ~4.6 px once and settles (ease_back on position) (12 Nov)
 - [ ] Follow-through: after a block lands, its highlighter/underline settles 80 ms later (secondary motion)
 - [ ] Match cut: the highlighted key word of scene N flies/morphs into the heading position of scene N+1
-- [ ] Cut on action: start the next scene's transition while the last element is still moving (overlap 0.12 s)
+- [ ] Cut on action: start the next scene's transition while the last element is still moving (overlap 0.12 s) — tried 15 Nov as a 1.2 % pre-cut shrink: invisible at 0.1 s steps, reverted; retry only with a clearly visible lead-in (e.g. 3 % + the chip/heading moving first)
 - [ ] Word-level emphasis synced to voice: the key word pulses (scale 1.06) exactly when it is spoken
 - [ ] Parallax: ruled paper drifts 6-10 px slower than content during slide/zoom transitions (depth)
 - [ ] Motion blur / smear on fast transitions (blend 2-3 sub-frames) for smoother 30 fps movement
@@ -91,9 +91,9 @@ Based on research (short-form retention guides + learning studies, see Log 2026-
 - [ ] Automatic pronunciation check: if a small offline ASR (pip-installable, no Hugging Face) is available, transcribe the reel and flag words that differ from the script
 
 ### Script (research-first; was "Translation" while voiceovers were Hinglish)
-- [ ] generate.py check: warn if a `voiceover` sentence is longer than 16 words or uses passive voice heavily
-- [ ] generate.py check: warn if `spoken` and `voiceover` differ in word count by > 25% (captions out of sync)
-- [ ] generate.py check: warn on code symbols (@ = -> #( ) in a voiceover
+- [x] generate.py check: warn if a `voiceover` sentence is longer than 16 words (15 Nov; passive voice not checked)
+- [x] generate.py check: warn if `spoken` and `voiceover` differ in word count by > 25% (captions out of sync) (15 Nov)
+- [x] generate.py check: warn on code symbols (@ = -> #( ) in a voiceover, bare digits, and the word ABAP (15 Nov)
 - [ ] Grow VOICEOVER.md glossary with 10 more ABAP terms as developers say them (BAdI, user exit, IDoc, LUW, COMMIT WORK ...)
 - [ ] Hook library in VOICEOVER.md: 15 proven English opening lines by format (bug_hunt, quiz, story ...)
 - [ ] Caption chunking: break captions at natural phrase boundaries, never between a number and its unit
@@ -136,3 +136,5 @@ Based on research (short-form retention guides + learning studies, see Log 2026-
 | 2026-11-12 | script/visual/audio | Story rules: problem-first hooks, problem-mistake-fix-payoff with open-loop endings, sap_error + output kinds, signature cut + Remember sounds, end-of-reel quiz, seamless loop fade. Approved by user, live from 13 Nov. Presenter (4a) waits for the user's character. | Hooks + story + rewatches |
 | 2026-11-14 | length | User removed the 30 s reel limit: reels are as long as their one idea needs (generator cap = 900 s, the Instagram API maximum; no voice speed-up). Parts are split by idea, not seconds. | User request |
 | 2026-11-14 | length | User: explain each idea well, no 30 s squeeze, but watchable to the end. Target 30-60 s, warn above 90 s, voice never sped up; longer ideas become the next part. | User request |
+| 2026-11-15 | script | Script check `script_lint()` in generate.py: every reel's voiceover is checked before TTS for code symbols, bare digits, the spoken word ABAP, sentences over 16 words and spoken/voiceover word-count drift > 25 %; each hit prints as "SCRIPT: ..." in the OVERLAP WARNING block so the run must fix it. Caught an 18-word sentence in the 19 Nov draft (split it). Technique: one idea per short sentence and subtitle chunks a viewer reads in one glance — https://www.opus.pro/blog/instagram-reels-caption-subtitle-best-practices , https://subclip.app/blogs/animated-captions-2026-best-practices-reels-shorts-x-exporting-srt | The VOICEOVER.md rules were only checked by hand; now a broken line can't slip into a rendered reel |
+| 2026-11-15 | cuts (skipped) | Tried "cut on action": outgoing scene eased into a 1.2 % shrink 0.12 s before each soft cut, continuing into the transition — https://www.schoolofmotion.com/blog/six-essential-motion-design-transitions-tutorial . Regress render of 13 Nov: no warnings, diff only in the 4 frames before each cut, but the strip showed no visible difference, so not clearly better. Reverted. | Rule 4: keep only if clearly better |

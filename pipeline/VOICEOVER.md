@@ -19,6 +19,7 @@ add glossary rows, fix awkward phrasings found in recent reels, and note the sou
 - Course reels: hook, then a recap line in exactly this pattern: "Last time we learned <last topic>. Now, <this topic>." (e.g. "Last time we learned the Definition tab. Now, the values it allows."). Never "Last time: <topic>."
 - Say WHY before HOW. Define each new term once, in one plain sentence. ~2.3-2.5 words per second; fewer ideas, not faster speech.
 - End the meat on a one-sentence takeaway.
+- The generator now checks every voiceover before rendering (since 15 Nov) and prints "SCRIPT: ...": no code symbols, no digits (write numbers as words), never the word ABAP, max 16 words per sentence, and `spoken` within 25 % of the `voiceover` word count. Fix every SCRIPT line like an overlap.
 
 ## Subtitles (`spoken`, shown on screen)
 - Exactly the same text as `voiceover`, so subtitles match the audio word for word.
