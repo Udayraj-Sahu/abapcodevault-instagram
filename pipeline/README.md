@@ -7,10 +7,10 @@ Each daily run creates tomorrow's **3 reels** (reels only since 12 Nov 2026).
 ## Daily rhythm (3 reels every day, all 7 days of the week)
 | Time (IST) | Slot `time` | What | Length |
 | --- | --- | --- | --- |
-| 9:00 AM | `"09:00"` | **Course reel**: next part of the ABAP course (`pipeline/syllabus.json`, in order) | any length, never > 30 s |
-| 1:00 PM | `"13:00"` | **Free topic** reel from topics.json (tips, bugs, interview, performance...). Even day-of-month: ABAP Code Vault plug in caption; odd: interview angle + ABAP Interview Pack plug | any length, never > 30 s |
-| 5:00 PM | `"17:00"` | **Course reel** (since 14 Nov): the part after the 9 AM one | any length, never > 30 s |
-| 7:30 PM | `"19:30"` | **Course reel**: the part after the 9 AM one | any length, never > 30 s |
+| 9:00 AM | `"09:00"` | **Course reel**: next part of the ABAP course (`pipeline/syllabus.json`, in order) | any length (no limit) |
+| 1:00 PM | `"13:00"` | **Free topic** reel from topics.json (tips, bugs, interview, performance...). Even day-of-month: ABAP Code Vault plug in caption; odd: interview angle + ABAP Interview Pack plug | any length (no limit) |
+| 5:00 PM | `"17:00"` | **Course reel** (since 14 Nov): the part after the 9 AM one | any length (no limit) |
+| 7:30 PM | `"19:30"` | **Course reel**: the part after the 9 AM one | any length (no limit) |
 **Pacing rule (every reel, approved 12 Nov):** the screen must visibly change at least every 3 seconds (new element, highlight, outline, typing, word emphasis, punch-in or cut); keep pauses short. Default pace "snappy" does the audio side and adds punch-ins on highlighted words / every ~2.6 s (not on code, screen, compare, table, bug slides); reels over 20 s get an automatic mid-reel re-hook stamp (override with `"rehook": {"stamp": "Common mistake", "slide": 2}` or turn off with `"rehook": false`; best: make that slide's voiceover start with the same words). The generator warns "STATIC: ..." if the picture is still for more than 3 s — fix it; plan 1 visual beat per 2-3 s when writing slides (e.g. more fields revealed one by one, focus outlines, step lists).
 **Live style (default since 12 Nov, user approved, inspired by a reference reel):** segmented progress bar (one
 segment per scene); a section chip at top-left per scene (HOOK, INSIDE SE11, CODE, HOW IT WORKS, REMEMBER, COMMON MISTAKE,
@@ -18,8 +18,7 @@ NEXT ... — derived from the slide kind/label, override with slide "section"); 
 blue = SE11/code, green = rule/next, orange = tip/quiz; override with slide "mood": red|green|orange|blue) on the chip, its
 segment and a soft breathing glow behind the content; an animated heart "+1" and Follow -> Following on the end card; and a
 soft generated lo-fi music bed ducked under the voice. Turn off per reel with "style": "classic" or "no_music": true.
-**Length rule (every reel):** as long as the topic needs, never more than 30 s including the end card. If a topic needs
-more, split it into parts (Part 1/2, 2/2 ...) in the following slots.
+**Length rule (every reel, changed 14 Nov):** no time limit. A reel is as long as its ONE idea needs to be explained clearly; never pad and never rush. Split a topic into parts by idea (deep-dive map), not by seconds.
 **"Next" rule (every reel):** set `"next": {"title": "The *Value Range* tab", "when": "tomorrow at 9 AM", "voice": "the Value Range tab"}`
 = the NEXT reel in the schedule (9 AM -> 1 PM, 1 PM -> 7:30 PM, 7:30 PM -> tomorrow 9 AM). The generator turns it into the end card
 ("Next: …" + when + follow button; voice "Next: <voice>, <when>. Follow so you don't miss it.") and replaces any own follow CTA.
@@ -33,9 +32,8 @@ All are 1080×1920 MP4 reels with English voiceover (voice am_michael). Every po
   section → lesson → every bullet point. Progress lives in `state.json` → `course`:
   `pending_parts` (planned remaining parts of the current lesson — always do these first, in order) and `next`
   (`{"section": S, "lesson": L}` = the next lesson to start). Section 16 (T-codes) is not a course lesson; use it for 1 PM reels.
-- **Plan a lesson before starting it:** list every bullet point and split them into parts so that each part fits ONE reel of
-  ≤ 30 s (your frames ≈ 24-27 s + the ~3 s end card ≈ 40-50 words of voiceover, 3-4 frames). Short lessons = 1 part;
-  big ones = 2-4 parts. Write the remaining parts into `pending_parts` with a `title` and a precise `focus`.
+- **Plan a lesson before starting it:** list every bullet point and split them into parts so that each part teaches ONE
+  idea (no time limit since 14 Nov; follow the deep-dive topic map). Write the remaining parts into `pending_parts` with a `title` and a precise `focus`.
 - **Go deep, not just definitions.** Show what is actually inside: the real SE11/SE80/SE37/... screen, its tabs and field
   names (use the `screen` kind), what each important field does, a real code example, a common mistake, and the interview
   angle. Example: a domain is not "a data type" — it is the Definition tab (data type, length, decimals, output length,
@@ -228,7 +226,7 @@ mistakes + interview · recap quiz.
 
 ## Teaching rules (approved 13 Nov, live from the 14 Nov reels; inspired by the teaching method of the "SAP ABAP by Rahul Mehta" YouTube channel. Copy the method, never his words, slides or examples)
 Goal: every reel explains its one idea so clearly that a fresher understands it on the first watch. These rules sit on top of
-the Story rules and the 30 s limit; when they clash with cramming, **make more parts** rather than talking faster.
+the Story rules; one idea per reel, explained fully at a calm pace (no time limit since 14 Nov); never talk faster to fit.
 1. **One idea per reel.** A course part teaches ONE concept (one tab, one field group, one statement). If a part has more,
    split it and update `pending_parts`. At most 3-4 fields/terms explained per reel; voiceover ≈ 2.3-2.5 words per second.
 2. **Recap first (course reels, from the second part/lesson on).** After the hook, one line in exactly this pattern

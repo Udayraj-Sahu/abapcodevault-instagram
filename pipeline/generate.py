@@ -2826,8 +2826,8 @@ PACES = {   # reels are short (12-18 s), so even "calm" is brisk
     "snappy": {"voice_speed": 1.03, "lead": 0.1, "tail": 0.22, "pause_k": 0.55, "push": 0.03, "trans": 0.24,
                "tighten": True, "beat": 2.6},
 }
-REEL_MIN, REEL_MAX = 6.0, 30.0        # any length the topic needs, never over 30 s (else split into parts)
-COURSE_MIN, COURSE_MAX = 6.0, 30.0    # same rule for course reels
+REEL_MIN, REEL_MAX = 6.0, 900.0       # no length limit (user, 14 Nov); 900 s = Instagram API maximum for reels
+COURSE_MIN, COURSE_MAX = 6.0, 900.0   # same for course reels
 FORMATS = {
     "bug_hunt":       {"pace": "fast", "transitions": ["whip", "zoom", "slide", "whip"]},
     "before_after":   {"pace": "fast", "transitions": ["slide", "wipe", "zoom", "slide"]},
