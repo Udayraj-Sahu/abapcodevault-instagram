@@ -44,7 +44,7 @@ All are 1080×1920 MP4 reels with English voiceover (voice am_michael). Every po
 - The end card is automatic: parts that continue get "Part N is *next*" + "The next part is coming soon. Follow so you don't miss it.";
   the last part gets the normal follow card.
 - Caption: start with "Lesson: <title>" or "<topic>, Part n of N", numbered list of what the reel covered, then
-  "Next: <next part/lesson>" and "Follow the series so you don't miss it." Hashtags as usual (topic tag e.g. #ddic).
+  "Next: <next part/lesson>" and "Follow the series so you don't miss it." Hashtags as usual (5, topic tag e.g. #ddic).
 - Accuracy matters: SE11 field names, tab names and transaction codes must be exactly as in the SAP system. No invented facts.
 - After queueing: move the done part out of `pending_parts` (append "S.L part n …" to `course.done`), and when a lesson is
   started advance `next` (next lesson, or lesson 1 of the next section).
@@ -88,10 +88,23 @@ so they get today's improvements.
 - Structure: hook question or bold statement on line 1 -> blank line -> 2-4 short lines or a numbered list with the substance -> blank line -> one engagement line (question or "Save this for ...") -> product line when the post plugs a product ("... ABAP Code Vault (link in bio)" / "ABAP Interview Pack (160 Q&A): link in bio").
 - 60-120 words. At most 1 emoji, or none. No invented statistics.
 
-## Hashtags (fixed: 9-10 per post)
-Always these 7: `#sap #abap #coding #sapabap #abapdeveloper #saps4hana #sapfresher`
-+ 1-2 topic tags (e.g. #alv #performance #sapinterview #cleancode #tcodes #bapi #smartforms #cds)
-+ always `#abapcodevault` last.
+## Hashtags (fixed: exactly 5 per post, since 14 Nov)
+Instagram caps hashtags at 5 per post/reel (since Dec 2025); tags past the fifth do not count. Always:
+`#sap #abap #sapabap` + 1 topic tag (e.g. #ddic #alv #performance #sapinterview #cds) + `#abapcodevault` last.
+
+## Instagram skill checks (since 14 Nov; tools in tools/ig, MIT, from Jakeschincariol/instagram-agent-skill)
+Run these on every reel before rendering; fix every FAIL, decide every WARN:
+1. **Hook:** write 3 hook options (different formulas from `tools/ig/ig-reel/hooks.json`), score them with
+   `python3 tools/ig/ig-reel/hookscore.py hooks.txt`, use the top one (aim 50+). The hook sentence is the FIRST spoken
+   sentence, 8 words or fewer; the recap line ("Last time we learned X. Now, Y.") follows it.
+2. **Beats:** put the voiceover sentences one per line and run `python3 tools/ig/ig-reel/beats.py script.txt --target <s>`;
+   fix any beat over 4 s (split the line or add a reveal on screen). Ignore its "under target" advice (no length limit).
+3. **Humanize:** `python3 tools/ig/ig-human/humanize.py script.txt --report` then `detect.py`; rewrite flagged lines by hand
+   (keep SAP terms, never say "ABAP"); aim for PASS.
+4. **Caption:** Job A (the reel carries the hook): line 1 = the hook (lands whole within 125 chars), the 2 search phrases a
+   learner would type (e.g. "SAP domain", "data element") as plain words in the first 2-3 lines, exactly ONE ask
+   (e.g. "Comment <comment_word> if ..." or "Save this for your next SE11 task"), no URL, 5 hashtags.
+   Run `python3 tools/ig/ig-caption/caption.py caption.txt --keywords "<phrase 1>,<phrase 2>"` and fix every FAIL.
 
 ## Formats & recipes (variety engine)
 Every post gets a **format**. Never reuse a format that appears in the last 5 entries of `state.json -> recent_formats[<type>]`
