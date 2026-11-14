@@ -1,0 +1,422 @@
+{
+ "date": "2026-11-15",
+ "handle": "@abapcodevault",
+ "posts": [
+  {
+   "type": "reel",
+   "series": "course",
+   "syllabus": "3.2",
+   "parts": 12,
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "time": "09:00",
+   "part": 5,
+   "slug": "domain-format-block",
+   "tag": "DDIC · Domain 5/12",
+   "comment_word": "NUMC",
+   "rehook": {
+    "stamp": "Common mistake",
+    "slide": 3
+   },
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Domains · Part 5/12",
+     "title": "You picked the wrong *data type*?",
+     "voiceover": "You picked the wrong data type. Here's how to tell. Last time we learned to create a domain. Now, the Format block.",
+     "spoken": "You picked the wrong data type. Here's how to tell. Last time we learned to create a domain. Now, the Format block."
+    },
+    {
+     "kind": "screen",
+     "heading": "The *Format* block",
+     "tcode": "SE11",
+     "object": "Domain ZD_ORDER_NO",
+     "tabs": [
+      "Properties",
+      "Definition",
+      "Value Range"
+     ],
+     "active": 1,
+     "fields": [
+      [
+       "Data Type",
+       "CHAR"
+      ],
+      [
+       "No. Characters",
+       "10"
+      ],
+      [
+       "Decimal Places",
+       "0"
+      ]
+     ],
+     "focus": [
+      0,
+      1,
+      2
+     ],
+     "note": "Definition tab · Format",
+     "voiceover": "Open the Definition tab. The Format block has three fields. Data type, number of characters, and decimal places. Decimal places are the digits after the point.",
+     "spoken": "Open the Definition tab. The Format block has three fields. Data type, number of characters, and decimal places. Decimal places are the digits after the point."
+    },
+    {
+     "kind": "list",
+     "heading": "Three types, *three jobs*",
+     "items": [
+      "CHAR - any text, e.g. VBELN",
+      "NUMC - digits only, e.g. POSNR",
+      "DEC - numbers you calculate"
+     ],
+     "voiceover": "CHAR takes any characters, like a sales order number. NUMC takes digits only, padded with zeros, like an item number. DEC is a packed number. That's a number SAP can calculate with, decimals included.",
+     "spoken": "CHAR takes any characters, like a sales order number. NUMC takes digits only, padded with zeros, like an item number. DEC is a packed number. That's a number SAP can calculate with, decimals included."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "A discount of *12.50*",
+     "bad": {
+      "title": "NUMC 4",
+      "sub": "no decimals, no math",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "DEC 5, 2 decimals",
+      "sub": "12.50 fits",
+      "say": "use"
+     },
+     "voiceover": "Common mistake: NUMC for a discount rate. It can't hold twelve point five zero. Use DEC, with two decimal places.",
+     "spoken": "Common mistake: NUMC for a discount rate. It can't hold 12.50. Use DEC, with 2 decimal places."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Pick by *what you store*",
+     "body": "IDs and text: CHAR. Digits with leading zeros: NUMC. Numbers you calculate with: DEC.",
+     "highlight": "what you store",
+     "voiceover": "Here's the takeaway. Pick the type by what you store. Not by how the data looks.",
+     "spoken": "Here's the takeaway. Pick the type by what you store. Not by how the data looks."
+    }
+   ],
+   "next": {
+    "title": "Where should a *fresher start*?",
+    "when": "today at 1 PM",
+    "voice": "where should a fresher start",
+    "vo": "At 1 PM: the order most freshers get wrong."
+   },
+   "caption": "You picked the wrong data type? Here's how to tell.\n\nSAP domain, Part 5 of 12: the Format block on the Definition tab (data type, number of characters, decimal places).\n\n1. CHAR: letters, digits and symbols (VBELN is CHAR 10)\n2. NUMC: digits only, padded with leading zeros (POSNR is NUMC 6)\n3. DEC: a packed number you calculate with, including decimal places\n4. Common mistake: NUMC for a value like 12.50. Use DEC with 2 decimals\n\nSave this for your next SE11 domain.\n\nNext: where should a fresher start? (today at 1 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "time": "13:00",
+   "format": "faq",
+   "slug": "faq-where-to-start",
+   "tag": "FAQ",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "comment_word": "START",
+   "rehook": {
+    "stamp": "Common mistake",
+    "slide": 2
+   },
+   "slides": [
+    {
+     "kind": "cover",
+     "style": "question",
+     "kicker": "Sunday FAQ",
+     "title": "Where should a fresher *start*?",
+     "subtitle": "Learning SAP ABAP, in order",
+     "voiceover": "Where should a fresher start? Not with RAP. Here's the order that works.",
+     "spoken": "Where should a fresher start? Not with RAP. Here's the order that works."
+    },
+    {
+     "kind": "flow",
+     "label": "THE ORDER",
+     "heading": "Learn it in *layers*",
+     "steps": [
+      "Basics: SAP GUI, T-codes, SE38",
+      "Language: data types, loops",
+      "Dictionary: SE11 domains, tables",
+      "Reports: SQL, internal tables, ALV",
+      "Modern: classes, CDS views, RAP"
+     ],
+     "voiceover": "Basics first: find your way in SAP. Then write a tiny report in SE38. Language next: variables, data types, loops. Dictionary: domains and tables in SE11. Reports: reading data with SQL, internal tables, and ALV. Modern last: classes, CDS views, then RAP.",
+     "spoken": "Basics first: find your way in SAP. Then write a tiny report in SE38. Language next: variables, data types, loops. Dictionary: domains and tables in SE11. Reports: reading data with SQL, internal tables, and ALV. Modern last: classes, CDS views, then RAP."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Starting with *RAP*",
+     "bad": {
+      "title": "RAP first",
+      "sub": "no idea what's underneath",
+      "say": "jumping"
+     },
+     "good": {
+      "title": "Basics first",
+      "sub": "RAP makes sense later",
+      "say": "learn"
+     },
+     "voiceover": "Common mistake: jumping to RAP first. It's built on tables, SQL and classes. Learn those, and RAP makes sense.",
+     "spoken": "Common mistake: jumping to RAP first. It's built on tables, SQL and classes. Learn those, and RAP makes sense."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Each layer uses *the one before*",
+     "body": "Our free course follows this order: new parts every day at 9 AM, 5 PM and 7:30 PM.",
+     "highlight": "the one before",
+     "voiceover": "The takeaway: learn in layers. Each one uses the one before. Our course follows exactly this order. So start with the basics.",
+     "spoken": "The takeaway: learn in layers. Each one uses the one before. Our course follows exactly this order. So start with the basics."
+    }
+   ],
+   "next": {
+    "title": "Part 6 · Dates, times & *money*",
+    "when": "today at 5 PM",
+    "voice": "part six, dates, times and money",
+    "vo": "At 5 PM: why a date should never be a plain text field."
+   },
+   "caption": "Where should a fresher start? Not with RAP.\n\nHow to learn SAP ABAP in the right order, as an ABAP fresher:\n\n1. Basics: SAP GUI, T-codes, a first report in SE38\n2. Language: variables, data types, loops\n3. Data Dictionary: domains and tables in SE11\n4. Reports: ABAP SQL, internal tables, ALV\n5. Modern: classes, CDS views, then RAP\n\nWhich step are you on? Tell me in the comments.\n\nNext: Part 6, dates, times and money (today at 5 PM).\n\nInterview soon? ABAP Interview Pack (160 Q&A) is in the bio.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#sapfresher",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "syllabus": "3.2",
+   "parts": 12,
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "time": "17:00",
+   "part": 6,
+   "slug": "domain-dates-money",
+   "tag": "DDIC · Domain 6/12",
+   "comment_word": "TIMS",
+   "rehook": {
+    "stamp": "Common mistake",
+    "slide": 1
+   },
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Domains · Part 6/12",
+     "title": "Stop saving dates as *CHAR 8*",
+     "voiceover": "Stop saving dates as CHAR eight. Last time we learned CHAR, NUMC and DEC. Now, dates, times and money.",
+     "spoken": "Stop saving dates as CHAR 8. Last time we learned CHAR, NUMC and DEC. Now, dates, times and money."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "A date field, *two ways*",
+     "bad": {
+      "title": "CHAR 8",
+      "sub": "no date check, no calendar",
+      "say": "plain"
+     },
+     "good": {
+      "title": "DATS",
+      "sub": "checked date + calendar F4",
+      "say": "dats"
+     },
+     "voiceover": "A plain CHAR eight takes any text, even thirty-two February. DATS is a real date. SAP checks it and offers a calendar.",
+     "spoken": "A plain CHAR 8 takes any text, even 32 February. DATS is a real date. SAP checks it and offers a calendar."
+    },
+    {
+     "kind": "list",
+     "heading": "Dates, times, *money*",
+     "items": [
+      "DATS - date, YYYYMMDD",
+      "TIMS - time, HHMMSS",
+      "CURR - amount + currency key",
+      "QUAN - quantity + unit"
+     ],
+     "voiceover": "DATS stores a date, year, month, day. TIMS stores a time, hours, minutes, seconds. CURR holds an amount. QUAN holds a quantity.",
+     "spoken": "DATS stores a date, year, month, day. TIMS stores a time, hours, minutes, seconds. CURR holds an amount. QUAN holds a quantity."
+    },
+    {
+     "kind": "flow",
+     "label": "WHY IT MATTERS",
+     "heading": "100 of *what*?",
+     "steps": [
+      "Amount: CURR field",
+      "Points to a CUKY field",
+      "Currency key: INR, USD",
+      "Quantity: QUAN field",
+      "Points to a UNIT field"
+     ],
+     "voiceover": "An amount alone means nothing. A CURR field points to a CUKY field. That's the currency key, like INR or USD. A quantity works the same. A QUAN field points to a UNIT field.",
+     "spoken": "An amount alone means nothing. A CURR field points to a CUKY field. That's the currency key, like INR or USD. A quantity works the same. A QUAN field points to a UNIT field."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Use the type that *knows the value*",
+     "body": "Dates: DATS. Times: TIMS. Amounts: CURR + currency key. Quantities: QUAN + unit.",
+     "highlight": "knows the value",
+     "voiceover": "Takeaway: use the type that knows what the value means. Never CHAR eight for a date.",
+     "spoken": "Takeaway: use the type that knows what the value means. Never CHAR 8 for a date."
+    }
+   ],
+   "next": {
+    "title": "Part 7 · *Output* Characteristics",
+    "when": "tonight at 7:30 PM",
+    "voice": "part seven, output characteristics",
+    "quiz": {
+     "question": "Quiz: which type stores a *time*?",
+     "options": [
+      "DATS",
+      "TIMS",
+      "NUMC"
+     ]
+    },
+    "vo": "Quiz: which type stores a time? The answer is in this reel. Comment it."
+   },
+   "caption": "Stop saving dates as CHAR 8.\n\nSAP domain, Part 6 of 12: data types for dates, times and money.\n\n1. DATS: a real date (YYYYMMDD) with a date check and a calendar on F4\n2. TIMS: a time (HHMMSS)\n3. CURR: an amount that points to a currency key field (CUKY)\n4. QUAN: a quantity that points to a unit field (UNIT)\n\nQuiz: which type stores a time? Comment your answer below.\n\nNext: Part 7, Output Characteristics (tonight at 7:30 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "syllabus": "3.2",
+   "parts": 12,
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "time": "19:30",
+   "part": 7,
+   "slug": "domain-output-characteristics",
+   "tag": "DDIC · Domain 7/12",
+   "comment_word": "SIGN",
+   "rehook": {
+    "stamp": "Common mistake",
+    "slide": 3
+   },
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Domains · Part 7/12",
+     "title": "Screen won't take a *minus sign*?",
+     "voiceover": "Screen won't take a minus sign? Here's why. Last time we learned dates, times and money. Now, how values look on screen.",
+     "spoken": "Screen won't take a minus sign? Here's why. Last time we learned dates, times and money. Now, how values look on screen."
+    },
+    {
+     "kind": "screen",
+     "heading": "*Output* Characteristics",
+     "tcode": "SE11",
+     "object": "Domain ZD_CITY",
+     "tabs": [
+      "Properties",
+      "Definition",
+      "Value Range"
+     ],
+     "active": 1,
+     "fields": [
+      [
+       "Data Type",
+       "CHAR"
+      ],
+      [
+       "No. Characters",
+       "40"
+      ],
+      [
+       "Output Length",
+       "40"
+      ],
+      [
+       "Convers. Routine",
+       ""
+      ],
+      [
+       "Sign",
+       "No"
+      ],
+      [
+       "Lower Case",
+       "Yes"
+      ]
+     ],
+     "focus": [
+      2,
+      5
+     ],
+     "note": "Definition tab · lower block",
+     "voiceover": "The Format block says what's stored. Output Characteristics say how it's shown and typed. Output length is its width on screen. Separators count too.",
+     "spoken": "The Format block says what's stored. Output Characteristics say how it's shown and typed. Output length is its width on screen. Separators count too."
+    },
+    {
+     "kind": "list",
+     "heading": "Four fields, *four jobs*",
+     "items": [
+      "Output Length - width on screen",
+      "Convers. Routine - e.g. ALPHA zeros",
+      "Sign - negative values allowed",
+      "Lower Case - keep small letters"
+     ],
+     "voiceover": "Conversion routine is where ALPHA lives. Sign allows negative values. Lower case keeps small letters as typed.",
+     "spoken": "Conversion routine is where ALPHA lives. Sign allows negative values. Lower case keeps small letters as typed."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "A city named *Pune*",
+     "bad": {
+      "title": "Lower Case off",
+      "sub": "saved as PUNE",
+      "say": "off"
+     },
+     "good": {
+      "title": "Lower Case on",
+      "sub": "saved as Pune",
+      "say": "tick"
+     },
+     "voiceover": "Common mistake: lower case off. Users type Pune, SAP saves PUNE. Tick lower case to keep it. Same for Sign: no tick, no minus.",
+     "spoken": "Common mistake: lower case off. Users type Pune, SAP saves PUNE. Tick lower case to keep it. Same for Sign: no tick, no minus."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Format = stored, Output = *shown*",
+     "body": "Format decides what is stored. Output Characteristics decide what the user sees and types.",
+     "highlight": "what the user sees",
+     "voiceover": "Takeaway: format decides what's stored. Output decides what the user sees and types. Even a minus sign.",
+     "spoken": "Takeaway: format decides what's stored. Output decides what the user sees and types. Even a minus sign."
+    }
+   ],
+   "next": {
+    "title": "Part 8 · *Fixed values*",
+    "when": "tomorrow at 9 AM",
+    "voice": "part eight, fixed values",
+    "vo": "Tomorrow at 9 AM: a value list for your users, with zero code."
+   },
+   "caption": "Screen won't take a minus sign? Here's why.\n\nSAP domain, Part 7 of 12: Output Characteristics on the Definition tab.\n\n1. Output Length: how many characters the field takes on screen, separators included\n2. Convers. Routine: e.g. ALPHA adds and removes leading zeros\n3. Sign: allows negative values\n4. Lower Case: keeps small letters; otherwise screen input becomes upper case\n\nSave this for your next SE11 domain.\n\nNext: Part 8, fixed values (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  }
+ ]
+}

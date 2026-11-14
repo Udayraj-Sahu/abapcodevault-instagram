@@ -1,0 +1,17 @@
+Where should a fresher start? Not with RAP.
+
+How to learn SAP ABAP in the right order, as an ABAP fresher:
+
+1. Basics: SAP GUI, T-codes, a first report in SE38
+2. Language: variables, data types, loops
+3. Data Dictionary: domains and tables in SE11
+4. Reports: ABAP SQL, internal tables, ALV
+5. Modern: classes, CDS views, then RAP
+
+Which step are you on? Tell me in the comments.
+
+Next: Part 6, dates, times and money (today at 5 PM).
+
+Interview soon? ABAP Interview Pack (160 Q&A) is in the bio.
+
+#sap #abap #sapabap #sapfresher #abapcodevault

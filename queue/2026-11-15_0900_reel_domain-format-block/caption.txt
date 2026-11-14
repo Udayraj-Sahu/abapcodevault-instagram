@@ -1,0 +1,16 @@
+You picked the wrong data type? Here's how to tell.
+
+SAP domain, Part 5 of 12: the Format block on the Definition tab (data type, number of characters, decimal places).
+
+1. CHAR: letters, digits and symbols (VBELN is CHAR 10)
+2. NUMC: digits only, padded with leading zeros (POSNR is NUMC 6)
+3. DEC: a packed number you calculate with, including decimal places
+4. Common mistake: NUMC for a value like 12.50. Use DEC with 2 decimals
+
+Save this for your next SE11 domain.
+
+Next: where should a fresher start? (today at 1 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

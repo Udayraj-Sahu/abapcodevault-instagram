@@ -1,0 +1,16 @@
+Stop saving dates as CHAR 8.
+
+SAP domain, Part 6 of 12: data types for dates, times and money.
+
+1. DATS: a real date (YYYYMMDD) with a date check and a calendar on F4
+2. TIMS: a time (HHMMSS)
+3. CURR: an amount that points to a currency key field (CUKY)
+4. QUAN: a quantity that points to a unit field (UNIT)
+
+Quiz: which type stores a time? Comment your answer below.
+
+Next: Part 7, Output Characteristics (tonight at 7:30 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

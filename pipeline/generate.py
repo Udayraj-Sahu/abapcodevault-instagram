@@ -620,7 +620,9 @@ SAY = {"SAP": "S A P", "ALV": "A L V", "SQL": "sequel", "BAPI": "bappy", "ABAP":
        "F6": "F six", "F7": "F seven", "F8": "F eight", "VBAK": "V back", "VBAP": "V bap", "VBRK": "V B R K",
        "VBRP": "V B R P", "LIKP": "L I K P", "LIPS": "lips", "MARA": "mara", "EKKO": "E K K O",
        "EKPO": "E K P O", "KNA1": "K N A one", "BKPF": "B K P F", "BSEG": "B seg", "MSEG": "M seg",
-       "OOPS": "oops", "HANA": "hana", "S/4HANA": "S four hana", "UI": "U I", "API": "A P I", "PDF": "P D F"}
+       "OOPS": "oops", "HANA": "hana", "S/4HANA": "S four hana", "UI": "U I", "API": "A P I", "PDF": "P D F",
+       "NUMC": "num C", "DATS": "dats", "TIMS": "tims", "CURR": "cur", "QUAN": "kwan", "CUKY": "C U K Y",
+       "DEC": "deck", "INR": "I N R", "USD": "U S D", "PUNE": "Pune", "F4": "F four", "F1": "F one", "SE14": "S E fourteen"}
 
 
 def phonemize_mixed(text):

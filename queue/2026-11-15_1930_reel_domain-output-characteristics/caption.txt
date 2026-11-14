@@ -1,0 +1,16 @@
+Screen won't take a minus sign? Here's why.
+
+SAP domain, Part 7 of 12: Output Characteristics on the Definition tab.
+
+1. Output Length: how many characters the field takes on screen, separators included
+2. Convers. Routine: e.g. ALPHA adds and removes leading zeros
+3. Sign: allows negative values
+4. Lower Case: keeps small letters; otherwise screen input becomes upper case
+
+Save this for your next SE11 domain.
+
+Next: Part 8, fixed values (tomorrow at 9 AM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

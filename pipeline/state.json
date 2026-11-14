@@ -1,7 +1,7 @@
 {
  "handle": "@abapcodevault",
  "mode": "reels_only",
- "last_queued_date": "2026-11-14",
+ "last_queued_date": "2026-11-15",
  "history": [
   "4 ABAP 7.40 syntax tricks (old vs new)",
   "sy-subrc cheat sheet",
@@ -23,7 +23,11 @@
   "domain-what-why",
   "select-in-loop",
   "domain-where-used",
-  "domain-create"
+  "domain-create",
+  "domain-format-block",
+  "faq-where-to-start",
+  "domain-dates-money",
+  "domain-output-characteristics"
  ],
  "recent_formats": {
   "reel": [
@@ -40,6 +44,10 @@
    "course_lesson",
    "before_after",
    "course_lesson",
+   "course_lesson",
+   "course_lesson",
+   "faq",
+   "course_lesson",
    "course_lesson"
   ],
   "carousel": [],
@@ -47,7 +55,7 @@
   "cover": []
  },
  "course": {
-  "about": "9 AM and 7:30 PM reels teach pipeline/syllabus.json in order. 'next' = the next lesson to start; 'pending_parts' = planned remaining parts of the current lesson (do these first, in order).",
+  "about": "9 AM, 5 PM and 7:30 PM reels teach pipeline/syllabus.json in order. 'next' = the next lesson to start; 'pending_parts' = planned remaining parts of the current lesson (do these first, in order). Domain was re-split to 12 parts on 15 Nov (old part 5 became parts 5 + 6).",
   "next": {
    "section": 3,
    "lesson": 3
@@ -56,56 +64,40 @@
    {
     "syllabus": "3.2",
     "topic": "Domain",
-    "part": 5,
-    "parts": 11,
-    "title": "Definition tab: the Format block",
-    "focus": "Map Q5. Data Type (built-in DDIC types: CHAR, NUMC, DEC, INT4, DATS, TIMS, CURR, QUAN — what each stores, CHAR vs NUMC), No. Characters, Decimal Places. Real example values."
-   },
-   {
-    "syllabus": "3.2",
-    "topic": "Domain",
-    "part": 6,
-    "parts": 11,
-    "title": "Definition tab: Output Characteristics",
-    "focus": "Map Q5. Output Length, Convers. Routine (ALPHA: zeros in on input, out on output; other routines exist), Sign (negative values allowed), Lower Case (otherwise input is converted to upper case)."
-   },
-   {
-    "syllabus": "3.2",
-    "topic": "Domain",
-    "part": 7,
-    "parts": 11,
+    "part": 8,
+    "parts": 12,
     "title": "Value Range tab: single values (fixed values)",
     "focus": "Map Q6. Fixed values + short descriptions: become the F4 list and an automatic input check on screens; NOT checked in your own SELECT/UPDATE. Example values. Why they exist."
    },
    {
     "syllabus": "3.2",
     "topic": "Domain",
-    "part": 8,
-    "parts": 11,
+    "part": 9,
+    "parts": 12,
     "title": "Value Range tab: intervals",
     "focus": "Map Q6. Intervals with Lower Limit / Upper Limit; combine with single values; checked on screen input like fixed values."
    },
    {
     "syllabus": "3.2",
     "topic": "Domain",
-    "part": 9,
-    "parts": 11,
+    "part": 10,
+    "parts": 12,
     "title": "Value table: why it exists",
     "focus": "Map Q6. Value Table field on the Value Range tab: it is only the PROPOSED check table when you create a foreign key on a field using this domain; it does not check anything by itself. Example: domain LAND1 -> value table T005. Value table vs check table."
    },
    {
     "syllabus": "3.2",
     "topic": "Domain",
-    "part": 10,
-    "parts": 11,
+    "part": 11,
+    "parts": 12,
     "title": "Domain key points",
-    "focus": "Map Q7. One domain serves many data elements; changing a domain changes every field using it (length change on tables with data -> adjust with SE14); fixed values check only on screens; domains are not used directly in programs (use the data element)."
+    "focus": "Map Q7. One domain serves many data elements; changing a domain changes every field using it (length change on tables with data -> adjust with SE14); fixed values check only on screens; domains are not used directly in programs (use the data element). Also one line on INT4 (whole numbers, e.g. counters) and FLTP (floating point) which part 5 left out."
    },
    {
     "syllabus": "3.2",
     "topic": "Domain",
-    "part": 11,
-    "parts": 11,
+    "part": 12,
+    "parts": 12,
     "title": "Domain mistakes + interview questions",
     "focus": "Map Q8+Q9 (+ recap quiz Q10 as quiz end card). Mistakes: SELECT with unconverted ALPHA value, expecting fixed values to block a program UPDATE, confusing value table with check table. Interview: domain vs data element, fixed values vs value table vs check table, can one domain be used by several data elements."
    },
@@ -123,7 +115,10 @@
    "3.2 part 1 Domain Definition tab",
    "3.2 Domain part 2 What a domain is and why we need it",
    "3.2 Domain part 3 Where a domain is used",
-   "3.2 Domain part 4 Create a domain step by step"
+   "3.2 Domain part 4 Create a domain step by step",
+   "3.2 Domain part 5 Format block: Data Type, No. Characters, Decimal Places (CHAR, NUMC, DEC)",
+   "3.2 Domain part 6 Data types for dates, times, money (DATS, TIMS, CURR, QUAN)",
+   "3.2 Domain part 7 Output Characteristics (Output Length, Convers. Routine, Sign, Lower Case)"
   ],
   "terms": [
    "Data Dictionary (DDIC)",
@@ -136,13 +131,30 @@
    "Where-Used List",
    "package",
    "Local Object ($TMP)",
-   "FOR ALL ENTRIES"
+   "FOR ALL ENTRIES",
+   "decimal places",
+   "CHAR",
+   "NUMC",
+   "DEC (packed number)",
+   "DATS",
+   "TIMS",
+   "CURR",
+   "QUAN",
+   "currency key (CUKY)",
+   "unit field (UNIT)",
+   "Output Characteristics",
+   "output length",
+   "Sign flag",
+   "Lower Case flag",
+   "RAP (newest programming model)"
   ]
  },
  "improve_next": {
   "visual": "cuts",
   "audio": "script"
  },
- "faq_done": [],
+ "faq_done": [
+  "Where should a fresher start learning SAP ABAP, and in what order?"
+ ],
  "notes_link_live": false
 }
