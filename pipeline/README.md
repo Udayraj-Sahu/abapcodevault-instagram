@@ -7,10 +7,10 @@ Each daily run creates tomorrow's **3 reels** (reels only since 12 Nov 2026).
 ## Daily rhythm (3 reels every day, all 7 days of the week)
 | Time (IST) | Slot `time` | What | Length |
 | --- | --- | --- | --- |
-| 9:00 AM | `"09:00"` | **Course reel**: next part of the ABAP course (`pipeline/syllabus.json`, in order) | any length (no limit) |
-| 1:00 PM | `"13:00"` | **Free topic** reel from topics.json (tips, bugs, interview, performance...). Even day-of-month: ABAP Code Vault plug in caption; odd: interview angle + ABAP Interview Pack plug | any length (no limit) |
-| 5:00 PM | `"17:00"` | **Course reel** (since 14 Nov): the part after the 9 AM one | any length (no limit) |
-| 7:30 PM | `"19:30"` | **Course reel**: the part after the 9 AM one | any length (no limit) |
+| 9:00 AM | `"09:00"` | **Course reel**: next part of the ABAP course (`pipeline/syllabus.json`, in order) | 30-60 s, max 90 s |
+| 1:00 PM | `"13:00"` | **Free topic** reel from topics.json (tips, bugs, interview, performance...). Even day-of-month: ABAP Code Vault plug in caption; odd: interview angle + ABAP Interview Pack plug | 30-60 s, max 90 s |
+| 5:00 PM | `"17:00"` | **Course reel** (since 14 Nov): the part after the 9 AM one | 30-60 s, max 90 s |
+| 7:30 PM | `"19:30"` | **Course reel**: the part after the 9 AM one | 30-60 s, max 90 s |
 **Pacing rule (every reel, approved 12 Nov):** the screen must visibly change at least every 3 seconds (new element, highlight, outline, typing, word emphasis, punch-in or cut); keep pauses short. Default pace "snappy" does the audio side and adds punch-ins on highlighted words / every ~2.6 s (not on code, screen, compare, table, bug slides); reels over 20 s get an automatic mid-reel re-hook stamp (override with `"rehook": {"stamp": "Common mistake", "slide": 2}` or turn off with `"rehook": false`; best: make that slide's voiceover start with the same words). The generator warns "STATIC: ..." if the picture is still for more than 3 s — fix it; plan 1 visual beat per 2-3 s when writing slides (e.g. more fields revealed one by one, focus outlines, step lists).
 **Live style (default since 12 Nov, user approved, inspired by a reference reel):** segmented progress bar (one
 segment per scene); a section chip at top-left per scene (HOOK, INSIDE SE11, CODE, HOW IT WORKS, REMEMBER, COMMON MISTAKE,
@@ -18,7 +18,7 @@ NEXT ... — derived from the slide kind/label, override with slide "section"); 
 blue = SE11/code, green = rule/next, orange = tip/quiz; override with slide "mood": red|green|orange|blue) on the chip, its
 segment and a soft breathing glow behind the content; an animated heart "+1" and Follow -> Following on the end card; and a
 soft generated lo-fi music bed ducked under the voice. Turn off per reel with "style": "classic" or "no_music": true.
-**Length rule (every reel, changed 14 Nov):** no time limit. A reel is as long as its ONE idea needs to be explained clearly; never pad and never rush. Split a topic into parts by idea (deep-dive map), not by seconds.
+**Length rule (every reel, user 14 Nov):** explain the ONE idea well, but keep it watchable to the end: aim for 30-60 s, never over 90 s (the generator warns above 90 s and never speeds up the voice). If an idea needs more, split it into the next part. Never pad, never rush.
 **"Next" rule (every reel):** set `"next": {"title": "The *Value Range* tab", "when": "tomorrow at 9 AM", "voice": "the Value Range tab"}`
 = the NEXT reel in the schedule (9 AM -> 1 PM, 1 PM -> 7:30 PM, 7:30 PM -> tomorrow 9 AM). The generator turns it into the end card
 ("Next: …" + when + follow button; voice "Next: <voice>, <when>. Follow so you don't miss it.") and replaces any own follow CTA.

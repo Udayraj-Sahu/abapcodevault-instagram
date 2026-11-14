@@ -1742,7 +1742,7 @@ def make_motion_reel(p, slides, folder, handle, accent):
         durations, vo_wav, speech = build_narration(slides, folder, p, default)
         dmin, dmax = (COURSE_MIN, COURSE_MAX) if p.get("series") == "course" else (REEL_MIN, REEL_MAX)
         rmin, rmax = float(p.get("min_len", dmin)), float(p.get("max_len", dmax))
-        for _ in range(2):   # slightly long? speed the voice up (max +15%) and re-synthesize
+        for _ in range(2 if p.get("allow_speedup") else 0):   # never speed the voice up unless a reel asks (calm pace rule)
             total0 = sum(durations)
             if total0 <= rmax:
                 break
@@ -2826,8 +2826,8 @@ PACES = {   # reels are short (12-18 s), so even "calm" is brisk
     "snappy": {"voice_speed": 1.03, "lead": 0.1, "tail": 0.22, "pause_k": 0.55, "push": 0.03, "trans": 0.24,
                "tighten": True, "beat": 2.6},
 }
-REEL_MIN, REEL_MAX = 6.0, 900.0       # no length limit (user, 14 Nov); 900 s = Instagram API maximum for reels
-COURSE_MIN, COURSE_MAX = 6.0, 900.0   # same for course reels
+REEL_MIN, REEL_MAX = 6.0, 90.0        # explain fully, but watchable: aim 30-60 s, warn above 90 s (user, 14 Nov)
+COURSE_MIN, COURSE_MAX = 6.0, 90.0    # same for course reels
 FORMATS = {
     "bug_hunt":       {"pace": "fast", "transitions": ["whip", "zoom", "slide", "whip"]},
     "before_after":   {"pace": "fast", "transitions": ["slide", "wipe", "zoom", "slide"]},
