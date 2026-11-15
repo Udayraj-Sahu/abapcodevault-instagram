@@ -144,8 +144,8 @@
   ]
  },
  "improve_next": {
-  "visual": "typography",
-  "audio": "sound/timing"
+  "visual": "animation",
+  "audio": "voice"
  },
  "faq_done": [
   "Where should a fresher start learning SAP ABAP, and in what order?"
