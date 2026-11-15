@@ -1614,11 +1614,21 @@ def duck_under(voice, music, sr, depth=0.35):
     nfr = len(voice) // hop + 1
     env = np.array([np.abs(voice[i * hop:(i + 1) * hop]).max() if i * hop < len(voice) else 0 for i in range(nfr)])
     on = (env > 0.02).astype("float32")
+    # 16 Nov: lookahead (music dips 60 ms BEFORE the word), 60 ms attack ramp, 160 ms hold to bridge gaps
+    # between words (no pumping), then the old slow release; gain interpolated per sample (no 20 ms steps).
+    look, att, hold = 3, 3, 8              # in 20 ms hops
+    on = np.concatenate([on[look:], np.zeros(look, dtype="float32")])
     sm = np.zeros_like(on)
-    for i in range(nfr):   # fast attack, slow release
-        prev = sm[i - 1] if i else 0
-        sm[i] = max(on[i], prev * 0.93)
-    g = 1 - (1 - depth) * np.repeat(sm, hop)[: len(voice)]
+    lev, since = 0.0, 99
+    for i in range(nfr):
+        since = 0 if on[i] else since + 1
+        if since == 0:
+            lev = min(1.0, lev + 1.0 / att)
+        elif since > hold:
+            lev *= 0.93
+        sm[i] = lev
+    centers = np.arange(nfr) * hop + hop // 2
+    g = 1 - (1 - depth) * np.interp(np.arange(len(voice)), centers, sm)
     return (m * g).astype("float32")
 
 
