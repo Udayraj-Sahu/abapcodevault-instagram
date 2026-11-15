@@ -1,0 +1,16 @@
+Stop junk values in SE11 with zero code.
+
+SAP domain, Part 8 of 12: fixed values on the Value Range tab in SE11.
+
+1. Single Vals: each allowed value plus a short description
+2. F4 help shows them as a list, no code needed
+3. Screen input is checked against them
+4. Your own UPDATE or INSERT in code is not checked
+
+Save this for your next SE11 domain.
+
+Next: Stop writing APPEND five times (today at 1 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

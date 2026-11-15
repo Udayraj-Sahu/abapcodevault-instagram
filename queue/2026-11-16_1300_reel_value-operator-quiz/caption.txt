@@ -1,0 +1,15 @@
+Stop writing APPEND five times in a row. One statement does it.
+
+The ABAP 7.40 VALUE operator fills an internal table inline:
+
+1. VALUE #( ) builds the whole table in one statement
+2. Each row goes in its own brackets, no work area needed
+3. Careful: VALUE replaces existing rows. Add BASE to keep them
+
+Quiz answer: VALUE #( ), available since ABAP 7.40.
+
+Next: Part 9, intervals (today at 5 PM).
+
+More 7.40 syntax tricks are in the ABAP Code Vault (link in bio).
+
+#sap #abap #sapabap #modernabap #abapcodevault

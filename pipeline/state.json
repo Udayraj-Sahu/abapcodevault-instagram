@@ -1,7 +1,7 @@
 {
  "handle": "@abapcodevault",
  "mode": "reels_only",
- "last_queued_date": "2026-11-15",
+ "last_queued_date": "2026-11-16",
  "history": [
   "4 ABAP 7.40 syntax tricks (old vs new)",
   "sy-subrc cheat sheet",
@@ -27,7 +27,11 @@
   "domain-format-block",
   "faq-where-to-start",
   "domain-dates-money",
-  "domain-output-characteristics"
+  "domain-output-characteristics",
+  "domain-fixed-values",
+  "value-operator-quiz",
+  "domain-intervals",
+  "domain-value-table"
  ],
  "recent_formats": {
   "reel": [
@@ -48,6 +52,10 @@
    "course_lesson",
    "faq",
    "course_lesson",
+   "course_lesson",
+   "course_lesson",
+   "quiz",
+   "course_lesson",
    "course_lesson"
   ],
   "carousel": [],
@@ -61,30 +69,6 @@
    "lesson": 3
   },
   "pending_parts": [
-   {
-    "syllabus": "3.2",
-    "topic": "Domain",
-    "part": 8,
-    "parts": 12,
-    "title": "Value Range tab: single values (fixed values)",
-    "focus": "Map Q6. Fixed values + short descriptions: become the F4 list and an automatic input check on screens; NOT checked in your own SELECT/UPDATE. Example values. Why they exist."
-   },
-   {
-    "syllabus": "3.2",
-    "topic": "Domain",
-    "part": 9,
-    "parts": 12,
-    "title": "Value Range tab: intervals",
-    "focus": "Map Q6. Intervals with Lower Limit / Upper Limit; combine with single values; checked on screen input like fixed values."
-   },
-   {
-    "syllabus": "3.2",
-    "topic": "Domain",
-    "part": 10,
-    "parts": 12,
-    "title": "Value table: why it exists",
-    "focus": "Map Q6. Value Table field on the Value Range tab: it is only the PROPOSED check table when you create a foreign key on a field using this domain; it does not check anything by itself. Example: domain LAND1 -> value table T005. Value table vs check table."
-   },
    {
     "syllabus": "3.2",
     "topic": "Domain",
@@ -118,7 +102,10 @@
    "3.2 Domain part 4 Create a domain step by step",
    "3.2 Domain part 5 Format block: Data Type, No. Characters, Decimal Places (CHAR, NUMC, DEC)",
    "3.2 Domain part 6 Data types for dates, times, money (DATS, TIMS, CURR, QUAN)",
-   "3.2 Domain part 7 Output Characteristics (Output Length, Convers. Routine, Sign, Lower Case)"
+   "3.2 Domain part 7 Output Characteristics (Output Length, Convers. Routine, Sign, Lower Case)",
+   "3.2 Domain part 8 Value Range tab: single values (fixed values)",
+   "3.2 Domain part 9 Value Range tab: intervals",
+   "3.2 Domain part 10 Value table: why it exists"
   ],
   "terms": [
    "Data Dictionary (DDIC)",
@@ -146,7 +133,14 @@
    "output length",
    "Sign flag",
    "Lower Case flag",
-   "RAP (newest programming model)"
+   "RAP (newest programming model)",
+   "fixed value (single value)",
+   "Value Range tab",
+   "F4 help (value help)",
+   "interval (Lower Limit / Upper Limit)",
+   "value table",
+   "check table",
+   "foreign key"
   ]
  },
  "improve_next": {

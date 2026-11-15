@@ -1,0 +1,16 @@
+Stop trusting your value table to check values. It checks nothing.
+
+SAP domain, Part 10 of 12: the Value Table field, and how it differs from a check table.
+
+1. Value table: a proposal stored on the domain, e.g. LAND1 uses T005
+2. Foreign key: the link you create on a table field in SE11
+3. Check table: what SAP really checks against, proposed from the value table
+4. No foreign key, no check
+
+Save this for your next ABAP interview.
+
+Next: Part 11, domain key points (tomorrow at 9 AM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

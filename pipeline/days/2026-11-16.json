@@ -1,63 +1,581 @@
 {
-  "date": "2026-11-16",
-  "handle": "@abapcodevault",
-  "posts": [
+ "date": "2026-11-16",
+ "handle": "@abapcodevault",
+ "posts": [
+  {
+   "type": "reel",
+   "series": "course",
+   "syllabus": "3.2",
+   "part": 8,
+   "parts": 12,
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "time": "09:00",
+   "slug": "domain-fixed-values",
+   "tag": "DDIC · Domain 8/12",
+   "comment_word": "F4",
+   "rehook": {
+    "stamp": "Common mistake",
+    "slide": 4
+   },
+   "slides": [
     {
-      "type": "reel",
-      "format": "quiz",
-      "voice": "am_michael",
-      "voice_lang": "en",
-      "time": "13:00",
-      "slug": "value-operator-quiz",
-      "tag": "Modern ABAP",
-      "slides": [
-        {
-          "kind": "quiz",
-          "question": "Fill a table in *one statement* (ABAP 7.40)?",
-          "options": [
-            "APPEND ... TO lt_items",
-            "VALUE #( ( ... ) ( ... ) )",
-            "INSERT ... INTO TABLE"
-          ],
-          "answer": 1,
-          "countdown": true,
-          "reveal": true,
-          "voiceover": "In seven forty syntax, how do you fill a table in one statement? Think.",
-          "spoken": "In seven forty syntax, how do you fill a table in one statement? Think."
-        },
-        {
-          "kind": "code",
-          "heading": "Answer: *VALUE #( )*",
-          "typewriter": true,
-          "filename": "value_demo.abap",
-          "code": "lt_items = VALUE #(\n  ( matnr = 'MAT-01' menge = 10 )\n  ( matnr = 'MAT-02' menge = 5 ) ).",
-          "voiceover": "The answer is VALUE. Each row in its own brackets, no APPEND.",
-          "spoken": "The answer is VALUE. Each row in its own brackets, no APPEND."
-        },
-        {
-          "kind": "cta",
-          "title": "Follow for *daily ABAP*",
-          "body": "One modern ABAP trick every day.",
-          "actions": [
-            "Save",
-            "Follow @abapcodevault"
-          ],
-          "voiceover": "Follow for more tricks like this.",
-          "spoken": "Follow for more tricks like this."
-        }
+     "kind": "cover",
+     "kicker": "Domains · Part 8/12",
+     "title": "Stop *junk* in SE11 with *fixed values*",
+     "voiceover": "Stop junk values in SE11 with zero code. Last time we learned Output Characteristics. Now, fixed values.",
+     "spoken": "Stop junk values in SE11 with zero code. Last time we learned Output Characteristics. Now, fixed values."
+    },
+    {
+     "kind": "output",
+     "label": "THE PROBLEM",
+     "heading": "Status field, *no list*",
+     "tcode": "SE16N",
+     "title": "Table ZORDERS",
+     "columns": [
+      "Order",
+      "Status"
+     ],
+     "rows": [
+      [
+       "1001",
+       "O"
       ],
-      "caption": "Quick quiz: how do you fill an internal table in a single statement?\n\nSince ABAP 7.40, the VALUE operator builds the whole table inline. Each row goes in its own brackets, so there is no work area and no APPEND.\n\nIt also works for structures, nested tables and with BASE to add rows to an existing table.\n\nDid you get it right? Tell me in the comments.\n\nMore 7.40 syntax tricks are in the ABAP Code Vault (link in bio).",
-      "hashtags": [
-        "#sap",
-        "#abap",
-        "#coding",
-        "#sapabap",
-        "#abapdeveloper",
-        "#saps4hana",
-        "#sapfresher",
-        "#cleancode",
-        "#abapcodevault"
+      [
+       "1002",
+       "C"
+      ],
+      [
+       "1003",
+       "X"
+      ],
+      [
+       "1004",
+       "ok"
       ]
+     ],
+     "highlight": 2,
+     "row_say": [
+      "open",
+      "closed",
+      "then",
+      "ok"
+     ],
+     "verdict": {
+      "text": "JUNK DATA",
+      "good": false
+     },
+     "voiceover": "Here's the problem. A status field without a list takes anything. Open orders, closed orders, then X, then ok. Nobody knows what X means.",
+     "spoken": "Here's the problem. A status field without a list takes anything. Open orders, closed orders, then X, then ok. Nobody knows what X means."
+    },
+    {
+     "kind": "screen",
+     "heading": "*Single* values",
+     "tcode": "SE11",
+     "object": "Domain ZD_STATUS",
+     "tabs": [
+      "Properties",
+      "Definition",
+      "Value Range"
+     ],
+     "active": 2,
+     "fields": [
+      [
+       "O",
+       "Open"
+      ],
+      [
+       "C",
+       "Closed"
+      ],
+      [
+       "R",
+       "Rejected"
+      ]
+     ],
+     "focus": [
+      0,
+      1,
+      2
+     ],
+     "focus_say": {
+      "0": "open",
+      "1": "closed",
+      "2": "rejected"
+     },
+     "note": "Single Vals: Fix. Val. + Short Descript.",
+     "voiceover": "A fixed value is one allowed value. It comes with a short text. In SE11, pick your domain in change mode. Go to the Value Range tab, to Single Vals. First, O for open. Next, C for closed. Last, R for rejected. Then activate, and you are done.",
+     "spoken": "A fixed value is one allowed value. It comes with a short text. In SE11, pick your domain in change mode. Go to the Value Range tab, to Single Vals. First, O for open. Next, C for closed. Last, R for rejected. Then activate, and you are done."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "F4 shows the *list*",
+     "tcode": "F4",
+     "title": "Status: possible values",
+     "columns": [
+      "Status",
+      "Short text"
+     ],
+     "rows": [
+      [
+       "O",
+       "Open"
+      ],
+      [
+       "C",
+       "Closed"
+      ],
+      [
+       "R",
+       "Rejected"
+      ]
+     ],
+     "row_say": [
+      "open",
+      "closed",
+      "rejected"
+     ],
+     "verdict": {
+      "text": "ZERO CODE",
+      "good": true
+     },
+     "voiceover": "Now the payoff. F4 is the value help. It's the list that pops up. Users pick open, closed or rejected. Not one line of code.",
+     "spoken": "Now the payoff. F4 is the value help. It's the list that pops up. Users pick open, closed or rejected. Not one line of code."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Checked on *screens* only",
+     "bad": {
+      "title": "UPDATE in code",
+      "sub": "X still gets saved",
+      "say": "update"
+     },
+     "good": {
+      "title": "Screen input",
+      "sub": "SAP rejects X",
+      "say": "screen"
+     },
+     "voiceover": "Common mistake: thinking it guards everything. Your own UPDATE in code isn't checked. Only screen input is.",
+     "spoken": "Common mistake: thinking it guards everything. Your own UPDATE in code isn't checked. Only screen input is."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Fixed values = *F4 list* + check",
+     "body": "List the allowed values once in the domain: every screen offers them and checks them.",
+     "highlight": "List the allowed values once",
+     "voiceover": "Takeaway: list the allowed values once, in the domain. Every screen then offers them and checks them.",
+     "spoken": "Takeaway: list the allowed values once, in the domain. Every screen then offers them and checks them."
     }
-  ]
+   ],
+   "next": {
+    "title": "Stop writing *APPEND* five times",
+    "when": "today at 1 PM",
+    "voice": "stop writing append five times",
+    "vo": "At 1 PM: one statement that fills a whole table."
+   },
+   "caption": "Stop junk values in SE11 with zero code.\n\nSAP domain, Part 8 of 12: fixed values on the Value Range tab in SE11.\n\n1. Single Vals: each allowed value plus a short description\n2. F4 help shows them as a list, no code needed\n3. Screen input is checked against them\n4. Your own UPDATE or INSERT in code is not checked\n\nSave this for your next SE11 domain.\n\nNext: Stop writing APPEND five times (today at 1 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "format": "quiz",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "time": "13:00",
+   "slug": "value-operator-quiz",
+   "tag": "Modern ABAP",
+   "comment_word": "VALUE",
+   "rehook": {
+    "stamp": "Common mistake",
+    "slide": 3
+   },
+   "slides": [
+    {
+     "kind": "cover",
+     "style": "question",
+     "kicker": "Additional concepts",
+     "title": "Stop writing *APPEND* five times",
+     "subtitle": "Seven-forty syntax",
+     "voiceover": "Stop writing APPEND five times in a row. One statement does it.",
+     "spoken": "Stop writing APPEND five times in a row. One statement does it."
+    },
+    {
+     "kind": "quiz",
+     "question": "Fill a table in *one statement*?",
+     "options": [
+      "APPEND ... TO lt_items",
+      "VALUE #( ( ... ) ( ... ) )",
+      "INSERT ... INTO TABLE"
+     ],
+     "answer": 1,
+     "countdown": true,
+     "reveal": false,
+     "voiceover": "Quick quiz. Which one fills a whole table in one statement? APPEND, VALUE, or INSERT? Think.",
+     "spoken": "Quick quiz. Which one fills a whole table in one statement? APPEND, VALUE, or INSERT? Think."
+    },
+    {
+     "kind": "code",
+     "heading": "Answer: *VALUE #( )*",
+     "typewriter": true,
+     "filename": "value_demo.abap",
+     "code": "lt_items = VALUE #(\n  ( matnr = 'MAT-01' menge = 10 )\n  ( matnr = 'MAT-02' menge = 5 ) ).",
+     "voiceover": "It's VALUE. Each row sits in its own brackets. No work area, no APPEND. The hash sign? It takes the type from the left.",
+     "spoken": "It's VALUE. Each row sits in its own brackets. No work area, no APPEND. The hash sign? It takes the type from the left."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "VALUE *replaces* the table",
+     "bad": {
+      "title": "VALUE #( ... )",
+      "sub": "old rows are gone",
+      "say": "wipes"
+     },
+     "good": {
+      "title": "VALUE #( BASE lt_items ... )",
+      "sub": "old rows stay",
+      "say": "base"
+     },
+     "voiceover": "Common mistake: using it on a filled table. VALUE wipes them first. Add BASE to keep the old rows.",
+     "spoken": "Common mistake: using it on a filled table. VALUE wipes them first. Add BASE to keep the old rows."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "One statement, *every row*",
+     "body": "VALUE #( ) builds the whole table at once. Add BASE to keep existing rows.",
+     "highlight": "Add BASE",
+     "voiceover": "Takeaway: VALUE builds the whole table in one statement. Add BASE when the old rows must stay.",
+     "spoken": "Takeaway: VALUE builds the whole table in one statement. Add BASE when the old rows must stay."
+    }
+   ],
+   "next": {
+    "title": "Part 9 · *Intervals*",
+    "when": "today at 5 PM",
+    "voice": "part nine, intervals",
+    "vo": "At 5 PM: allow one to twelve without typing twelve values."
+   },
+   "caption": "Stop writing APPEND five times in a row. One statement does it.\n\nThe ABAP 7.40 VALUE operator fills an internal table inline:\n\n1. VALUE #( ) builds the whole table in one statement\n2. Each row goes in its own brackets, no work area needed\n3. Careful: VALUE replaces existing rows. Add BASE to keep them\n\nQuiz answer: VALUE #( ), available since ABAP 7.40.\n\nNext: Part 9, intervals (today at 5 PM).\n\nMore 7.40 syntax tricks are in the ABAP Code Vault (link in bio).",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#modernabap",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "syllabus": "3.2",
+   "part": 9,
+   "parts": 12,
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "time": "17:00",
+   "slug": "domain-intervals",
+   "tag": "DDIC · Domain 9/12",
+   "comment_word": "RANGE",
+   "rehook": {
+    "stamp": "Common mistake",
+    "slide": 4
+   },
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Domains · Part 9/12",
+     "title": "Stop typing *12 fixed values*",
+     "voiceover": "Stop typing twelve fixed values for months. There's a shorter way. Last time we learned fixed values. Now, intervals.",
+     "spoken": "Stop typing 12 fixed values for months. There's a shorter way. Last time we learned fixed values. Now, intervals."
+    },
+    {
+     "kind": "screen",
+     "heading": "The *Intervals* block",
+     "tcode": "SE11",
+     "object": "Domain ZD_MONTH (NUMC 2)",
+     "tabs": [
+      "Properties",
+      "Definition",
+      "Value Range"
+     ],
+     "active": 2,
+     "fields": [
+      [
+       "Lower Limit",
+       "01"
+      ],
+      [
+       "Upper Limit",
+       "12"
+      ],
+      [
+       "Short Descript.",
+       "Month"
+      ]
+     ],
+     "focus": [
+      0,
+      1
+     ],
+     "note": "Value Range tab · Intervals",
+     "voiceover": "An interval is a range of allowed values. Same Value Range tab. The Intervals block sits under Single Vals. Lower limit, zero one. Upper limit, twelve. Activate.",
+     "spoken": "An interval is a range of allowed values. Same Value Range tab. The Intervals block sits under Single Vals. Lower limit, 01. Upper limit, 12. Activate."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "What the screen *accepts*",
+     "tcode": "SCREEN",
+     "title": "Month field, ZD_MONTH",
+     "columns": [
+      "Typed",
+      "Result"
+     ],
+     "rows": [
+      [
+       "05",
+       "accepted"
+      ],
+      [
+       "12",
+       "accepted"
+      ],
+      [
+       "13",
+       "rejected"
+      ]
+     ],
+     "highlight": 2,
+     "row_say": [
+      "type",
+      "also",
+      "rejected"
+     ],
+     "verdict": {
+      "text": "13 BLOCKED",
+      "good": true
+     },
+     "voiceover": "Example. Type zero five, it's fine. Twelve, also fine. Thirteen? Rejected, it's outside.",
+     "spoken": "Example. Type 05, it's fine. 12, also fine. 13? Rejected, it's outside."
+    },
+    {
+     "kind": "list",
+     "heading": "Mix *both* blocks",
+     "items": [
+      "Interval - 01 to 12",
+      "Single value - 00 = not set",
+      "Either - passes the check"
+     ],
+     "voiceover": "You can mix both blocks. Interval: zero one to twelve. Single value: zero zero, meaning not set. Either one passes the check.",
+     "spoken": "You can mix both blocks. Interval: 01 to 12. Single value: 00, meaning not set. Either one passes the check."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Numbers in a *CHAR* domain",
+     "bad": {
+      "title": "CHAR: 1 to 12",
+      "sub": "text compare, 5 fails",
+      "say": "char"
+     },
+     "good": {
+      "title": "NUMC: 01 to 12",
+      "sub": "05 passes",
+      "say": "numc"
+     },
+     "voiceover": "Common mistake: number ranges in a CHAR domain. Text compares character by character. So five counts as bigger than twelve. Use NUMC with leading zeros.",
+     "spoken": "Common mistake: number ranges in a CHAR domain. Text compares character by character. So 5 counts as bigger than 12. Use NUMC with leading zeros."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Intervals = *ranges*, same check",
+     "body": "An interval allows every value from Lower Limit to Upper Limit. Screens check it like fixed values.",
+     "highlight": "every value",
+     "voiceover": "Takeaway: an interval allows a whole range. Screens check it just like fixed values.",
+     "spoken": "Takeaway: an interval allows a whole range. Screens check it just like fixed values."
+    }
+   ],
+   "next": {
+    "title": "Part 10 · The *value table*",
+    "when": "tonight at 7:30 PM",
+    "voice": "part ten, the value table",
+    "quiz": {
+     "question": "Quiz: does *00* pass ZD_MONTH?",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    "vo": "Quiz: does zero zero pass the month check? The answer is in this reel. Comment it."
+   },
+   "caption": "Stop typing twelve fixed values for months. There's a shorter way.\n\nSAP domain, Part 9 of 12: intervals on the Value Range tab in SE11.\n\n1. Intervals: a Lower Limit and an Upper Limit, e.g. 01 to 12\n2. Mix them with single values, e.g. 00 = not set\n3. Screens check them just like fixed values\n4. Use NUMC, not CHAR, for number ranges\n\nQuiz: does 00 pass ZD_MONTH? Comment your answer.\n\nNext: Part 10, the value table (tonight at 7:30 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "syllabus": "3.2",
+   "part": 10,
+   "parts": 12,
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "time": "19:30",
+   "slug": "domain-value-table",
+   "tag": "DDIC · Domain 10/12",
+   "comment_word": "T005",
+   "rehook": {
+    "stamp": "Common mistake",
+    "slide": 4
+   },
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Domains · Part 10/12",
+     "title": "Your value table checks *nothing*",
+     "voiceover": "Stop trusting your value table to check values. It checks nothing. Last time we learned intervals. Now, the value table.",
+     "spoken": "Stop trusting your value table to check values. It checks nothing. Last time we learned intervals. Now, the value table."
+    },
+    {
+     "kind": "screen",
+     "heading": "The *Value Table* field",
+     "tcode": "SE11",
+     "object": "Domain LAND1",
+     "tabs": [
+      "Properties",
+      "Definition",
+      "Value Range"
+     ],
+     "active": 2,
+     "fields": [
+      [
+       "Single Vals",
+       "(none)"
+      ],
+      [
+       "Intervals",
+       "(none)"
+      ],
+      [
+       "Value Table",
+       "T005"
+      ]
+     ],
+     "focus": [
+      2
+     ],
+     "focus_say": {
+      "2": "bottom"
+     },
+     "note": "standard domain for country keys",
+     "voiceover": "Look at the standard domain LAND1, for country keys. Value Range tab, at the bottom. Value table: T005. That's SAP's table of countries.",
+     "spoken": "Look at the standard domain LAND1, for country keys. Value Range tab, at the bottom. Value table: T005. That's SAP's table of countries."
+    },
+    {
+     "kind": "flow",
+     "label": "HOW IT WORKS",
+     "heading": "From proposal to *real check*",
+     "steps": [
+      "Domain: value table T005",
+      "Field: uses that domain",
+      "Foreign key: you add it",
+      "Check table: T005 proposed",
+      "Screen input: now checked"
+     ],
+     "voiceover": "Here's why it exists. Domain: it holds T005 as a suggestion. Field: a table field uses that domain. Foreign key: you add it in SE11, the link to the table with valid values. Check table: SE11 proposes T005. A check table is what SAP checks values against. Screen input: now it's checked.",
+     "spoken": "Here's why it exists. Domain: it holds T005 as a suggestion. Field: a table field uses that domain. Foreign key: you add it in SE11, the link to the table with valid values. Check table: SE11 proposes T005. A check table is what SAP checks values against. Screen input: now it's checked."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "User types *ZZ*",
+     "tcode": "SCREEN",
+     "title": "Country field, typed ZZ",
+     "columns": [
+      "Setup",
+      "Result"
+     ],
+     "rows": [
+      [
+       "Value table only",
+       "accepted"
+      ],
+      [
+       "Foreign key to T005",
+       "rejected"
+      ]
+     ],
+     "highlight": 1,
+     "row_say": [
+      "only",
+      "foreign"
+     ],
+     "verdict": {
+      "text": "CHECKED",
+      "good": true
+     },
+     "voiceover": "Example. A user types Z Z as a country. Value table only: accepted. With the foreign key: rejected.",
+     "spoken": "Example. A user types ZZ as a country. Value table only: accepted. With the foreign key: rejected."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Value table vs *check table*",
+     "bad": {
+      "title": "Value table",
+      "sub": "on the domain, a proposal",
+      "say": "value"
+     },
+     "good": {
+      "title": "Check table",
+      "sub": "on the field, really checks",
+      "say": "check"
+     },
+     "voiceover": "Common mistake: mixing them up. The value table is a suggestion on the domain. The check table sits on the field. It really checks.",
+     "spoken": "Common mistake: mixing them up. The value table is a suggestion on the domain. The check table sits on the field. It really checks."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Value table *proposes*, check table checks",
+     "body": "The value table only suggests a check table. Only a foreign key on the field makes SAP check.",
+     "highlight": "Only a foreign key",
+     "voiceover": "Takeaway: the value table only proposes. A foreign key makes the check real.",
+     "spoken": "Takeaway: the value table only proposes. A foreign key makes the check real."
+    }
+   ],
+   "next": {
+    "title": "Part 11 · Domain *key points*",
+    "when": "tomorrow at 9 AM",
+    "voice": "part eleven, domain key points",
+    "vo": "Tomorrow at 9 AM: the domain change that can break a table full of data."
+   },
+   "caption": "Stop trusting your value table to check values. It checks nothing.\n\nSAP domain, Part 10 of 12: the Value Table field, and how it differs from a check table.\n\n1. Value table: a proposal stored on the domain, e.g. LAND1 uses T005\n2. Foreign key: the link you create on a table field in SE11\n3. Check table: what SAP really checks against, proposed from the value table\n4. No foreign key, no check\n\nSave this for your next ABAP interview.\n\nNext: Part 11, domain key points (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  }
+ ]
 }

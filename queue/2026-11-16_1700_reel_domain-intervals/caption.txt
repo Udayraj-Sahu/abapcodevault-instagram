@@ -1,0 +1,16 @@
+Stop typing twelve fixed values for months. There's a shorter way.
+
+SAP domain, Part 9 of 12: intervals on the Value Range tab in SE11.
+
+1. Intervals: a Lower Limit and an Upper Limit, e.g. 01 to 12
+2. Mix them with single values, e.g. 00 = not set
+3. Screens check them just like fixed values
+4. Use NUMC, not CHAR, for number ranges
+
+Quiz: does 00 pass ZD_MONTH? Comment your answer.
+
+Next: Part 10, the value table (tonight at 7:30 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault
