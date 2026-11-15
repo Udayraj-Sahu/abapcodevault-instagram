@@ -42,7 +42,7 @@ Based on research (short-form retention guides + learning studies, see Log 2026-
 
 ### Reel
 - [x] Rotating reel transitions: rise, slide (page push), zoom (2026-11-11)
-- [ ] Highlighter "draw-on": yellow marker sweeps left→right behind words on reels instead of appearing at once
+- [x] Highlighter "draw-on": yellow marker sweeps left→right behind words on reels instead of appearing at once (2026-11-16)
 - [x] Code typing per character (typewriter) with a blinking cursor (2026-11-11)
 - [x] Spotlight the code line being explained (2026-11-11)
 - [ ] Hook punch-in: first 0.6 s of the reel zooms from 1.12 → 1.0 for a stronger first frame
@@ -138,3 +138,4 @@ Based on research (short-form retention guides + learning studies, see Log 2026-
 | 2026-11-14 | length | User: explain each idea well, no 30 s squeeze, but watchable to the end. Target 30-60 s, warn above 90 s, voice never sped up; longer ideas become the next part. | User request |
 | 2026-11-15 | script | Script check `script_lint()` in generate.py: every reel's voiceover is checked before TTS for code symbols, bare digits, the spoken word ABAP, sentences over 16 words and spoken/voiceover word-count drift > 25 %; each hit prints as "SCRIPT: ..." in the OVERLAP WARNING block so the run must fix it. Caught an 18-word sentence in the 19 Nov draft (split it). Technique: one idea per short sentence and subtitle chunks a viewer reads in one glance — https://www.opus.pro/blog/instagram-reels-caption-subtitle-best-practices , https://subclip.app/blogs/animated-captions-2026-best-practices-reels-shorts-x-exporting-srt | The VOICEOVER.md rules were only checked by hand; now a broken line can't slip into a rendered reel |
 | 2026-11-15 | cuts (skipped) | Tried "cut on action": outgoing scene eased into a 1.2 % shrink 0.12 s before each soft cut, continuing into the transition — https://www.schoolofmotion.com/blog/six-essential-motion-design-transitions-tutorial . Regress render of 13 Nov: no warnings, diff only in the 4 frames before each cut, but the strip showed no visible difference, so not clearly better. Reverted. | Rule 4: keep only if clearly better |
+| 2026-11-16 | typography | Highlighter draw-on: the yellow marker behind *highlighted* words in cover titles and slide headings now sweeps left -> right in 0.35 s, 0.25 s after the line lands (`sweep_frames()`, `line_img(sweep=)`, MARKER_SWEEP); end state identical — https://www.tella.com/motion/animated-text-highlight | Draws the eye to the key words right after they appear and adds a visible change in the first seconds; no layout/colour change |

@@ -234,8 +234,9 @@ def wrap_marked(tokens, font, maxw):
     return lines
 
 
-def line_img(tokens, font, fill=None, w=None):
-    """One line of words; marked words get a yellow highlighter stroke behind them."""
+def line_img(tokens, font, fill=None, w=None, sweep=1.0):
+    """One line of words; marked words get a yellow highlighter stroke behind them.
+    sweep < 1 draws only the left part of each marker run (highlighter draw-on, 16 Nov)."""
     fill = fill or INK
     d0 = ImageDraw.Draw(Image.new("RGB", (1, 1)))
     gap = d0.textlength(" ", font=font)
@@ -250,9 +251,11 @@ def line_img(tokens, font, fill=None, w=None):
         if mk:
             nxt = i + 1 < len(tokens) and tokens[i + 1][1]
             x1 = x + ww + (gap if nxt else 0) + 6
+            x1 = (x - 6) + (x1 - (x - 6)) * max(0.0, min(1.0, sweep))
             # marker band: from about x-height to just under the baseline
-            d.rounded_rectangle([x - 6, a - int(font.size * 0.56), x1, a + int(font.size * 0.12)],
-                                radius=6, fill=MARKER + (255,))
+            if x1 - (x - 6) > 2:
+                d.rounded_rectangle([x - 6, a - int(font.size * 0.56), x1, a + int(font.size * 0.12)],
+                                    radius=6, fill=MARKER + (255,))
         x += ww + gap
     x = 6
     for (t, _), ww in zip(tokens, widths):
@@ -262,16 +265,33 @@ def line_img(tokens, font, fill=None, w=None):
     return im
 
 
-def heading_img(text, font, maxw, fill=None, lh=None):
+def heading_img(text, font, maxw, fill=None, lh=None, sweep=1.0):
     """Multi-line heading with *marker* support, as one RGBA image."""
     font, lh = head_font(font.size)
     lines = wrap_marked(marked_tokens(text), font, maxw)
-    imgs = [line_img(l, font, fill) for l in lines]
+    imgs = [line_img(l, font, fill, sweep=sweep) for l in lines]
     h = lh * (len(imgs) - 1) + (imgs[-1].size[1] if imgs else 1)
     out = Image.new("RGBA", (maxw + 40, max(1, h)), (0, 0, 0, 0))
     for i, im in enumerate(imgs):
         out.alpha_composite(im, (0, i * lh))
     out.info["base"] = asc(font)
+    return out
+
+
+MARKER_SWEEP = (0.25, 0.35)   # highlighter draw-on: starts 0.25 s after the heading lands, sweeps in 0.35 s (16 Nov)
+
+
+def sweep_frames(text, font, maxw, lh=None, n=7):
+    """Highlighter draw-on: the same heading with its marker band growing left -> right (None if no marker)."""
+    if "*" not in str(text):
+        return None
+    full = heading_img(text, font, maxw, lh=lh)
+    out = []
+    for k in range(n):
+        f = heading_img(text, font, maxw, lh=lh, sweep=k / (n - 1))
+        c = Image.new("RGBA", full.size, (0, 0, 0, 0))
+        c.paste(f, (0, 0))
+        out.append(c)
     return out
 
 
@@ -941,7 +961,8 @@ def build_blocks(s, accent, top_z=None, bottom_z=None):
             hf, hlh = head_font(64)
             lines = wrap_marked(marked_tokens(s["title"]), hf, w)
         for ln in lines:  # each title line pops separately = kinetic typography
-            B.add(line_img(ln, hf), x - 6, y, "pop", 0.16, "pop")
+            sw = [line_img(ln, hf, sweep=k / 6) for k in range(7)] if any(mk for _, mk in ln) else None
+            B.add(line_img(ln, hf), x - 6, y, "pop", 0.16, "pop", sweep=sw)
             y = B.items[-1]["y"] + hlh          # next line exactly one title pitch lower
         y += 8
         if s.get("subtitle"):
@@ -950,7 +971,8 @@ def build_blocks(s, accent, top_z=None, bottom_z=None):
             _code_blocks(B, x, y + 50, w, s["code"], accent, BOTZ - TOPZ - y - 60, "program.abap")
     elif kind == "text":
         if s.get("heading"):
-            y = B.add(heading_img(s["heading"], F_HEAD(72), w, lh=82), x - 6, y, "up") + 40
+            y = B.add(heading_img(s["heading"], F_HEAD(72), w, lh=82), x - 6, y, "up",
+                      sweep=sweep_frames(s["heading"], F_HEAD(72), w, lh=82)) + 40
         for para in str(s.get("body", "")).split("\n\n"):
             y = B.add(text_img(wrap(d0, para, F_BODY(46), w), F_BODY(46), MUTED, 66, w), x, y, "up", 0.35) + 30
         if s.get("highlight"):
@@ -967,7 +989,8 @@ def build_blocks(s, accent, top_z=None, bottom_z=None):
             y = B.add(box, x, top, "pop", 0.3, "pop")
     elif kind == "code":
         if s.get("heading"):
-            y = B.add(heading_img(s["heading"], F_HEAD(64), w, lh=74), x - 6, y, "up") + 34
+            y = B.add(heading_img(s["heading"], F_HEAD(64), w, lh=74), x - 6, y, "up",
+                      sweep=sweep_frames(s["heading"], F_HEAD(64), w, lh=74)) + 34
         note_h = 0
         if s.get("note"):
             note_lines = wrap(d0, s["note"], F_BODY(40), w)
@@ -980,7 +1003,8 @@ def build_blocks(s, accent, top_z=None, bottom_z=None):
             B.add(text_img(note_lines, F_BODY(40), MUTED, 56, w), x, y + 36, "up", 0.3)
     elif kind == "compare":
         if s.get("heading"):
-            y = B.add(heading_img(s["heading"], F_HEAD(64), w, lh=74), x - 6, y, "up") + 34
+            y = B.add(heading_img(s["heading"], F_HEAD(64), w, lh=74), x - 6, y, "up",
+                      sweep=sweep_frames(s["heading"], F_HEAD(64), w, lh=74)) + 34
         pairs = ((s.get("left_title", "Old way"), s["left"], RED), (s.get("right_title", "New way"), s["right"], GREEN))
         cs = code_size_for([c for _, c, _ in pairs], w, y, BOTZ - TOPZ)
         for title, code, col in pairs:
@@ -1282,6 +1306,12 @@ def draw_blocks(content, blocks, tau, final=False):
                 if left < 0.15:
                     b = dict(b, img=_alpha(b["img"], left / 0.15))
         im = b["img"]
+        if b.get("sweep") and not final:   # highlighter draw-on after the heading has landed
+            dur_s = b.get("dur") or ANIM_DUR.get(b["anim"], 0.5)
+            k = (tau - b["t"] - dur_s - MARKER_SWEEP[0]) / MARKER_SWEEP[1]
+            if k < 1:
+                fr = b["sweep"]
+                im = fr[max(0, min(len(fr) - 1, int(ease_out(max(0.0, k)) * (len(fr) - 1) + 0.5)))]
         x, y = b["x"], b["y"]
         a = b["anim"]
         if a == "overlay":
@@ -2279,7 +2309,8 @@ def build_new_kind(B, s, accent, x, w, avail_h):
     def heading(text, size=66, anim="up"):
         nonlocal y
         if text:
-            y = B.add(heading_img(text, F_HEAD(size), w, lh=int(size * 1.14)), x - 6, y, anim) + 34
+            y = B.add(heading_img(text, F_HEAD(size), w, lh=int(size * 1.14)), x - 6, y, anim,
+                      sweep=sweep_frames(text, F_HEAD(size), w, lh=int(size * 1.14))) + 34
 
     def kin_heading(text, size=66, step=0.2):
         """C: heading builds word by word (prefix images share the same wrapping)."""
@@ -2337,7 +2368,8 @@ def build_new_kind(B, s, accent, x, w, avail_h):
             B.add(im, tx, y + 40, "up", 0.3)
             y = y + max(num.size[1] - 40, im.size[1] + 40) + 30
         elif style == "question":
-            y = B.add(heading_img(s["title"], F_HEAD(100), w, lh=110), x - 6, y, "pop", 0.3, "pop") + 10
+            y = B.add(heading_img(s["title"], F_HEAD(100), w, lh=110), x - 6, y, "pop", 0.3, "pop",
+                      sweep=sweep_frames(s["title"], F_HEAD(100), w, lh=110)) + 10
             y = B.add(text_img(["?"], F_HAND(220), accent, 220), x + w - 160, y - 30, "stamp", 0.3, "stamp", decor=True) + 10
         elif style == "checklist":
             heading(s["title"], 92)
