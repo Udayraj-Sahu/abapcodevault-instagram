@@ -1,0 +1,15 @@
+How does every SAP screen know a field is called Order Status?
+
+Data element, Part 1 of 11: what a data element is and why we need it.
+
+1. A domain only gives the technical shape: data type and length
+2. A data element sits on a domain and adds the meaning and the field labels
+3. Table fields (and program variables) use the data element
+
+Comment LABEL if the two layers finally make sense.
+
+Next: Data element, Part 2, where it's used (tomorrow at 9 AM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

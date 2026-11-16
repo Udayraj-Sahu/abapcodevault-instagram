@@ -1,7 +1,7 @@
 {
  "handle": "@abapcodevault",
  "mode": "reels_only",
- "last_queued_date": "2026-11-16",
+ "last_queued_date": "2026-11-17",
  "history": [
   "4 ABAP 7.40 syntax tricks (old vs new)",
   "sy-subrc cheat sheet",
@@ -31,7 +31,11 @@
   "domain-fixed-values",
   "value-operator-quiz",
   "domain-intervals",
-  "domain-value-table"
+  "domain-value-table",
+  "domain-key-points",
+  "itab-types-interview",
+  "domain-mistakes-interview",
+  "data-element-what-why"
  ],
  "recent_formats": {
   "reel": [
@@ -56,6 +60,10 @@
    "course_lesson",
    "quiz",
    "course_lesson",
+   "course_lesson",
+   "course_lesson",
+   "interview_chat",
+   "course_lesson",
    "course_lesson"
   ],
   "carousel": [],
@@ -71,27 +79,83 @@
   "pending_parts": [
    {
     "syllabus": "3.2",
-    "topic": "Domain",
-    "part": 11,
-    "parts": 12,
-    "title": "Domain key points",
-    "focus": "Map Q7. One domain serves many data elements; changing a domain changes every field using it (length change on tables with data -> adjust with SE14); fixed values check only on screens; domains are not used directly in programs (use the data element). Also one line on INT4 (whole numbers, e.g. counters) and FLTP (floating point) which part 5 left out."
-   },
-   {
-    "syllabus": "3.2",
-    "topic": "Domain",
-    "part": 12,
-    "parts": 12,
-    "title": "Domain mistakes + interview questions",
-    "focus": "Map Q8+Q9 (+ recap quiz Q10 as quiz end card). Mistakes: SELECT with unconverted ALPHA value, expecting fixed values to block a program UPDATE, confusing value table with check table. Interview: domain vs data element, fixed values vs value table vs check table, can one domain be used by several data elements."
+    "topic": "Data element",
+    "part": 2,
+    "parts": 11,
+    "title": "Where it's used",
+    "focus": "Map Q3: table fields, structure components, program variables (TYPE data element), selection-screen and ALV labels; Where-Used List."
    },
    {
     "syllabus": "3.2",
     "topic": "Data element",
-    "part": 1,
-    "parts": "planned by the next run with the deep-dive map",
-    "title": "Data element: plan with the 10-question map",
-    "focus": "After Domain is done, plan the data element topic with the deep-dive topic map (what, why, where used, create, Data Type tab, Field Label tab short/medium/long/heading, Further Characteristics: search help + parameter ID SET/GET, documentation F1, key points, mistakes, interview, recap) and replace this entry with the planned parts."
+    "part": 3,
+    "parts": 11,
+    "title": "Create a data element, click by click",
+    "focus": "Map Q4: SE11 -> Data type -> name (Z/Y) -> Create -> Data element -> short description -> Data Type tab (domain) -> Field Label -> save (package/$TMP) -> activate."
+   },
+   {
+    "syllabus": "3.2",
+    "topic": "Data element",
+    "part": 4,
+    "parts": 11,
+    "title": "Data Type tab: domain vs predefined type",
+    "focus": "Map Q5: Elementary Type: Domain vs Predefined Type (and when each fits); Reference Type in one line."
+   },
+   {
+    "syllabus": "3.2",
+    "topic": "Data element",
+    "part": 5,
+    "parts": 11,
+    "title": "Field Label tab",
+    "focus": "Map Q5: Short/Medium/Long/Heading with their lengths (10/20/40/55) and where each shows; ALV picks by column width."
+   },
+   {
+    "syllabus": "3.2",
+    "topic": "Data element",
+    "part": 6,
+    "parts": 11,
+    "title": "Search help on a data element",
+    "focus": "Map Q6: Further Characteristics -> Search Help + parameter: F4 on every screen that uses the field."
+   },
+   {
+    "syllabus": "3.2",
+    "topic": "Data element",
+    "part": 7,
+    "parts": 11,
+    "title": "Parameter ID (SET/GET)",
+    "focus": "Map Q6: Parameter ID remembers the last value between screens/transactions; SET/GET PARAMETER in code, one line."
+   },
+   {
+    "syllabus": "3.2",
+    "topic": "Data element",
+    "part": 8,
+    "parts": 11,
+    "title": "Documentation = F1 help",
+    "focus": "Map Q6: Goto -> Documentation; what users see on F1; why it matters."
+   },
+   {
+    "syllabus": "3.2",
+    "topic": "Data element",
+    "part": 9,
+    "parts": 11,
+    "title": "Data element key points",
+    "focus": "Map Q7: one domain many data elements; labels per language (translation); change impact; programs TYPE the data element."
+   },
+   {
+    "syllabus": "3.2",
+    "topic": "Data element",
+    "part": 10,
+    "parts": 11,
+    "title": "Data element mistakes + interview",
+    "focus": "Map Q8+Q9: empty labels, predefined type when a domain fits, missing search help; interview: data element vs domain, label lengths, parameter ID."
+   },
+   {
+    "syllabus": "3.2",
+    "topic": "Data element",
+    "part": 11,
+    "parts": 11,
+    "title": "Data element recap quiz",
+    "focus": "Map Q10: recap the whole topic + quiz end card."
    }
   ],
   "done": [
@@ -105,7 +169,10 @@
    "3.2 Domain part 7 Output Characteristics (Output Length, Convers. Routine, Sign, Lower Case)",
    "3.2 Domain part 8 Value Range tab: single values (fixed values)",
    "3.2 Domain part 9 Value Range tab: intervals",
-   "3.2 Domain part 10 Value table: why it exists"
+   "3.2 Domain part 10 Value table: why it exists",
+   "3.2 Domain part 11 Domain key points",
+   "3.2 Domain part 12 Domain mistakes + interview questions",
+   "3.2 Data element part 1 What + why"
   ],
   "terms": [
    "Data Dictionary (DDIC)",
@@ -140,7 +207,13 @@
    "interval (Lower Limit / Upper Limit)",
    "value table",
    "check table",
-   "foreign key"
+   "foreign key",
+   "SE14 (database utility)",
+   "INT4",
+   "FLTP",
+   "internal table",
+   "STANDARD/SORTED/HASHED table",
+   "field label"
   ]
  },
  "improve_next": {

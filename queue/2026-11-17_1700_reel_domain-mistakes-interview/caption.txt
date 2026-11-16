@@ -1,0 +1,15 @@
+Three SAP domain mistakes interviewers love to ask about.
+
+SAP domain, Part 12 of 12: mistakes and interview questions.
+
+1. SELECT ... WHERE order_no = '1234' finds nothing: convert with CONVERSION_EXIT_ALPHA_INPUT first
+2. Fixed values do not stop an UPDATE or INSERT in your code, only screen input
+3. Value table = a proposal; check table + foreign key = the real check
+
+Interview: domain = technical shape (type, length); data element = meaning + field labels. One domain can serve many data elements.
+
+Quiz: which one really checks, the value table or the check table? Answer in the comments.
+
+Next: Data element, Part 1 (tonight at 7:30 PM).
+
+#sap #abap #sapabap #ddic #abapcodevault

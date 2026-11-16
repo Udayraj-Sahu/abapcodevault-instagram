@@ -1,0 +1,17 @@
+One domain change can break a full table.
+
+SAP domain, Part 11 of 12: the key points.
+
+1. One domain serves many data elements, and every field that uses them
+2. Change the domain (e.g. length 10 to 12) and all of them change
+3. A table that already holds data is adjusted with SE14 (database utility)
+4. Programs never TYPE a variable with a domain, always with the data element
+5. INT4 = whole numbers, FLTP = floating point (never for money)
+
+Save this before you change your next domain.
+
+Next: STANDARD, SORTED or HASHED? (today at 1 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

@@ -1,0 +1,386 @@
+{
+ "date": "2026-11-17",
+ "handle": "@abapcodevault",
+ "posts": [
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.2",
+   "part": 11,
+   "parts": 12,
+   "time": "09:00",
+   "slug": "domain-key-points",
+   "tag": "DDIC · Domain 11/12",
+   "comment_word": "SE14",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Domains · Part 11/12",
+     "title": "One domain change can *break a table*",
+     "voiceover": "One domain change can break a full table. Last time we learned the value table. Now, the key points to remember.",
+     "spoken": "One domain change can break a full table. Last time we learned the value table. Now, the key points to remember."
+    },
+    {
+     "kind": "flow",
+     "label": "HOW IT SPREADS",
+     "heading": "The *ripple*",
+     "steps": [
+      "Domain: length 10 → 12",
+      "Data elements: all follow",
+      "Table fields: all change",
+      "Table with data: adjust in SE14"
+     ],
+     "voiceover": "The domain length changes from ten to twelve. Every data element follows. Every table field changes too. If a table already holds data, SE14, the database utility, adjusts it.",
+     "spoken": "The domain length changes from 10 to 12. Every data element follows. Every table field changes too. If a table already holds data, SE14, the database utility, adjusts it."
+    },
+    {
+     "kind": "versus",
+     "label": "KEY POINT",
+     "heading": "In *programs*",
+     "bad": {
+      "title": "TYPE <domain>",
+      "sub": "not a type in programs",
+      "say": "never"
+     },
+     "good": {
+      "title": "TYPE <data element>",
+      "sub": "type + meaning",
+      "say": "data"
+     },
+     "voiceover": "In programs, you never type a variable with a domain. You type it with the data element.",
+     "spoken": "In programs, you never type a variable with a domain. You type it with the data element."
+    },
+    {
+     "kind": "answer",
+     "label": "QUICK ADD",
+     "heading": "*INT4* and *FLTP*",
+     "body": "INT4: whole numbers, like counters. FLTP: floating point, for scientific values, never for money.",
+     "voiceover": "Two types we skipped. INT4 holds whole numbers, like counters. FLTP is floating point. Never use it for money.",
+     "spoken": "Two types we skipped. INT4 holds whole numbers, like counters. FLTP is floating point. Never use it for money."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "One domain, *many fields*",
+     "body": "Change it once and every field changes, so check the Where-Used List first.",
+     "highlight": "check the Where-Used List first",
+     "voiceover": "Takeaway: change a domain once, and every field changes. So check the Where-Used List first.",
+     "spoken": "Takeaway: change a domain once, and every field changes. So check the Where-Used List first."
+    }
+   ],
+   "next": {
+    "title": "*STANDARD*, SORTED or HASHED?",
+    "when": "today at 1 PM",
+    "vo": "At 1 PM: the internal table question every interviewer asks."
+   },
+   "caption": "One domain change can break a full table.\n\nSAP domain, Part 11 of 12: the key points.\n\n1. One domain serves many data elements, and every field that uses them\n2. Change the domain (e.g. length 10 to 12) and all of them change\n3. A table that already holds data is adjusted with SE14 (database utility)\n4. Programs never TYPE a variable with a domain, always with the data element\n5. INT4 = whole numbers, FLTP = floating point (never for money)\n\nSave this before you change your next domain.\n\nNext: STANDARD, SORTED or HASHED? (today at 1 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "time": "13:00",
+   "format": "interview_chat",
+   "slug": "itab-types-interview",
+   "tag": "Additional concepts",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "comment_word": "HASHED",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Additional concepts · Interview",
+     "title": "STANDARD, SORTED or *HASHED*?",
+     "voiceover": "Every interviewer asks this: standard, sorted or hashed table? An internal table is a table in memory, inside your program.",
+     "spoken": "Every interviewer asks this: standard, sorted or hashed table? An internal table is a table in memory, inside your program."
+    },
+    {
+     "kind": "chat",
+     "heading": "Interview *round 1*",
+     "messages": [
+      {
+       "from": "Interviewer",
+       "text": "STANDARD, SORTED or HASHED: which one for big lookups?"
+      },
+      {
+       "from": "You",
+       "text": "HASHED. A read by the full unique key takes the same time at any size."
+      }
+     ],
+     "voiceover": "Which one for big lookups? Hashed. A read by its full unique key stays fast at any size.",
+     "spoken": "Which one for big lookups? Hashed. A read by its full unique key stays fast at any size."
+    },
+    {
+     "kind": "output",
+     "label": "ALL THREE",
+     "heading": "Know *all three*",
+     "tcode": "ABAP",
+     "title": "Internal table types",
+     "columns": [
+      "Type",
+      "Read by",
+      "Best for"
+     ],
+     "rows": [
+      [
+       "STANDARD",
+       "index / any key",
+       "small, ALV"
+      ],
+      [
+       "SORTED",
+       "key, binary search",
+       "partial key"
+      ],
+      [
+       "HASHED",
+       "full unique key",
+       "big lookups"
+      ]
+     ],
+     "row_say": [
+      "standard",
+      "sorted",
+      "hashed"
+     ],
+     "verdict": {
+      "text": "KNOW ALL 3",
+      "good": true
+     },
+     "voiceover": "Standard reads by index, fine for small tables. Sorted keeps its key in order, so partial key reads are fast. Hashed needs the full unique key.",
+     "spoken": "Standard reads by index, fine for small tables. Sorted keeps its key in order, so partial key reads are fast. Hashed needs the full unique key."
+    },
+    {
+     "kind": "versus",
+     "label": "THE TRAP",
+     "heading": "Reading by a *partial key*",
+     "bad": {
+      "title": "HASHED, partial key",
+      "sub": "slow search, row by row",
+      "say": "partial"
+     },
+     "good": {
+      "title": "SORTED, partial key",
+      "sub": "fast binary search",
+      "say": "pick"
+     },
+     "voiceover": "The trap: read a hashed table with a partial key, and it searches row by row. For partial keys, pick sorted.",
+     "spoken": "The trap: read a hashed table with a partial key, and it searches row by row. For partial keys, pick sorted."
+    }
+   ],
+   "next": {
+    "title": "Part 12 · Domain *mistakes*",
+    "when": "today at 5 PM",
+    "vo": "At 5 PM: three domain mistakes interviewers love to ask."
+   },
+   "caption": "STANDARD, SORTED or HASHED? It comes up in almost every SAP ABAP interview.\n\nAn internal table is a table in memory inside your program.\n\n1. STANDARD: index access, linear search by key. Fine for small tables and ALV output\n2. SORTED: kept sorted by its key, binary search, fast partial key reads\n3. HASHED: full unique key only, the same read time at any size\n4. Trap: a partial key on a HASHED table means a slow row-by-row search\n\nComment HASHED if you'd have got this one right.\n\nNext: Part 12, domain mistakes (today at 5 PM).\n\nABAP Interview Pack (160 Q&A, fresher to senior): link in bio.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#sapinterview",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.2",
+   "part": 12,
+   "parts": 12,
+   "time": "17:00",
+   "slug": "domain-mistakes-interview",
+   "tag": "DDIC · Domain 12/12",
+   "comment_word": "CHECK",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Domains · Part 12/12",
+     "title": "3 domain mistakes *interviewers love*",
+     "voiceover": "Three domain mistakes interviewers love to ask about. Last time we learned the key points. Now, the mistakes.",
+     "spoken": "Three domain mistakes interviewers love to ask about. Last time we learned the key points. Now, the mistakes."
+    },
+    {
+     "kind": "versus",
+     "label": "MISTAKE 1",
+     "heading": "SELECT with *1234*",
+     "bad": {
+      "title": "WHERE = '1234'",
+      "sub": "no rows found",
+      "say": "selecting"
+     },
+     "good": {
+      "title": "ALPHA INPUT first",
+      "sub": "'0000001234' found",
+      "say": "convert"
+     },
+     "voiceover": "Mistake one: selecting with one two three four, unconverted. You find nothing. Convert it with ALPHA first.",
+     "spoken": "Mistake one: selecting with 1234, unconverted. You find nothing. Convert it with ALPHA first."
+    },
+    {
+     "kind": "versus",
+     "label": "MISTAKE 2",
+     "heading": "Fixed values in *code*",
+     "bad": {
+      "title": "UPDATE with X",
+      "sub": "saved anyway",
+      "say": "update"
+     },
+     "good": {
+      "title": "Screen input",
+      "sub": "X rejected",
+      "say": "screens"
+     },
+     "voiceover": "Mistake two: expecting fixed values to stop an UPDATE in your code. They don't. Only screens check them.",
+     "spoken": "Mistake two: expecting fixed values to stop an UPDATE in your code. They don't. Only screens check them."
+    },
+    {
+     "kind": "versus",
+     "label": "MISTAKE 3",
+     "heading": "Value table vs *check table*",
+     "bad": {
+      "title": "Value table",
+      "sub": "only a proposal",
+      "say": "value"
+     },
+     "good": {
+      "title": "Check table",
+      "sub": "really checks (foreign key)",
+      "say": "check"
+     },
+     "voiceover": "Mistake three: mixing up the value table and the check table. The value table only proposes. The check table, through a foreign key, really checks.",
+     "spoken": "Mistake three: mixing up the value table and the check table. The value table only proposes. The check table, through a foreign key, really checks."
+    },
+    {
+     "kind": "chat",
+     "heading": "Interview *answers*",
+     "messages": [
+      {
+       "from": "Interviewer",
+       "text": "Domain vs data element?"
+      },
+      {
+       "from": "You",
+       "text": "Domain = technical type and length. Data element = meaning and labels on top."
+      },
+      {
+       "from": "Interviewer",
+       "text": "Can one domain serve several data elements?"
+      },
+      {
+       "from": "You",
+       "text": "Yes. One domain, many data elements."
+      }
+     ],
+     "voiceover": "Interview: domain versus data element? The domain is the technical shape. The data element adds meaning and labels. And yes, one domain can serve many data elements.",
+     "spoken": "Interview: domain versus data element? The domain is the technical shape. The data element adds meaning and labels. And yes, one domain can serve many data elements."
+    }
+   ],
+   "next": {
+    "title": "Data element · Part 1: *what and why*",
+    "when": "tonight at 7:30 PM",
+    "quiz": {
+     "question": "Quiz: which one *really checks*?",
+     "options": [
+      "Value table",
+      "Check table"
+     ]
+    },
+    "vo": "Quiz: value table or check table, which one really checks? The answer is in this reel. Comment it."
+   },
+   "caption": "Three SAP domain mistakes interviewers love to ask about.\n\nSAP domain, Part 12 of 12: mistakes and interview questions.\n\n1. SELECT ... WHERE order_no = '1234' finds nothing: convert with CONVERSION_EXIT_ALPHA_INPUT first\n2. Fixed values do not stop an UPDATE or INSERT in your code, only screen input\n3. Value table = a proposal; check table + foreign key = the real check\n\nInterview: domain = technical shape (type, length); data element = meaning + field labels. One domain can serve many data elements.\n\nQuiz: which one really checks, the value table or the check table? Answer in the comments.\n\nNext: Data element, Part 1 (tonight at 7:30 PM).",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.2",
+   "part": 1,
+   "parts": 11,
+   "time": "19:30",
+   "slug": "data-element-what-why",
+   "tag": "DDIC · Data element 1/11",
+   "comment_word": "LABEL",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Data element · Part 1/11",
+     "title": "How does SAP know it's *Order Status*?",
+     "voiceover": "How does every screen know this field is called Order Status? Last time we learned the domain mistakes. Now, the data element.",
+     "spoken": "How does every screen know this field is called Order Status? Last time we learned the domain mistakes. Now, the data element."
+    },
+    {
+     "kind": "versus",
+     "label": "THE PROBLEM",
+     "heading": "A domain has *no name*",
+     "bad": {
+      "title": "Domain only",
+      "sub": "type, no name, no meaning",
+      "say": "domain"
+     },
+     "good": {
+      "title": "Data element",
+      "sub": "labels + meaning",
+      "say": "data"
+     },
+     "voiceover": "A domain only gives a type and a length. It has no name and no meaning. A data element adds the field labels and the meaning.",
+     "spoken": "A domain only gives a type and a length. It has no name and no meaning. A data element adds the field labels and the meaning."
+    },
+    {
+     "kind": "flow",
+     "label": "TWO LAYERS",
+     "heading": "Two *layers*",
+     "steps": [
+      "Domain: CHAR 1 (the shape)",
+      "Data element: Order Status (the meaning)",
+      "Table field: uses the data element"
+     ],
+     "voiceover": "Think of two layers. The domain is the shape: char, length one. The data element is the meaning: order status. Table fields use the data element.",
+     "spoken": "Think of two layers. The domain is the shape: char, length one. The data element is the meaning: order status. Table fields use the data element."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Data element = *meaning + labels*",
+     "body": "It sits on a domain and gives the field its business meaning and its screen labels.",
+     "highlight": "meaning and its screen labels",
+     "voiceover": "Takeaway: a data element sits on a domain. It gives the field its meaning and its labels.",
+     "spoken": "Takeaway: a data element sits on a domain. It gives the field its meaning and its labels."
+    }
+   ],
+   "next": {
+    "title": "Data element · Part 2: where it's *used*",
+    "when": "tomorrow at 9 AM",
+    "vo": "Tomorrow at 9 AM: every place SAP shows this one label."
+   },
+   "caption": "How does every SAP screen know a field is called Order Status?\n\nData element, Part 1 of 11: what a data element is and why we need it.\n\n1. A domain only gives the technical shape: data type and length\n2. A data element sits on a domain and adds the meaning and the field labels\n3. Table fields (and program variables) use the data element\n\nComment LABEL if the two layers finally make sense.\n\nNext: Data element, Part 2, where it's used (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  }
+ ]
+}

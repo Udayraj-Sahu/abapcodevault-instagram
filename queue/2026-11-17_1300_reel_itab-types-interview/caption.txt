@@ -1,0 +1,16 @@
+STANDARD, SORTED or HASHED? It comes up in almost every SAP ABAP interview.
+
+An internal table is a table in memory inside your program.
+
+1. STANDARD: index access, linear search by key. Fine for small tables and ALV output
+2. SORTED: kept sorted by its key, binary search, fast partial key reads
+3. HASHED: full unique key only, the same read time at any size
+4. Trap: a partial key on a HASHED table means a slow row-by-row search
+
+Comment HASHED if you'd have got this one right.
+
+Next: Part 12, domain mistakes (today at 5 PM).
+
+ABAP Interview Pack (160 Q&A, fresher to senior): link in bio.
+
+#sap #abap #sapabap #sapinterview #abapcodevault
