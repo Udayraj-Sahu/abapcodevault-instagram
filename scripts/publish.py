@@ -177,6 +177,17 @@ def publish(folder, ig_id):
     return media["id"]
 
 
+def recent_captions(ig_id):
+    """Captions of the account's latest posts -> media id. A second guard against double
+    posts when published.json is out of date."""
+    try:
+        data = call("GET", f"{ig_id}/media", {"fields": "id,caption", "limit": "25"}).get("data", [])
+        return {(m.get("caption") or "").strip(): m["id"] for m in data if m.get("caption")}
+    except RuntimeError as e:
+        print("could not read recent posts:", e)
+        return {}
+
+
 def main():
     now = dt.datetime.now(IST)
     now_key = now.strftime("%Y-%m-%d %H:%M")
@@ -206,8 +217,15 @@ def main():
     me, ig_id = detect_api()
     print(f"Publishing as @{me.get('username')} ({ig_id})")
     failed = False
+    recent = recent_captions(ig_id)
     for f in due:
         name = os.path.basename(f)
+        caption = open(os.path.join(f, "caption.txt"), encoding="utf-8").read().strip()[:2200]
+        if caption in recent:
+            log[name] = {"media_id": recent[caption], "published_at": "already live (found on Instagram)"}
+            print("ALREADY LIVE", name, recent[caption])
+            json.dump(log, open(LOG, "w"), indent=2)
+            continue
         try:
             mid = publish(f, ig_id)
             log[name] = {"media_id": mid, "published_at": dt.datetime.now(IST).isoformat(timespec="seconds")}

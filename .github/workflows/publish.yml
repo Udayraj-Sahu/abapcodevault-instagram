@@ -43,6 +43,10 @@ jobs:
           python scripts/wait_slot.py
           git pull --ff-only || echo "pull skipped"
           echo "MEDIA_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: Get the latest published.json (another run may have just posted)
+        run: |
+          git pull --ff-only || echo "pull skipped"
+          echo "MEDIA_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Publish due posts
         env:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
