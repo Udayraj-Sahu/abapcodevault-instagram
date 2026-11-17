@@ -1,0 +1,15 @@
+Never created a data element? Do it click by click.
+
+Data element, Part 3 of 11: create a data element in SE11.
+
+1. SE11 first screen: the Data type field (not Domain), enter a Z/Y name, Create
+2. Choose Data element, add a short description
+3. Data Type tab: enter your domain
+4. Field Label tab: fill the labels
+5. Save (package or $TMP) and activate (Ctrl+F3)
+
+Save this for your first SAP data element.
+
+Next: Part 4, the Data Type tab (tonight at 7:30 PM).
+
+#sap #abap #sapabap #ddic #abapcodevault

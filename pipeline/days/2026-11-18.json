@@ -1,0 +1,373 @@
+{
+ "date": "2026-11-18",
+ "handle": "@abapcodevault",
+ "posts": [
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.2",
+   "parts": 11,
+   "part": 2,
+   "time": "09:00",
+   "slug": "data-element-where-used",
+   "tag": "DDIC · Data element 2/11",
+   "comment_word": "LABEL",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Data element · Part 2/11",
+     "title": "One label, *every screen*",
+     "voiceover": "One data element, and its label shows up everywhere. Last time we learned what a data element is. Now, where it's used.",
+     "spoken": "One data element, and its label shows up everywhere. Last time we learned what a data element is. Now, where it's used."
+    },
+    {
+     "kind": "flow",
+     "label": "WHERE IT SHOWS UP",
+     "heading": "Where it *shows up*",
+     "steps": [
+      "Table field: ZORDERS-STATUS",
+      "Structure component: ZS_ORDER-STATUS",
+      "Program variable: TYPE zde_status",
+      "Screens + ALV: its labels as headings"
+     ],
+     "voiceover": "A table field uses it. A structure component uses it. A program variable is typed with it. And screens and ALV show its labels as headings.",
+     "spoken": "A table field uses it. A structure component uses it. A program variable is typed with it. And screens and ALV show its labels as headings."
+    },
+    {
+     "kind": "code",
+     "heading": "In *code*",
+     "typewriter": true,
+     "code": "DATA lv_status TYPE zde_status.\nPARAMETERS p_stat TYPE zde_status.",
+     "voiceover": "In code, type your variables with the data element. Parameters can borrow its label too.",
+     "spoken": "In code, type your variables with the data element. Parameters can borrow its label too.",
+     "spotlight": true
+    },
+    {
+     "kind": "screen",
+     "heading": "Find them all: *Where-Used List*",
+     "tcode": "SE11",
+     "object": "Data element ZDE_STATUS",
+     "tabs": [
+      "Where-Used List"
+     ],
+     "active": 0,
+     "fields": [
+      [
+       "Table field",
+       "ZORDERS-STATUS"
+      ],
+      [
+       "Structure",
+       "ZS_ORDER-STATUS"
+      ],
+      [
+       "Program",
+       "ZORDER_REPORT"
+      ]
+     ],
+     "focus": [
+      0
+     ],
+     "note": "toolbar button · Ctrl+Shift+F3",
+     "voiceover": "To find them all, open it in SE11 and press Where-Used List.",
+     "spoken": "To find them all, open it in SE11 and press Where-Used List."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Change the label *once*",
+     "body": "Every table, screen and ALV that uses the data element picks it up.",
+     "highlight": "picks it up",
+     "voiceover": "Takeaway: change the label once, and every screen using it picks it up.",
+     "spoken": "Takeaway: change the label once, and every screen using it picks it up."
+    }
+   ],
+   "next": {
+    "title": "Your BAPI ran. *Nothing changed?*",
+    "when": "today at 1 PM",
+    "vo": "At 1 PM: why a BAPI says success and changes nothing."
+   },
+   "caption": "One data element, and its label shows up on every screen.\n\nData element, Part 2 of 11: where it's used.\n\n1. Table fields and structure components use it\n2. Program variables: DATA lv_status TYPE zde_status\n3. Screens and ALV show its field labels as headings; a PARAMETERS field can borrow it via Dictionary Ref\n4. SE11 Where-Used List (Ctrl+Shift+F3) finds every use\n\nSave this for your next SAP data element.\n\nNext: Your BAPI ran, nothing changed? (today at 1 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "time": "13:00",
+   "format": "bug_hunt",
+   "slug": "bapi-x-structure-trap",
+   "tag": "Additional concepts",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "comment_word": "XFLAG",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Additional concepts",
+     "title": "Your BAPI ran. *Nothing changed?*",
+     "voiceover": "Your BAPI said success, but nothing changed? Check the X structure.",
+     "spoken": "Your BAPI said success, but nothing changed? Check the X structure."
+    },
+    {
+     "kind": "code",
+     "heading": "The *missing* flag",
+     "typewriter": true,
+     "code": "ls_client-matl_group = 'Z01'.\n\" missing: ls_clientx-matl_group = 'X'.\nCALL FUNCTION 'BAPI_MATERIAL_SAVEDATA'\n  EXPORTING headdata    = ls_head\n            clientdata  = ls_client\n            clientdatax = ls_clientx.",
+     "voiceover": "The X structure is a twin with one flag per field. X means: change this field. Here the material group is filled, but its flag isn't. So the BAPI skips it.",
+     "spoken": "The X structure is a twin with one flag per field. X means: change this field. Here the material group is filled, but its flag isn't. So the BAPI skips it."
+    },
+    {
+     "kind": "versus",
+     "label": "THE TRAP",
+     "heading": "Value vs *value + X*",
+     "bad": {
+      "title": "Value only",
+      "sub": "field ignored",
+      "say": "only"
+     },
+     "good": {
+      "title": "Value + X flag",
+      "sub": "field updated",
+      "say": "plus"
+     },
+     "voiceover": "Value only? The field is ignored. Value plus its X flag? It's updated.",
+     "spoken": "Value only? The field is ignored. Value plus its X flag? It's updated."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Fill the *X twin*",
+     "body": "For every field you change, set the same field to 'X' in the X structure. Then call BAPI_TRANSACTION_COMMIT.",
+     "highlight": "set the same field to 'X'",
+     "voiceover": "Takeaway: every field you change needs its X flag. Then commit with BAPI transaction commit.",
+     "spoken": "Takeaway: every field you change needs its X flag. Then commit with BAPI transaction commit."
+    }
+   ],
+   "next": {
+    "title": "Data element · Part 3: *create one*",
+    "when": "today at 5 PM",
+    "vo": "At 5 PM: create your own data element, click by click."
+   },
+   "caption": "Your BAPI said success, but nothing changed? Check the X structure.\n\n1. Change BAPIs (e.g. BAPI_MATERIAL_SAVEDATA) pass data in pairs: CLIENTDATA + CLIENTDATAX\n2. The X structure has one flag per field; 'X' means: change this field\n3. Value without its X flag = the field is ignored\n4. After the BAPI, call BAPI_TRANSACTION_COMMIT\n\nComment XFLAG if this ever cost you an hour of debugging.\n\nNext: Data element, Part 3, create one (today at 5 PM).\n\nMore ready-to-use BAPI snippets are in the ABAP Code Vault (link in bio).",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#bapi",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.2",
+   "parts": 11,
+   "part": 3,
+   "time": "17:00",
+   "slug": "data-element-create",
+   "tag": "DDIC · Data element 3/11",
+   "comment_word": "CREATED",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Data element · Part 3/11",
+     "title": "Create a *data element*",
+     "voiceover": "Never created a data element? Let's do it. Last time we learned where it's used. Now, how to create one.",
+     "spoken": "Never created a data element? Let's do it. Last time we learned where it's used. Now, how to create one."
+    },
+    {
+     "kind": "screen",
+     "heading": "SE11: the *Data type* field",
+     "tcode": "SE11",
+     "object": "ABAP Dictionary: Initial Screen",
+     "tabs": [
+      "Initial Screen"
+     ],
+     "active": 0,
+     "fields": [
+      [
+       "Database table",
+       ""
+      ],
+      [
+       "View",
+       ""
+      ],
+      [
+       "Data type",
+       "ZDE_PRIORITY"
+      ],
+      [
+       "Domain",
+       ""
+      ]
+     ],
+     "focus": [
+      2
+     ],
+     "note": "Data type, not Domain",
+     "voiceover": "On the SE11 first screen, use the Data type field, not Domain.",
+     "spoken": "On the SE11 first screen, use the Data type field, not Domain."
+    },
+    {
+     "kind": "flow",
+     "label": "STEP BY STEP",
+     "heading": "Click by *click*",
+     "steps": [
+      "SE11: Data type, ZDE_PRIORITY",
+      "Create: choose Data element",
+      "Short description",
+      "Data Type tab: domain ZD_PRIORITY",
+      "Field Label tab: fill the labels",
+      "Save + activate (Ctrl+F3)"
+     ],
+     "voiceover": "SE11: pick Data type and enter a Z name. Create, then choose data element. Add a short description. On the Data Type tab, enter your domain. On the Field Label tab, fill the labels. Save and activate.",
+     "spoken": "SE11: pick Data type and enter a Z name. Create, then choose data element. Add a short description. On the Data Type tab, enter your domain. On the Field Label tab, fill the labels. Save and activate."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Domain first, *data element* second",
+     "body": "Create (or pick) the domain, then the data element that points to it.",
+     "highlight": "then the data element",
+     "voiceover": "Takeaway: domain first, then the data element that points to it.",
+     "spoken": "Takeaway: domain first, then the data element that points to it."
+    }
+   ],
+   "next": {
+    "title": "Part 4 · The *Data Type* tab",
+    "when": "tonight at 7:30 PM",
+    "vo": "Tonight at 7:30: domain or predefined type, which one to pick."
+   },
+   "caption": "Never created a data element? Do it click by click.\n\nData element, Part 3 of 11: create a data element in SE11.\n\n1. SE11 first screen: the Data type field (not Domain), enter a Z/Y name, Create\n2. Choose Data element, add a short description\n3. Data Type tab: enter your domain\n4. Field Label tab: fill the labels\n5. Save (package or $TMP) and activate (Ctrl+F3)\n\nSave this for your first SAP data element.\n\nNext: Part 4, the Data Type tab (tonight at 7:30 PM).",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.2",
+   "parts": 11,
+   "part": 4,
+   "time": "19:30",
+   "slug": "data-element-data-type-tab",
+   "tag": "DDIC · Data element 4/11",
+   "comment_word": "DOMAIN",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Data element · Part 4/11",
+     "title": "Domain or *predefined type*?",
+     "voiceover": "Domain or predefined type: which one should your data element use? Last time we learned how to create one. Now, the Data Type tab.",
+     "spoken": "Domain or predefined type: which one should your data element use? Last time we learned how to create one. Now, the Data Type tab."
+    },
+    {
+     "kind": "screen",
+     "heading": "Data Type *tab*",
+     "tcode": "SE11",
+     "object": "Data element ZDE_PRIORITY",
+     "tabs": [
+      "Attributes",
+      "Data Type",
+      "Further Characteristics",
+      "Field Label"
+     ],
+     "active": 1,
+     "fields": [
+      [
+       "Domain",
+       "ZD_PRIORITY"
+      ],
+      [
+       "Predefined Type",
+       "CHAR, length 1"
+      ],
+      [
+       "Reference Type",
+       "object references"
+      ]
+     ],
+     "focus": [
+      0
+     ],
+     "note": "Elementary Type: pick one",
+     "voiceover": "Under Elementary Type, you pick one: a domain, or a predefined type like char, length one.",
+     "spoken": "Under Elementary Type, you pick one: a domain, or a predefined type like char, length one."
+    },
+    {
+     "kind": "versus",
+     "label": "WHICH ONE?",
+     "heading": "Predefined vs *domain*",
+     "bad": {
+      "title": "Predefined type",
+      "sub": "quick, but no fixed values, no reuse",
+      "say": "predefined"
+     },
+     "good": {
+      "title": "Domain",
+      "sub": "fixed values + conversion, reused",
+      "say": "domain"
+     },
+     "voiceover": "A predefined type is quick, but it brings no fixed values and nothing to reuse. A domain brings its fixed values and conversion along.",
+     "spoken": "A predefined type is quick, but it brings no fixed values and nothing to reuse. A domain brings its fixed values and conversion along."
+    },
+    {
+     "kind": "answer",
+     "label": "QUICK ADD",
+     "heading": "*Reference Type*",
+     "body": "For references to classes or data objects (TYPE REF TO). You'll rarely need it in tables.",
+     "voiceover": "The third choice, reference type, is for object references. You'll rarely need it in tables.",
+     "spoken": "The third choice, reference type, is for object references. You'll rarely need it in tables."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Need values? *Use a domain*",
+     "body": "Fixed values or a conversion routine: domain. A simple one-off field: a predefined type is fine.",
+     "highlight": "domain",
+     "voiceover": "Takeaway: need fixed values or a conversion? Use a domain.",
+     "spoken": "Takeaway: need fixed values or a conversion? Use a domain."
+    }
+   ],
+   "next": {
+    "title": "Part 5 · The *Field Label* tab",
+    "when": "tomorrow at 9 AM",
+    "quiz": {
+     "question": "Quiz: which gives you *fixed values*?",
+     "options": [
+      "Domain",
+      "Predefined type"
+     ]
+    },
+    "vo": "Quiz: domain or predefined type, which one gives you fixed values? The answer is in this reel. Comment it."
+   },
+   "caption": "Domain or predefined type: which one should your SAP data element use?\n\nData element, Part 4 of 11: the Data Type tab.\n\n1. Elementary Type: pick a domain or a predefined type (e.g. CHAR, length 1)\n2. Domain: brings fixed values and the conversion routine, and is reused\n3. Predefined type: quick, but nothing to reuse\n4. Reference Type: object references (TYPE REF TO), rare in tables\n\nQuiz: which one gives you fixed values? Answer in the comments.\n\nNext: Part 5, the Field Label tab (tomorrow at 9 AM).",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  }
+ ]
+}

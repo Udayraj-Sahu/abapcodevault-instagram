@@ -1,0 +1,16 @@
+One data element, and its label shows up on every screen.
+
+Data element, Part 2 of 11: where it's used.
+
+1. Table fields and structure components use it
+2. Program variables: DATA lv_status TYPE zde_status
+3. Screens and ALV show its field labels as headings; a PARAMETERS field can borrow it via Dictionary Ref
+4. SE11 Where-Used List (Ctrl+Shift+F3) finds every use
+
+Save this for your next SAP data element.
+
+Next: Your BAPI ran, nothing changed? (today at 1 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

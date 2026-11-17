@@ -1,0 +1,14 @@
+Domain or predefined type: which one should your SAP data element use?
+
+Data element, Part 4 of 11: the Data Type tab.
+
+1. Elementary Type: pick a domain or a predefined type (e.g. CHAR, length 1)
+2. Domain: brings fixed values and the conversion routine, and is reused
+3. Predefined type: quick, but nothing to reuse
+4. Reference Type: object references (TYPE REF TO), rare in tables
+
+Quiz: which one gives you fixed values? Answer in the comments.
+
+Next: Part 5, the Field Label tab (tomorrow at 9 AM).
+
+#sap #abap #sapabap #ddic #abapcodevault

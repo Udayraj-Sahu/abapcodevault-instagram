@@ -1,0 +1,14 @@
+Your BAPI said success, but nothing changed? Check the X structure.
+
+1. Change BAPIs (e.g. BAPI_MATERIAL_SAVEDATA) pass data in pairs: CLIENTDATA + CLIENTDATAX
+2. The X structure has one flag per field; 'X' means: change this field
+3. Value without its X flag = the field is ignored
+4. After the BAPI, call BAPI_TRANSACTION_COMMIT
+
+Comment XFLAG if this ever cost you an hour of debugging.
+
+Next: Data element, Part 3, create one (today at 5 PM).
+
+More ready-to-use BAPI snippets are in the ABAP Code Vault (link in bio).
+
+#sap #abap #sapabap #bapi #abapcodevault

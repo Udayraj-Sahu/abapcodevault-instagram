@@ -1,7 +1,7 @@
 {
  "handle": "@abapcodevault",
  "mode": "reels_only",
- "last_queued_date": "2026-11-17",
+ "last_queued_date": "2026-11-18",
  "history": [
   "4 ABAP 7.40 syntax tricks (old vs new)",
   "sy-subrc cheat sheet",
@@ -35,7 +35,11 @@
   "domain-key-points",
   "itab-types-interview",
   "domain-mistakes-interview",
-  "data-element-what-why"
+  "data-element-what-why",
+  "data-element-where-used",
+  "bapi-x-structure-trap",
+  "data-element-create",
+  "data-element-data-type-tab"
  ],
  "recent_formats": {
   "reel": [
@@ -64,6 +68,10 @@
    "course_lesson",
    "interview_chat",
    "course_lesson",
+   "course_lesson",
+   "course_lesson",
+   "bug_hunt",
+   "course_lesson",
    "course_lesson"
   ],
   "carousel": [],
@@ -77,30 +85,6 @@
    "lesson": 3
   },
   "pending_parts": [
-   {
-    "syllabus": "3.2",
-    "topic": "Data element",
-    "part": 2,
-    "parts": 11,
-    "title": "Where it's used",
-    "focus": "Map Q3: table fields, structure components, program variables (TYPE data element), selection-screen and ALV labels; Where-Used List."
-   },
-   {
-    "syllabus": "3.2",
-    "topic": "Data element",
-    "part": 3,
-    "parts": 11,
-    "title": "Create a data element, click by click",
-    "focus": "Map Q4: SE11 -> Data type -> name (Z/Y) -> Create -> Data element -> short description -> Data Type tab (domain) -> Field Label -> save (package/$TMP) -> activate."
-   },
-   {
-    "syllabus": "3.2",
-    "topic": "Data element",
-    "part": 4,
-    "parts": 11,
-    "title": "Data Type tab: domain vs predefined type",
-    "focus": "Map Q5: Elementary Type: Domain vs Predefined Type (and when each fits); Reference Type in one line."
-   },
    {
     "syllabus": "3.2",
     "topic": "Data element",
@@ -172,7 +156,10 @@
    "3.2 Domain part 10 Value table: why it exists",
    "3.2 Domain part 11 Domain key points",
    "3.2 Domain part 12 Domain mistakes + interview questions",
-   "3.2 Data element part 1 What + why"
+   "3.2 Data element part 1 What + why",
+   "3.2 Data element part 2 Where it's used",
+   "3.2 Data element part 3 Create a data element, click by click",
+   "3.2 Data element part 4 Data Type tab: domain vs predefined type"
   ],
   "terms": [
    "Data Dictionary (DDIC)",
@@ -213,7 +200,12 @@
    "FLTP",
    "internal table",
    "STANDARD/SORTED/HASHED table",
-   "field label"
+   "field label",
+   "Dictionary Ref (selection texts)",
+   "X structure (BAPI change flags)",
+   "BAPI_TRANSACTION_COMMIT",
+   "predefined type",
+   "reference type"
   ]
  },
  "improve_next": {
