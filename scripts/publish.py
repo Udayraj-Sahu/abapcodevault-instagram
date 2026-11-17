@@ -14,6 +14,8 @@ Env:
                     Instagram-login user token (60 days; IG_USER_ID not needed)
   IG_USER_ID        Instagram account ID (set it when using a system-user token)
   MEDIA_BASE_URL    public base URL for this repo's files at the current commit
+  MEDIA_FALLBACK_URLS  optional, space-separated extra base URLs tried when Instagram
+                    cannot fetch the media from MEDIA_BASE_URL (e.g. raw.githubusercontent)
   DRY_RUN=1         print what would be published, publish nothing
   ONLY=<folder>     publish just this folder (manual run), ignoring its date
 """
@@ -88,10 +90,67 @@ def wait_ready(container_id, limit_s=600):
         time.sleep(10)
 
 
-def url_for(folder, name):
-    base = os.environ["MEDIA_BASE_URL"].rstrip("/")
+def media_bases():
+    bases = [os.environ["MEDIA_BASE_URL"]] + os.environ.get("MEDIA_FALLBACK_URLS", "").split()
+    return [b.rstrip("/") for b in bases if b.strip()]
+
+
+def url_for(folder, name, base=None):
+    base = (base or media_bases()[0]).rstrip("/")
     rel = os.path.relpath(os.path.join(folder, name), ROOT).replace(os.sep, "/")
     return f"{base}/{urllib.parse.quote(rel)}"
+
+
+def check_url(folder, name, base, tries=4):
+    """Download the file from the public URL (this also warms the CDN cache) and check it
+    matches the local file, so Instagram gets a URL that is known to work right now."""
+    url = url_for(folder, name, base)
+    want = os.path.getsize(os.path.join(folder, name))
+    for i in range(tries):
+        t0 = time.time()
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "abapcodevault-publisher"})
+            with urllib.request.urlopen(req, timeout=180) as r:
+                got = len(r.read())
+                ctype = r.headers.get("Content-Type")
+            print(f"  media check {url}: {got} bytes, {ctype}, {time.time() - t0:.1f}s")
+            if got == want:
+                return True
+            print(f"  size mismatch (local {want})")
+        except Exception as e:
+            print(f"  media check {url}: {e}")
+        time.sleep(20 * (i + 1))
+    return False
+
+
+def create_reel(folder, ig_id, caption, rounds=3):
+    """Create a ready reel container. Instagram fetches the video itself, and a slow or
+    failing CDN shows up as "Media upload has failed with error code 2207076/2207077",
+    so check the URL first, then retry with backoff and fall back to other hosts."""
+    has_cover = os.path.exists(os.path.join(folder, "cover.jpg"))
+    errors = []
+    for rnd in range(rounds):
+        for base in media_bases():
+            if not check_url(folder, "reel.mp4", base):
+                errors.append(f"{base}: media URL not reachable")
+                continue
+            if has_cover:
+                check_url(folder, "cover.jpg", base, tries=2)
+            params = {"media_type": "REELS", "video_url": url_for(folder, "reel.mp4", base),
+                      "caption": caption, "share_to_feed": "true"}
+            if has_cover:
+                params["cover_url"] = url_for(folder, "cover.jpg", base)
+            try:
+                cid = call("POST", f"{ig_id}/media", params)["id"]
+                wait_ready(cid, 900)
+                print(f"  container ready via {base}")
+                return cid
+            except RuntimeError as e:
+                errors.append(f"{base}: {e}")
+                print(f"  attempt failed via {base}: {e}")
+        if rnd < rounds - 1:
+            time.sleep(90 * (rnd + 1))
+    raise RuntimeError("all media hosts failed: " + " | ".join(errors[-3:]))
 
 
 def publish(folder, ig_id):
@@ -100,12 +159,7 @@ def publish(folder, ig_id):
     kind = meta["type"]
     images = sorted(os.path.basename(p) for p in glob.glob(os.path.join(folder, "slide_*.jpg")))
     if kind == "reel":
-        params = {"media_type": "REELS", "video_url": url_for(folder, "reel.mp4"),
-                  "caption": caption, "share_to_feed": "true"}
-        if os.path.exists(os.path.join(folder, "cover.jpg")):
-            params["cover_url"] = url_for(folder, "cover.jpg")
-        cid = call("POST", f"{ig_id}/media", params)["id"]
-        wait_ready(cid, 900)
+        cid = create_reel(folder, ig_id, caption)
     elif kind == "carousel" and len(images) > 1:
         children = []
         for name in images[:10]:

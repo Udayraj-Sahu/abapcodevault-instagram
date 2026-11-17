@@ -292,3 +292,9 @@ publish.yml 3 min before 09:00 / 13:00 / 19:30 IST and re-dispatches anything ov
 (3) Claude backup checks at 9:05 / 13:05 / 19:35; (4) publish.yml's own crons. publish.yml waits for the slot
 when started up to 20 min early (wait_slot.py) and posts at once when catching up. published.json + the
 concurrency group prevent double posts.
+
+Media fetch (17 Nov): Instagram downloads each reel from a public URL (jsDelivr at the commit,
+fallback raw.githubusercontent.com). publish.py first downloads the file itself to check and warm
+the URL, then retries with backoff and the fallback host on "error code 2207076/2207077". After each
+post, scripts/prune_media.py deletes media of published folders so the repo (which jsDelivr serves
+whole) stays small. Never re-add media to published folders.

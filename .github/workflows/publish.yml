@@ -48,6 +48,7 @@ jobs:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           MEDIA_BASE_URL: https://cdn.jsdelivr.net/gh/${{ github.repository }}@${{ env.MEDIA_SHA || github.sha }}
+          MEDIA_FALLBACK_URLS: https://raw.githubusercontent.com/${{ github.repository }}/${{ env.MEDIA_SHA || github.sha }}
           ONLY: ${{ inputs.only }}
           DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
         run: python scripts/publish.py
@@ -57,7 +58,8 @@ jobs:
           if [ -n "$(git status --porcelain published.json)" ]; then
             git config user.name "abapcodevault-bot"
             git config user.email "abapcodevault-bot@users.noreply.github.com"
-            git add published.json
+            python scripts/prune_media.py
+            git add published.json queue
             git commit -m "Log published posts"
             git pull --rebase
             git push
