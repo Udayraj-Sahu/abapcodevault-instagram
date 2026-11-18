@@ -45,7 +45,7 @@ Based on research (short-form retention guides + learning studies, see Log 2026-
 - [x] Highlighter "draw-on": yellow marker sweeps left→right behind words on reels instead of appearing at once (2026-11-16)
 - [x] Code typing per character (typewriter) with a blinking cursor (2026-11-11)
 - [x] Spotlight the code line being explained (2026-11-11)
-- [ ] Hook punch-in: first 0.6 s of the reel zooms from 1.12 → 1.0 for a stronger first frame
+- [ ] Hook punch-in: first 0.6 s of the reel zooms from 1.12 → 1.0 for a stronger first frame — tried 19 Nov (1.08 → 1.0 in 0.45 s): invisible because the cover is still empty then; reverted. Retry only together with a first frame that already shows the title
 - [x] Handwritten circle + arrow + note on the bug line (2026-11-11)
 - [ ] Caption pill: bounce on each new chunk, slight tilt like a sticker
 - [ ] End card: "Follow" button pulses twice; progress bar fills with a soft glow
@@ -86,7 +86,7 @@ Based on research (short-form retention guides + learning studies, see Log 2026-
 - [ ] Pronunciation audit: render every SAY entry once, list any that sound wrong, fix spellings (e.g. sy-subrc, SM30, BSEG)
 - [ ] Per-sentence speed: hook sentence 1.05x, explanation 0.97x, CTA 1.0x
 - [x] De-esser after the compressor in VOICE_POLISH (deesser i=0.5): 5-9 kHz band ~5 dB lower vs. overall, no clipping (12 Nov)
-- [ ] Warmer EQ (low-shelf +1.5 dB at 180 Hz) in VOICE_POLISH; keep loudness -14 LUFS
+- [ ] Warmer EQ (low-shelf +1.5 dB at 180 Hz) in VOICE_POLISH; keep loudness -14 LUFS — tried 19 Nov (+1.5 and +3 dB): low band moved only 0.3-0.6 dB after the compressor (am_michael is already low-heavy); not clearly better, reverted
 - [x] Smooth ducking: 60 ms lookahead + 60 ms attack ramp + 160 ms hold, per-sample gain (2026-11-16)
 - [ ] Room tone: very quiet noise bed under the voice so gaps don't feel dead (no music, no whoosh)
 - [ ] Automatic pronunciation check: if a small offline ASR (pip-installable, no Hugging Face) is available, transcribe the reel and flag words that differ from the script
@@ -141,3 +141,5 @@ Based on research (short-form retention guides + learning studies, see Log 2026-
 | 2026-11-15 | cuts (skipped) | Tried "cut on action": outgoing scene eased into a 1.2 % shrink 0.12 s before each soft cut, continuing into the transition — https://www.schoolofmotion.com/blog/six-essential-motion-design-transitions-tutorial . Regress render of 13 Nov: no warnings, diff only in the 4 frames before each cut, but the strip showed no visible difference, so not clearly better. Reverted. | Rule 4: keep only if clearly better |
 | 2026-11-16 | typography | Highlighter draw-on: the yellow marker behind *highlighted* words in cover titles and slide headings now sweeps left -> right in 0.35 s, 0.25 s after the line lands (`sweep_frames()`, `line_img(sweep=)`, MARKER_SWEEP); end state identical — https://www.tella.com/motion/animated-text-highlight | Draws the eye to the key words right after they appear and adds a visible change in the first seconds; no layout/colour change |
 | 2026-11-16 | sound/timing | Music-bed ducking reworked in `duck_under()`: 60 ms lookahead (music dips before the first syllable, not on it), 60 ms attack ramp instead of an instant drop, 160 ms hold to bridge gaps between words (no pumping), gain interpolated per sample instead of 20 ms steps (no zipper noise); release and depth unchanged. Peaks -1.4/-1.5 dB, loudness unchanged — https://www.soundonsound.com/techniques/duck-tales | Cleaner word onsets and a steadier bed under speech; room tone skipped because the music bed already fills gaps |
+| 2026-11-19 | animation (skipped) | Tried hook punch-in: first scene starts 8 % closer and settles to 1.0 in 0.45 s (`HOOK_PUNCH`) — https://www.capcut.com/create/zoom-effects-for-tutorial-videos-guide-attention . 0.1 s strip of 2026-11-13 reel 1 vs base: the zoom happens while the cover is still empty, so it is invisible. Reverted. | Not clearly better |
+| 2026-11-19 | voice (skipped) | Tried a warm low-shelf in VOICE_POLISH (+1.5 dB and +3 dB at 160-180 Hz) — https://www.musicguymixing.com/eq-for-voice-over/ . Isolated Kokoro test: low band vs total moved only 0.3-0.6 dB after the compressor, full reel +0.2 dB; no clipping (max -1.5 dB) but no audible gain, risk of mud on phone speakers. Reverted. | Not clearly better |

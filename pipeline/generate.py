@@ -1632,7 +1632,10 @@ def duck_under(voice, music, sr, depth=0.35):
     return (m * g).astype("float32")
 
 
-def render_scene(base, blocks, tau, dur, sub_tl, accent, push=0.04, beat=0.0, stamp=None, glow=None):
+HOOK_PUNCH = (0.08, 0.45)   # (extra zoom at t=0, settle time in s) for the first scene
+
+
+def render_scene(base, blocks, tau, dur, sub_tl, accent, push=0.04, beat=0.0, stamp=None, glow=None, hook=False):
     content = Image.new("RGBA", (REEL_W, REEL_H), (0, 0, 0, 0))
     draw_blocks(content, blocks, tau)
     # slow camera push on the content
@@ -1647,6 +1650,8 @@ def render_scene(base, blocks, tau, dur, sub_tl, accent, push=0.04, beat=0.0, st
             t += beat
     if times:
         z += 0.015 * sum(ease_out(min(1.0, max(0.0, (tau - t) / 0.22))) for t in times)
+    if hook and tau < HOOK_PUNCH[1]:   # hook punch-in: first scene starts 8% closer and settles to 1.0 (19 Nov)
+        z += HOOK_PUNCH[0] * (1 - ease_out(tau / HOOK_PUNCH[1]))
     if z > 1.001:
         zw, zh = int(REEL_W * z), int(REEL_H * z)
         content = content.resize((zw, zh), Image.BILINEAR)
@@ -1964,7 +1969,7 @@ def make_motion_reel(p, slides, folder, handle, accent):
         tau = t - starts[i]
         blocks, dur, tl = scenes[i]
         frame = render_scene(base, blocks, tau, dur, tl, accent, pace["push"], scene_beats[i], stamps[i],
-                             secs[i][1] if live else None)
+                             secs[i][1] if live else None, hook=(i == 0))
         kind_t = transitions[(i - 1) % len(transitions)] if i > 0 else None
         tlen = trans + (0.1 if kind_t in ("slide", "zoom", "flip", "wipe") else 0)
         if kind_t == "soft":
@@ -1979,7 +1984,7 @@ def make_motion_reel(p, slides, folder, handle, accent):
         if p.get("loop", True) and t > total - 0.35:            # 5: seamless loop back to the first frame
             if "_first" not in locals():
                 _first = render_scene(base, scenes[0][0], 0.0, durations[0], [], accent, pace["push"], [], None,
-                                      secs[0][1] if live else None)
+                                      secs[0][1] if live else None, hook=True)
             frame = Image.blend(frame, _first, ease_out(min(1.0, (t - (total - 0.35)) / 0.35)))
         # progress bar
         if live:
