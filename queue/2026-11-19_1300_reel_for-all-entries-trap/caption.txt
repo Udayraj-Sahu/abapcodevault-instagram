@@ -1,0 +1,15 @@
+Stop: an empty FOR ALL ENTRIES table reads all of VBAP.
+
+The FOR ALL ENTRIES trap in SAP ABAP: an empty driver table does not return nothing.
+
+1. Empty driver table = the whole WHERE condition is ignored
+2. The SELECT reads every row of the database table
+3. Fix: IF lt_orders IS NOT INITIAL before the SELECT
+
+Have you seen this one in production?
+
+Next: Part 6, Search help on a data element (today at 5 PM).
+
+160 interview questions with answers: ABAP Interview Pack, link in bio.
+
+#sap #abap #sapabap #performance #abapcodevault

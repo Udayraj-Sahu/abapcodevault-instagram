@@ -1,68 +1,505 @@
 {
-  "date": "2026-11-19",
-  "handle": "@abapcodevault",
-  "posts": [
+ "date": "2026-11-19",
+ "handle": "@abapcodevault",
+ "posts": [
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.2",
+   "parts": 11,
+   "part": 5,
+   "time": "09:00",
+   "slug": "data-element-field-label-tab",
+   "tag": "DDIC · Data element 5/11",
+   "comment_word": "LABEL",
+   "slides": [
     {
-      "type": "reel",
-      "format": "bug_hunt",
-      "voice": "am_michael",
-      "voice_lang": "en",
-      "slides": [
-        {
-          "kind": "cover",
-          "style": "bug",
-          "kicker": "Spot the trap",
-          "title": "This can read your *ENTIRE* table",
-          "code": "SELECT vbeln, posnr FROM vbap\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE vbeln = @lt_orders-vbeln\n  INTO TABLE @DATA(lt_items).",
-          "bug_line": 1,
-          "voiceover": "This one line can read your entire table.",
-          "spoken": "This one line can read your entire table."
-        },
-        {
-          "kind": "bug",
-          "heading": "If it is *empty*...",
-          "code": "SELECT vbeln, posnr FROM vbap\n  FOR ALL ENTRIES IN @lt_orders\n  WHERE vbeln = @lt_orders-vbeln\n  INTO TABLE @DATA(lt_items).",
-          "bug_line": 1,
-          "note": "lt_orders is empty!",
-          "voiceover": "If the driver table is empty, the WHERE condition is ignored. The whole VBAP table is read.",
-          "spoken": "If the driver table is empty, the WHERE condition is ignored. The whole VBAP table is read."
-        },
-        {
-          "kind": "code",
-          "heading": "The fix: *one IF*",
-          "typewriter": true,
-          "code": "IF lt_orders IS NOT INITIAL.\n  SELECT ... FOR ALL ENTRIES ...\nENDIF.",
-          "voiceover": "The fix is simple. Check IS NOT INITIAL first.",
-          "spoken": "The fix is simple. Check IS NOT INITIAL first."
-        },
-        {
-          "kind": "cta",
-          "title": "Save this *for interviews*",
-          "actions": [
-            "Save",
-            "Follow @abapcodevault"
-          ],
-          "voiceover": "Interviewers ask this too. Save it.",
-          "spoken": "Interviewers ask this too. Save it."
-        }
+     "kind": "cover",
+     "kicker": "Data element · Part 5/11",
+     "title": "Your field label got *cut off*?",
+     "voiceover": "Your field label got cut off? Fix it. Last time we learned the Data Type tab. Now, the Field Label tab.",
+     "spoken": "Your field label got cut off? Fix it. Last time we learned the Data Type tab. Now, the Field Label tab."
+    },
+    {
+     "kind": "answer",
+     "label": "WHY",
+     "heading": "One label *can't fit* everywhere",
+     "body": "Screens and ALV columns have different widths. So a data element stores four labels.",
+     "highlight": "four labels",
+     "voiceover": "Why four labels? A screen field or a column can be wide or narrow. One label can't fit everywhere. So SAP keeps four, and shows the one that fits.",
+     "spoken": "Why four labels? A screen field or a column can be wide or narrow. One label can't fit everywhere. So SAP keeps four, and shows the one that fits."
+    },
+    {
+     "kind": "screen",
+     "heading": "Field Label *tab*",
+     "tcode": "SE11",
+     "object": "Data element ZDE_PRIORITY",
+     "tabs": [
+      "Attributes",
+      "Data Type",
+      "Further Characteristics",
+      "Field Label"
+     ],
+     "active": 3,
+     "fields": [
+      [
+       "Short (max 10)",
+       "Prio."
       ],
-      "caption": "One missing IF, and the report read the entire VBAP table.\n\nWith FOR ALL ENTRIES, an empty driver table means the WHERE condition is ignored and every row is selected. Always check IS NOT INITIAL first, and remove duplicates from the driver table.\n\nThis is a classic interview question, so save it.\n\n160 more interview questions with answers: ABAP Interview Pack, link in bio.",
-      "hashtags": [
-        "#sap",
-        "#abap",
-        "#coding",
-        "#sapabap",
-        "#abapdeveloper",
-        "#saps4hana",
-        "#sapfresher",
-        "#performance",
-        "#sapinterview",
-        "#abapcodevault"
+      [
+       "Medium (max 20)",
+       "Priority"
       ],
-      "slug": "for-all-entries-trap",
-      "day": "Thu",
-      "tag": "Performance",
-      "time": "13:00"
+      [
+       "Long (max 40)",
+       "Order priority"
+      ],
+      [
+       "Heading (max 55)",
+       "Priority"
+      ]
+     ],
+     "focus": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "note": "fill all four",
+     "voiceover": "Open the Field Label tab. Short takes up to ten characters. Medium, up to twenty. Long, up to forty. Heading, up to fifty five. That one is the column header in lists.",
+     "spoken": "Open the Field Label tab. Short takes up to 10 characters. Medium, up to 20. Long, up to 40. Heading, up to 55. That one is the column header in lists."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "ALV picks by *width*",
+     "tcode": "ALV",
+     "title": "Column ZZ_PRIORITY",
+     "columns": [
+      "Column",
+      "Label used",
+      "Shown"
+     ],
+     "rows": [
+      [
+       "Narrow",
+       "Short",
+       "Prio."
+      ],
+      [
+       "Medium",
+       "Medium",
+       "Priority"
+      ],
+      [
+       "Wide",
+       "Long",
+       "Order priority"
+      ]
+     ],
+     "row_say": [
+      "narrow",
+      "medium",
+      "wide"
+     ],
+     "voiceover": "Here's an example in ALV. A narrow column shows the short label, prio. A medium column shows priority. A wide column shows order priority.",
+     "spoken": "Here's an example in ALV. A narrow column shows the short label, prio. A medium column shows priority. A wide column shows order priority."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Fill *all four* labels",
+     "body": "Short 10, Medium 20, Long 40, Heading 55. SAP shows the one that fits.",
+     "highlight": "the one that fits",
+     "voiceover": "Takeaway: fill all four labels. Then SAP always has one that fits.",
+     "spoken": "Takeaway: fill all four labels. Then SAP always has one that fits."
     }
-  ]
+   ],
+   "next": {
+    "title": "The *FOR ALL ENTRIES* trap",
+    "when": "today at 1 PM",
+    "voice": "the FOR ALL ENTRIES trap",
+    "vo": "At one PM: the empty table that reads every single row."
+   },
+   "caption": "Your field label got cut off? Fix it in the Field Label tab.\n\nSAP data element, Part 5 of 11: the Field Label tab in SE11.\n\n1. Four field labels: Short (max 10), Medium (20), Long (40), Heading (55)\n2. Screens and ALV columns have different widths\n3. ALV shows the label that fits the column\n4. Heading is the column header in lists\n\nSave this for your next data element in SE11.\n\nNext: The FOR ALL ENTRIES trap (today at 1 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "time": "13:00",
+   "format": "myth_fact",
+   "slug": "for-all-entries-trap",
+   "tag": "Additional concepts",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "comment_word": "FAE",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Additional concepts",
+     "title": "Empty table, *whole VBAP* read",
+     "voiceover": "Stop: your empty table reads the whole VBAP. And it looks completely harmless.",
+     "spoken": "Stop: your empty table reads the whole VBAP. And it looks completely harmless."
+    },
+    {
+     "kind": "myth",
+     "myth": "An empty FOR ALL ENTRIES table returns nothing.",
+     "fact": "SAP ignores the WHERE and reads every row.",
+     "detail": "Empty driver table = no filter at all",
+     "voiceover": "Here's the myth. An empty driver table means no rows come back. The driver table is the internal table after IN. Wrong. SAP drops the whole WHERE condition and reads every row.",
+     "spoken": "Here's the myth. An empty driver table means no rows come back. The driver table is the internal table after IN. Wrong. SAP drops the whole WHERE condition and reads every row."
+    },
+    {
+     "kind": "output",
+     "label": "THE PROBLEM",
+     "heading": "Zero in, *everything* out",
+     "tcode": "SE38",
+     "title": "ZORDER_ITEMS",
+     "columns": [
+      "Object",
+      "Content"
+     ],
+     "rows": [
+      [
+       "lt_orders",
+       "0 rows"
+      ],
+      [
+       "WHERE filter",
+       "ignored"
+      ],
+      [
+       "lt_items",
+       "every row"
+      ]
+     ],
+     "highlight": 2,
+     "row_say": [
+      "orders",
+      "filter",
+      "items"
+     ],
+     "voiceover": "Example. The orders table has zero rows. So the filter is ignored. And the items table gets every VBAP row.",
+     "spoken": "Example. The orders table has 0 rows. So the filter is ignored. And the items table gets every VBAP row."
+    },
+    {
+     "kind": "code",
+     "heading": "The fix: *one IF*",
+     "typewriter": true,
+     "code": "IF lt_orders IS NOT INITIAL.\n  SELECT vbeln, posnr FROM vbap\n    FOR ALL ENTRIES IN @lt_orders\n    WHERE vbeln = @lt_orders-vbeln\n    INTO TABLE @DATA(lt_items).\nENDIF.",
+     "voiceover": "The fix is one IF, with three words: IS NOT INITIAL. Check the driver table first. Only then run the SELECT.",
+     "spoken": "The fix is one IF, with three words: IS NOT INITIAL. Check the driver table first. Only then run the SELECT."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "*Check first*, then select",
+     "body": "Before every FOR ALL ENTRIES: IF itab IS NOT INITIAL.",
+     "highlight": "IS NOT INITIAL",
+     "voiceover": "Takeaway: check the driver table isn't empty, every single time. Interviewers love this one.",
+     "spoken": "Takeaway: check the driver table isn't empty, every single time. Interviewers love this one."
+    }
+   ],
+   "next": {
+    "title": "Part 6 · *Search help* on a data element",
+    "when": "today at 5 PM",
+    "voice": "part six, search help on a data element",
+    "vo": "At five PM: one setting that gives F4 help on every screen."
+   },
+   "caption": "Stop: an empty FOR ALL ENTRIES table reads all of VBAP.\n\nThe FOR ALL ENTRIES trap in SAP ABAP: an empty driver table does not return nothing.\n\n1. Empty driver table = the whole WHERE condition is ignored\n2. The SELECT reads every row of the database table\n3. Fix: IF lt_orders IS NOT INITIAL before the SELECT\n\nHave you seen this one in production?\n\nNext: Part 6, Search help on a data element (today at 5 PM).\n\n160 interview questions with answers: ABAP Interview Pack, link in bio.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#performance",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.2",
+   "parts": 11,
+   "part": 6,
+   "time": "17:00",
+   "slug": "data-element-search-help",
+   "tag": "DDIC · Data element 6/11",
+   "comment_word": "F4",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Data element · Part 6/11",
+     "title": "Your field has *no F4 help*?",
+     "voiceover": "Your field has no F4 help? Fix it once. Last time we learned the Field Label tab. Now, search help on a data element.",
+     "spoken": "Your field has no F4 help? Fix it once. Last time we learned the Field Label tab. Now, search help on a data element."
+    },
+    {
+     "kind": "answer",
+     "label": "WHY",
+     "heading": "Typing numbers *by hand*",
+     "body": "No F4 list: users guess customer numbers and make typos.",
+     "highlight": "make typos",
+     "voiceover": "Why does it matter? Without F4 help, users type customer numbers by hand. They guess, and they make typos.",
+     "spoken": "Why does it matter? Without F4 help, users type customer numbers by hand. They guess, and they make typos."
+    },
+    {
+     "kind": "answer",
+     "label": "NEW TERM",
+     "heading": "*Search help* = F4 popup",
+     "body": "A reusable F4 popup built in SE11. Users search, then pick a value.",
+     "highlight": "pick a value",
+     "voiceover": "A search help is a reusable F4 popup, built in SE11. Users search, then pick a value.",
+     "spoken": "A search help is a reusable F4 popup, built in SE11. Users search, then pick a value."
+    },
+    {
+     "kind": "screen",
+     "heading": "Further Characteristics *tab*",
+     "tcode": "SE11",
+     "object": "Data element ZDE_CUSTOMER",
+     "tabs": [
+      "Attributes",
+      "Data Type",
+      "Further Characteristics",
+      "Field Label"
+     ],
+     "active": 2,
+     "fields": [
+      [
+       "Name (Search Help)",
+       "DEBI"
+      ],
+      [
+       "Parameter",
+       "KUNNR"
+      ],
+      [
+       "Parameter ID",
+       ""
+      ]
+     ],
+     "focus": [
+      0,
+      1
+     ],
+     "note": "then activate",
+     "voiceover": "In SE11, open your data element in change mode. Go to Further Characteristics. Under Search Help, the name is DEBI, the customer search help. The parameter is KUNNR, the field it sends back.",
+     "spoken": "In SE11, open your data element in change mode. Go to Further Characteristics. Under Search Help, the name is DEBI, the customer search help. The parameter is KUNNR, the field it sends back."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "F4 on *every screen*",
+     "tcode": "F4",
+     "title": "Customer (search help DEBI)",
+     "columns": [
+      "Customer",
+      "Name",
+      "City"
+     ],
+     "rows": [
+      [
+       "100001",
+       "ACME Ltd",
+       "Pune"
+      ],
+      [
+       "100002",
+       "Globex",
+       "Mumbai"
+      ],
+      [
+       "100003",
+       "Initech",
+       "Delhi"
+      ]
+     ],
+     "row_say": [
+      "acme",
+      "globex",
+      "initech"
+     ],
+     "verdict": {
+      "text": "EVERY SCREEN",
+      "good": true
+     },
+     "voiceover": "Here's an example. Press F4 on any field with this data element. The customer search opens. Pick ACME, Globex or Initech. Done.",
+     "spoken": "Here's an example. Press F4 on any field with this data element. The customer search opens. Pick ACME, Globex or Initech. Done."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Attach it *once*",
+     "body": "Search help on the data element = F4 on every field that uses it. A search help on the table field wins over it.",
+     "highlight": "F4 on every field",
+     "voiceover": "Takeaway: attach the search help once, on the data element. Every screen gets F4.",
+     "spoken": "Takeaway: attach the search help once, on the data element. Every screen gets F4."
+    }
+   ],
+   "next": {
+    "title": "Part 7 · The *Parameter ID*",
+    "when": "tonight at 7:30 PM",
+    "voice": "part seven, the Parameter ID",
+    "vo": "Tonight at seven thirty: how SAP remembers the last order you opened."
+   },
+   "caption": "Your field has no F4 help? Fix it once, on the data element.\n\nSAP data element, Part 6 of 11: search help in SE11.\n\n1. Search help = a reusable F4 popup built in SE11\n2. Further Characteristics tab: Search Help name (e.g. DEBI) + Parameter (KUNNR)\n3. Every screen field using the data element gets F4\n4. A search help on the table field wins over it\n\nComment F4 if your users still type numbers by hand.\n\nNext: Part 7, the Parameter ID (tonight at 7:30 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.2",
+   "parts": 11,
+   "part": 7,
+   "time": "19:30",
+   "slug": "data-element-parameter-id",
+   "tag": "DDIC · Data element 7/11",
+   "comment_word": "SETGET",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Data element · Part 7/11",
+     "title": "Stop typing the *same order* twice",
+     "voiceover": "Stop typing the same order number twice. Last time we learned search help. Now, the Parameter ID.",
+     "spoken": "Stop typing the same order number twice. Last time we learned search help. Now, the Parameter ID."
+    },
+    {
+     "kind": "answer",
+     "label": "WHY",
+     "heading": "SAP can *remember* it",
+     "body": "Display an order, then change it: the next screen fills the number in for you.",
+     "highlight": "fills the number in",
+     "voiceover": "Why? You display an order. Then you change it, and type the whole number again. Annoying. A Parameter ID fills it in for you.",
+     "spoken": "Why? You display an order. Then you change it, and type the whole number again. Annoying. A Parameter ID fills it in for you."
+    },
+    {
+     "kind": "answer",
+     "label": "NEW TERM",
+     "heading": "*SAP memory*",
+     "body": "A memory per user that lasts for your whole logon. Parameter IDs store values in it.",
+     "highlight": "your whole logon",
+     "voiceover": "Parameter IDs live in SAP memory. That's a memory per user, kept for your whole logon.",
+     "spoken": "Parameter IDs live in SAP memory. That's a memory per user, kept for your whole logon."
+    },
+    {
+     "kind": "screen",
+     "heading": "Further Characteristics *tab*",
+     "tcode": "SE11",
+     "object": "Data element VBELN_VA",
+     "tabs": [
+      "Attributes",
+      "Data Type",
+      "Further Characteristics",
+      "Field Label"
+     ],
+     "active": 2,
+     "fields": [
+      [
+       "Parameter ID",
+       "AUN"
+      ],
+      [
+       "Default Component name",
+       ""
+      ],
+      [
+       "Change document",
+       ""
+      ]
+     ],
+     "focus": [
+      0
+     ],
+     "note": "AUN = sales order",
+     "voiceover": "Open the sales order number data element in SE11. On Further Characteristics, its Parameter ID is AUN.",
+     "spoken": "Open the sales order number data element in SE11. On Further Characteristics, its Parameter ID is AUN."
+    },
+    {
+     "kind": "code",
+     "heading": "*SET* and *GET*",
+     "typewriter": true,
+     "code": "DATA lv_vbeln TYPE vbeln_va.\n\" read the last order from SAP memory\nGET PARAMETER ID 'AUN' FIELD lv_vbeln.\n\" store an order for the next screen\nSET PARAMETER ID 'AUN' FIELD lv_vbeln.",
+     "voiceover": "In code, it's one line each. GET PARAMETER reads the value from SAP memory. SET PARAMETER stores it for the next screen.",
+     "spoken": "In code, it's one line each. GET PARAMETER reads the value from SAP memory. SET PARAMETER stores it for the next screen."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "Same order, *no typing*",
+     "tcode": "SAP",
+     "title": "Order field, Parameter ID AUN",
+     "columns": [
+      "Step",
+      "Order field"
+     ],
+     "rows": [
+      [
+       "VA03 Display",
+       "you type 1234"
+      ],
+      [
+       "VA02 Change",
+       "already 1234"
+      ]
+     ],
+     "row_say": [
+      "display",
+      "change"
+     ],
+     "voiceover": "Here's an example. Display an order in VA zero three. Then open change, VA zero two. The number is already there.",
+     "spoken": "Here's an example. Display an order in VA03. Then open change, VA02. The number is already there."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "*Parameter ID* = memory",
+     "body": "Parameter ID on the data element + SET/GET: SAP fills in the last value for you.",
+     "highlight": "fills in the last value",
+     "voiceover": "Takeaway: a Parameter ID lets SAP remember a value. Users never retype it.",
+     "spoken": "Takeaway: a Parameter ID lets SAP remember a value. Users never retype it."
+    }
+   ],
+   "next": {
+    "title": "Part 8 · *Documentation* = F1 help",
+    "when": "tomorrow at 9 AM",
+    "voice": "part eight, documentation, the F1 help",
+    "quiz": {
+     "question": "Quiz: which tab holds the *Parameter ID*?",
+     "options": [
+      "Data Type",
+      "Further Characteristics"
+     ]
+    },
+    "vo": "Quiz: which tab holds the Parameter ID? The answer is in this reel. Comment it."
+   },
+   "caption": "Stop typing the same order number twice: use the Parameter ID.\n\nSAP data element, Part 7 of 11: Parameter ID and SET/GET PARAMETER.\n\n1. SAP memory = a per-user memory for your whole logon\n2. Further Characteristics tab: Parameter ID (VBELN_VA uses AUN)\n3. GET PARAMETER ID reads a value, SET PARAMETER ID stores it\n4. VA03 then VA02: the order number is already filled in\n\nQuiz: which tab holds the Parameter ID? Comment your answer.\n\nNext: Part 8, Documentation = F1 help (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  }
+ ]
 }

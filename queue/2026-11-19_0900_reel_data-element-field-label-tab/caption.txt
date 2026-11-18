@@ -1,0 +1,16 @@
+Your field label got cut off? Fix it in the Field Label tab.
+
+SAP data element, Part 5 of 11: the Field Label tab in SE11.
+
+1. Four field labels: Short (max 10), Medium (20), Long (40), Heading (55)
+2. Screens and ALV columns have different widths
+3. ALV shows the label that fits the column
+4. Heading is the column header in lists
+
+Save this for your next data element in SE11.
+
+Next: The FOR ALL ENTRIES trap (today at 1 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

@@ -1,0 +1,16 @@
+Your field has no F4 help? Fix it once, on the data element.
+
+SAP data element, Part 6 of 11: search help in SE11.
+
+1. Search help = a reusable F4 popup built in SE11
+2. Further Characteristics tab: Search Help name (e.g. DEBI) + Parameter (KUNNR)
+3. Every screen field using the data element gets F4
+4. A search help on the table field wins over it
+
+Comment F4 if your users still type numbers by hand.
+
+Next: Part 7, the Parameter ID (tonight at 7:30 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault
