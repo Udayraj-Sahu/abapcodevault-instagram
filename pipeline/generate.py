@@ -753,6 +753,7 @@ def tighten_audio(data, sr, max_gap=0.2, thresh=0.012):
     return out
 
 
+SCRIPT_HOOK_MAX = 8     # first spoken sentence = the hook (README Instagram skill checks, 20 Nov)
 SCRIPT_MAX_WORDS = 16   # longest voiceover sentence before the script check complains
 
 
@@ -783,6 +784,15 @@ def script_lint(p):
             a, b = len(vo.split()), len(sp.split())
             if abs(a - b) > 0.25 * max(a, b):
                 msgs.append(f"SCRIPT: spoken has {b} words but voiceover {a} in {where}; subtitles drift")
+    # hook + recap structure (20 Nov): first sentence <= SCRIPT_HOOK_MAX words; course parts recap in the fixed pattern
+    first = next((s for s in p.get("slides", []) if (s.get("voiceover") or "").strip()), None)
+    if first is not None and p.get("type", "reel") == "reel":
+        hook = re.split(r"(?<=[.?!])\s+", first["voiceover"].strip())[0]
+        if len(hook.split()) > SCRIPT_HOOK_MAX:
+            msgs.append(f"SCRIPT: hook has {len(hook.split())} words in {slug} (max {SCRIPT_HOOK_MAX}): '{hook[:50]}'")
+        if p.get("series") == "course" and int(p.get("part", 1) or 1) > 1:
+            if not re.search(r"Last time we learned [^.]+\. Now, ", first["voiceover"]):
+                msgs.append(f"SCRIPT: {slug} has no recap line 'Last time we learned X. Now, Y.' after the hook")
     return msgs
 
 
