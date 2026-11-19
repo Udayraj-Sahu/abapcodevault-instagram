@@ -1,0 +1,476 @@
+{
+ "date": "2026-11-20",
+ "handle": "@abapcodevault",
+ "posts": [
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.2",
+   "parts": 11,
+   "part": 8,
+   "time": "09:00",
+   "slug": "data-element-documentation",
+   "tag": "DDIC · Data element 8/11",
+   "comment_word": "F1",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Data element · Part 8/11",
+     "title": "Your users get *no F1 help*?",
+     "voiceover": "Stop leaving your users without F1 help. Last time we learned the Parameter ID. Now, the F1 help.",
+     "spoken": "Stop leaving your users without F1 help. Last time we learned the Parameter ID. Now, the F1 help."
+    },
+    {
+     "kind": "answer",
+     "label": "WHY",
+     "heading": "A label is only *two words*",
+     "body": "Users also need the meaning, the rules and an example.",
+     "highlight": "the meaning",
+     "voiceover": "Why does it matter? A label is only two words. Users also need the meaning, and how to fill the field.",
+     "spoken": "Why does it matter? A label is only two words. Users also need the meaning, and how to fill the field."
+    },
+    {
+     "kind": "answer",
+     "label": "NEW TERM",
+     "heading": "*Documentation* = F1 text",
+     "body": "The help text you write on the data element. SAP shows it when a user presses F1.",
+     "highlight": "presses F1",
+     "voiceover": "Documentation is the help text you write on the data element. SAP shows it when a user presses F1.",
+     "spoken": "Documentation is the help text you write on the data element. SAP shows it when a user presses F1."
+    },
+    {
+     "kind": "flow",
+     "heading": "Write it, *click by click*",
+     "steps": [
+      "Open SE11 in change mode",
+      "Goto, then Documentation",
+      "Write the Definition text",
+      "Save, then activate"
+     ],
+     "voiceover": "Open your data element in SE11, in change mode. Goto, then Documentation. The text editor opens. Write the definition in plain words. Save, then activate the data element.",
+     "spoken": "Open your data element in SE11, in change mode. Goto, then Documentation. The text editor opens. Write the definition in plain words. Save, then activate the data element."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "What users *see* on F1",
+     "tcode": "F1",
+     "title": "Performance Assistant: Priority",
+     "columns": [
+      "Section",
+      "Text"
+     ],
+     "rows": [
+      [
+       "Definition",
+       "Priority of the order"
+      ],
+      [
+       "Use",
+       "1 = urgent, 3 = normal"
+      ],
+      [
+       "Technical Info",
+       "ZDE_PRIORITY"
+      ]
+     ],
+     "row_say": [
+      "definition",
+      "use",
+      "technical"
+     ],
+     "voiceover": "Here's an example. Press F1 on the priority field. Definition: the priority of the order. Use: one is urgent, three is normal. Technical info shows the data element.",
+     "spoken": "Here's an example. Press F1 on the priority field. Definition: the priority of the order. Use: 1 is urgent, 3 is normal. Technical info shows the data element."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "*Write it once*, help everywhere",
+     "body": "Documentation on the data element = F1 help on every field that uses it.",
+     "highlight": "every field",
+     "voiceover": "Takeaway: write the documentation once. Every field that uses it gets F1 help.",
+     "spoken": "Takeaway: write the documentation once. Every field that uses it gets F1 help."
+    }
+   ],
+   "next": {
+    "title": "The *leading zeros* bug",
+    "when": "today at 1 PM",
+    "voice": "the leading zeros bug",
+    "vo": "At one PM: why your SELECT can't find a customer that exists."
+   },
+   "caption": "Stop leaving your users without F1 help: write documentation on the data element.\n\nSAP data element, Part 8 of 11: documentation = F1 help in SE11.\n\n1. Documentation = the help text users see on F1\n2. SE11, change mode: Goto > Documentation\n3. Write the Definition (and Use) in plain words, save, activate\n4. Every field using the data element shows it\n\nSave this for your next data element in SE11.\n\nNext: The leading zeros bug (today at 1 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "time": "13:00",
+   "format": "before_after",
+   "slug": "alpha-leading-zeros",
+   "tag": "Additional concepts",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "comment_word": "ALPHA",
+   "slides": [
+    {
+     "kind": "cover",
+     "style": "question",
+     "kicker": "Additional concepts",
+     "title": "SELECT can't find *customer 1000*?",
+     "voiceover": "Your SELECT can't find customer one thousand? It's right there in the table. The culprit is leading zeros.",
+     "spoken": "Your SELECT can't find customer 1000? It's right there in the table. The culprit is leading zeros."
+    },
+    {
+     "kind": "output",
+     "label": "THE PROBLEM",
+     "heading": "Typed *1000*, got *0 rows*",
+     "tcode": "SE38",
+     "title": "ZCUSTOMER_NAME",
+     "columns": [
+      "Step",
+      "Value"
+     ],
+     "rows": [
+      [
+       "You search",
+       "1000"
+      ],
+      [
+       "KNA1 stores",
+       "0000001000"
+      ],
+      [
+       "Result",
+       "0 rows"
+      ]
+     ],
+     "highlight": 2,
+     "verdict": {
+      "text": "0 ROWS",
+      "good": false
+     },
+     "row_say": [
+      "search",
+      "stores",
+      "result"
+     ],
+     "voiceover": "Here's the problem. You search for one thousand. But KNA1 stores it with leading zeros, ten digits long. Result: zero rows.",
+     "spoken": "Here's the problem. You search for 1000. But KNA1 stores it with leading zeros, 10 digits long. Result: 0 rows."
+    },
+    {
+     "kind": "answer",
+     "label": "WHY",
+     "heading": "The *ALPHA* routine",
+     "body": "The KUNNR domain uses conversion routine ALPHA. Screens add the zeros for you. Your code doesn't.",
+     "highlight": "Your code doesn't.",
+     "voiceover": "Why? The KUNNR domain uses the ALPHA conversion routine. On screens, SAP adds the zeros for you. In your code, it doesn't.",
+     "spoken": "Why? The KUNNR domain uses the ALPHA conversion routine. On screens, SAP adds the zeros for you. In your code, it doesn't."
+    },
+    {
+     "kind": "code",
+     "heading": "The fix: *ALPHA = IN*",
+     "typewriter": true,
+     "code": "DATA lv_kunnr TYPE kunnr VALUE '1000'.\nlv_kunnr = |{ lv_kunnr ALPHA = IN }|.\nSELECT SINGLE name1 FROM kna1\n  WHERE kunnr = @lv_kunnr\n  INTO @DATA(lv_name).",
+     "voiceover": "The fix is one line. A string template with ALPHA equals IN adds the zeros. Then run the SELECT.",
+     "spoken": "The fix is one line. A string template with ALPHA equals IN adds the zeros. Then run the SELECT."
+    },
+    {
+     "kind": "output",
+     "label": "RESULT",
+     "heading": "Now it *finds it*",
+     "tcode": "SE38",
+     "title": "ZCUSTOMER_NAME",
+     "columns": [
+      "Step",
+      "Value"
+     ],
+     "rows": [
+      [
+       "lv_kunnr",
+       "0000001000"
+      ],
+      [
+       "SELECT",
+       "1 row"
+      ],
+      [
+       "lv_name",
+       "ACME Ltd"
+      ]
+     ],
+     "highlight": 2,
+     "verdict": {
+      "text": "FOUND",
+      "good": true
+     },
+     "row_say": [
+      "zeros",
+      "select",
+      "acme"
+     ],
+     "voiceover": "Now the value has its zeros. The SELECT finds one row. ACME Limited. Done.",
+     "spoken": "Now the value has its zeros. The SELECT finds 1 row. ACME Limited. Done."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "*Convert first*, then select",
+     "body": "ALPHA key fields need their leading zeros in code: ALPHA = IN before the WHERE.",
+     "highlight": "ALPHA = IN",
+     "voiceover": "Takeaway: convert the value first. Then select.",
+     "spoken": "Takeaway: convert the value first. Then select."
+    }
+   ],
+   "next": {
+    "title": "Part 9 · Data element *key points*",
+    "when": "today at 5 PM",
+    "voice": "part nine, data element key points",
+    "vo": "At five PM: the one change that can break ten tables."
+   },
+   "caption": "Your SELECT can't find customer 1000? Blame the leading zeros.\n\nSAP ABAP leading zeros bug: the ALPHA conversion routine.\n\n1. KNA1 stores KUNNR as 0000001000, not 1000\n2. Screens add the zeros for you, your code doesn't\n3. Fix: |{ lv_kunnr ALPHA = IN }| (or CONVERSION_EXIT_ALPHA_INPUT)\n4. Then run the SELECT\n\nHave you lost an hour to this bug?\n\nNext: Part 9, Data element key points (today at 5 PM).\n\nMore snippets like this: ABAP Code Vault, link in bio.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#abaptips",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.2",
+   "parts": 11,
+   "part": 9,
+   "time": "17:00",
+   "slug": "data-element-key-points",
+   "tag": "DDIC · Data element 9/11",
+   "comment_word": "RULES",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Data element · Part 9/11",
+     "title": "One change, *ten broken tables*?",
+     "voiceover": "Stop breaking ten tables with one change. Last time we learned documentation. Now, the key rules.",
+     "spoken": "Stop breaking ten tables with one change. Last time we learned documentation. Now, the key rules."
+    },
+    {
+     "kind": "list",
+     "heading": "Four *key rules*",
+     "items": [
+      "One domain - many data elements",
+      "Labels - per logon language",
+      "Changes - hit every user",
+      "Programs - TYPE the data element"
+     ],
+     "voiceover": "Here are four rules. One domain can carry many data elements. Labels are stored per logon language. Changes hit every table that uses it. Programs should type the data element.",
+     "spoken": "Here are four rules. One domain can carry many data elements. Labels are stored per logon language. Changes hit every table that uses it. Programs should type the data element."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "One domain *KUNNR*, three meanings",
+     "tcode": "SE11",
+     "title": "Domain KUNNR: data elements",
+     "columns": [
+      "Data element",
+      "Field label"
+     ],
+     "rows": [
+      [
+       "KUNNR",
+       "Customer"
+      ],
+      [
+       "KUNAG",
+       "Sold-to party"
+      ],
+      [
+       "KUNWE",
+       "Ship-to party"
+      ]
+     ],
+     "row_say": [
+      "customer",
+      "sold",
+      "ship"
+     ],
+     "voiceover": "Here's an example. The KUNNR domain sits under many data elements. Customer. Sold to party. Ship to party. Same shape, different meaning.",
+     "spoken": "Here's an example. The KUNNR domain sits under many data elements. Customer. Sold to party. Ship to party. Same shape, different meaning."
+    },
+    {
+     "kind": "answer",
+     "label": "CHANGES",
+     "heading": "Check the *Where-Used List*",
+     "body": "A change to a data element reaches every table and program that uses it. Look before you change.",
+     "highlight": "Look before you change.",
+     "voiceover": "Before you change a data element, open the Where-Used List. Every table and program in it gets the change.",
+     "spoken": "Before you change a data element, open the Where-Used List. Every table and program in it gets the change."
+    },
+    {
+     "kind": "versus",
+     "label": "IN PROGRAMS",
+     "heading": "Programs *TYPE it*",
+     "bad": {
+      "title": "TYPE c LENGTH 10",
+      "sub": "no F1, no F4",
+      "say": "plain"
+     },
+     "good": {
+      "title": "TYPE kunnr",
+      "sub": "F1, F4 and labels",
+      "say": "type"
+     },
+     "voiceover": "In programs, don't use a plain ten character field. It gets no F1 and no F4. Type it with the data element, like KUNNR. Then F1 and F4 come along.",
+     "spoken": "In programs, don't use a plain ten character field. It gets no F1 and no F4. Type it with the data element, like KUNNR. Then F1 and F4 come along."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Domain = *shape*, data element = *meaning*",
+     "body": "Many data elements can share one domain. Always TYPE the data element.",
+     "highlight": "share one domain",
+     "voiceover": "Takeaway: the domain gives the shape. The data element gives the meaning.",
+     "spoken": "Takeaway: the domain gives the shape. The data element gives the meaning."
+    }
+   ],
+   "next": {
+    "title": "Part 10 · Data element *mistakes*",
+    "when": "tonight at 7:30 PM",
+    "voice": "part ten, data element mistakes",
+    "quiz": {
+     "question": "Quiz: can one domain have *many* data elements?",
+     "options": [
+      "Only one",
+      "Many"
+     ]
+    },
+    "vo": "Quiz: can one domain have many data elements? The answer is in this reel. Comment it."
+   },
+   "caption": "Stop breaking ten tables with one data element change.\n\nSAP data element, Part 9 of 11: the key rules of a data element in SE11.\n\n1. One domain can carry many data elements (KUNNR, KUNAG, KUNWE)\n2. Field labels are stored per logon language\n3. A change hits every table and program: check the Where-Used List\n4. Programs TYPE the data element (TYPE kunnr, not TYPE c LENGTH 10)\n\nQuiz: can one domain have many data elements? Comment your answer.\n\nNext: Part 10, Data element mistakes (tonight at 7:30 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.2",
+   "parts": 11,
+   "part": 10,
+   "time": "19:30",
+   "slug": "data-element-mistakes-interview",
+   "tag": "DDIC · Data element 10/11",
+   "comment_word": "DTEL",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Data element · Part 10/11",
+     "title": "Three mistakes that *fail* code reviews",
+     "voiceover": "Three data element mistakes fail code reviews. Last time we learned the key rules. Now, the mistakes, and the interview questions.",
+     "spoken": "Three data element mistakes fail code reviews. Last time we learned the key rules. Now, the mistakes, and the interview questions."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Mistake one: *predefined type*",
+     "bad": {
+      "title": "Predefined CHAR 10",
+      "sub": "no shared shape",
+      "say": "predefined"
+     },
+     "good": {
+      "title": "Domain ZD_ORDER_NO",
+      "sub": "one shape, reused",
+      "say": "use"
+     },
+     "voiceover": "Mistake one. You pick a predefined type, but a fitting domain exists. Use the domain instead. Then every field shares one shape.",
+     "spoken": "Mistake one. You pick a predefined type, but a fitting domain exists. Use the domain instead. Then every field shares one shape."
+    },
+    {
+     "kind": "checklist",
+     "heading": "Two more *mistakes*",
+     "items": [
+      "Empty labels - no proper header",
+      "Skipped search help - users type by hand"
+     ],
+     "voiceover": "Mistake two: you leave the labels empty. Your screens and lists show no proper header. Mistake three: you skipped the search help. So your users type values by hand.",
+     "spoken": "Mistake two: you leave the labels empty. Your screens and lists show no proper header. Mistake three: you skipped the search help. So your users type values by hand."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "Interview *answers*",
+     "tcode": "SAP",
+     "title": "Data element: interview questions",
+     "columns": [
+      "Question",
+      "Short answer"
+     ],
+     "rows": [
+      [
+       "Domain vs data element?",
+       "Shape vs meaning"
+      ],
+      [
+       "Label lengths?",
+       "10 / 20 / 40 / 55"
+      ],
+      [
+       "Parameter ID?",
+       "Value in SAP memory"
+      ]
+     ],
+     "row_say": [
+      "difference",
+      "lengths",
+      "parameter"
+     ],
+     "voiceover": "Interview time. What's the difference between a domain and a data element? Shape versus meaning. The four label lengths? Ten, twenty, forty, fifty five. A parameter ID? A value kept in SAP memory.",
+     "spoken": "Interview time. What's the difference between a domain and a data element? Shape versus meaning. The four label lengths? 10, 20, 40, 55. A parameter ID? A value kept in SAP memory."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Domain, labels, *search help*",
+     "body": "Reuse a domain, fill all four labels, attach a search help.",
+     "highlight": "all four labels",
+     "voiceover": "Takeaway: reuse a domain. Fill all four labels. And attach a search help.",
+     "spoken": "Takeaway: reuse a domain. Fill all four labels. And attach a search help."
+    }
+   ],
+   "next": {
+    "title": "Part 11 · Data element *recap quiz*",
+    "when": "tomorrow at 9 AM",
+    "voice": "part eleven, the data element recap quiz",
+    "vo": "Tomorrow at nine AM: the whole data element in one quiz. Can you score full marks?"
+   },
+   "caption": "Three data element mistakes that fail code reviews, plus the interview answers.\n\nSAP data element, Part 10 of 11: common mistakes and interview questions.\n\n1. Predefined type when a domain fits: reuse the domain\n2. Empty field labels: no proper header on screens and lists\n3. Missing search help: users type values by hand\n4. Interview: domain vs data element, label lengths, Parameter ID\n\nComment DTEL if you have made one of these.\n\nNext: Part 11, Data element recap quiz (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  }
+ ]
+}

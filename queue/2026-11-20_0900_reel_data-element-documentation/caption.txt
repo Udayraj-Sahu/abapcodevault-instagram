@@ -1,0 +1,16 @@
+Stop leaving your users without F1 help: write documentation on the data element.
+
+SAP data element, Part 8 of 11: documentation = F1 help in SE11.
+
+1. Documentation = the help text users see on F1
+2. SE11, change mode: Goto > Documentation
+3. Write the Definition (and Use) in plain words, save, activate
+4. Every field using the data element shows it
+
+Save this for your next data element in SE11.
+
+Next: The leading zeros bug (today at 1 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

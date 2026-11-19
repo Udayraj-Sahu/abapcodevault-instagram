@@ -1,0 +1,16 @@
+Stop breaking ten tables with one data element change.
+
+SAP data element, Part 9 of 11: the key rules of a data element in SE11.
+
+1. One domain can carry many data elements (KUNNR, KUNAG, KUNWE)
+2. Field labels are stored per logon language
+3. A change hits every table and program: check the Where-Used List
+4. Programs TYPE the data element (TYPE kunnr, not TYPE c LENGTH 10)
+
+Quiz: can one domain have many data elements? Comment your answer.
+
+Next: Part 10, Data element mistakes (tonight at 7:30 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

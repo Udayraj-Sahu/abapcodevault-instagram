@@ -1,0 +1,16 @@
+Your SELECT can't find customer 1000? Blame the leading zeros.
+
+SAP ABAP leading zeros bug: the ALPHA conversion routine.
+
+1. KNA1 stores KUNNR as 0000001000, not 1000
+2. Screens add the zeros for you, your code doesn't
+3. Fix: |{ lv_kunnr ALPHA = IN }| (or CONVERSION_EXIT_ALPHA_INPUT)
+4. Then run the SELECT
+
+Have you lost an hour to this bug?
+
+Next: Part 9, Data element key points (today at 5 PM).
+
+More snippets like this: ABAP Code Vault, link in bio.
+
+#sap #abap #sapabap #abaptips #abapcodevault

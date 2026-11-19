@@ -1,0 +1,16 @@
+Three data element mistakes that fail code reviews, plus the interview answers.
+
+SAP data element, Part 10 of 11: common mistakes and interview questions.
+
+1. Predefined type when a domain fits: reuse the domain
+2. Empty field labels: no proper header on screens and lists
+3. Missing search help: users type values by hand
+4. Interview: domain vs data element, label lengths, Parameter ID
+
+Comment DTEL if you have made one of these.
+
+Next: Part 11, Data element recap quiz (tomorrow at 9 AM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault
