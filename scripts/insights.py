@@ -10,6 +10,7 @@ import csv, datetime as dt, json, os, sys, urllib.error, urllib.parse, urllib.re
 sys.path.insert(0, os.path.dirname(__file__))
 import publish as P   # reuse call() / detect_api() (same token, same host detection)
 
+ERRORS = {}
 IST = dt.timezone(dt.timedelta(hours=5, minutes=30))
 METRICS = ["reach", "views", "likes", "comments", "shares", "saved", "total_interactions",
            "ig_reels_avg_watch_time", "ig_reels_video_view_total_time", "reels_skip_rate", "follows", "profile_visits"]
@@ -31,6 +32,7 @@ def media_metrics(mid):
             r, e = safe(P.call, "GET", f"{mid}/insights", {"metric": m})
             if r is None:
                 bad.append(m)
+                ERRORS.setdefault(m, e)
                 continue
             for it in r.get("data", []):
                 out[it["name"]] = (it.get("values") or [{}])[0].get("value", it.get("total_value", {}).get("value"))
@@ -58,7 +60,7 @@ def main():
         rows.append({"folder": folder, "published_at": v.get("published_at"), **m})
     os.makedirs(os.path.join(root, "insights"), exist_ok=True)
     now = dt.datetime.now(IST).strftime("%Y-%m-%d %H:%M IST")
-    json.dump({"updated": now, "account": acct or {}, "unsupported_metrics": sorted(unsupported), "reels": rows},
+    json.dump({"updated": now, "account": acct or {}, "unsupported_metrics": sorted(unsupported), "errors": ERRORS, "reels": rows},
               open(os.path.join(root, "insights", "latest.json"), "w"), indent=1)
     hist = os.path.join(root, "insights", "history.csv")
     cols = ["date", "folder"] + METRICS
@@ -94,6 +96,8 @@ def main():
         lines += ["", f"_Metrics the API did not return for some reels: {', '.join(sorted(unsupported))}_"]
     open(os.path.join(root, "insights", "REPORT.md"), "w").write("\n".join(lines) + "\n")
     print(f"insights saved for {len(rows)} reels; unsupported: {sorted(unsupported)}")
+    for m, e in list(ERRORS.items())[:3]:
+        print(f"  {m}: {e}")
 
 
 if __name__ == "__main__":
