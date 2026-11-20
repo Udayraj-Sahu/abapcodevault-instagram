@@ -1,5 +1,494 @@
 {
  "date": "2026-11-21",
  "handle": "@abapcodevault",
- "posts": []
+ "posts": [
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.2",
+   "parts": 11,
+   "part": 11,
+   "time": "09:00",
+   "slug": "data-element-recap-quiz",
+   "tag": "DDIC · Data element 11/11",
+   "comment_word": "LABEL",
+   "slides": [
+    {
+     "kind": "cover",
+     "style": "question",
+     "kicker": "Data element · Part 11/11",
+     "title": "Can you score *3 out of 3*?",
+     "voiceover": "Three data element questions. Can you score three? Last time we learned the data element mistakes. Now, the recap quiz.",
+     "spoken": "Three data element questions. Can you score 3? Last time we learned the data element mistakes. Now, the recap quiz."
+    },
+    {
+     "kind": "quiz",
+     "question": "Who gives a field its *meaning*?",
+     "options": [
+      "Domain",
+      "Data element",
+      "Table"
+     ],
+     "answer": 1,
+     "countdown": true,
+     "reveal": true,
+     "voiceover": "Question one. Who gives a field its meaning? Domain, data element, or table? Think. It's the data element. The domain only gives the shape.",
+     "spoken": "Question one. Who gives a field its meaning? Domain, data element, or table? Think. It's the data element. The domain only gives the shape."
+    },
+    {
+     "kind": "quiz",
+     "question": "Which label holds *20 characters*?",
+     "options": [
+      "Short",
+      "Medium",
+      "Long"
+     ],
+     "answer": 1,
+     "countdown": true,
+     "reveal": true,
+     "voiceover": "Question two. Which field label holds twenty characters? Short, medium, or long? Think. It's medium. Short is ten, long is forty.",
+     "spoken": "Question two. Which field label holds 20 characters? Short, medium, or long? Think. It's medium. Short is 10, long is 40."
+    },
+    {
+     "kind": "quiz",
+     "question": "Where does *F1 help* come from?",
+     "options": [
+      "Documentation",
+      "Search help",
+      "Parameter ID"
+     ],
+     "answer": 0,
+     "countdown": true,
+     "reveal": true,
+     "voiceover": "Question three. Where does F1 help come from? Think. It's the documentation. The search help gives F4.",
+     "spoken": "Question three. Where does F1 help come from? Think. It's the documentation. The search help gives F4."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "Data element *KUNNR*, all in one",
+     "tcode": "SE11",
+     "title": "Data element KUNNR",
+     "columns": [
+      "Part",
+      "Value"
+     ],
+     "rows": [
+      [
+       "Domain",
+       "KUNNR (CHAR 10)"
+      ],
+      [
+       "Medium label",
+       "Customer"
+      ],
+      [
+       "Search help",
+       "DEBI"
+      ],
+      [
+       "Parameter ID",
+       "KUN"
+      ]
+     ],
+     "row_say": [
+      "domain",
+      "label",
+      "search",
+      "parameter"
+     ],
+     "voiceover": "Here's the whole thing on one example, KUNNR. The domain gives ten characters. The label says customer. The search help is DEBI. The parameter ID is KUN.",
+     "spoken": "Here's the whole thing on one example, KUNNR. The domain gives 10 characters. The label says customer. The search help is DEBI. The parameter ID is KUN."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Shape, *meaning*, help",
+     "body": "Domain = shape. Data element = meaning, labels, F1 and F4 for every field that uses it.",
+     "highlight": "every field",
+     "voiceover": "Takeaway: the domain gives the shape. The data element gives the meaning and the help.",
+     "spoken": "Takeaway: the domain gives the shape. The data element gives the meaning and the help."
+    }
+   ],
+   "next": {
+    "title": "Dump in *production*: 5 steps",
+    "when": "today at 1 PM",
+    "voice": "a dump in production, five steps",
+    "vo": "At one PM: your report dumps in production. Five steps to find out why."
+   },
+   "caption": "Three data element questions. Can you score 3 out of 3?\n\nSAP data element, Part 11 of 11: the recap quiz for the data element in SE11.\n\n1. Who gives a field its meaning? The data element (the domain gives the shape)\n2. Which field label holds 20 characters? Medium (Short 10, Long 40, Heading 55)\n3. Where does F1 help come from? The documentation (the search help gives F4)\n4. All in one example: data element KUNNR\n\nComment your score: how many did you get right?\n\nNext: Dump in production: 5 steps (today at 1 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "time": "13:00",
+   "format": "story",
+   "slug": "st22-dump-checklist",
+   "tag": "Additional concepts",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "comment_word": "ST22",
+   "slides": [
+    {
+     "kind": "cover",
+     "style": "question",
+     "kicker": "Additional concepts",
+     "title": "Dump in *production*. Now what?",
+     "voiceover": "Stop guessing why production dumped at nine. Here's the five step checklist.",
+     "spoken": "Stop guessing why production dumped at nine. Here's the 5 step checklist."
+    },
+    {
+     "kind": "story",
+     "time": "9:05 AM",
+     "place": "Production",
+     "heading": "The *month-end* report dumps",
+     "lines": [
+      "Users see a short dump screen.",
+      "Everyone asks you: why?"
+     ],
+     "lesson": "A dump = SAP stops the program on a runtime error.",
+     "voiceover": "Nine oh five, month end. The finance report dumps. Users see a short dump screen. Everyone asks you why. A dump means SAP stopped the program on a runtime error.",
+     "spoken": "9:05, month end. The finance report dumps. Users see a short dump screen. Everyone asks you why. A dump means SAP stopped the program on a runtime error."
+    },
+    {
+     "kind": "flow",
+     "heading": "The *5-step* checklist",
+     "steps": [
+      "Open ST22, filter date + user",
+      "Read the runtime error",
+      "Read Error analysis",
+      "Jump to the source line",
+      "Fix, then test again"
+     ],
+     "voiceover": "Step one: open ST22, and filter by date and user. Step two: read the runtime error name. Step three: read the error analysis. Step four: jump to the source line. Step five: fix it, then test again.",
+     "spoken": "Step one: open ST22, and filter by date and user. Step two: read the runtime error name. Step three: read the error analysis. Step four: jump to the source line. Step five: fix it, then test again."
+    },
+    {
+     "kind": "sap_error",
+     "label": "THE PROBLEM",
+     "heading": "The *real* dump",
+     "tcode": "ST22",
+     "title": "ZFI_MONTH_END",
+     "code": [
+      "DATA(lv_count) = lines( lt_items ).",
+      "lv_avg = lv_total / lv_count."
+     ],
+     "bad_line": 1,
+     "message": "COMPUTE_INT_ZERODIVIDE: Division by 0 (type I)",
+     "say": "zero",
+     "voiceover": "Here's the real one. The runtime error says division by zero. The source line is the average. The item count was zero.",
+     "spoken": "Here's the real one. The runtime error says division by zero. The source line is the average. The item count was 0."
+    },
+    {
+     "kind": "code",
+     "heading": "The fix: *check first*",
+     "typewriter": true,
+     "filename": "zfi_month_end.abap",
+     "code": "IF lv_count > 0.\n  lv_avg = lv_total / lv_count.\nELSE.\n  lv_avg = 0.\nENDIF.",
+     "voiceover": "The fix: check the count before you divide. No items? The average is zero. No more dump.",
+     "spoken": "The fix: check the count before you divide. No items? The average is 0. No more dump."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "*Read the dump* first",
+     "body": "ST22 already tells you the error, the reason and the exact source line.",
+     "highlight": "the exact source line",
+     "voiceover": "Takeaway: the dump already tells you everything. The error, the reason, the line. Read it before you touch the code.",
+     "spoken": "Takeaway: the dump already tells you everything. The error, the reason, the line. Read it before you touch the code."
+    }
+   ],
+   "next": {
+    "title": "Part 1 · What a *database table* is",
+    "when": "today at 5 PM",
+    "voice": "part one, what a database table is",
+    "vo": "At five PM: why your data vanishes, and where it should live."
+   },
+   "caption": "Stop guessing why production dumped. Read the dump first.\n\nA 5-step SAP ABAP short dump checklist for ST22:\n\n1. Open ST22, filter by date and user\n2. Read the runtime error name (e.g. COMPUTE_INT_ZERODIVIDE)\n3. Read the Error analysis section\n4. Jump to the source line where it terminated\n5. Fix it, then test again\n\nInterviewers ask this a lot: \"How do you analyse a dump?\"\n\nNext: Part 1, What a database table is (today at 5 PM).\n\nABAP Interview Pack (160 Q&A): link in bio.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#sapinterview",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 1,
+   "time": "17:00",
+   "slug": "table-what-why",
+   "tag": "DDIC · Tables 1/18",
+   "comment_word": "TABLE",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 1/18",
+     "title": "Your data *vanishes* at the end?",
+     "voiceover": "Stop losing every row when your program ends. Last time we learned the data element. Now, database tables.",
+     "spoken": "Stop losing every row when your program ends. Last time we learned the data element. Now, database tables."
+    },
+    {
+     "kind": "answer",
+     "label": "WHY",
+     "heading": "Memory is *temporary*",
+     "body": "An internal table lives only while the program runs. When it ends, the rows are gone.",
+     "highlight": "the rows are gone",
+     "voiceover": "Why do we need tables? An internal table lives only while your program runs. When it ends, the rows are gone.",
+     "spoken": "Why do we need tables? An internal table lives only while your program runs. When it ends, the rows are gone."
+    },
+    {
+     "kind": "answer",
+     "label": "NEW TERM",
+     "heading": "*Database table* = rows that stay",
+     "body": "A table you define in SE11. Its rows are stored in the database, for every program and every user.",
+     "highlight": "every user",
+     "voiceover": "A database table is a table you define in SE11. Its rows stay in the database. Every program and every user can read them.",
+     "spoken": "A database table is a table you define in SE11. Its rows stay in the database. Every program and every user can read them."
+    },
+    {
+     "kind": "flow",
+     "heading": "From SE11 to the *database*",
+     "steps": [
+      "Define the fields in SE11",
+      "Activate the table",
+      "SAP creates it in the database",
+      "Programs read and write rows"
+     ],
+     "voiceover": "Here's how it works. Define the fields in SE11. Activate the table. SAP creates the same table in the database. Programs then read and write its rows.",
+     "spoken": "Here's how it works. Define the fields in SE11. Activate the table. SAP creates the same table in the database. Programs then read and write its rows."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "Real rows in *SCARR*",
+     "tcode": "SE16N",
+     "title": "Table SCARR: airlines",
+     "columns": [
+      "CARRID",
+      "CURRCODE",
+      "CARRNAME"
+     ],
+     "rows": [
+      [
+       "AA",
+       "USD",
+       "American Airlines"
+      ],
+      [
+       "AF",
+       "EUR",
+       "Air France"
+      ],
+      [
+       "LH",
+       "EUR",
+       "Lufthansa"
+      ]
+     ],
+     "row_say": [
+      "american",
+      "france",
+      "lufthansa"
+     ],
+     "voiceover": "Here's an example. The SAP demo table SCARR stores airlines. American Airlines, in US dollars. Air France, in euros. Lufthansa, in euros too.",
+     "spoken": "Here's an example. The SAP demo table SCARR stores airlines. American Airlines, in US dollars. Air France, in euros. Lufthansa, in euros too."
+    },
+    {
+     "kind": "versus",
+     "label": "REMEMBER",
+     "heading": "Memory vs *database*",
+     "bad": {
+      "title": "Internal table",
+      "sub": "gone when the program ends",
+      "say": "internal"
+     },
+     "good": {
+      "title": "Database table",
+      "sub": "stored for good",
+      "say": "database"
+     },
+     "voiceover": "Takeaway: an internal table forgets everything at the end. A database table keeps the data for good.",
+     "spoken": "Takeaway: an internal table forgets everything at the end. A database table keeps the data for good."
+    }
+   ],
+   "next": {
+    "title": "Part 2 · Where a table *connects*",
+    "when": "tonight at 7:30 PM",
+    "voice": "part two, where a table connects",
+    "quiz": {
+     "question": "Quiz: where does an *internal table* keep its rows?",
+     "options": [
+      "In memory",
+      "In the database"
+     ]
+    },
+    "vo": "Quiz: where does an internal table keep its rows? The answer is in this reel. Comment it."
+   },
+   "caption": "Stop losing every row when your program ends: use a database table.\n\nSAP ABAP tables, Part 1 of 18: what a database table in SE11 is, and why you need one.\n\n1. An internal table lives only while the program runs\n2. A database table is defined in SE11 and its rows stay in the database\n3. Activate it and SAP creates the same table in the database\n4. Example: the demo table SCARR (AA, AF, LH)\n\nQuiz: where does an internal table keep its rows? Comment your answer.\n\nNext: Part 2, Where a table connects (tonight at 7:30 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 2,
+   "time": "19:30",
+   "slug": "table-where-used",
+   "tag": "DDIC · Tables 2/18",
+   "comment_word": "FIELDS",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 2/18",
+     "title": "Where does *CARRID* get its type?",
+     "voiceover": "Stop guessing where CARRID gets its three characters. Last time we learned what a database table is. Now, where it connects.",
+     "spoken": "Stop guessing where CARRID gets its 3 characters. Last time we learned what a database table is. Now, where it connects."
+    },
+    {
+     "kind": "answer",
+     "label": "WHY",
+     "heading": "A field never *stands alone*",
+     "body": "Each table field points to a data element. The data element points to a domain.",
+     "highlight": "points to a domain",
+     "voiceover": "Why does it matter? A table field never stands alone. It points to a data element. And the data element points to a domain.",
+     "spoken": "Why does it matter? A table field never stands alone. It points to a data element. And the data element points to a domain."
+    },
+    {
+     "kind": "screen",
+     "heading": "Inside *SCARR*",
+     "tcode": "SE11",
+     "object": "Table SCARR",
+     "tabs": [
+      "Attributes",
+      "Delivery and Maintenance",
+      "Fields",
+      "Entry help/check"
+     ],
+     "active": 2,
+     "fields": [
+      [
+       "MANDT",
+       "S_MANDT"
+      ],
+      [
+       "CARRID",
+       "S_CARR_ID"
+      ],
+      [
+       "CARRNAME",
+       "S_CARRNAME"
+      ],
+      [
+       "CURRCODE",
+       "S_CURRCODE"
+      ]
+     ],
+     "focus": [
+      1,
+      2
+     ],
+     "focus_say": {
+      "1": "airline",
+      "2": "name"
+     },
+     "note": "every field has a data element",
+     "voiceover": "Open SCARR in SE11, on the Fields tab. Every field has a data element. The airline code has one. The airline name has one too.",
+     "spoken": "Open SCARR in SE11, on the Fields tab. Every field has a data element. The airline code has one. The airline name has one too."
+    },
+    {
+     "kind": "flow",
+     "heading": "The *chain*",
+     "steps": [
+      "Table field CARRID",
+      "Data element S_CARR_ID",
+      "Domain S_CARR_ID",
+      "Type CHAR, length 3"
+     ],
+     "voiceover": "Follow the chain. Table field, the airline code. Data element, for the meaning. Domain, for the shape. Type CHAR, length three.",
+     "spoken": "Follow the chain. Table field, the airline code. Data element, for the meaning. Domain, for the shape. Type CHAR, length 3."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "See the rows in *SE16N*",
+     "tcode": "SE16N",
+     "title": "SE16N: table SCARR",
+     "columns": [
+      "CARRID",
+      "CARRNAME"
+     ],
+     "rows": [
+      [
+       "AA",
+       "American Airlines"
+      ],
+      [
+       "LH",
+       "Lufthansa"
+      ],
+      [
+       "SQ",
+       "Singapore Airlines"
+      ]
+     ],
+     "row_say": [
+      "american",
+      "lufthansa",
+      "singapore"
+     ],
+     "voiceover": "Programs read these rows with a SELECT. You can see them too. SE16N shows any table's rows. Type SCARR, press F8. American Airlines. Lufthansa. Singapore Airlines.",
+     "spoken": "Programs read these rows with a SELECT. You can see them too. SE16N shows any table's rows. Type SCARR, press F8. American Airlines. Lufthansa. Singapore Airlines."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Field, data element, *domain*",
+     "body": "A table field takes its meaning from the data element and its shape from the domain.",
+     "highlight": "its shape from the domain",
+     "voiceover": "Takeaway: a table field takes its meaning from the data element. And its shape from the domain.",
+     "spoken": "Takeaway: a table field takes its meaning from the data element. And its shape from the domain."
+    }
+   ],
+   "next": {
+    "title": "Part 3 · *Transparent*, pooled, cluster",
+    "when": "tomorrow at 9 AM",
+    "voice": "part three, transparent, pooled and cluster tables",
+    "vo": "Tomorrow at nine AM: three table types, and why S four hana keeps mostly one."
+   },
+   "caption": "Stop guessing where CARRID gets its 3 characters: follow the chain in SE11.\n\nSAP ABAP tables, Part 2 of 18: where a database table connects in the Data Dictionary.\n\n1. Every table field points to a data element (the meaning)\n2. The data element points to a domain (the shape)\n3. Example: SCARR-CARRID, data element S_CARR_ID, CHAR 3\n4. Programs read the rows with SELECT; SE16N shows them\n\nSave this for your first table in SE11.\n\nNext: Part 3, Transparent, pooled, cluster (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  }
+ ]
 }

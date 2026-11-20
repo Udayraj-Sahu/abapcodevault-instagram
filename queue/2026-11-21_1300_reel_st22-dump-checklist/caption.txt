@@ -1,0 +1,17 @@
+Stop guessing why production dumped. Read the dump first.
+
+A 5-step SAP ABAP short dump checklist for ST22:
+
+1. Open ST22, filter by date and user
+2. Read the runtime error name (e.g. COMPUTE_INT_ZERODIVIDE)
+3. Read the Error analysis section
+4. Jump to the source line where it terminated
+5. Fix it, then test again
+
+Interviewers ask this a lot: "How do you analyse a dump?"
+
+Next: Part 1, What a database table is (today at 5 PM).
+
+ABAP Interview Pack (160 Q&A): link in bio.
+
+#sap #abap #sapabap #sapinterview #abapcodevault

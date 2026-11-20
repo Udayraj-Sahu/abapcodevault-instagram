@@ -1,0 +1,16 @@
+Stop guessing where CARRID gets its 3 characters: follow the chain in SE11.
+
+SAP ABAP tables, Part 2 of 18: where a database table connects in the Data Dictionary.
+
+1. Every table field points to a data element (the meaning)
+2. The data element points to a domain (the shape)
+3. Example: SCARR-CARRID, data element S_CARR_ID, CHAR 3
+4. Programs read the rows with SELECT; SE16N shows them
+
+Save this for your first table in SE11.
+
+Next: Part 3, Transparent, pooled, cluster (tomorrow at 9 AM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

@@ -1,0 +1,16 @@
+Three data element questions. Can you score 3 out of 3?
+
+SAP data element, Part 11 of 11: the recap quiz for the data element in SE11.
+
+1. Who gives a field its meaning? The data element (the domain gives the shape)
+2. Which field label holds 20 characters? Medium (Short 10, Long 40, Heading 55)
+3. Where does F1 help come from? The documentation (the search help gives F4)
+4. All in one example: data element KUNNR
+
+Comment your score: how many did you get right?
+
+Next: Dump in production: 5 steps (today at 1 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

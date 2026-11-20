@@ -1,7 +1,7 @@
 {
  "handle": "@abapcodevault",
  "mode": "reels_only",
- "last_queued_date": "2026-11-20",
+ "last_queued_date": "2026-11-21",
  "history": [
   "4 ABAP 7.40 syntax tricks (old vs new)",
   "sy-subrc cheat sheet",
@@ -47,7 +47,11 @@
   "Course 3.2 Data element part 8 Documentation = F1 help",
   "Leading zeros bug: ALPHA conversion",
   "Course 3.2 Data element part 9 Key points",
-  "Course 3.2 Data element part 10 Mistakes + interview"
+  "Course 3.2 Data element part 10 Mistakes + interview",
+  "Course 3.2 Data element part 11 Recap quiz",
+  "Short dump in production: 5-step checklist (ST22)",
+  "Course 3.3 Tables part 1 What a database table is + why",
+  "Course 3.3 Tables part 2 Where a table connects (field, data element, domain, SE16N)"
  ],
  "recent_formats": {
   "reel": [
@@ -88,6 +92,10 @@
    "course_lesson",
    "before_after",
    "course_lesson",
+   "course_lesson",
+   "course_lesson",
+   "story",
+   "course_lesson",
    "course_lesson"
   ],
   "carousel": [],
@@ -95,18 +103,138 @@
   "cover": []
  },
  "course": {
-  "about": "9 AM, 5 PM and 7:30 PM reels teach pipeline/syllabus.json in order. 'next' = the next lesson to start; 'pending_parts' = planned remaining parts of the current lesson (do these first, in order). Domain was re-split to 12 parts on 15 Nov (old part 5 became parts 5 + 6).",
+  "about": "9 AM, 5 PM and 7:30 PM reels teach pipeline/syllabus.json in order. 'next' = the next lesson to start; 'pending_parts' = planned remaining parts of the current lesson (do these first, in order). Domain was re-split to 12 parts on 15 Nov (old part 5 became parts 5 + 6). Tables (3.3) planned on 20 Nov as 18 parts (deep-dive map).",
   "next": {
    "section": 3,
-   "lesson": 3
+   "lesson": 4
   },
   "pending_parts": [
    {
-    "syllabus": "3.2",
-    "topic": "Data element",
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 3,
+    "parts": 18,
+    "title": "Transparent, pooled, cluster",
+    "focus": "Map Q5/Q6: the three table types; transparent = 1:1 database table; pooled/cluster store many logical tables in one physical table; in S/4HANA most pooled/cluster tables were converted to transparent. Beginner-clean, one example each."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 4,
+    "parts": 18,
+    "title": "Create a table, click by click",
+    "focus": "Map Q4: SE11 > Database table > name ZT... > Create; short description; tabs Delivery and Maintenance, Fields; save in a package; Technical Settings needed before activation; Enhancement Category prompt in one line (lesson 3.9 later)."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 5,
+    "parts": 18,
+    "title": "Delivery Class",
+    "focus": "Map Q5: Delivery and Maintenance tab, Delivery Class A (application/master+transaction data) and C (customizing) in depth, L, G, E, S, W in one table; why it matters for transports and client copy."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 6,
+    "parts": 18,
+    "title": "Data Browser/Table View Maint.",
+    "focus": "Map Q5: Delivery and Maintenance tab field: Display/Maintenance Allowed, Allowed with Restrictions, Not Allowed; effect in SE16N / SM30."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 7,
+    "parts": 18,
+    "title": "Fields tab",
+    "focus": "Map Q5: Fields tab columns Field, Key, Initial Values, Data element; Data Element vs Predefined Type button; real example SCARR fields."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 8,
+    "parts": 18,
+    "title": "Primary key and MANDT",
+    "focus": "Map Q5/Q7: primary key = unique row; Key checkbox; MANDT first for client-dependent tables; what a duplicate key insert does (sy-subrc 4)."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 9,
+    "parts": 18,
+    "title": "Currency/Quantity Fields tab",
+    "focus": "Map Q5: CURR/QUAN fields need a reference table + reference field (CUKY/UNIT); example VBAK NETWR -> WAERK; activation error without it."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 10,
+    "parts": 18,
+    "title": "Technical Settings: data class + size category",
+    "focus": "Map Q5: SE11 Technical Settings; Data Class APPL0 (master), APPL1 (transaction), APPL2 (organisation/customizing); Size Category 0-9 = expected rows."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
     "part": 11,
-    "parts": 11,
-    "title": "Data element recap quiz",
+    "parts": 18,
+    "title": "Buffering",
+    "focus": "Map Q6: Buffering not allowed / allowed but switched off / switched on; Single records, Generic area (No. of key fields), Fully buffered; why (fewer DB reads) and when not (data that changes often)."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 12,
+    "parts": 18,
+    "title": "Log data changes",
+    "focus": "Map Q6: Technical Settings Log Data Changes flag; needs profile parameter rec/client; where to see logs (SCU3); when to use."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 13,
+    "parts": 18,
+    "title": "Foreign key and check table",
+    "focus": "Map Q6: Entry help/check tab, foreign key dialog, check table, check required, error message when the value is not in the check table; example T005 for LAND1."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 14,
+    "parts": 18,
+    "title": "Cardinality",
+    "focus": "Map Q6: foreign key cardinality left/right (1:N, 1:CN, C:N ...) in plain words with one example."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 15,
+    "parts": 18,
+    "title": "Include vs append structures",
+    "focus": "Map Q6: .INCLUDE (reuse a structure in many tables) vs .APPEND (add customer fields to an SAP table without modification); ZZ field names."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 16,
+    "parts": 18,
+    "title": "Table key points",
+    "focus": "Map Q7: the key rules of tables in one reel."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 17,
+    "parts": 18,
+    "title": "Table mistakes + interview",
+    "focus": "Map Q8+Q9: common mistakes (no MANDT, wrong delivery class, buffering a changing table, missing reference field) + interview Q&A."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 18,
+    "parts": 18,
+    "title": "Tables recap quiz",
     "focus": "Map Q10: recap the whole topic + quiz end card."
    }
   ],
@@ -133,7 +261,10 @@
    "3.2 Data element part 7 Parameter ID (SET/GET)",
    "3.2 Data element part 8 Documentation = F1 help",
    "3.2 Data element part 9 Data element key points",
-   "3.2 Data element part 10 Data element mistakes + interview"
+   "3.2 Data element part 10 Data element mistakes + interview",
+   "3.2 Data element part 11 Recap quiz",
+   "3.3 Tables part 1 What a database table is + why",
+   "3.3 Tables part 2 Where a table connects"
   ],
   "terms": [
    "Data Dictionary (DDIC)",
@@ -189,7 +320,10 @@
    "driver table (FOR ALL ENTRIES)",
    "documentation (F1 help)",
    "Performance Assistant",
-   "ALPHA = IN (string template)"
+   "ALPHA = IN (string template)",
+   "database table",
+   "SE16N (shows a table's rows)",
+   "short dump / runtime error (ST22)"
   ]
  },
  "improve_next": {

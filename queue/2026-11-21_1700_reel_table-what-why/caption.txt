@@ -1,0 +1,16 @@
+Stop losing every row when your program ends: use a database table.
+
+SAP ABAP tables, Part 1 of 18: what a database table in SE11 is, and why you need one.
+
+1. An internal table lives only while the program runs
+2. A database table is defined in SE11 and its rows stay in the database
+3. Activate it and SAP creates the same table in the database
+4. Example: the demo table SCARR (AA, AF, LH)
+
+Quiz: where does an internal table keep its rows? Comment your answer.
+
+Next: Part 2, Where a table connects (tonight at 7:30 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault
