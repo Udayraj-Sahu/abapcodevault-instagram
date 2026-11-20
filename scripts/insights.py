@@ -42,6 +42,8 @@ def media_metrics(mid):
     f, _ = safe(P.call, "GET", mid, {"fields": "permalink,timestamp,like_count,comments_count,media_product_type"})
     if f:
         out["permalink"] = f.get("permalink")
+        out.setdefault("likes", f.get("like_count"))
+        out.setdefault("comments", f.get("comments_count"))
     return out, bad
 
 
@@ -77,14 +79,14 @@ def main():
         return x if isinstance(x, (int, float)) else None
     lines = [f"# Reel insights (updated {now})", "",
              f"Followers: {(acct or {}).get('followers_count', '?')}  ·  reels tracked: {len(rows)}", "",
-             "| Reel | Views | Reach | Avg watch (s) | Skip rate | Likes | Shares (sends) | Saves | Follows |",
+             "| Reel | Views | Reach | Avg watch (s) | Skip rate | Likes | Comments | Shares (sends) | Saves |",
              "|---|---|---|---|---|---|---|---|---|"]
     for r in sorted(rows, key=lambda r: r["folder"], reverse=True):
         aw = g(r, "ig_reels_avg_watch_time")
         lines.append("| {} | {} | {} | {} | {} | {} | {} | {} | {} |".format(
             r["folder"].replace("_reel_", " "), g(r, "views") or "", g(r, "reach") or "",
             f"{aw/1000:.1f}" if aw else "", f"{g(r,'reels_skip_rate'):.0f}%" if g(r, "reels_skip_rate") is not None else "",
-            g(r, "likes") or 0, g(r, "shares") or 0, g(r, "saved") or 0, g(r, "follows") or ""))
+            g(r, "likes") or 0, g(r, "comments") or 0, g(r, "shares") or "", g(r, "saved") or ""))
     def avg(k):
         xs = [g(r, k) for r in rows if g(r, k) is not None]
         return sum(xs) / len(xs) if xs else None
@@ -93,7 +95,7 @@ def main():
               f"- Average watch time: {(avg('ig_reels_avg_watch_time') or 0)/1000:.1f} s",
               f"- Shares (sends) per reel: {avg('shares') or 0:.2f} · saves per reel: {avg('saved') or 0:.2f}"]
     if unsupported:
-        lines += ["", f"_Metrics the API did not return for some reels: {', '.join(sorted(unsupported))}_"]
+        lines += ["", f"_Not available yet (the token needs the insights permission): {', '.join(sorted(unsupported))}_"]
     open(os.path.join(root, "insights", "REPORT.md"), "w").write("\n".join(lines) + "\n")
     print(f"insights saved for {len(rows)} reels; unsupported: {sorted(unsupported)}")
     for m, e in list(ERRORS.items())[:3]:
