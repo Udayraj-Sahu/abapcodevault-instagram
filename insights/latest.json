@@ -1,0 +1,194 @@
+{
+ "updated": "2026-11-20 20:24 IST",
+ "account": {
+  "id": "17841471895107573",
+  "followers_count": 9,
+  "media_count": 38
+ },
+ "unsupported_metrics": [
+  "comments",
+  "follows",
+  "ig_reels_avg_watch_time",
+  "ig_reels_video_view_total_time",
+  "likes",
+  "profile_visits",
+  "reach",
+  "reels_skip_rate",
+  "saved",
+  "shares",
+  "total_interactions",
+  "views"
+ ],
+ "reels": [
+  {
+   "folder": "2026-11-11_2100_reel_find-error-message-source",
+   "published_at": "2026-11-11T21:28:37+05:30",
+   "permalink": "https://www.instagram.com/reel/Dfm20fQCcub/"
+  },
+  {
+   "folder": "2026-11-12_1300_reel_course-announcement",
+   "published_at": "2026-11-12T13:11:40+05:30",
+   "permalink": "https://www.instagram.com/reel/DfoivDNAKCS/"
+  },
+  {
+   "folder": "2026-11-12_1930_reel_course-roadmap",
+   "published_at": "2026-11-12T19:31:28+05:30",
+   "permalink": "https://www.instagram.com/reel/DfpOMXmE1xd/"
+  },
+  {
+   "folder": "2026-11-13_0900_reel_ddic-basics",
+   "published_at": "2026-11-13T09:01:16+05:30",
+   "permalink": "https://www.instagram.com/reel/Dfqq2kBDUuo/"
+  },
+  {
+   "folder": "2026-11-13_1300_reel_salv-alv-5-lines",
+   "published_at": "2026-11-13T13:09:05+05:30",
+   "permalink": "https://www.instagram.com/reel/DfrHPQjkpFz/"
+  },
+  {
+   "folder": "2026-11-13_1930_reel_domain-definition-tab",
+   "published_at": "2026-11-13T19:39:51+05:30",
+   "permalink": "https://www.instagram.com/reel/Dfrz9NYnOtv/"
+  },
+  {
+   "folder": "2026-11-14_0900_reel_domain-what-why",
+   "published_at": "2026-11-14T09:01:06+05:30",
+   "permalink": "https://www.instagram.com/reel/DftPp17DmwC/"
+  },
+  {
+   "folder": "2026-11-14_1300_reel_select-in-loop",
+   "published_at": "2026-11-14T13:01:53+05:30",
+   "permalink": "https://www.instagram.com/reel/DftrMjQCj27/"
+  },
+  {
+   "folder": "2026-11-14_1700_reel_domain-where-used",
+   "published_at": "2026-11-14T17:01:03+05:30",
+   "permalink": "https://www.instagram.com/reel/DfuGluaFFhc/"
+  },
+  {
+   "folder": "2026-11-14_1930_reel_domain-create",
+   "published_at": "2026-11-14T19:31:06+05:30",
+   "permalink": "https://www.instagram.com/reel/DfuXwLVidO5/"
+  },
+  {
+   "folder": "2026-11-15_0900_reel_domain-format-block",
+   "published_at": "2026-11-15T09:02:00+05:30",
+   "permalink": "https://www.instagram.com/reel/Dfv0emcCavj/"
+  },
+  {
+   "folder": "2026-11-15_1300_reel_faq-where-to-start",
+   "published_at": "2026-11-15T13:01:22+05:30",
+   "permalink": "https://www.instagram.com/reel/DfwP6NMkymH/"
+  },
+  {
+   "folder": "2026-11-15_1700_reel_domain-dates-money",
+   "published_at": "2026-11-15T17:01:22+05:30",
+   "permalink": "https://www.instagram.com/reel/DfwrYAuDNgD/"
+  },
+  {
+   "folder": "2026-11-15_1930_reel_domain-output-characteristics",
+   "published_at": "2026-11-15T19:31:22+05:30",
+   "permalink": "https://www.instagram.com/reel/Dfw8i3OClI6/"
+  },
+  {
+   "folder": "2026-11-16_0900_reel_domain-fixed-values",
+   "published_at": "2026-11-16T09:01:35+05:30",
+   "permalink": "https://www.instagram.com/reel/DfyZQCCAuIz/"
+  },
+  {
+   "folder": "2026-11-16_1300_reel_value-operator-quiz",
+   "published_at": "2026-11-16T13:01:06+05:30",
+   "permalink": "https://www.instagram.com/reel/Dfy0tUGFV6F/"
+  },
+  {
+   "folder": "2026-11-16_1700_reel_domain-intervals",
+   "published_at": "2026-11-16T17:01:15+05:30",
+   "permalink": "https://www.instagram.com/reel/DfzQK4BjY0W/"
+  },
+  {
+   "folder": "2026-11-16_1930_reel_domain-value-table",
+   "published_at": "2026-11-16T19:53:01+05:30",
+   "permalink": "https://www.instagram.com/reel/Dfzjx5LCXis/"
+  },
+  {
+   "folder": "2026-11-17_0900_reel_domain-key-points",
+   "published_at": "2026-11-17T09:03:30+05:30",
+   "permalink": "https://www.instagram.com/reel/Df0-RN-gv9b/"
+  },
+  {
+   "folder": "2026-11-17_1300_reel_itab-types-interview",
+   "published_at": "2026-11-17T13:10:03+05:30",
+   "permalink": "https://www.instagram.com/reel/Df1aiUomTRe/"
+  },
+  {
+   "folder": "2026-11-17_1700_reel_domain-mistakes-interview",
+   "published_at": "2026-11-17T17:01:26+05:30",
+   "permalink": "https://www.instagram.com/reel/Df10-QfCJ13/"
+  },
+  {
+   "folder": "2026-11-17_1930_reel_data-element-what-why",
+   "published_at": "2026-11-17T19:31:34+05:30",
+   "permalink": "https://www.instagram.com/reel/Df2GLk3CbG_/"
+  },
+  {
+   "folder": "2026-11-18_0900_reel_data-element-where-used",
+   "published_at": "2026-11-18T09:02:07+05:30",
+   "permalink": "https://www.instagram.com/reel/Df3i8OXjpdk/"
+  },
+  {
+   "folder": "2026-11-18_1300_reel_bapi-x-structure-trap",
+   "published_at": "2026-11-18T13:01:05+05:30",
+   "permalink": "https://www.instagram.com/reel/Df3-S_DgMbL/"
+  },
+  {
+   "folder": "2026-11-18_1700_reel_data-element-create",
+   "published_at": "2026-11-18T17:01:17+05:30",
+   "permalink": "https://www.instagram.com/reel/Df4ZyyDDDoM/"
+  },
+  {
+   "folder": "2026-11-18_1930_reel_data-element-data-type-tab",
+   "published_at": "2026-11-18T19:31:49+05:30",
+   "permalink": "https://www.instagram.com/reel/Df4rAaDkTtb/"
+  },
+  {
+   "folder": "2026-11-19_0900_reel_data-element-field-label-tab",
+   "published_at": "2026-11-19T09:01:12+05:30",
+   "permalink": "https://www.instagram.com/reel/Df6HogoFYlZ/"
+  },
+  {
+   "folder": "2026-11-19_1300_reel_for-all-entries-trap",
+   "published_at": "2026-11-19T13:01:09+05:30",
+   "permalink": "https://www.instagram.com/reel/Df6jF_rgA4F/"
+  },
+  {
+   "folder": "2026-11-19_1700_reel_data-element-search-help",
+   "published_at": "2026-11-19T17:01:41+05:30",
+   "permalink": "https://www.instagram.com/reel/Df6-oG2CXnx/"
+  },
+  {
+   "folder": "2026-11-19_1930_reel_data-element-parameter-id",
+   "published_at": "2026-11-19T19:31:34+05:30",
+   "permalink": "https://www.instagram.com/reel/Df7Pu0ZiY-v/"
+  },
+  {
+   "folder": "2026-11-20_0900_reel_data-element-documentation",
+   "published_at": "2026-11-20T09:01:07+05:30",
+   "permalink": "https://www.instagram.com/reel/Df8sbE8jmON/"
+  },
+  {
+   "folder": "2026-11-20_1300_reel_alpha-leading-zeros",
+   "published_at": "2026-11-20T13:01:08+05:30",
+   "permalink": "https://www.instagram.com/reel/Df9H4p6jSpO/"
+  },
+  {
+   "folder": "2026-11-20_1700_reel_data-element-key-points",
+   "published_at": "2026-11-20T17:01:43+05:30",
+   "permalink": "https://www.instagram.com/reel/Df9jYdOCkD2/"
+  },
+  {
+   "folder": "2026-11-20_1930_reel_data-element-mistakes-interview",
+   "published_at": "2026-11-20T19:31:33+05:30",
+   "permalink": "https://www.instagram.com/reel/Df90iEyCDwo/"
+  }
+ ]
+}
