@@ -1,0 +1,17 @@
+Stop treating all 7 SAP delivery classes the same.
+
+SAP ABAP tables, Part 5 of 18: the delivery class of a database table in SE11.
+
+1. Delivery and Maintenance tab, Delivery Class is mandatory
+2. A = application data (orders, customers)
+3. C = customizing (settings, transported)
+4. L, G, E, S, W in one line each
+5. Examples: VBAK is A, T001 is C
+
+Comment CLASS if you have ever picked the wrong one.
+
+Next: Part 6, The Data Browser setting (tomorrow at 9 AM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

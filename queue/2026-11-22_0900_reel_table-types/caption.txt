@@ -1,0 +1,16 @@
+Stop treating all 3 SAP table types the same.
+
+SAP ABAP tables, Part 3 of 18: transparent table, pooled table, cluster table in the Data Dictionary.
+
+1. Transparent: one SE11 table = one database table, same name and fields
+2. Pooled: many small tables stored in one table pool
+3. Cluster: related tables stored in one table cluster
+4. Example: BSEG sat in cluster RFBLG in ECC; in S/4HANA it is transparent
+
+Quiz: in S/4HANA, is BSEG cluster or transparent? Comment your answer.
+
+Next: No SAP system to practise on? (today at 1 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

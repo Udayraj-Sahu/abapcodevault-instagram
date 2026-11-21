@@ -1,0 +1,16 @@
+Stop paying for SAP: practise for free in 4 steps.
+
+How to get a free SAP system to practise ABAP, the official way:
+
+1. Sign up for the free SAP BTP trial
+2. In the trial cockpit, run the booster "Prepare an Account for ABAP Trial"
+3. Install Eclipse with ABAP Development Tools (ADT)
+4. Connect to the trial system and write your first class
+
+Good to know: it is ABAP Cloud, with no SAP GUI. SAP has announced the end of the Docker developer trial. The BTP trial is time-limited: log in regularly.
+
+Next: Part 4, Create a table, click by click (today at 5 PM).
+
+More snippets and cheat sheets: ABAP Code Vault (link in bio).
+
+#sap #abap #sapabap #sapfresher #abapcodevault

@@ -1,7 +1,7 @@
 {
  "handle": "@abapcodevault",
  "mode": "reels_only",
- "last_queued_date": "2026-11-21",
+ "last_queued_date": "2026-11-22",
  "history": [
   "4 ABAP 7.40 syntax tricks (old vs new)",
   "sy-subrc cheat sheet",
@@ -51,7 +51,11 @@
   "Course 3.2 Data element part 11 Recap quiz",
   "Short dump in production: 5-step checklist (ST22)",
   "Course 3.3 Tables part 1 What a database table is + why",
-  "Course 3.3 Tables part 2 Where a table connects (field, data element, domain, SE16N)"
+  "Course 3.3 Tables part 2 Where a table connects (field, data element, domain, SE16N)",
+  "Course 3.3 Tables part 3 Transparent, pooled, cluster (BSEG ECC vs S/4HANA)",
+  "FAQ: How can I get an SAP system to practise ABAP for free? (BTP trial, Docker trial discontinued)",
+  "Course 3.3 Tables part 4 Create a table click by click (ZTAIRLINE)",
+  "Course 3.3 Tables part 5 Delivery Class (A/C + L,G,E,S,W, VBAK/T001)"
  ],
  "recent_formats": {
   "reel": [
@@ -96,6 +100,10 @@
    "course_lesson",
    "story",
    "course_lesson",
+   "course_lesson",
+   "course_lesson",
+   "faq",
+   "course_lesson",
    "course_lesson"
   ],
   "carousel": [],
@@ -109,30 +117,6 @@
    "lesson": 4
   },
   "pending_parts": [
-   {
-    "syllabus": "3.3",
-    "topic": "Tables",
-    "part": 3,
-    "parts": 18,
-    "title": "Transparent, pooled, cluster",
-    "focus": "Map Q5/Q6: the three table types; transparent = 1:1 database table; pooled/cluster store many logical tables in one physical table; in S/4HANA most pooled/cluster tables were converted to transparent. Beginner-clean, one example each."
-   },
-   {
-    "syllabus": "3.3",
-    "topic": "Tables",
-    "part": 4,
-    "parts": 18,
-    "title": "Create a table, click by click",
-    "focus": "Map Q4: SE11 > Database table > name ZT... > Create; short description; tabs Delivery and Maintenance, Fields; save in a package; Technical Settings needed before activation; Enhancement Category prompt in one line (lesson 3.9 later)."
-   },
-   {
-    "syllabus": "3.3",
-    "topic": "Tables",
-    "part": 5,
-    "parts": 18,
-    "title": "Delivery Class",
-    "focus": "Map Q5: Delivery and Maintenance tab, Delivery Class A (application/master+transaction data) and C (customizing) in depth, L, G, E, S, W in one table; why it matters for transports and client copy."
-   },
    {
     "syllabus": "3.3",
     "topic": "Tables",
@@ -264,7 +248,10 @@
    "3.2 Data element part 10 Data element mistakes + interview",
    "3.2 Data element part 11 Recap quiz",
    "3.3 Tables part 1 What a database table is + why",
-   "3.3 Tables part 2 Where a table connects"
+   "3.3 Tables part 2 Where a table connects",
+   "3.3 Tables part 3 Transparent, pooled, cluster",
+   "3.3 Tables part 4 Create a table, click by click",
+   "3.3 Tables part 5 Delivery Class"
   ],
   "terms": [
    "Data Dictionary (DDIC)",
@@ -323,7 +310,15 @@
    "ALPHA = IN (string template)",
    "database table",
    "SE16N (shows a table's rows)",
-   "short dump / runtime error (ST22)"
+   "short dump / runtime error (ST22)",
+   "transparent table",
+   "pooled table / table pool",
+   "cluster table / table cluster",
+   "customer namespace (Z/Y)",
+   "package",
+   "Technical Settings",
+   "delivery class",
+   "client copy"
   ]
  },
  "improve_next": {
@@ -331,7 +326,8 @@
   "audio": "sound/timing"
  },
  "faq_done": [
-  "Where should a fresher start learning SAP ABAP, and in what order?"
+  "Where should a fresher start learning SAP ABAP, and in what order?",
+  "How can I get an SAP system to practise ABAP for free?"
  ],
  "notes_link_live": false
 }

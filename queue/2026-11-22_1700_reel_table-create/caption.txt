@@ -1,0 +1,16 @@
+Your first Z table in SE11: 10 clicks, zero guesswork.
+
+SAP ABAP tables, Part 4 of 18: how to create a table in SE11, click by click.
+
+1. SE11, Database table, type ZTAIRLINE, Create
+2. Short description and delivery class (A for now)
+3. Fields tab: MANDT and CARRID as keys, CARRNAME, each with a data element
+4. Save in a package, Technical Settings, activate with Ctrl+F3
+
+Save this for your first Z table.
+
+Next: Part 5, The Delivery Class (tonight at 7:30 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

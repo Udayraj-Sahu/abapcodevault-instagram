@@ -1,0 +1,587 @@
+{
+ "date": "2026-11-22",
+ "handle": "@abapcodevault",
+ "posts": [
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 3,
+   "time": "09:00",
+   "slug": "table-types",
+   "tag": "DDIC · Tables 3/18",
+   "comment_word": "TRANSPARENT",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 3/18",
+     "title": "Was *BSEG* ever one table?",
+     "voiceover": "Stop treating all three table types the same. Last time we learned where a table connects. Now, the three table types.",
+     "spoken": "Stop treating all 3 table types the same. Last time we learned where a table connects. Now, the 3 table types."
+    },
+    {
+     "kind": "answer",
+     "label": "WHY",
+     "heading": "Why *three* types?",
+     "body": "Old databases struggled with many small tables, so SAP could pack several into one.",
+     "highlight": "pack several into one",
+     "voiceover": "Why three types? Older databases struggled with thousands of small tables. So SAP could pack several tables into one.",
+     "spoken": "Why three types? Older databases struggled with thousands of small tables. So SAP could pack several tables into one."
+    },
+    {
+     "kind": "table",
+     "heading": "The *3 types*",
+     "columns": [
+      "Type",
+      "In the database"
+     ],
+     "rows": [
+      [
+       "Transparent",
+       "1 SE11 table = 1 DB table"
+      ],
+      [
+       "Pooled",
+       "shared table pool"
+      ],
+      [
+       "Cluster",
+       "shared table cluster"
+      ],
+      [
+       "Today",
+       "nearly all transparent"
+      ]
+     ],
+     "voiceover": "Transparent: one table in SE11 is one table in the database. Same name, same fields. Pooled: many small tables share one database table, the table pool. Cluster: related tables share one table cluster. Today, in S four hana, nearly all are transparent.",
+     "spoken": "Transparent: one table in SE11 is one table in the database. Same name, same fields. Pooled: many small tables share one database table, the table pool. Cluster: related tables share one table cluster. Today, in S/4HANA, nearly all are transparent."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "*BSEG* then and now",
+     "tcode": "SE11",
+     "title": "Table type: ECC vs S/4HANA",
+     "columns": [
+      "Table / release",
+      "Type"
+     ],
+     "rows": [
+      [
+       "BSEG",
+       "accounting line items"
+      ],
+      [
+       "in ECC",
+       "inside cluster RFBLG"
+      ],
+      [
+       "in S/4HANA",
+       "transparent"
+      ],
+      [
+       "VBAK",
+       "always transparent"
+      ]
+     ],
+     "row_say": [
+      "bseg",
+      "rfblg",
+      "transparent",
+      "vbak"
+     ],
+     "highlight": 2,
+     "voiceover": "Here's an example. In ECC, BSEG held your accounting items. It lived inside the cluster RFBLG. In S four hana, BSEG is transparent. VBAK, the sales order header, was always transparent.",
+     "spoken": "Here's an example. In ECC, BSEG held your accounting items. It lived inside the cluster RFBLG. In S/4HANA, BSEG is transparent. VBAK, the sales order header, was always transparent."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Old habit vs *today*",
+     "bad": {
+      "title": "Pooled / cluster",
+      "sub": "old ECC designs",
+      "say": "pooled"
+     },
+     "good": {
+      "title": "Transparent",
+      "sub": "the S/4HANA default",
+      "say": "transparent"
+     },
+     "voiceover": "Common mistake: copying an old pooled design. In S four hana, almost every table is transparent. So build yours transparent too.",
+     "spoken": "Common mistake: copying an old pooled design. In S/4HANA, almost every table is transparent. So build yours transparent too."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Today, think *transparent*",
+     "body": "One table in SE11 = one table in the database. Pooled and cluster are mostly history.",
+     "highlight": "mostly history",
+     "voiceover": "Takeaway: today, think transparent. One table in SE11 is one table in the database.",
+     "spoken": "Takeaway: today, think transparent. One table in SE11 is one table in the database."
+    }
+   ],
+   "next": {
+    "title": "No SAP system to *practise* on?",
+    "when": "today at 1 PM",
+    "voice": "no S A P system to practise on",
+    "quiz": {
+     "question": "Quiz: in S/4HANA, *BSEG* is…?",
+     "options": [
+      "Cluster",
+      "Transparent"
+     ]
+    },
+    "vo": "Quiz: in S four hana, is BSEG cluster or transparent? The answer is in this reel. Comment it."
+   },
+   "caption": "Stop treating all 3 SAP table types the same.\n\nSAP ABAP tables, Part 3 of 18: transparent table, pooled table, cluster table in the Data Dictionary.\n\n1. Transparent: one SE11 table = one database table, same name and fields\n2. Pooled: many small tables stored in one table pool\n3. Cluster: related tables stored in one table cluster\n4. Example: BSEG sat in cluster RFBLG in ECC; in S/4HANA it is transparent\n\nQuiz: in S/4HANA, is BSEG cluster or transparent? Comment your answer.\n\nNext: No SAP system to practise on? (today at 1 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "time": "13:00",
+   "format": "faq",
+   "slug": "faq-free-practice-system",
+   "tag": "FAQ",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "comment_word": "TRIAL",
+   "rehook": {
+    "stamp": "Common mistake",
+    "slide": 3
+   },
+   "slides": [
+    {
+     "kind": "cover",
+     "style": "question",
+     "kicker": "Sunday FAQ",
+     "title": "No SAP system to *practise* on?",
+     "subtitle": "A free, official option",
+     "voiceover": "Stop paying for SAP. Practise free in four steps.",
+     "spoken": "Stop paying for SAP. Practise free in 4 steps."
+    },
+    {
+     "kind": "flow",
+     "label": "4 STEPS",
+     "heading": "Free in *4 steps*",
+     "steps": [
+      "Sign up: SAP BTP trial",
+      "Run the ABAP trial booster",
+      "Install Eclipse + ADT",
+      "Connect, write a class"
+     ],
+     "voiceover": "Step one: sign up for the free SAP BTP trial. Step two: run the trial booster for the cloud system. Step three: install Eclipse with A D T, the development tools. Step four: connect, and write your first class.",
+     "spoken": "Step one: sign up for the free SAP BTP trial. Step two: run the trial booster for the cloud system. Step three: install Eclipse with ADT, the development tools. Step four: connect, and write your first class."
+    },
+    {
+     "kind": "answer",
+     "label": "GOOD TO KNOW",
+     "heading": "It's *ABAP Cloud*",
+     "body": "No SAP GUI, no SE11 screen. Tables, classes and CDS views live in Eclipse.",
+     "highlight": "in Eclipse",
+     "voiceover": "Good to know: it's a cloud system. There's no SAP GUI, and no S E eleven screen. You build tables, classes and C D S views in Eclipse.",
+     "spoken": "Good to know: it's a cloud system. There's no SAP GUI, and no SE11 screen. You build tables, classes and CDS views in Eclipse."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Old trial vs *new*",
+     "bad": {
+      "title": "Docker dev trial",
+      "sub": "being discontinued",
+      "say": "hunting"
+     },
+     "good": {
+      "title": "BTP cloud trial",
+      "sub": "free and official",
+      "say": "cloud"
+     },
+     "voiceover": "Common mistake: hunting for the old Docker developer trial. SAP announced this month that it's being discontinued. Use the cloud trial instead.",
+     "spoken": "Common mistake: hunting for the old Docker developer trial. SAP announced this month that it's being discontinued. Use the cloud trial instead."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Learn here, *practise* there",
+     "body": "The trial is time-limited: log in regularly to keep it. Our course explains each idea first.",
+     "highlight": "log in regularly",
+     "voiceover": "The takeaway: the trial is time limited, so log in regularly. Learn the ideas in our course, then practise them there.",
+     "spoken": "The takeaway: the trial is time limited, so log in regularly. Learn the ideas in our course, then practise them there."
+    }
+   ],
+   "next": {
+    "title": "Part 4 · Create a *table*, click by click",
+    "when": "today at 5 PM",
+    "voice": "part four, create a table, click by click",
+    "vo": "At five PM: your first Z table, every single click."
+   },
+   "caption": "Stop paying for SAP: practise for free in 4 steps.\n\nHow to get a free SAP system to practise ABAP, the official way:\n\n1. Sign up for the free SAP BTP trial\n2. In the trial cockpit, run the booster \"Prepare an Account for ABAP Trial\"\n3. Install Eclipse with ABAP Development Tools (ADT)\n4. Connect to the trial system and write your first class\n\nGood to know: it is ABAP Cloud, with no SAP GUI. SAP has announced the end of the Docker developer trial. The BTP trial is time-limited: log in regularly.\n\nNext: Part 4, Create a table, click by click (today at 5 PM).\n\nMore snippets and cheat sheets: ABAP Code Vault (link in bio).",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#sapfresher",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 4,
+   "time": "17:00",
+   "slug": "table-create",
+   "tag": "DDIC · Tables 4/18",
+   "comment_word": "ZTABLE",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 4/18",
+     "title": "Your first *Z table*, click by click",
+     "voiceover": "Your first Z table, ten clicks, zero guesswork. Last time we learned the three table types. Now, creating your own table.",
+     "spoken": "Your first Z table, 10 clicks, zero guesswork. Last time we learned the 3 table types. Now, creating your own table."
+    },
+    {
+     "kind": "answer",
+     "label": "NEW TERM",
+     "heading": "Why *Z*?",
+     "body": "Customer namespace: your own objects start with Z or Y, so SAP updates never overwrite them.",
+     "highlight": "never overwrite them",
+     "voiceover": "Why the Z? Your own objects start with Z or Y. That's the customer namespace. SAP updates never overwrite it.",
+     "spoken": "Why the Z? Your own objects start with Z or Y. That's the customer namespace. SAP updates never overwrite it."
+    },
+    {
+     "kind": "screen",
+     "heading": "Steps *1-4*",
+     "tcode": "SE11",
+     "object": "ABAP Dictionary: Initial Screen",
+     "fields": [
+      [
+       "Database table",
+       "ZTAIRLINE"
+      ],
+      [
+       "View",
+       ""
+      ],
+      [
+       "Data type",
+       ""
+      ],
+      [
+       "Domain",
+       ""
+      ]
+     ],
+     "focus": [
+      0
+     ],
+     "note": "then press Create (F5)",
+     "voiceover": "Step one, open SE11. Step two, pick Database table. Step three, type ZTAIRLINE. Step four, press Create.",
+     "spoken": "Step one, open SE11. Step two, pick Database table. Step three, type ZTAIRLINE. Step four, press Create."
+    },
+    {
+     "kind": "screen",
+     "heading": "Steps *5-6*",
+     "tcode": "SE11",
+     "object": "Transparent Table ZTAIRLINE",
+     "tabs": [
+      "Attributes",
+      "Delivery and Maintenance",
+      "Fields",
+      "Entry help/check"
+     ],
+     "active": 1,
+     "fields": [
+      [
+       "Short Description",
+       "Airlines (my copy)"
+      ],
+      [
+       "Delivery Class",
+       "A"
+      ],
+      [
+       "Data Browser/Table View Maint.",
+       "Display/Maint. Allowed"
+      ]
+     ],
+     "focus": [
+      0,
+      1,
+      2
+     ],
+     "voiceover": "Step five, a short description. Step six, the delivery class, pick A for now. The data browser setting allows maintenance. Both get their own part.",
+     "spoken": "Step five, a short description. Step six, the delivery class, pick A for now. The data browser setting allows maintenance. Both get their own part."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "Step 7: the *Fields* tab",
+     "tcode": "SE11",
+     "title": "ZTAIRLINE: Fields",
+     "columns": [
+      "Field",
+      "Key",
+      "Data element"
+     ],
+     "rows": [
+      [
+       "MANDT",
+       "X",
+       "MANDT"
+      ],
+      [
+       "CARRID",
+       "X",
+       "S_CARR_ID"
+      ],
+      [
+       "CARRNAME",
+       "",
+       "S_CARRNAME"
+      ]
+     ],
+     "row_say": [
+      "client",
+      "airline",
+      "name"
+     ],
+     "voiceover": "Step seven, the Fields tab. The client field comes first, as a key. Then the airline code, also a key. Then the airline name. Each field gets a data element.",
+     "spoken": "Step seven, the Fields tab. The client field comes first, as a key. Then the airline code, also a key. Then the airline name. Each field gets a data element."
+    },
+    {
+     "kind": "flow",
+     "heading": "Steps *8-10*",
+     "steps": [
+      "Save it in a package",
+      "Technical Settings",
+      "Activate: Ctrl+F3"
+     ],
+     "voiceover": "Step eight, save it in a package. A package groups your objects for transport. Step nine, Technical Settings, needed before activation. Step ten, activate with Control F three.",
+     "spoken": "Step eight, save it in a package. A package groups your objects for transport. Step nine, Technical Settings, needed before activation. Step ten, activate with Ctrl+F3."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Fields, settings, *activate*",
+     "body": "Description, delivery class, fields, package, Technical Settings, then Ctrl+F3.",
+     "highlight": "Technical Settings",
+     "voiceover": "Takeaway: no Technical Settings, no activation. A warning about the enhancement category? That's a later lesson.",
+     "spoken": "Takeaway: no Technical Settings, no activation. A warning about the enhancement category? That's a later lesson."
+    }
+   ],
+   "next": {
+    "title": "Part 5 · The *Delivery Class*",
+    "when": "tonight at 7:30 PM",
+    "voice": "part five, the delivery class",
+    "vo": "Tonight at seven thirty: the one letter that decides if your settings reach production."
+   },
+   "caption": "Your first Z table in SE11: 10 clicks, zero guesswork.\n\nSAP ABAP tables, Part 4 of 18: how to create a table in SE11, click by click.\n\n1. SE11, Database table, type ZTAIRLINE, Create\n2. Short description and delivery class (A for now)\n3. Fields tab: MANDT and CARRID as keys, CARRNAME, each with a data element\n4. Save in a package, Technical Settings, activate with Ctrl+F3\n\nSave this for your first Z table.\n\nNext: Part 5, The Delivery Class (tonight at 7:30 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 5,
+   "time": "19:30",
+   "slug": "table-delivery-class",
+   "tag": "DDIC · Tables 5/18",
+   "comment_word": "CLASS",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 5/18",
+     "title": "Delivery class *A or C*?",
+     "voiceover": "Stop treating all seven delivery classes the same. Last time we learned how to create a table. Now, the delivery class.",
+     "spoken": "Stop treating all 7 delivery classes the same. Last time we learned how to create a table. Now, the delivery class."
+    },
+    {
+     "kind": "answer",
+     "label": "NEW TERM",
+     "heading": "Who owns *the data*?",
+     "body": "Delivery class = who maintains the data, and how transports and client copies treat it.",
+     "highlight": "transports and client copies",
+     "voiceover": "Why does it matter? The delivery class says who maintains a table's data. And how transports and client copies treat it.",
+     "spoken": "Why does it matter? The delivery class says who maintains a table's data. And how transports and client copies treat it."
+    },
+    {
+     "kind": "screen",
+     "heading": "Where it *lives*",
+     "tcode": "SE11",
+     "object": "Transparent Table ZTAIRLINE",
+     "tabs": [
+      "Attributes",
+      "Delivery and Maintenance",
+      "Fields",
+      "Entry help/check"
+     ],
+     "active": 1,
+     "fields": [
+      [
+       "Short Description",
+       "Airlines (my copy)"
+      ],
+      [
+       "Delivery Class",
+       "A"
+      ]
+     ],
+     "focus": [
+      1
+     ],
+     "note": "mandatory, F4 shows all 7",
+     "voiceover": "Open your table in SE11. Go to the Delivery and Maintenance tab. Delivery class is mandatory. Press F4 to see all seven.",
+     "spoken": "Open your table in SE11. Go to the Delivery and Maintenance tab. Delivery class is mandatory. Press F4 to see all 7."
+    },
+    {
+     "kind": "list",
+     "heading": "The two you'll *use*",
+     "items": [
+      "Application - A: orders, customers",
+      "Customizing - C: settings, transported"
+     ],
+     "voiceover": "Application data is class A. Orders and customers, created by users in each system. Customizing is class C. Settings you transport from development to production.",
+     "spoken": "Application data is class A. Orders and customers, created by users in each system. Customizing is class C. Settings you transport from development to production."
+    },
+    {
+     "kind": "output",
+     "label": "THE REST",
+     "heading": "The other *five*",
+     "tcode": "SE11",
+     "title": "Delivery Class (F4)",
+     "columns": [
+      "Class",
+      "Meaning"
+     ],
+     "rows": [
+      [
+       "L",
+       "temporary data"
+      ],
+      [
+       "G",
+       "customizing, protected"
+      ],
+      [
+       "E",
+       "control table"
+      ],
+      [
+       "S",
+       "system table, SAP only"
+      ],
+      [
+       "W",
+       "system, own transport"
+      ]
+     ],
+     "row_say": [
+      "temporary",
+      "protected",
+      "control",
+      "system",
+      "own"
+     ],
+     "voiceover": "Now the other five, quickly, one line each. L, temporary data. G, protected customizing, SAP only adds rows. E, control tables, with separate key areas. S, system tables only SAP maintains. W, system tables with their own transport objects.",
+     "spoken": "Now the other five, quickly, one line each. L, temporary data. G, protected customizing, SAP only adds rows. E, control tables, with separate key areas. S, system tables only SAP maintains. W, system tables with their own transport objects."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "Real *tables*",
+     "tcode": "SE11",
+     "title": "Delivery class of real tables",
+     "columns": [
+      "Table",
+      "Holds",
+      "Class"
+     ],
+     "rows": [
+      [
+       "VBAK",
+       "sales orders",
+       "A"
+      ],
+      [
+       "T001",
+       "company codes",
+       "C"
+      ]
+     ],
+     "row_say": [
+      "vbak",
+      "t001"
+     ],
+     "voiceover": "Real examples. VBAK, the sales order header, is class A. T zero zero one, company codes, is class C.",
+     "spoken": "Real examples. VBAK, the sales order header, is class A. T001, company codes, is class C."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Settings in *class A*",
+     "bad": {
+      "title": "Class A",
+      "sub": "settings stay behind",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "Class C",
+      "sub": "settings travel",
+      "say": "use"
+     },
+     "voiceover": "Common mistake: class A for a settings table. Then your settings don't travel with a transport. Use C for settings.",
+     "spoken": "Common mistake: class A for a settings table. Then your settings don't travel with a transport. Use C for settings."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "*A* = data, *C* = settings",
+     "body": "Pick the class by who owns the rows: users (A) or customizing (C).",
+     "highlight": "who owns the rows",
+     "voiceover": "Takeaway: A for business data, C for settings.",
+     "spoken": "Takeaway: A for business data, C for settings."
+    }
+   ],
+   "next": {
+    "title": "Part 6 · The *Data Browser* setting",
+    "when": "tomorrow at 9 AM",
+    "voice": "part six, the data browser setting",
+    "vo": "Tomorrow at nine AM: why SE16N lets you edit some tables, and blocks others."
+   },
+   "caption": "Stop treating all 7 SAP delivery classes the same.\n\nSAP ABAP tables, Part 5 of 18: the delivery class of a database table in SE11.\n\n1. Delivery and Maintenance tab, Delivery Class is mandatory\n2. A = application data (orders, customers)\n3. C = customizing (settings, transported)\n4. L, G, E, S, W in one line each\n5. Examples: VBAK is A, T001 is C\n\nComment CLASS if you have ever picked the wrong one.\n\nNext: Part 6, The Data Browser setting (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  }
+ ]
+}
