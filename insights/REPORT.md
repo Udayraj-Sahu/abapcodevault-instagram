@@ -1,9 +1,13 @@
-# Reel insights (updated 2026-11-21 03:47 IST)
+# Reel insights (updated 2026-11-22 02:26 IST)
 
-Followers: 9  ·  reels tracked: 34
+Followers: 9  ·  reels tracked: 38
 
 | Reel | Views | Reach | Avg watch (s) | Skip rate | Likes | Comments | Shares (sends) | Saves |
 |---|---|---|---|---|---|---|---|---|
+| 2026-11-21_1930 table-where-used |  |  |  |  | 1 | 0 |  |  |
+| 2026-11-21_1700 table-what-why |  |  |  |  | 0 | 0 |  |  |
+| 2026-11-21_1300 st22-dump-checklist |  |  |  |  | 0 | 0 |  |  |
+| 2026-11-21_0900 data-element-recap-quiz |  |  |  |  | 0 | 0 |  |  |
 | 2026-11-20_1930 data-element-mistakes-interview |  |  |  |  | 0 | 0 |  |  |
 | 2026-11-20_1700 data-element-key-points |  |  |  |  | 1 | 0 |  |  |
 | 2026-11-20_1300 alpha-leading-zeros |  |  |  |  | 0 | 0 |  |  |
@@ -36,7 +40,7 @@ Followers: 9  ·  reels tracked: 34
 | 2026-11-13_1300 salv-alv-5-lines |  |  |  |  | 0 | 0 |  |  |
 | 2026-11-13_0900 ddic-basics |  |  |  |  | 1 | 0 |  |  |
 | 2026-11-12_1930 course-roadmap |  |  |  |  | 0 | 0 |  |  |
-| 2026-11-12_1300 course-announcement |  |  |  |  | 0 | 0 |  |  |
+| 2026-11-12_1300 course-announcement |  |  |  |  | 1 | 0 |  |  |
 | 2026-11-11_2100 find-error-message-source |  |  |  |  | 2 | 0 |  |  |
 
 ## Averages
