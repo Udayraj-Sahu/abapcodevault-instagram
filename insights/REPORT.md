@@ -1,9 +1,13 @@
-# Reel insights (updated 2026-11-22 02:26 IST)
+# Reel insights (updated 2026-11-23 02:36 IST)
 
-Followers: 9  ·  reels tracked: 38
+Followers: 9  ·  reels tracked: 42
 
 | Reel | Views | Reach | Avg watch (s) | Skip rate | Likes | Comments | Shares (sends) | Saves |
 |---|---|---|---|---|---|---|---|---|
+| 2026-11-22_1930 table-delivery-class |  |  |  |  | 1 | 0 |  |  |
+| 2026-11-22_1700 table-create |  |  |  |  | 0 | 0 |  |  |
+| 2026-11-22_1300 faq-free-practice-system |  |  |  |  | 0 | 0 |  |  |
+| 2026-11-22_0900 table-types |  |  |  |  | 0 | 0 |  |  |
 | 2026-11-21_1930 table-where-used |  |  |  |  | 1 | 0 |  |  |
 | 2026-11-21_1700 table-what-why |  |  |  |  | 0 | 0 |  |  |
 | 2026-11-21_1300 st22-dump-checklist |  |  |  |  | 0 | 0 |  |  |
