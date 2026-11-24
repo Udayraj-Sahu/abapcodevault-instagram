@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23 02:36 IST",
+ "updated": "2026-11-24 07:44 IST",
  "account": {
   "id": "17841471895107573",
   "followers_count": 9,
@@ -20,18 +20,18 @@
   "views"
  ],
  "errors": {
-  "reach": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AhU85MhxOnv5R6xAU8B",
-  "views": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"Assj_LC5ttvoQju3UmD",
-  "likes": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"A_2KHtcNl8GB0oH95Sm",
-  "comments": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"ATwU4pa0dTQb3_nedoq",
-  "shares": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AisblE_kbBNMuDux1sk",
-  "saved": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"A_VDJfVki9bUU_QkR3m",
-  "total_interactions": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"ASuuZIE7uyBNlL8nZBT",
-  "ig_reels_avg_watch_time": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"A6TihcoyCsB0UolgB-U",
-  "ig_reels_video_view_total_time": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"Ap93JdMZF-_RZ3SX_3w",
-  "reels_skip_rate": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AhMHQ58GaDlmrhT1Ou4",
-  "follows": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"ABS3rEmeYVi53jNQMEj",
-  "profile_visits": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"A8I3wdidccW_jMrhb_z"
+  "reach": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"A-sC6LY5FQi34FmL6yK",
+  "views": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"A7_8OC-KnzlDLWr3lDh",
+  "likes": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AWcSeBk_-_wQvE9mXo-",
+  "comments": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"A4GXWvkSmluftJUqNhh",
+  "shares": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"A0gCZSk_MQgE5BoNFQ2",
+  "saved": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"Aw2lBlDsAqtv-y7Gtvu",
+  "total_interactions": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AaRKLxl87B_SiySP6jZ",
+  "ig_reels_avg_watch_time": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AKC3e3xfu9n1Bb9ZX5U",
+  "ig_reels_video_view_total_time": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AV-ToSyh9sftyxoDeok",
+  "reels_skip_rate": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"A-fuHSw1kq1I6_zrFKJ",
+  "follows": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AjRHXGPcFmiWRcNdfxN",
+  "profile_visits": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AdGTfgdGmqKYHbdTnsJ"
  },
  "reels": [
   {
@@ -312,7 +312,7 @@
    "published_at": "2026-11-22T13:01:09+05:30",
    "permalink": "https://www.instagram.com/reel/DgCRenEHT80/",
    "likes": 0,
-   "comments": 0
+   "comments": 1
   },
   {
    "folder": "2026-11-22_1700_reel_table-create",
