@@ -45,11 +45,11 @@ def caption_chunks(slides, max_chars=28):
         ws = s["words"]
         for i, (w, a, b) in enumerate(ws):
             if cur is None:
-                cur = {"t0": a, "text": w, "t1": b}
+                cur = {"t0": a, "text": w, "t1": b, "w": [[round(a, 3), round(b, 3)]]}
             elif len(cur["text"]) + 1 + len(w) > max_chars:
-                caps.append(cur); cur = {"t0": a, "text": w, "t1": b}
+                caps.append(cur); cur = {"t0": a, "text": w, "t1": b, "w": [[round(a, 3), round(b, 3)]]}
             else:
-                cur["text"] += " " + w; cur["t1"] = b
+                cur["text"] += " " + w; cur["t1"] = b; cur["w"].append([round(a, 3), round(b, 3)])
             if re.search(r"[.?!:]$", w) and len(cur["text"]) > 10 or i == len(ws) - 1:
                 caps.append(cur); cur = None
     for i, c in enumerate(caps):

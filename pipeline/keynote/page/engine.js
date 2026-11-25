@@ -447,7 +447,11 @@ export function toast(g, text, a, o = {}) {
   g.fillStyle = `rgba(12,14,19,${0.72 + 0.16 * dense})`; rr(g, x, yy, w, h, h / 2); g.fill(); g.shadowColor = 'transparent';
   g.strokeStyle = 'rgba(255,255,255,.09)'; g.lineWidth = 1; rr(g, x + 0.5, yy + 0.5, w - 1, h - 1, h / 2); g.stroke();
   g.fillStyle = PAL.accent; g.shadowColor = rgba(PAL.accent, 0.8); g.shadowBlur = 10; g.beginPath(); g.arc(x + px * 0.95, yy + h / 2, px * 0.14, 0, TAU); g.fill(); g.shadowColor = 'transparent';
-  g.fillStyle = PAL.text; g.textBaseline = 'middle'; g.fillText(text, x + px * 1.5, yy + h / 2 + 1);
+  g.fillStyle = PAL.text; g.textBaseline = 'middle';
+  const hl = o.hl ?? -1, ws = String(text).split(' ');
+  if (hl < 0 || hl >= ws.length) g.fillText(text, x + px * 1.5, yy + h / 2 + 1);
+  else { const sp = g.measureText(' ').width; let cx = x + px * 1.5;   // o.hl: index of the word being spoken → accent colour
+    ws.forEach((w, i) => { g.fillStyle = i === hl ? PAL.accent : PAL.text; g.fillText(w, cx, yy + h / 2 + 1); cx += g.measureText(w).width + sp; }); }
   g.restore();
 }
 

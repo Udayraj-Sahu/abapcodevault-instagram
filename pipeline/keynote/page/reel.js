@@ -440,7 +440,9 @@ function camAt(t) {
 // ───────── captions + chrome ─────────
 function drawCaption(g, t) {
   const c = S.caps.find(c => t >= c.t0 - 0.04 && t < c.t1); if (!c) return;
-  E.toast(g, c.text, Math.min(seg(t, c.t0 - 0.04, c.t0 + 0.12), 1), { y: 1560, px: 44, dense: 0.4 });
+  // active word (spoken now) lights in the accent colour, karaoke-style (typography improvement 25 Nov)
+  let hl = -1; if (c.w) c.w.forEach(([a], i) => { if (t >= a - 0.03) hl = i; });
+  E.toast(g, c.text, Math.min(seg(t, c.t0 - 0.04, c.t0 + 0.12), 1), { y: 1560, px: 44, dense: 0.4, hl });
 }
 function chrome(g, t) {
   // segmented progress (one segment per slide) + series tag
