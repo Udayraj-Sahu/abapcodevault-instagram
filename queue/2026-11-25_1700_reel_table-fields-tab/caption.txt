@@ -1,0 +1,16 @@
+Every column of your table starts here.
+
+SAP ABAP tables, Part 7 of 18: the Fields tab in SE11.
+
+1. Each line on the Fields tab = one column
+2. Columns: Field, Key, Initial Values, Data element
+3. Example: SCARR with MANDT, CARRID, CARRNAME, CURRCODE, URL
+4. Common mistake: predefined types everywhere, use data elements
+
+Comment FIELDS if you opened SCARR while watching.
+
+Next: Part 8, Primary key and MANDT (tonight at 7:30 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

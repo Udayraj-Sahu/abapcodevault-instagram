@@ -171,6 +171,445 @@
     "#ddic",
     "#abapcodevault"
    ]
+  },
+  {
+   "type": "reel",
+   "format": "before_after",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "time": "13:00",
+   "slug": "lock-objects-enqueue",
+   "tag": "Additional concepts · Lock objects",
+   "comment_word": "LOCK",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Lock objects",
+     "title": "One save *wipes out* the other",
+     "voiceover": "Two users change the same order. One save wipes out the other.",
+     "spoken": "Two users change the same order. One save wipes out the other."
+    },
+    {
+     "kind": "answer",
+     "label": "THE FIX",
+     "heading": "A *lock object*",
+     "body": "Like the occupied sign on a meeting room door: one user edits, everyone else waits.",
+     "highlight": "everyone else waits",
+     "voiceover": "No error, no warning. The data is just wrong. The fix is a lock object. Think of the occupied sign on a meeting room door.",
+     "spoken": "No error, no warning. The data is just wrong. The fix is a lock object. Think of the occupied sign on a meeting room door."
+    },
+    {
+     "kind": "screen",
+     "heading": "Create it in *SE11*",
+     "tcode": "SE11",
+     "object": "Lock Object EZ_ORDER",
+     "tabs": [
+      "Attributes",
+      "Tables",
+      "Lock parameter"
+     ],
+     "active": 1,
+     "fields": [
+      [
+       "Lock Object",
+       "EZ_ORDER"
+      ],
+      [
+       "Primary Table",
+       "VBAK"
+      ],
+      [
+       "Lock Mode",
+       "Write Lock"
+      ]
+     ],
+     "focus": [
+      0,
+      2
+     ],
+     "focus_say": [
+      "name",
+      "write"
+     ],
+     "note": "activation creates ENQUEUE_ and DEQUEUE_ modules",
+     "voiceover": "Create it in SE11. The name must start with E Z. Add the table, for example VBAK, and pick write lock.",
+     "spoken": "Create it in SE11. The name must start with EZ. Add the table, for example VBAK, and pick write lock."
+    },
+    {
+     "kind": "code",
+     "heading": "Lock *before* you change",
+     "typewriter": true,
+     "filename": "z_change_order.abap",
+     "code": "CALL FUNCTION 'ENQUEUE_EZ_ORDER'\n  EXPORTING vbeln = lv_vbeln\n  EXCEPTIONS foreign_lock = 1 OTHERS = 2.\nIF sy-subrc <> 0.\n  MESSAGE 'Order is locked' TYPE 'E'.\nENDIF.",
+     "voiceover": "Activation creates two function modules. Call ENQUEUE before you change the order. If sy-subrc isn't zero, someone else holds the lock. Stop, and tell the user.",
+     "spoken": "Activation creates two function modules. Call ENQUEUE before you change the order. If sy-subrc isn't zero, someone else holds the lock. Stop, and tell the user."
+    },
+    {
+     "kind": "flow",
+     "heading": "The *ritual*",
+     "label": "EVERY TIME",
+     "steps": [
+      "Lock: ENQUEUE",
+      "Change the order",
+      "Save",
+      "Unlock: DEQUEUE"
+     ],
+     "voiceover": "Then lock, change, save, unlock with DEQUEUE. Every time.",
+     "spoken": "Then lock, change, save, unlock with DEQUEUE. Every time."
+    },
+    {
+     "kind": "output",
+     "label": "CHECK IT",
+     "heading": "See locks in *SM12*",
+     "tcode": "SM12",
+     "title": "Lock Entries",
+     "columns": [
+      "User",
+      "Object",
+      "Key",
+      "Mode"
+     ],
+     "rows": [
+      [
+       "USER_A",
+       "EZ_ORDER",
+       "4711",
+       "E"
+      ]
+     ],
+     "row_say": [
+      "user"
+     ],
+     "highlight": 0,
+     "voiceover": "SM12 shows every open lock, with the user, the object and the key.",
+     "spoken": "SM12 shows every open lock, with the user, the object and the key."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Locked, but *not checked*",
+     "bad": {
+      "title": "Ignore sy-subrc",
+      "sub": "you still overwrite the other user",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "Check sy-subrc",
+      "sub": "locked? stop and tell the user",
+      "say": "always"
+     },
+     "voiceover": "Common mistake: calling ENQUEUE but ignoring sy-subrc. Then you still overwrite the other user. Always check it.",
+     "spoken": "Common mistake: calling ENQUEUE but ignoring sy-subrc. Then you still overwrite the other user. Always check it."
+    }
+   ],
+   "next": {
+    "title": "Part 7 · The *Fields* tab",
+    "when": "today at 5 PM",
+    "voice": "part seven, the fields tab",
+    "vo": "At five PM: the tab where every column of your table is born."
+   },
+   "caption": "Two users change the same order. One save wipes out the other.\n\nLock objects in SAP ABAP, step by step:\n\n1. Create a lock object in SE11 (name starts with EZ or EY)\n2. Activation creates ENQUEUE_ and DEQUEUE_ function modules\n3. Call ENQUEUE before you change, check sy-subrc\n4. Change, save, then DEQUEUE\n5. SM12 shows every open lock\n\nComment LOCK if you have seen a lost update in production.\n\nNext: Part 7, The Fields tab (today at 5 PM).\n\nABAP Interview Pack (160 Q&A): link in bio.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#sapdeveloper",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 7,
+   "time": "17:00",
+   "slug": "table-fields-tab",
+   "tag": "DDIC · Tables 7/18",
+   "comment_word": "FIELDS",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 7/18",
+     "title": "Where do *columns* come from?",
+     "voiceover": "Every column of your table starts here. Last time we learned the data browser setting. Now, the fields tab.",
+     "spoken": "Every column of your table starts here. Last time we learned the data browser setting. Now, the fields tab."
+    },
+    {
+     "kind": "answer",
+     "label": "WHY",
+     "heading": "Fields = *columns*",
+     "body": "Each line on the Fields tab is one column of the database table.",
+     "highlight": "one column",
+     "voiceover": "Why? A table is only rows and columns. The fields tab is where you define the columns.",
+     "spoken": "Why? A table is only rows and columns. The fields tab is where you define the columns."
+    },
+    {
+     "kind": "screen",
+     "heading": "The *Fields* tab",
+     "tcode": "SE11",
+     "object": "Transparent Table SCARR",
+     "tabs": [
+      "Attributes",
+      "Delivery and Maintenance",
+      "Fields",
+      "Entry help/check"
+     ],
+     "active": 2,
+     "fields": [
+      [
+       "Field",
+       "CARRID"
+      ],
+      [
+       "Key",
+       "✓"
+      ],
+      [
+       "Initial Values",
+       "✓"
+      ],
+      [
+       "Data element",
+       "S_CARR_ID"
+      ]
+     ],
+     "focus": [
+      0,
+      3
+     ],
+     "focus_say": [
+      "field",
+      "data"
+     ],
+     "voiceover": "Open SCARR in SE11 and click the Fields tab. Each line has a field name, a key flag, initial values and a data element.",
+     "spoken": "Open SCARR in SE11 and click the Fields tab. Each line has a field name, a key flag, initial values and a data element."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "*SCARR*, field by field",
+     "tcode": "SE11",
+     "title": "SCARR · Fields",
+     "columns": [
+      "Field",
+      "Key",
+      "Data element",
+      "Type"
+     ],
+     "rows": [
+      [
+       "MANDT",
+       "✓",
+       "MANDT",
+       "CLNT 3"
+      ],
+      [
+       "CARRID",
+       "✓",
+       "S_CARR_ID",
+       "CHAR 3"
+      ],
+      [
+       "CARRNAME",
+       "",
+       "S_CARRNAME",
+       "CHAR 20"
+      ],
+      [
+       "CURRCODE",
+       "",
+       "S_CURRCODE",
+       "CUKY 5"
+      ],
+      [
+       "URL",
+       "",
+       "S_CARRURL",
+       "CHAR 255"
+      ]
+     ],
+     "row_say": [
+      "mandt",
+      "carrid",
+      "carrname",
+      "currcode",
+      "url"
+     ],
+     "voiceover": "Here are SCARR's real fields. MANDT, the client. CARRID, the airline code. CARRNAME, the airline name. CURRCODE, the currency. URL, the website.",
+     "spoken": "Here are SCARR's real fields. MANDT, the client. CARRID, the airline code. CARRNAME, the airline name. CURRCODE, the currency. URL, the website."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Predefined type *everywhere*",
+     "bad": {
+      "title": "Predefined Type",
+      "sub": "no labels, no F1 help, no reuse",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "Data element",
+      "sub": "labels, F1 help, one change updates all",
+      "say": "use"
+     },
+     "voiceover": "Common mistake: typing the type and length straight into the field with predefined type. It works, but you lose the labels and F1 help. Use a data element instead.",
+     "spoken": "Common mistake: typing the type and length straight into the field with predefined type. It works, but you lose the labels and F1 help. Use a data element instead."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "One line = *one column*",
+     "body": "Field name + Key + data element = a column with a meaning.",
+     "highlight": "a column with a meaning",
+     "voiceover": "Takeaway: one line on the fields tab is one column, and a data element gives it meaning.",
+     "spoken": "Takeaway: one line on the fields tab is one column, and a data element gives it meaning."
+    }
+   ],
+   "next": {
+    "title": "Part 8 · *Primary key* and MANDT",
+    "when": "tonight at 7:30 PM",
+    "voice": "part eight, the primary key and mandt",
+    "vo": "Tonight at seven thirty: why inserting the same key twice fails without a dump."
+   },
+   "caption": "Every column of your table starts here.\n\nSAP ABAP tables, Part 7 of 18: the Fields tab in SE11.\n\n1. Each line on the Fields tab = one column\n2. Columns: Field, Key, Initial Values, Data element\n3. Example: SCARR with MANDT, CARRID, CARRNAME, CURRCODE, URL\n4. Common mistake: predefined types everywhere, use data elements\n\nComment FIELDS if you opened SCARR while watching.\n\nNext: Part 8, Primary key and MANDT (tonight at 7:30 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 8,
+   "time": "19:30",
+   "slug": "table-primary-key-mandt",
+   "tag": "DDIC · Tables 8/18",
+   "comment_word": "KEY",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 8/18",
+     "title": "Why did my *INSERT* do nothing?",
+     "voiceover": "Insert the same row twice, and nothing happens. Last time we learned the fields tab. Now, the primary key.",
+     "spoken": "Insert the same row twice, and nothing happens. Last time we learned the fields tab. Now, the primary key."
+    },
+    {
+     "kind": "answer",
+     "label": "NEW TERM",
+     "heading": "The *primary key*",
+     "body": "Primary key = the key fields that identify exactly one row. No two rows may share them.",
+     "highlight": "exactly one row",
+     "voiceover": "Why? The primary key is the set of fields that makes every row unique. No two rows can share it.",
+     "spoken": "Why? The primary key is the set of fields that makes every row unique. No two rows can share it."
+    },
+    {
+     "kind": "screen",
+     "heading": "Tick *Key*",
+     "tcode": "SE11",
+     "object": "Transparent Table ZTAIRLINE",
+     "tabs": [
+      "Attributes",
+      "Delivery and Maintenance",
+      "Fields",
+      "Entry help/check"
+     ],
+     "active": 2,
+     "fields": [
+      [
+       "MANDT",
+       "Key ✓"
+      ],
+      [
+       "CARRID",
+       "Key ✓"
+      ],
+      [
+       "CARRNAME",
+       "no key"
+      ]
+     ],
+     "focus": [
+      0,
+      1
+     ],
+     "focus_say": [
+      "key",
+      "together"
+     ],
+     "voiceover": "On the fields tab, tick Key for each key field. Key fields come first, together, at the top of the table.",
+     "spoken": "On the fields tab, tick Key for each key field. Key fields come first, together, at the top of the table."
+    },
+    {
+     "kind": "answer",
+     "label": "MANDT",
+     "heading": "*MANDT* goes first",
+     "body": "Client-dependent table: MANDT is the first key field, so client 100 and client 200 keep separate rows.",
+     "highlight": "separate rows",
+     "voiceover": "MANDT comes first in a client-dependent table. It's the client, so each client has its own rows.",
+     "spoken": "MANDT comes first in a client-dependent table. It's the client, so each client has its own rows."
+    },
+    {
+     "kind": "code",
+     "heading": "Same key *twice*",
+     "typewriter": true,
+     "filename": "z_insert_airline.abap",
+     "code": "ls_air = VALUE #( carrid = 'LH' carrname = 'Lufthansa' ).\nINSERT ztairline FROM ls_air.\n\" key LH exists already\nIF sy-subrc = 4.\n  \" duplicate key: nothing inserted\nENDIF.",
+     "voiceover": "Now insert a row whose key already exists. No dump. sy-subrc is four, and the row is not written.",
+     "spoken": "Now insert a row whose key already exists. No dump. sy-subrc is 4, and the row is not written."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Assuming it *saved*",
+     "bad": {
+      "title": "No sy-subrc check",
+      "sub": "the row silently wasn't saved",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "Check sy-subrc",
+      "sub": "4 = key already exists",
+      "say": "check"
+     },
+     "voiceover": "Common mistake: not checking sy-subrc after insert. The program carries on as if the row was saved. Check it every time.",
+     "spoken": "Common mistake: not checking sy-subrc after insert. The program carries on as if the row was saved. Check it every time."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Key = *unique row*",
+     "body": "Key fields first, MANDT at the top, and check sy-subrc after INSERT.",
+     "highlight": "check sy-subrc",
+     "voiceover": "Takeaway: the key makes each row unique, and MANDT comes first.",
+     "spoken": "Takeaway: the key makes each row unique, and MANDT comes first."
+    }
+   ],
+   "next": {
+    "title": "Part 9 · *Currency* and quantity fields",
+    "when": "tomorrow at 9 AM",
+    "voice": "part nine, currency and quantity fields",
+    "vo": "Tomorrow at nine: the field that refuses to activate without a partner."
+   },
+   "caption": "Insert the same row twice, and nothing happens.\n\nSAP ABAP tables, Part 8 of 18: the primary key and MANDT.\n\n1. Primary key = the key fields that identify exactly one row\n2. Tick Key on the Fields tab; key fields come first\n3. MANDT is the first key field of a client-dependent table\n4. INSERT with an existing key: no dump, sy-subrc = 4\n\nComment KEY if this saved you a debugging hour.\n\nNext: Part 9, Currency and quantity fields (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
   }
  ]
 }

@@ -1,0 +1,16 @@
+Insert the same row twice, and nothing happens.
+
+SAP ABAP tables, Part 8 of 18: the primary key and MANDT.
+
+1. Primary key = the key fields that identify exactly one row
+2. Tick Key on the Fields tab; key fields come first
+3. MANDT is the first key field of a client-dependent table
+4. INSERT with an existing key: no dump, sy-subrc = 4
+
+Comment KEY if this saved you a debugging hour.
+
+Next: Part 9, Currency and quantity fields (tomorrow at 9 AM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

@@ -1,0 +1,17 @@
+Two users change the same order. One save wipes out the other.
+
+Lock objects in SAP ABAP, step by step:
+
+1. Create a lock object in SE11 (name starts with EZ or EY)
+2. Activation creates ENQUEUE_ and DEQUEUE_ function modules
+3. Call ENQUEUE before you change, check sy-subrc
+4. Change, save, then DEQUEUE
+5. SM12 shows every open lock
+
+Comment LOCK if you have seen a lost update in production.
+
+Next: Part 7, The Fields tab (today at 5 PM).
+
+ABAP Interview Pack (160 Q&A): link in bio.
+
+#sap #abap #sapabap #sapdeveloper #abapcodevault
