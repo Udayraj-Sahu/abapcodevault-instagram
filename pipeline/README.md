@@ -298,3 +298,7 @@ fallback raw.githubusercontent.com). publish.py first downloads the file itself 
 the URL, then retries with backoff and the fallback host on "error code 2207076/2207077". After each
 post, scripts/prune_media.py deletes media of published folders so the repo (which jsDelivr serves
 whole) stays small. Never re-add media to published folders.
+
+
+## Keynote engine (approved 25 Nov 2026)
+All reels render in the Dark Tech Keynote style (test reel C, 25 Nov), adapted from the MIT-licensed code of Lemo-Opuscar (github.com/lemomo-ai/lemo-opuscar, see pipeline/keynote/LICENSE-lemo-opuscar-MIT.txt). Narration is unchanged (Kokoro am_michael via generate.py). pipeline/keynote_reel.py writes a spec (slides + times + word timings + captions), renders the canvas page pipeline/keynote/page (reel.js draws every slide kind: cover, answer/text, list/checklist, flow, screen, versus, compare, code, sap_error/bug, output/table, chat, quiz, myth, number, story, cta, fallback), adds a synthesized score + foley from the page's events, and muxes reel.mp4 at -14 LUFS. Per-reel "engine": "classic" switches back to the old engine. Setup: cd pipeline/keynote && npm install.

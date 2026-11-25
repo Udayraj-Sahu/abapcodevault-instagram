@@ -1870,6 +1870,10 @@ def make_motion_reel(p, slides, folder, handle, accent):
     else:
         durations, speech, sr = [default] * len(slides), [(0.2, default - 0.6)] * len(slides), 24000
         voice = np.zeros(int(sum(durations) * sr), dtype="float32")
+    if p.get("engine", "keynote") == "keynote":       # approved 25 Nov: Dark Tech Keynote engine for every reel
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from keynote_reel import make_keynote_reel
+        return make_keynote_reel(p, slides, durations, speech, vo_wav if has_vo else None, folder, handle, word_timeline)
     live = p.get("style", "live") == "live"
     base = reel_chrome(handle, p.get("tag", "SAP ABAP"), accent, live)
     secs = [section_for(s_, k, len(slides), p) for k, s_ in enumerate(slides)]
