@@ -96,6 +96,10 @@ def shimmer(v=1.0):
     for f in (hz(93), hz(97), hz(100)): x = x + .2*np.sin(2*np.pi*f*tt)*np.sin(np.pi*tt/d)
     return x * v
 
+def glitch(v=1.0):
+    d = .32; x = _noise(d) * (_rng.random(int(d*SR)) > .5); x = _hp(x) * _env(d, .09); tt = _t(d)
+    x = x + .5*np.sign(np.sin(2*np.pi*90*tt)) * _env(d, .05); return x / max(1e-6, np.abs(x).max()) * v
+
 def _add(buf, x, at, g=1.0, pan=0.0):
     s = int(at * SR)
     if s >= len(buf) or s + len(x) <= 0: return
@@ -141,7 +145,11 @@ def build_mix(dur, voice, vsr, slides, events, seed):
          "row": lambda: (marimba(hz(sc[3] + 12), .35, .5), .28), "snap": lambda: (thump(.8, 70), .45), "click": lambda: (click(1.0, 1), .45),
          "type": lambda: (click(1.4, .6), .3), "notify": lambda: (glock(hz(sc[2] + 24), 1.0, .6), .3), "error": lambda: (buzz(1), .3),
          "key": lambda: (click(rng.uniform(1.1, 1.6), .5), .16), "tick": lambda: (glock(hz(sc[4] + 12), .4, .5), .3), "digit": lambda: (click(2.2, .5), .3),
-         "move": lambda: (whoosh(.45, .6), .25)}
+         "move": lambda: (whoosh(.45, .6), .25), "whoosh": lambda: (whoosh(.35, .7), .35), "fly": lambda: (whoosh(.25, .5), .3),
+         "land": lambda: (thump(.6, 110), .5), "glitch": lambda: (glitch(1), .5), "press": lambda: (marimba(hz(sc[0]), 1.2, .9) + np.pad(sine_drop(.8), (0, int(1.2*SR) - int(.45*SR))), .6),
+         "flip": lambda: (whoosh(.2, .5), .3), "draw": lambda: (_hp(_noise(.8)) * _env(.8, .3) * .25, .2), "bump": lambda: (thump(.9, 80), .6),
+         "crt": lambda: (sine_drop(.6), .35), "loop": lambda: (shimmer(.7), .3), "shimmer": lambda: (shimmer(.6), .25), "zero": lambda: (np.zeros(10), 0),
+         "ping": lambda: (marimba(hz(rng.choice([sc[3] + 12, sc[4] + 12, sc[1] + 12])), .4, .45, rng.uniform(-45, 45)), .25)}
     for e in events:
         f = S.get(e["type"])
         if f:
@@ -152,6 +160,9 @@ def build_mix(dur, voice, vsr, slides, events, seed):
     music *= duck[:, None]; fol *= (1 - .3 * (1 - duck))[:, None]
     if end_t < dur:
         a, b = int((end_t - .35) * SR), int(end_t * SR); music[a:b] = 0
+    for e in events:
+        if e["type"] == "zero":
+            a, b = int(e["t"] * SR), int((e["t"] + e.get("d", .45)) * SR); music[a:b] = 0; fol[a:b] = 0
     mix = vo + music * .24 + fol * .5
     mix = mix[:int(dur * SR)]
     return mix / max(1e-6, np.abs(mix).max()) * .89
@@ -170,7 +181,8 @@ def make_keynote_reel(p, slides, durations, speech, vo_wav, folder, handle, word
         spec_slides.append(x); t += d
     dur = round(t + 0.1, 3)
     tag = p.get("tag", "")
-    spec = {"dur": dur, "slides": spec_slides, "caps": caption_chunks(spec_slides), "handle": handle,
+    scenes = p.get("scenes") or f"scenes/{p.get('slug', 'reel')}.js"
+    spec = {"scenes": scenes if os.path.exists(os.path.join(KEY, "page", scenes)) else None, "dur": dur, "slides": spec_slides, "caps": caption_chunks(spec_slides), "handle": handle,
             "tag": tag.upper() if tag else "", "comment": p.get("comment_word", "")}
     os.makedirs(os.path.join(KEY, "page", "jobs"), exist_ok=True)
     job = f"jobs/{p.get('slug', 'reel')}.json"

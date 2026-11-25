@@ -420,7 +420,7 @@ K.fallback = {
   draw(g, s, t, Y) { const y = header(g, s, t, Y); const b = s.body || s.text || s.subtitle || '';
     if (b) rich(g, b, X0, y + 20, 48, { wt: 500, color: '#D5D9E3', reveal: () => ss(seg(t, s._b, s._b + 0.3)) }); },
 };
-const kindOf = s => K[s.kind] ? s.kind : 'fallback';
+const kindOf = s => s.kind === 'scene' && K['scene:' + s.scene] ? 'scene:' + s.scene : K[s.kind] ? s.kind : 'fallback';
 
 // ───────── camera: track down the stack, a gentle push inside each slide ─────────
 function camAt(t) {
@@ -432,6 +432,8 @@ function camAt(t) {
   const u = seg(t, s.t0, s.t1);
   let zoom = i === 0 ? lerp(1.05, 1.0, eo(u)) : lerp(1.0, 1.035, u);
   if (s.kind === 'cta') zoom = lerp(0.96, 1.0, eo(seg(t, s.t0, s.t0 + 0.8)));
+  const sc = K[kindOf(s)];
+  if (sc.cam && t >= s.t0 && t < s.t1) { const c = sc.cam(s, t) || {}; return E.camera({ x: x + (c.dx || 0), y: y - 40 + (c.dy || 0), zoom: zoom * (c.zoom || 1), rot: c.rot || 0, sx: c.sx || 0, sy: c.sy || 0 }); }
   return E.camera({ x, y: y - 40, zoom });
 }
 
@@ -457,7 +459,7 @@ export function init(spec) {
 }
 export function events() {
   const ev = [];
-  S.slides.forEach((s, i) => { if (i > 0) ev.push({ t: s.t0 - 0.2, type: 'move' }); s._ev.forEach(([type, t]) => ev.push({ t: Math.round(t * 1000) / 1000, type })); });
+  S.slides.forEach((s, i) => { if (i > 0) ev.push({ t: s.t0 - 0.2, type: 'move' }); s._ev.forEach(([type, t, x]) => ev.push({ t: Math.round(t * 1000) / 1000, type, ...(x || {}) })); });
   return ev.filter(e => e.t >= 0 && e.t < S.dur).sort((a, b) => a.t - b.t);
 }
 export function render(g, t) {
@@ -473,3 +475,6 @@ export function render(g, t) {
   drawCaption(g, t);
 }
 export function texts() { return []; }
+export const H_ = { E, T, measure, fitPx, tokens, rich, chip, drop, blink, plain, sayWord, cue, seqCues, padlock, pointer, mark, win, codeLine, header, X0, CW, ACC };
+/** per-reel custom scenes: { name: { plan(s) -> [[sfx, t], ...], draw(g, s, t, Y) } }, used by slides {"kind": "scene", "scene": name} */
+export function addScenes(mod) { Object.entries(mod || {}).forEach(([k, v]) => { K['scene:' + k] = v; }); }

@@ -183,20 +183,46 @@
    "comment_word": "LOCK",
    "slides": [
     {
-     "kind": "cover",
-     "kicker": "Lock objects",
+     "kind": "scene",
+     "scene": "collision",
      "title": "One save *wipes out* the other",
-     "voiceover": "Two users change the same order. One save wipes out the other.",
-     "spoken": "Two users change the same order. One save wipes out the other."
+     "a": {
+      "who": "VA02 · Order 4711 · USER_A",
+      "label": "Quantity",
+      "from": "10",
+      "value": "25"
+     },
+     "b": {
+      "who": "VA02 · Order 4711 · USER_B",
+      "label": "Quantity",
+      "from": "10",
+      "value": "40"
+     },
+     "target": {
+      "title": "Database · order 4711"
+     },
+     "say_b": "wipes",
+     "say_zero": "error",
+     "say_bad": "wrong",
+     "voiceover": "Two users change the same order. One save wipes out the other. No error. No warning. The data is just wrong.",
+     "spoken": "Two users change the same order. One save wipes out the other. No error. No warning. The data is just wrong."
     },
     {
-     "kind": "answer",
-     "label": "THE FIX",
-     "heading": "A *lock object*",
-     "body": "Like the occupied sign on a meeting room door: one user edits, everyone else waits.",
-     "highlight": "everyone else waits",
-     "voiceover": "No error, no warning. The data is just wrong. The fix is a lock object. Think of the occupied sign on a meeting room door.",
-     "spoken": "No error, no warning. The data is just wrong. The fix is a lock object. Think of the occupied sign on a meeting room door."
+     "kind": "scene",
+     "scene": "sign",
+     "target": {
+      "title": "Sales order",
+      "value": "4711"
+     },
+     "texts": [
+      "LOCKED",
+      "OCCUPIED"
+     ],
+     "say": "lock",
+     "flip_say": "occupied",
+     "door": true,
+     "voiceover": "The fix is a lock object. Think of the occupied sign on a meeting room door.",
+     "spoken": "The fix is a lock object. Think of the occupied sign on a meeting room door."
     },
     {
      "kind": "screen",
@@ -240,22 +266,21 @@
      "heading": "Lock *before* you change",
      "typewriter": true,
      "filename": "z_change_order.abap",
-     "code": "CALL FUNCTION 'ENQUEUE_EZ_ORDER'\n  EXPORTING vbeln = lv_vbeln\n  EXCEPTIONS foreign_lock = 1 OTHERS = 2.\nIF sy-subrc <> 0.\n  MESSAGE 'Order is locked' TYPE 'E'.\nENDIF.",
-     "voiceover": "Activation creates two function modules. Call ENQUEUE before you change the order. If sy-subrc isn't zero, someone else holds the lock. Stop, and tell the user.",
-     "spoken": "Activation creates two function modules. Call ENQUEUE before you change the order. If sy-subrc isn't zero, someone else holds the lock. Stop, and tell the user."
+     "code": "CALL FUNCTION 'ENQUEUE_EZ_ORDER'\n  EXPORTING vbeln = lv_vbeln\n  EXCEPTIONS foreign_lock = 1 OTHERS = 2.",
+     "voiceover": "Activation creates two function modules. Call ENQUEUE before you change the order.",
+     "spoken": "Activation creates two function modules. Call ENQUEUE before you change the order."
     },
     {
-     "kind": "flow",
-     "heading": "The *ritual*",
-     "label": "EVERY TIME",
-     "steps": [
-      "Lock: ENQUEUE",
-      "Change the order",
-      "Save",
-      "Unlock: DEQUEUE"
-     ],
-     "voiceover": "Then lock, change, save, unlock with DEQUEUE. Every time.",
-     "spoken": "Then lock, change, save, unlock with DEQUEUE. Every time."
+     "kind": "scene",
+     "scene": "bump",
+     "title": "sy-subrc *isn't zero*",
+     "actor": "USER_B",
+     "blocker": "USER_A",
+     "say": "holds",
+     "message": "Order 4711 is locked by USER_A",
+     "msg_say": "tell",
+     "voiceover": "If someone else holds the lock, sy-subrc isn't zero. Stop, and tell the user.",
+     "spoken": "If someone else holds the lock, sy-subrc isn't zero. Stop, and tell the user."
     },
     {
      "kind": "output",
@@ -285,21 +310,35 @@
      "spoken": "SM12 shows every open lock, with the user, the object and the key."
     },
     {
-     "kind": "versus",
-     "label": "COMMON MISTAKE",
-     "heading": "Locked, but *not checked*",
-     "bad": {
-      "title": "Ignore sy-subrc",
-      "sub": "you still overwrite the other user",
-      "say": "mistake"
-     },
-     "good": {
-      "title": "Check sy-subrc",
-      "sub": "locked? stop and tell the user",
-      "say": "always"
-     },
-     "voiceover": "Common mistake: calling ENQUEUE but ignoring sy-subrc. Then you still overwrite the other user. Always check it.",
-     "spoken": "Common mistake: calling ENQUEUE but ignoring sy-subrc. Then you still overwrite the other user. Always check it."
+     "kind": "scene",
+     "scene": "grid",
+     "label": "TAKEAWAY",
+     "heading": "The *ritual*",
+     "tiles": [
+      {
+       "title": "LOCK",
+       "icon": "lock",
+       "say": "lock"
+      },
+      {
+       "title": "CHANGE",
+       "icon": "edit",
+       "say": "change"
+      },
+      {
+       "title": "SAVE",
+       "icon": "save",
+       "say": "save"
+      },
+      {
+       "title": "UNLOCK",
+       "icon": "open",
+       "say": "unlock"
+      }
+     ],
+     "loop_say": "every",
+     "voiceover": "Takeaway: lock, change, save, unlock. Every time.",
+     "spoken": "Takeaway: lock, change, save, unlock. Every time."
     }
    ],
    "next": {
@@ -389,58 +428,63 @@
      "spoken": "Open SCARR in SE11 and click the Fields tab. Each line has a field name, a key flag, initial values and a data element."
     },
     {
-     "kind": "output",
+     "kind": "scene",
+     "scene": "columns",
      "label": "EXAMPLE",
-     "heading": "*SCARR*, field by field",
-     "tcode": "SE11",
-     "title": "SCARR · Fields",
-     "columns": [
-      "Field",
-      "Key",
-      "Data element",
-      "Type"
+     "heading": "One line = *one column*",
+     "table": "SCARR",
+     "fields": [
+      {
+       "name": "MANDT",
+       "key": true,
+       "de": "MANDT",
+       "type": "CLNT 3",
+       "say": "mandt"
+      },
+      {
+       "name": "CARRID",
+       "key": true,
+       "de": "S_CARR_ID",
+       "type": "CHAR 3",
+       "say": "carrid"
+      },
+      {
+       "name": "CARRNAME",
+       "de": "S_CARRNAME",
+       "type": "CHAR 20",
+       "say": "carrname"
+      },
+      {
+       "name": "CURRCODE",
+       "de": "S_CURRCODE",
+       "type": "CUKY 5",
+       "say": "currcode"
+      },
+      {
+       "name": "URL",
+       "de": "S_CARRURL",
+       "type": "CHAR 255",
+       "say": "url"
+      }
      ],
      "rows": [
       [
-       "MANDT",
-       "✓",
-       "MANDT",
-       "CLNT 3"
+       "100",
+       "LH",
+       "Lufthansa",
+       "EUR",
+       "lufthansa.com"
       ],
       [
-       "CARRID",
-       "✓",
-       "S_CARR_ID",
-       "CHAR 3"
-      ],
-      [
-       "CARRNAME",
-       "",
-       "S_CARRNAME",
-       "CHAR 20"
-      ],
-      [
-       "CURRCODE",
-       "",
-       "S_CURRCODE",
-       "CUKY 5"
-      ],
-      [
-       "URL",
-       "",
-       "S_CARRURL",
-       "CHAR 255"
+       "100",
+       "AA",
+       "American Airlines",
+       "USD",
+       "aa.com"
       ]
      ],
-     "row_say": [
-      "mandt",
-      "carrid",
-      "carrname",
-      "currcode",
-      "url"
-     ],
-     "voiceover": "Here are SCARR's real fields. MANDT, the client. CARRID, the airline code. CARRNAME, the airline name. CURRCODE, the currency. URL, the website.",
-     "spoken": "Here are SCARR's real fields. MANDT, the client. CARRID, the airline code. CARRNAME, the airline name. CURRCODE, the currency. URL, the website."
+     "voiceover": "Here are SCARR's real fields. MANDT, the client. CARRID, the airline code. CARRNAME, the airline name. CURRCODE, the currency. And URL, the website. Each line becomes one column.",
+     "spoken": "Here are SCARR's real fields. MANDT, the client. CARRID, the airline code. CARRNAME, the airline name. CURRCODE, the currency. And URL, the website. Each line becomes one column."
     },
     {
      "kind": "versus",
@@ -460,13 +504,30 @@
      "spoken": "Common mistake: typing the type and length straight into the field with predefined type. It works, but you lose the labels and F1 help. Use a data element instead."
     },
     {
-     "kind": "answer",
+     "kind": "scene",
+     "scene": "grid",
      "label": "REMEMBER",
-     "heading": "One line = *one column*",
-     "body": "Field name + Key + data element = a column with a meaning.",
-     "highlight": "a column with a meaning",
-     "voiceover": "Takeaway: one line on the fields tab is one column, and a data element gives it meaning.",
-     "spoken": "Takeaway: one line on the fields tab is one column, and a data element gives it meaning."
+     "heading": "A good *column*",
+     "tiles": [
+      {
+       "title": "Field name",
+       "icon": "edit",
+       "say": "field"
+      },
+      {
+       "title": "Key?",
+       "icon": "key",
+       "say": "key"
+      },
+      {
+       "title": "Data element",
+       "icon": "table",
+       "say": "data"
+      }
+     ],
+     "accent": 2,
+     "voiceover": "Takeaway: field name, key, and a data element. That's one column with a meaning.",
+     "spoken": "Takeaway: field name, key, and a data element. That's one column with a meaning."
     }
    ],
    "next": {
@@ -552,22 +613,59 @@
      "spoken": "On the fields tab, tick Key for each key field. Key fields come first, together, at the top of the table."
     },
     {
-     "kind": "answer",
+     "kind": "scene",
+     "scene": "clients",
      "label": "MANDT",
      "heading": "*MANDT* goes first",
-     "body": "Client-dependent table: MANDT is the first key field, so client 100 and client 200 keep separate rows.",
-     "highlight": "separate rows",
-     "voiceover": "MANDT comes first in a client-dependent table. It's the client, so each client has its own rows.",
-     "spoken": "MANDT comes first in a client-dependent table. It's the client, so each client has its own rows."
+     "say_a": "100",
+     "say_b": "200",
+     "say_key": "key",
+     "rows_a": [
+      [
+       "100",
+       "LH",
+       "Lufthansa"
+      ]
+     ],
+     "rows_b": [
+      [
+       "200",
+       "LH",
+       "Lufthansa"
+      ]
+     ],
+     "voiceover": "MANDT comes first in a client-dependent table. Client one hundred and client two hundred can both have LH, because MANDT is part of the key.",
+     "spoken": "MANDT comes first in a client-dependent table. Client 100 and client 200 can both have LH, because MANDT is part of the key."
     },
     {
-     "kind": "code",
+     "kind": "scene",
+     "scene": "duplicate",
+     "label": "EXAMPLE",
      "heading": "Same key *twice*",
-     "typewriter": true,
-     "filename": "z_insert_airline.abap",
-     "code": "ls_air = VALUE #( carrid = 'LH' carrname = 'Lufthansa' ).\nINSERT ztairline FROM ls_air.\n\" key LH exists already\nIF sy-subrc = 4.\n  \" duplicate key: nothing inserted\nENDIF.",
-     "voiceover": "Now insert a row whose key already exists. No dump. sy-subrc is four, and the row is not written.",
-     "spoken": "Now insert a row whose key already exists. No dump. sy-subrc is 4, and the row is not written."
+     "table": "ZTAIRLINE",
+     "say_insert": "insert",
+     "say_nodump": "dump",
+     "say_rc": "4",
+     "rows": [
+      [
+       "100",
+       "AA",
+       "American Airlines"
+      ],
+      [
+       "100",
+       "LH",
+       "Lufthansa"
+      ]
+     ],
+     "new_row": [
+      "100",
+      "LH",
+      "Lufthansa City"
+     ],
+     "dup_row": 1,
+     "voiceover": "Now insert a row whose key already exists. It hits the key. No dump. sy-subrc is four, and the row is not written.",
+     "spoken": "Now insert a row whose key already exists. It hits the key. No dump. sy-subrc is 4, and the row is not written."
     },
     {
      "kind": "versus",
@@ -587,13 +685,30 @@
      "spoken": "Common mistake: not checking sy-subrc after insert. The program carries on as if the row was saved. Check it every time."
     },
     {
-     "kind": "answer",
+     "kind": "scene",
+     "scene": "grid",
      "label": "REMEMBER",
      "heading": "Key = *unique row*",
-     "body": "Key fields first, MANDT at the top, and check sy-subrc after INSERT.",
-     "highlight": "check sy-subrc",
-     "voiceover": "Takeaway: the key makes each row unique, and MANDT comes first.",
-     "spoken": "Takeaway: the key makes each row unique, and MANDT comes first."
+     "tiles": [
+      {
+       "title": "Key first",
+       "icon": "key",
+       "say": "key"
+      },
+      {
+       "title": "MANDT on top",
+       "icon": "table",
+       "say": "mandt"
+      },
+      {
+       "title": "Check sy-subrc",
+       "icon": "check",
+       "say": "check"
+      }
+     ],
+     "accent": 0,
+     "voiceover": "Takeaway: key fields first, MANDT at the top, and check sy-subrc after insert.",
+     "spoken": "Takeaway: key fields first, MANDT at the top, and check sy-subrc after insert."
     }
    ],
    "next": {
