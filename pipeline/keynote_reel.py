@@ -157,6 +157,19 @@ def build_mix(dur, voice, vsr, slides, events, seed):
     # duck music under the voice, a breath of silence before the end card, then master
     k = int(.12 * SR); env = np.convolve(np.abs(vo[:, 0]), np.ones(k) / k, "same")
     duck = 1 - .6 * np.clip(env / (env.max() * .25 + 1e-9), 0, 1)
+    # ducker timing (sound/timing improvement 25 Nov): 10 ms control frames, 60 ms lookahead so the bed dips before the
+    # first syllable, 220 ms hold so it stays down between words (no pumping), then a 300 ms release ramp
+    fr = SR // 100; d = duck[:len(duck) // fr * fr].reshape(-1, fr).min(1)
+    la, hold, rel = 6, 22, 30
+    d = np.array([d[i:i + la + 1].min() for i in range(len(d))])
+    out = d.copy(); last, cnt = 1.0, 0
+    for i, v in enumerate(d):
+        if v <= last: last, cnt = v, 0
+        else:
+            cnt += 1
+            if cnt > hold: last = min(v, last + .6 / rel)
+        out[i] = last
+    duck = np.interp(np.arange(len(duck)), np.arange(len(out)) * fr + fr / 2, out).astype(np.float32)
     music *= duck[:, None]; fol *= (1 - .3 * (1 - duck))[:, None]
     if end_t < dur:
         a, b = int((end_t - .35) * SR), int(end_t * SR); music[a:b] = 0
