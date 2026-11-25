@@ -1,0 +1,176 @@
+{
+ "date": "2026-11-25",
+ "handle": "@abapcodevault",
+ "posts": [
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 6,
+   "time": "09:00",
+   "slug": "table-data-browser-setting",
+   "tag": "DDIC · Tables 6/18",
+   "comment_word": "SE16",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 6/18",
+     "title": "Can't *add a row* in SE16?",
+     "voiceover": "Can't add a row in SE16? Last time we learned the delivery class. Now, the data browser setting.",
+     "spoken": "Can't add a row in SE16? Last time we learned the delivery class. Now, the data browser setting."
+    },
+    {
+     "kind": "answer",
+     "label": "NEW TERM",
+     "heading": "One *switch* decides",
+     "body": "Data Browser/Table View Maint. = may SE16 and SM30 show and change this table's rows?",
+     "highlight": "show and change",
+     "voiceover": "One field decides if SE16 and SM30 may show and change your table's rows.",
+     "spoken": "One field decides if SE16 and SM30 may show and change your table's rows."
+    },
+    {
+     "kind": "screen",
+     "heading": "Where it *lives*",
+     "tcode": "SE11",
+     "object": "Transparent Table ZTAIRLINE",
+     "tabs": [
+      "Attributes",
+      "Delivery and Maintenance",
+      "Fields",
+      "Entry help/check"
+     ],
+     "active": 1,
+     "fields": [
+      [
+       "Delivery Class",
+       "A"
+      ],
+      [
+       "Data Browser/Table View Maint.",
+       "Display/Maintenance Allowed"
+      ]
+     ],
+     "focus": [
+      1
+     ],
+     "focus_say": [
+      "browser"
+     ],
+     "note": "F4 shows 3 options",
+     "voiceover": "In SE11, open the Delivery and Maintenance tab. Below the delivery class is Data Browser, Table View Maint. F4 shows three options.",
+     "spoken": "In SE11, open the Delivery and Maintenance tab. Below the delivery class is Data Browser/Table View Maint. F4 shows 3 options."
+    },
+    {
+     "kind": "output",
+     "label": "THE 3 OPTIONS",
+     "heading": "What each *option* allows",
+     "tcode": "SE11",
+     "title": "Data Browser/Table View Maint. (F4)",
+     "columns": [
+      "Option",
+      "SE16",
+      "SM30"
+     ],
+     "rows": [
+      [
+       "Allowed",
+       "show + change",
+       "yes"
+      ],
+      [
+       "With Restrictions",
+       "show only",
+       "no"
+      ],
+      [
+       "Not Allowed",
+       "no",
+       "no"
+      ]
+     ],
+     "row_say": [
+      "allowed",
+      "restrictions",
+      "not"
+     ],
+     "voiceover": "Allowed: SE16 shows and changes rows, and SM30 works. With restrictions: SE16 only shows them. No changes, no SM30. Not allowed: neither tool can touch the table.",
+     "spoken": "Allowed: SE16 shows and changes rows, and SM30 works. With restrictions: SE16 only shows them. No changes, no SM30. Not allowed: neither tool can touch the table."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "SM30 says *restrictions*",
+     "bad": {
+      "title": "With Restrictions",
+      "sub": "SM30: only displayed with restrictions",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "Display/Maintenance Allowed",
+      "sub": "now SM30 can maintain it",
+      "say": "switch"
+     },
+     "voiceover": "Common mistake: SM30 maintenance on a table left on restrictions. SM30 then refuses to maintain it. Switch it to allowed.",
+     "spoken": "Common mistake: SM30 maintenance on a table left on restrictions. SM30 then refuses to maintain it. Switch it to allowed."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "A *real* table",
+     "tcode": "SE11",
+     "title": "Delivery and Maintenance tab",
+     "columns": [
+      "Table",
+      "Holds",
+      "Setting"
+     ],
+     "rows": [
+      [
+       "T001",
+       "company codes",
+       "Allowed"
+      ],
+      [
+       "ZTAIRLINE",
+       "your test data",
+       "Allowed"
+      ]
+     ],
+     "row_say": [
+      "t001",
+      "test"
+     ],
+     "voiceover": "Real example: T zero zero one, company codes, is allowed. Set your test table to allowed to add rows in SE16.",
+     "spoken": "Real example: T001, company codes, is allowed. Set your test table to allowed to add rows in SE16."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "*Restrictions* = look, don't touch",
+     "body": "Allowed: change in SE16 and SM30. With Restrictions: display only. Not Allowed: no standard tool.",
+     "highlight": "display only",
+     "voiceover": "Takeaway: with restrictions, you can look, but you can't touch.",
+     "spoken": "Takeaway: with restrictions, you can look, but you can't touch."
+    }
+   ],
+   "next": {
+    "title": "*Lock objects* in 40 seconds",
+    "when": "today at 1 PM",
+    "voice": "lock objects, the fix for two users saving the same order",
+    "vo": "Next: two users save the same order, and one change silently disappears. The fix is at one PM."
+   },
+   "caption": "Can't add a row in SE16?\n\nSAP ABAP tables, Part 6 of 18: the Data Browser/Table View Maint. setting in SE11.\n\n1. Delivery and Maintenance tab, right below the delivery class\n2. Allowed: SE16 shows and changes rows, SM30 works\n3. With Restrictions: SE16 display only, no SM30\n4. Not Allowed: no standard tool\n5. Common mistake: SM30 maintenance on a table left on restrictions\n\nComment SE16 if this blocked you once.\n\nNext: Lock objects in 40 seconds (today at 1 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  }
+ ]
+}

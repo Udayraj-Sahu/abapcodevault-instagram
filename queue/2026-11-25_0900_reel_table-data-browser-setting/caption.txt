@@ -1,0 +1,17 @@
+Can't add a row in SE16?
+
+SAP ABAP tables, Part 6 of 18: the Data Browser/Table View Maint. setting in SE11.
+
+1. Delivery and Maintenance tab, right below the delivery class
+2. Allowed: SE16 shows and changes rows, SM30 works
+3. With Restrictions: SE16 display only, no SM30
+4. Not Allowed: no standard tool
+5. Common mistake: SM30 maintenance on a table left on restrictions
+
+Comment SE16 if this blocked you once.
+
+Next: Lock objects in 40 seconds (today at 1 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault
