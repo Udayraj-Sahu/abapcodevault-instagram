@@ -345,7 +345,7 @@ K.chat = {
     const hs = m.map(x => wrapTok(g, tokens(plain(x.text)), 38, 500, 700).length * 50 + 80); const tot = hs.reduce((a, b) => a + b + 24, 0);
     let yy = Math.max(y, y + (Y + 480 - y - tot)); if (tot > Y + 480 - y) yy = Y + 480 - tot;   // keep the newest at the bottom
     m.forEach((x, i) => { const p = drop(t, s._c[i], 0.3); const h = hs[i]; if (p > 0) {
-      const me = /you|me|answer/i.test(x.from || ''), w = Math.min(780, Math.max(...wrapTok(g, tokens(plain(x.text)), 38, 500, 700).map(L => L.w)) + 80, measure(g, x.from || '', 24, 700, 'mono') + 80);
+      const me = /you|me|answer/i.test(x.from || ''), w = Math.max(Math.min(780, Math.max(...wrapTok(g, tokens(plain(x.text)), 38, 500, 700).map(L => L.w)) + 80), measure(g, x.from || '', 24, 700, 'mono') + 80);
       const bx = me ? X0 + CW - w : X0; g.save(); g.globalAlpha *= clamp(p * 2); g.translate(0, (1 - p) * 30);
       E.panel(g, bx, yy, w, h, { r: 28, fill: me ? '#1E2A12' : PAL.surf2, stroke: me ? rgba(ACC, 0.5) : PAL.line });
       T(g, (x.from || '').toUpperCase(), bx + 34, yy + 34, 22, { fam: 'mono', wt: 700, color: me ? ACC : PAL.mute });
