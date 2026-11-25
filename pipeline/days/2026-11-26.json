@@ -1,0 +1,594 @@
+{
+ "date": "2026-11-26",
+ "handle": "@abapcodevault",
+ "posts": [
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 9,
+   "time": "09:00",
+   "slug": "table-currency-quantity",
+   "tag": "DDIC · Tables 9/18",
+   "comment_word": "CUKY",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 9/18",
+     "title": "Your *amount field* won't activate?",
+     "voiceover": "Stop: your amount field fails activation in SE11. Last time we learned the primary key. Now, currency and quantity fields.",
+     "spoken": "Stop: your amount field fails activation in SE11. Last time we learned the primary key. Now, currency and quantity fields."
+    },
+    {
+     "kind": "answer",
+     "label": "WHY",
+     "heading": "100 *what?*",
+     "body": "An amount without a currency means nothing: 100 EUR or 100 JPY?",
+     "highlight": "means nothing",
+     "voiceover": "Why? An amount of one hundred means nothing. Euros? Yen? SAP needs the currency right next to it.",
+     "spoken": "Why? An amount of 100 means nothing. Euros? Yen? SAP needs the currency right next to it."
+    },
+    {
+     "kind": "scene",
+     "scene": "partner",
+     "label": "NEW TERM",
+     "heading": "Every amount needs a *partner*",
+     "field": {
+      "name": "NETWR",
+      "type": "CURR 15,2",
+      "value": "1500.00"
+     },
+     "ref": {
+      "name": "WAERK",
+      "type": "CUKY 5",
+      "value": "EUR"
+     },
+     "say_fail": "refuses",
+     "say_ref": "reference",
+     "say_link": "holds",
+     "fail_text": "activation error: no reference field",
+     "voiceover": "A CURR field alone fails the activation check. SE11 refuses it. It needs a reference field: a CUKY field that holds the currency.",
+     "spoken": "A CURR field alone fails the activation check. SE11 refuses it. It needs a reference field: a CUKY field that holds the currency."
+    },
+    {
+     "kind": "screen",
+     "heading": "The *Currency/Quantity* tab",
+     "tcode": "SE11",
+     "object": "Transparent Table VBAK",
+     "tabs": [
+      "Attributes",
+      "Delivery and Maintenance",
+      "Fields",
+      "Entry help/check",
+      "Currency/Quantity Fields"
+     ],
+     "active": 4,
+     "fields": [
+      [
+       "Field",
+       "NETWR"
+      ],
+      [
+       "Reference table",
+       "VBAK"
+      ],
+      [
+       "Ref. field",
+       "WAERK"
+      ]
+     ],
+     "focus": [
+      1,
+      2
+     ],
+     "focus_say": [
+      "table",
+      "WAERK"
+     ],
+     "note": "same tab for QUAN fields",
+     "voiceover": "Click the Currency/Quantity Fields tab. For NETWR, enter reference table VBAK and reference field WAERK.",
+     "spoken": "Click the Currency/Quantity Fields tab. For NETWR, enter reference table VBAK and reference field WAERK."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "Real *pairs* in SD",
+     "tcode": "SE11",
+     "title": "Currency/Quantity Fields",
+     "columns": [
+      "Table",
+      "Field",
+      "Type",
+      "Ref. field"
+     ],
+     "rows": [
+      [
+       "VBAK",
+       "NETWR",
+       "CURR",
+       "WAERK"
+      ],
+      [
+       "VBAP",
+       "KWMENG",
+       "QUAN",
+       "VRKME"
+      ]
+     ],
+     "row_say": [
+      "NETWR",
+      "KWMENG"
+     ],
+     "voiceover": "Real example: in VBAK, the net value NETWR points to WAERK. In VBAP, the quantity KWMENG points to the unit VRKME.",
+     "spoken": "Real example: in VBAK, the net value NETWR points to WAERK. In VBAP, the quantity KWMENG points to the unit VRKME."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "A *CHAR* field as partner",
+     "bad": {
+      "title": "Ref. field: CHAR 5",
+      "sub": "activation still fails",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "Ref. field: CUKY / UNIT",
+      "sub": "CURR → CUKY · QUAN → UNIT",
+      "say": "must"
+     },
+     "voiceover": "Common mistake: pointing to a plain CHAR field. The partner must be CUKY for amounts and UNIT for quantities.",
+     "spoken": "Common mistake: pointing to a plain CHAR field. The partner must be CUKY for amounts and UNIT for quantities."
+    },
+    {
+     "kind": "scene",
+     "scene": "grid",
+     "label": "REMEMBER",
+     "heading": "Amounts come in *pairs*",
+     "tiles": [
+      {
+       "title": "CURR + CUKY",
+       "icon": "table",
+       "say": "amount"
+      },
+      {
+       "title": "QUAN + UNIT",
+       "icon": "table",
+       "say": "quantity"
+      }
+     ],
+     "accent": 0,
+     "voiceover": "Takeaway: every amount needs a currency, and every quantity needs a unit.",
+     "spoken": "Takeaway: every amount needs a currency, and every quantity needs a unit."
+    }
+   ],
+   "next": {
+    "title": "The *missing COMMIT* after a BAPI",
+    "when": "today at 1 PM",
+    "voice": "the missing commit after a BAPI",
+    "vo": "At one PM: the BAPI says saved, but the order doesn't exist."
+   },
+   "caption": "Stop: your amount field fails activation in SE11.\n\nSAP ABAP tables, Part 9 of 18: currency and quantity fields in SE11.\n\n1. A CURR field needs a reference field of type CUKY (the currency)\n2. A QUAN field needs a reference field of type UNIT (the unit)\n3. Set both on the Currency/Quantity Fields tab: reference table + reference field\n4. Example: VBAK-NETWR points to WAERK, VBAP-KWMENG to VRKME\n5. Common mistake: a plain CHAR field as the partner\n\nComment CUKY if this error stopped your activation once.\n\nNext: The missing COMMIT after a BAPI (today at 1 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "format": "bug_hunt",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "time": "13:00",
+   "slug": "bapi-missing-commit",
+   "tag": "Additional concepts · BAPI commit",
+   "comment_word": "COMMIT",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Additional concepts",
+     "title": "BAPI said *saved* but VA03 says no",
+     "voiceover": "The BAPI said saved. Order one-two-three-four-five doesn't exist.",
+     "spoken": "The BAPI said saved. Order 12345 doesn't exist."
+    },
+    {
+     "kind": "scene",
+     "scene": "ghost",
+     "order": "12345",
+     "msg": "Standard Order 12345 has been saved",
+     "tcode": "VA03",
+     "err": "SD document 12345 is not in the database or has been archived",
+     "say_msg": "saved",
+     "say_end": "ends",
+     "say_err": "VA03",
+     "voiceover": "RETURN says standard order saved. The program ends. You open VA03, and the order isn't there.",
+     "spoken": "RETURN says Standard Order 12345 has been saved. The program ends. You open VA03, and the order isn't there."
+    },
+    {
+     "kind": "answer",
+     "label": "WHY",
+     "heading": "BAPIs *don't commit*",
+     "body": "Most BAPIs only queue the change. No COMMIT = it's thrown away when the program ends.",
+     "highlight": "only queue",
+     "voiceover": "Why? Most BAPIs don't commit. They only queue the change. No commit, and it's thrown away at the end.",
+     "spoken": "Why? Most BAPIs don't commit. They only queue the change. No commit, and it's thrown away at the end."
+    },
+    {
+     "kind": "code",
+     "heading": "Check, then *commit*",
+     "typewriter": true,
+     "filename": "z_create_order.abap",
+     "code": "IF NOT line_exists( lt_ret[ type = 'E' ] ).\n  CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'\n    EXPORTING wait = abap_true.\nELSE.\n  CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.\nENDIF.",
+     "voiceover": "The fix: check RETURN for errors. No errors? Call BAPI transaction commit, with wait. Errors? Roll back.",
+     "spoken": "The fix: check RETURN for errors. No errors? Call BAPI_TRANSACTION_COMMIT, with wait. Errors? Roll back."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Commit *without wait*",
+     "bad": {
+      "title": "COMMIT, no WAIT",
+      "sub": "the next read may not find the order yet",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "wait = abap_true",
+      "sub": "the update finishes before you go on",
+      "say": "wait"
+     },
+     "voiceover": "Common mistake: committing without wait. Your next read may not find the order yet. Set wait, and the update finishes first.",
+     "spoken": "Common mistake: committing without wait. Your next read may not find the order yet. Set wait, and the update finishes first."
+    },
+    {
+     "kind": "scene",
+     "scene": "grid",
+     "label": "TAKEAWAY",
+     "heading": "The BAPI *ritual*",
+     "tiles": [
+      {
+       "title": "CALL",
+       "icon": "send",
+       "say": "call"
+      },
+      {
+       "title": "CHECK RETURN",
+       "icon": "search",
+       "say": "check"
+      },
+      {
+       "title": "COMMIT",
+       "icon": "save",
+       "say": "commit"
+      }
+     ],
+     "accent": 2,
+     "loop_say": "every",
+     "voiceover": "Takeaway: call, check RETURN, commit. For every BAPI that changes data.",
+     "spoken": "Takeaway: call, check RETURN, commit. For every BAPI that changes data."
+    }
+   ],
+   "next": {
+    "title": "Part 10 · *Technical settings*",
+    "when": "today at 5 PM",
+    "voice": "part ten, technical settings",
+    "vo": "At five PM: two answers your table needs before it activates."
+   },
+   "caption": "The BAPI said saved. Order 12345 doesn't exist.\n\nA classic SAP ABAP BAPI bug: no BAPI_TRANSACTION_COMMIT.\n\n1. Most BAPIs only queue the change, they don't commit\n2. Check RETURN for type E messages\n3. No errors: BAPI_TRANSACTION_COMMIT with WAIT = abap_true\n4. Errors: BAPI_TRANSACTION_ROLLBACK\n5. Without WAIT, the next read may not see the document yet\n\nSave this for your next BAPI call.\n\nNext: Part 10, Technical settings (today at 5 PM).\n\nMore snippets like this: ABAP Code Vault (link in bio).",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#bapi",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 10,
+   "time": "17:00",
+   "slug": "table-technical-settings",
+   "tag": "DDIC · Tables 10/18",
+   "comment_word": "APPL",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 10/18",
+     "title": "Two answers *before* activation",
+     "voiceover": "Your table needs two answers before it activates. Last time we learned currency and quantity fields. Now, technical settings.",
+     "spoken": "Your table needs two answers before it activates. Last time we learned currency and quantity fields. Now, technical settings."
+    },
+    {
+     "kind": "screen",
+     "heading": "Open *Technical Settings*",
+     "tcode": "SE11",
+     "object": "Technical Settings ZTAIRLINE",
+     "fields": [
+      [
+       "Name",
+       "ZTAIRLINE"
+      ],
+      [
+       "Data Class",
+       "APPL0"
+      ],
+      [
+       "Size category",
+       "0"
+      ]
+     ],
+     "focus": [
+      1,
+      2
+     ],
+     "focus_say": [
+      "data",
+      "size"
+     ],
+     "note": "toolbar button in SE11",
+     "voiceover": "Why? The database must know what you store and how much. In SE11, click Technical Settings. Two fields: data class and size category.",
+     "spoken": "Why? The database must know what you store and how much. In SE11, click Technical Settings. Two fields: data class and size category."
+    },
+    {
+     "kind": "answer",
+     "label": "NEW TERM",
+     "heading": "*Data class*",
+     "body": "Data class = what kind of data the table holds, so the database keeps it in the right area.",
+     "highlight": "what kind of data",
+     "voiceover": "A data class tells the database what kind of data your table holds.",
+     "spoken": "A data class tells the database what kind of data your table holds."
+    },
+    {
+     "kind": "scene",
+     "scene": "shelves",
+     "label": "EXAMPLE",
+     "heading": "Every table on its *shelf*",
+     "shelves": [
+      {
+       "cls": "APPL0",
+       "name": "Master data",
+       "table": "MARA",
+       "say": "APPL0"
+      },
+      {
+       "cls": "APPL1",
+       "name": "Transaction data",
+       "table": "VBAK",
+       "say": "APPL1"
+      },
+      {
+       "cls": "APPL2",
+       "name": "Customizing",
+       "table": "T001",
+       "say": "APPL2"
+      }
+     ],
+     "voiceover": "APPL0 is master data, like MARA. APPL1 is transaction data, like VBAK. APPL2 is customizing, like T001.",
+     "spoken": "APPL0 is master data, like MARA. APPL1 is transaction data, like VBAK. APPL2 is customizing, like T001."
+    },
+    {
+     "kind": "scene",
+     "scene": "dial",
+     "label": "NEW TERM",
+     "heading": "*Size category* 0 to 9",
+     "say_turn": "expect",
+     "say_f4": "F4",
+     "voiceover": "Size category is how many rows you expect, from zero to nine. Press F4 to see the row range for each one.",
+     "spoken": "Size category is how many rows you expect, from 0 to 9. Press F4 to see the row range for each one."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Size *0* for a log table",
+     "bad": {
+      "title": "Size category 0",
+      "sub": "for a table that grows to millions",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "Pick by expected rows",
+      "sub": "F4 shows the range per category",
+      "say": "pick"
+     },
+     "voiceover": "Common mistake: size category zero for a table that grows to millions of rows. Pick it by the rows you expect.",
+     "spoken": "Common mistake: size category zero for a table that grows to millions of rows. Pick it by the rows you expect."
+    },
+    {
+     "kind": "scene",
+     "scene": "grid",
+     "label": "REMEMBER",
+     "heading": "*What* and *how much*",
+     "tiles": [
+      {
+       "title": "Data class = what",
+       "icon": "db",
+       "say": "data"
+      },
+      {
+       "title": "Size category = how much",
+       "icon": "table",
+       "say": "size"
+      }
+     ],
+     "accent": 0,
+     "voiceover": "Takeaway: data class says what kind of data. Size category says how much.",
+     "spoken": "Takeaway: data class says what kind of data. Size category says how much."
+    }
+   ],
+   "next": {
+    "title": "Part 11 · *Buffering*",
+    "when": "tonight at 7:30 PM",
+    "voice": "part eleven, buffering",
+    "vo": "Tonight at seven thirty: how a table answers without asking the database."
+   },
+   "caption": "Your table needs two answers before it activates.\n\nSAP ABAP tables, Part 10 of 18: technical settings in SE11.\n\n1. SE11, Technical Settings button: data class and size category\n2. APPL0 = master data (MARA)\n3. APPL1 = transaction data (VBAK)\n4. APPL2 = customizing (T001)\n5. Size category 0-9 = expected number of rows, F4 shows the ranges\n\nComment APPL if you knew all three data classes.\n\nNext: Part 11, Buffering (tonight at 7:30 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "series": "course",
+   "format": "course_lesson",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 11,
+   "time": "19:30",
+   "slug": "table-buffering",
+   "tag": "DDIC · Tables 11/18",
+   "comment_word": "BUFFER",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 11/18",
+     "title": "Read T001 *without the database*",
+     "voiceover": "Stop reading T001 from the database ten times. Last time we learned technical settings. Now, buffering.",
+     "spoken": "Stop reading T001 from the database ten times. Last time we learned technical settings. Now, buffering."
+    },
+    {
+     "kind": "answer",
+     "label": "NEW TERM",
+     "heading": "The *table buffer*",
+     "body": "Table buffer = a copy of table rows in the application server's memory.",
+     "highlight": "in the application server's memory",
+     "voiceover": "Why? Every database read takes time. The table buffer is a copy of the rows in the application server's memory.",
+     "spoken": "Why? Every database read takes time. The table buffer is a copy of the rows in the application server's memory."
+    },
+    {
+     "kind": "scene",
+     "scene": "buffer",
+     "label": "EXAMPLE",
+     "heading": "First read vs *next read*",
+     "table": "T001",
+     "say_first": "first",
+     "say_next": "next",
+     "say_fast": "faster",
+     "voiceover": "First read: the SELECT goes to the database and fills the buffer. Next read: straight from memory. Much faster.",
+     "spoken": "First read: the SELECT goes to the database and fills the buffer. Next read: straight from memory. Much faster."
+    },
+    {
+     "kind": "output",
+     "label": "TECHNICAL SETTINGS",
+     "heading": "Three *switches*",
+     "tcode": "SE11",
+     "title": "Buffering",
+     "columns": [
+      "Buffering",
+      "Means"
+     ],
+     "rows": [
+      [
+       "not allowed",
+       "never buffered"
+      ],
+      [
+       "allowed but switched off",
+       "possible, off now"
+      ],
+      [
+       "switched on",
+       "rows are buffered"
+      ]
+     ],
+     "row_say": [
+      "not",
+      "off",
+      "switched"
+     ],
+     "voiceover": "In technical settings, pick one. Not allowed: never buffered. Allowed but switched off: possible, but off. Switched on: buffered.",
+     "spoken": "In technical settings, pick one. Not allowed: never buffered. Allowed but switched off: possible, but off. Switched on: buffered."
+    },
+    {
+     "kind": "scene",
+     "scene": "grid",
+     "label": "BUFFERING TYPE",
+     "heading": "How *much* is buffered",
+     "tiles": [
+      {
+       "title": "Single records",
+       "icon": "key",
+       "say": "single"
+      },
+      {
+       "title": "Generic area",
+       "icon": "table",
+       "say": "generic"
+      },
+      {
+       "title": "Fully buffered",
+       "icon": "db",
+       "say": "fully"
+      }
+     ],
+     "accent": 2,
+     "voiceover": "Then pick the type. Single records: only the rows you read. Generic area: rows sharing the first key fields. Fully buffered: the whole table.",
+     "spoken": "Then pick the type. Single records: only the rows you read. Generic area: rows sharing the first key fields. Fully buffered: the whole table."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Buffering *VBAK*",
+     "bad": {
+      "title": "Buffer VBAK",
+      "sub": "changes all day, other servers read old rows",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "Buffer T001",
+      "sub": "small, read often, rarely changed",
+      "say": "small"
+     },
+     "voiceover": "Common mistake: buffering a table that changes all day, like VBAK. Other servers can read old rows. Buffer small tables you mostly read, like T001.",
+     "spoken": "Common mistake: buffering a table that changes all day, like VBAK. Other servers can read old rows. Buffer small tables you mostly read, like T001."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Read often, *change rarely*",
+     "body": "Buffer small tables that are read often and changed rarely. Never buffer transaction data.",
+     "highlight": "read often and changed rarely",
+     "voiceover": "Takeaway: buffer what's read often and changed rarely.",
+     "spoken": "Takeaway: buffer what's read often and changed rarely."
+    }
+   ],
+   "next": {
+    "title": "Part 12 · *Log data changes*",
+    "when": "tomorrow at 9 AM",
+    "voice": "part twelve, log data changes",
+    "quiz": {
+     "question": "Quiz: should *VBAK* be buffered?",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    "vo": "Quiz: should you buffer VBAK? The answer is in this reel. Comment it."
+   },
+   "caption": "Stop reading T001 from the database ten times.\n\nSAP ABAP tables, Part 11 of 18: table buffering in SE11 technical settings.\n\n1. Table buffer = a copy of rows in the application server's memory\n2. Buffering: not allowed / allowed but switched off / switched on\n3. Types: single records, generic area, fully buffered\n4. Buffer small tables read often and changed rarely (T001)\n5. Never buffer transaction data like VBAK\n\nQuiz: should you buffer VBAK? Comment your answer.\n\nNext: Part 12, Log data changes (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  }
+ ]
+}

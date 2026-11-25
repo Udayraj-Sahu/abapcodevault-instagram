@@ -1,0 +1,17 @@
+Your table needs two answers before it activates.
+
+SAP ABAP tables, Part 10 of 18: technical settings in SE11.
+
+1. SE11, Technical Settings button: data class and size category
+2. APPL0 = master data (MARA)
+3. APPL1 = transaction data (VBAK)
+4. APPL2 = customizing (T001)
+5. Size category 0-9 = expected number of rows, F4 shows the ranges
+
+Comment APPL if you knew all three data classes.
+
+Next: Part 11, Buffering (tonight at 7:30 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

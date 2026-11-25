@@ -1,0 +1,17 @@
+Stop reading T001 from the database ten times.
+
+SAP ABAP tables, Part 11 of 18: table buffering in SE11 technical settings.
+
+1. Table buffer = a copy of rows in the application server's memory
+2. Buffering: not allowed / allowed but switched off / switched on
+3. Types: single records, generic area, fully buffered
+4. Buffer small tables read often and changed rarely (T001)
+5. Never buffer transaction data like VBAK
+
+Quiz: should you buffer VBAK? Comment your answer.
+
+Next: Part 12, Log data changes (tomorrow at 9 AM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

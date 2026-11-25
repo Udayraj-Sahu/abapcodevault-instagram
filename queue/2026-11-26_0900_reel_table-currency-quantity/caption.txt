@@ -1,0 +1,17 @@
+Stop: your amount field fails activation in SE11.
+
+SAP ABAP tables, Part 9 of 18: currency and quantity fields in SE11.
+
+1. A CURR field needs a reference field of type CUKY (the currency)
+2. A QUAN field needs a reference field of type UNIT (the unit)
+3. Set both on the Currency/Quantity Fields tab: reference table + reference field
+4. Example: VBAK-NETWR points to WAERK, VBAP-KWMENG to VRKME
+5. Common mistake: a plain CHAR field as the partner
+
+Comment CUKY if this error stopped your activation once.
+
+Next: The missing COMMIT after a BAPI (today at 1 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

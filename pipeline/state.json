@@ -1,7 +1,7 @@
 {
  "handle": "@abapcodevault",
  "mode": "reels_only",
- "last_queued_date": "2026-11-25",
+ "last_queued_date": "2026-11-26",
  "history": [
   "4 ABAP 7.40 syntax tricks (old vs new)",
   "sy-subrc cheat sheet",
@@ -59,7 +59,11 @@
   "Course 3.3 Tables part 6 Data Browser/Table View Maint.",
   "Lock objects: ENQUEUE and DEQUEUE",
   "Course 3.3 Tables part 7 Fields tab (SCARR)",
-  "Course 3.3 Tables part 8 Primary key and MANDT"
+  "Course 3.3 Tables part 8 Primary key and MANDT",
+  "Course 3.3 Tables part 9 Currency/Quantity fields (VBAK NETWR->WAERK, VBAP KWMENG->VRKME)",
+  "Forgetting BAPI_TRANSACTION_COMMIT",
+  "Course 3.3 Tables part 10 Technical settings: data class + size category (MARA/VBAK/T001)",
+  "Course 3.3 Tables part 11 Buffering (T001 yes, VBAK no)"
  ],
  "recent_formats": {
   "reel": [
@@ -112,6 +116,10 @@
    "course_lesson",
    "before_after",
    "course_lesson",
+   "course_lesson",
+   "course_lesson",
+   "bug_hunt",
+   "course_lesson",
    "course_lesson"
   ],
   "carousel": [],
@@ -125,30 +133,6 @@
    "lesson": 4
   },
   "pending_parts": [
-   {
-    "syllabus": "3.3",
-    "topic": "Tables",
-    "part": 9,
-    "parts": 18,
-    "title": "Currency/Quantity Fields tab",
-    "focus": "Map Q5: CURR/QUAN fields need a reference table + reference field (CUKY/UNIT); example VBAK NETWR -> WAERK; activation error without it."
-   },
-   {
-    "syllabus": "3.3",
-    "topic": "Tables",
-    "part": 10,
-    "parts": 18,
-    "title": "Technical Settings: data class + size category",
-    "focus": "Map Q5: SE11 Technical Settings; Data Class APPL0 (master), APPL1 (transaction), APPL2 (organisation/customizing); Size Category 0-9 = expected rows."
-   },
-   {
-    "syllabus": "3.3",
-    "topic": "Tables",
-    "part": 11,
-    "parts": 18,
-    "title": "Buffering",
-    "focus": "Map Q6: Buffering not allowed / allowed but switched off / switched on; Single records, Generic area (No. of key fields), Fully buffered; why (fewer DB reads) and when not (data that changes often)."
-   },
    {
     "syllabus": "3.3",
     "topic": "Tables",
@@ -259,6 +243,30 @@
     "parts": 18,
     "title": "Primary key and MANDT",
     "focus": "Map Q5/Q7: primary key = unique row; Key checkbox; MANDT first for client-dependent tables; what a duplicate key insert does (sy-subrc 4)."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 9,
+    "parts": 18,
+    "title": "Currency/Quantity Fields tab",
+    "focus": "Map Q5: CURR/QUAN fields need a reference table + reference field (CUKY/UNIT); example VBAK NETWR -> WAERK; activation error without it."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 10,
+    "parts": 18,
+    "title": "Technical Settings: data class + size category",
+    "focus": "Map Q5: SE11 Technical Settings; Data Class APPL0 (master), APPL1 (transaction), APPL2 (organisation/customizing); Size Category 0-9 = expected rows."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 11,
+    "parts": 18,
+    "title": "Buffering",
+    "focus": "Map Q6: Buffering not allowed / allowed but switched off / switched on; Single records, Generic area (No. of key fields), Fully buffered; why (fewer DB reads) and when not (data that changes often)."
    }
   ],
   "terms": [
@@ -334,7 +342,12 @@
    "MANDT (client field)",
    "lock object (EZ/EY)",
    "ENQUEUE_/DEQUEUE_ function modules",
-   "SM12 (lock entries)"
+   "SM12 (lock entries)",
+   "reference field / reference table (Currency/Quantity Fields tab)",
+   "data class (APPL0/APPL1/APPL2)",
+   "size category (0-9)",
+   "table buffer",
+   "buffering types (single records, generic area, fully buffered)"
   ]
  },
  "improve_next": {

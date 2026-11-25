@@ -631,7 +631,7 @@ _KOKORO = None
 DEVANAGARI = re.compile(r"[\u0900-\u097F]")
 LATIN = re.compile(r"[A-Za-z0-9]")
 # How English acronyms / T-codes should be spoken (Latin text in a voiceover)
-SAY = {"SAP": "S A P", "ALV": "A L V", "SQL": "sequel", "BAPI": "bappy", "ABAP": "aa baap", "IDoc": "I doc",
+SAY = {"NETWR": "net W R", "WAERK": "W A E R K", "KWMENG": "K W meng", "VRKME": "V R K M E", "APPL0": "A P P L zero", "APPL1": "A P P L one", "APPL2": "A P P L two", "VA03": "V A zero three", "T001": "T zero zero one", "SM12": "S M twelve", "SAP": "S A P", "ALV": "A L V", "SQL": "sequel", "BAPI": "bappy", "ABAP": "aa baap", "IDoc": "I doc",
        "IDOC": "I doc", "CDS": "C D S", "RAP": "rap", "BDC": "B D C", "RFC": "R F C", "SE11": "S E eleven",
        "SE16N": "S E sixteen N", "SE37": "S E thirty seven", "SE38": "S E thirty eight", "SE80": "S E eighty",
        "SE91": "S E ninety one", "SE09": "S E zero nine", "SE19": "S E nineteen", "SE18": "S E eighteen",

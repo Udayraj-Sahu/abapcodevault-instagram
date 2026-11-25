@@ -1,0 +1,17 @@
+The BAPI said saved. Order 12345 doesn't exist.
+
+A classic SAP ABAP BAPI bug: no BAPI_TRANSACTION_COMMIT.
+
+1. Most BAPIs only queue the change, they don't commit
+2. Check RETURN for type E messages
+3. No errors: BAPI_TRANSACTION_COMMIT with WAIT = abap_true
+4. Errors: BAPI_TRANSACTION_ROLLBACK
+5. Without WAIT, the next read may not see the document yet
+
+Save this for your next BAPI call.
+
+Next: Part 10, Technical settings (today at 5 PM).
+
+More snippets like this: ABAP Code Vault (link in bio).
+
+#sap #abap #sapabap #bapi #abapcodevault
