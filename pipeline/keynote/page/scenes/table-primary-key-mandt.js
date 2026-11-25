@@ -24,7 +24,7 @@ const duplicate = {
   plan(s) { s._in = Math.max(s.t0 + 0.6, cue(s, s.say_insert || 'insert', 0.15, s.t0)); s._hit = s._in + 0.55;
     s._rc = Math.max(s._hit + 0.6, cue(s, s.say_rc || 'four', 0.6, s._hit)); s._nd = Math.max(s._hit + 0.3, cue(s, s.say_nodump || 'dump', 0.45, s._in));
     return [['whoosh', s._in], ['bump', s._hit], ['glitch', s._hit + 0.02], ['pop', s._nd], ['digit', s._rc]]; },
-  cam(s, t) { const u = seg(t, s._hit, s._hit + 0.3); return { zoom: lerp(1, 1.06, seg(t, s.t0, s._hit)), sx: u > 0 && u < 1 ? Math.sin(t * 90) * 12 * (1 - u) : 0 }; },
+  cam(s, t) { const u = seg(t, s._hit, s._hit + 0.3); return { zoom: lerp(1, 1.025, seg(t, s.t0, s._hit)), sx: u > 0 && u < 1 ? Math.sin(t * 90) * 12 * (1 - u) : 0 }; },
   draw(g, s, t) {
     let y = sy(s, 330);
     if (s.label) { chip(g, plain(s.label), X0, y, { alpha: ss(seg(t, s.t0 - 0.1, s.t0 + 0.15)) }); y += 70; }
@@ -59,7 +59,7 @@ const duplicate = {
 };
 
 const clients = {
-  plan(s) { s._a = Math.max(s.t0 + 0.4, cue(s, s.say_a || '100', 0.3, s.t0)); s._b = Math.max(s._a + 0.5, cue(s, s.say_b || '200', 0.55, s._a));
+  plan(s) { s._a = s.t0 + 0.3; s._b = Math.max(s._a + 0.5, cue(s, s.say_b || '200', 0.55, s._a));
     s._k = Math.max(s._b + 0.4, cue(s, s.say_key || 'key', 0.75, s._b)); return [['snap', s._a], ['snap', s._b], ['glint', s._k]]; },
   draw(g, s, t) {
     let y = sy(s, 330);

@@ -1,7 +1,7 @@
 {
  "handle": "@abapcodevault",
  "mode": "reels_only",
- "last_queued_date": "2026-11-22",
+ "last_queued_date": "2026-11-25",
  "history": [
   "4 ABAP 7.40 syntax tricks (old vs new)",
   "sy-subrc cheat sheet",
@@ -55,7 +55,11 @@
   "Course 3.3 Tables part 3 Transparent, pooled, cluster (BSEG ECC vs S/4HANA)",
   "FAQ: How can I get an SAP system to practise ABAP for free? (BTP trial, Docker trial discontinued)",
   "Course 3.3 Tables part 4 Create a table click by click (ZTAIRLINE)",
-  "Course 3.3 Tables part 5 Delivery Class (A/C + L,G,E,S,W, VBAK/T001)"
+  "Course 3.3 Tables part 5 Delivery Class (A/C + L,G,E,S,W, VBAK/T001)",
+  "Course 3.3 Tables part 6 Data Browser/Table View Maint.",
+  "Lock objects: ENQUEUE and DEQUEUE",
+  "Course 3.3 Tables part 7 Fields tab (SCARR)",
+  "Course 3.3 Tables part 8 Primary key and MANDT"
  ],
  "recent_formats": {
   "reel": [
@@ -104,6 +108,10 @@
    "course_lesson",
    "faq",
    "course_lesson",
+   "course_lesson",
+   "course_lesson",
+   "before_after",
+   "course_lesson",
    "course_lesson"
   ],
   "carousel": [],
@@ -117,30 +125,6 @@
    "lesson": 4
   },
   "pending_parts": [
-   {
-    "syllabus": "3.3",
-    "topic": "Tables",
-    "part": 6,
-    "parts": 18,
-    "title": "Data Browser/Table View Maint.",
-    "focus": "Map Q5: Delivery and Maintenance tab field: Display/Maintenance Allowed, Allowed with Restrictions, Not Allowed; effect in SE16N / SM30."
-   },
-   {
-    "syllabus": "3.3",
-    "topic": "Tables",
-    "part": 7,
-    "parts": 18,
-    "title": "Fields tab",
-    "focus": "Map Q5: Fields tab columns Field, Key, Initial Values, Data element; Data Element vs Predefined Type button; real example SCARR fields."
-   },
-   {
-    "syllabus": "3.3",
-    "topic": "Tables",
-    "part": 8,
-    "parts": 18,
-    "title": "Primary key and MANDT",
-    "focus": "Map Q5/Q7: primary key = unique row; Key checkbox; MANDT first for client-dependent tables; what a duplicate key insert does (sy-subrc 4)."
-   },
    {
     "syllabus": "3.3",
     "topic": "Tables",
@@ -251,7 +235,31 @@
    "3.3 Tables part 2 Where a table connects",
    "3.3 Tables part 3 Transparent, pooled, cluster",
    "3.3 Tables part 4 Create a table, click by click",
-   "3.3 Tables part 5 Delivery Class"
+   "3.3 Tables part 5 Delivery Class",
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 6,
+    "parts": 18,
+    "title": "Data Browser/Table View Maint.",
+    "focus": "Map Q5: Delivery and Maintenance tab field: Display/Maintenance Allowed, Allowed with Restrictions, Not Allowed; effect in SE16N / SM30."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 7,
+    "parts": 18,
+    "title": "Fields tab",
+    "focus": "Map Q5: Fields tab columns Field, Key, Initial Values, Data element; Data Element vs Predefined Type button; real example SCARR fields."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 8,
+    "parts": 18,
+    "title": "Primary key and MANDT",
+    "focus": "Map Q5/Q7: primary key = unique row; Key checkbox; MANDT first for client-dependent tables; what a duplicate key insert does (sy-subrc 4)."
+   }
   ],
   "terms": [
    "Data Dictionary (DDIC)",
@@ -318,7 +326,15 @@
    "package",
    "Technical Settings",
    "delivery class",
-   "client copy"
+   "client copy",
+   "Data Browser/Table View Maint. (SE16/SM30 access)",
+   "table view maintenance (SM30)",
+   "Fields tab",
+   "primary key / key field",
+   "MANDT (client field)",
+   "lock object (EZ/EY)",
+   "ENQUEUE_/DEQUEUE_ function modules",
+   "SM12 (lock entries)"
   ]
  },
  "improve_next": {
