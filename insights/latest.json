@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-26 05:11 IST",
+ "updated": "2026-11-27 05:21 IST",
  "account": {
   "id": "17841471895107573",
   "followers_count": 9,
-  "media_count": 50
+  "media_count": 54
  },
  "unsupported_metrics": [
   "comments",
@@ -20,18 +20,18 @@
   "views"
  ],
  "errors": {
-  "reach": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AeOE4z1MZnyaibAZwyZ",
-  "views": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"A1uiKnbAxH5UTPqsM5z",
-  "likes": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AYPqwy0VEiVtLyPKHap",
-  "comments": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AIKHLcHxqO_LzttLGmS",
-  "shares": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AyjlIQnYLKrabudHzVl",
-  "saved": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AgwZVORHCV2MTZusODE",
-  "total_interactions": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"ABKS3rVHzhcQfbqnNjA",
-  "ig_reels_avg_watch_time": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"ACwkarSp_krbT-nB2T3",
-  "ig_reels_video_view_total_time": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"Ad-JzOBhNpwQY-5qwzX",
-  "reels_skip_rate": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"Am18knEBdrSTG8v_u5y",
-  "follows": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AbgGs25bYxKvpSSiUKd",
-  "profile_visits": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AlGY1_8FlPdV2AvxzBm"
+  "reach": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AUXPvKkFOLsboEYRs27",
+  "views": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AjPTnhpfmTDhDmnhgcs",
+  "likes": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AqxHFGP1qqbeVJy_9b8",
+  "comments": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AC3atccXoZMoMYIVfky",
+  "shares": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AFb_oGabn6zprPnGKc_",
+  "saved": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"A_sKBmyTcXKNKyvsPrj",
+  "total_interactions": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AYXS7Be3MwLrAjoogBX",
+  "ig_reels_avg_watch_time": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AlQSuwvJWZav58Q3wwM",
+  "ig_reels_video_view_total_time": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"ADy37Lc9suov2dE2kOZ",
+  "reels_skip_rate": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AdYjbJ9l28F2qjHheWC",
+  "follows": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"A_DU6pZL_URGVSboJB7",
+  "profile_visits": "failed: 400 {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"code\":10,\"type\":\"OAuthException\",\"fbtrace_id\":\"AZ4-FfJ12IylsniKqhf"
  },
  "reels": [
   {
@@ -353,6 +353,34 @@
    "folder": "2026-11-25_1930_reel_table-primary-key-mandt",
    "published_at": "2026-11-25T19:31:29+05:30",
    "permalink": "https://www.instagram.com/reel/DgKsf7uqA_c/",
+   "likes": 0,
+   "comments": 0
+  },
+  {
+   "folder": "2026-11-26_0900_reel_table-currency-quantity",
+   "published_at": "2026-11-26T09:02:18+05:30",
+   "permalink": "https://www.instagram.com/reel/DgMJSTbBo-i/",
+   "likes": 0,
+   "comments": 0
+  },
+  {
+   "folder": "2026-11-26_1300_reel_bapi-missing-commit",
+   "published_at": "2026-11-26T13:01:24+05:30",
+   "permalink": "https://www.instagram.com/reel/DgMkrPJCC3g/",
+   "likes": 0,
+   "comments": 0
+  },
+  {
+   "folder": "2026-11-26_1700_reel_table-technical-settings",
+   "published_at": "2026-11-26T17:01:36+05:30",
+   "permalink": "https://www.instagram.com/reel/DgNALBFsjen/",
+   "likes": 0,
+   "comments": 0
+  },
+  {
+   "folder": "2026-11-26_1930_reel_table-buffering",
+   "published_at": "2026-11-26T19:31:10+05:30",
+   "permalink": "https://www.instagram.com/reel/DgNRScjRX_a/",
    "likes": 0,
    "comments": 0
   }
