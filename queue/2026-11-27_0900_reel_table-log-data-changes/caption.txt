@@ -1,0 +1,17 @@
+Stop guessing who changed ZTAIRLINE at 2 AM.
+
+SAP ABAP tables, Part 12 of 18: log data changes in SE11 technical settings.
+
+1. Technical Settings: tick Log data changes
+2. The profile parameter rec/client must switch logging on for your client
+3. Every change then writes an entry into DBTABLOG: user, time, old and new value
+4. Read the log with SCU3 (Table History)
+5. Common mistake: logging big transaction tables like VBAK
+
+Comment SCU3 if you've ever had to find who changed a setting.
+
+Next: SELECT SINGLE vs UP TO 1 ROWS (today at 1 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

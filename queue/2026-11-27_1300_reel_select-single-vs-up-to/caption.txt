@@ -1,0 +1,16 @@
+Stop failing the SELECT SINGLE interview question: SINGLE or UP TO 1 ROWS?
+
+A classic SAP ABAP interview question on reading one row from a database table.
+
+1. SELECT SINGLE: use it with the full primary key, you get exactly one row
+2. With only part of the key, SELECT SINGLE returns any matching row
+3. UP TO 1 ROWS + ORDER BY: you decide which row, e.g. the latest order
+4. ORDER BY can't be combined with SELECT SINGLE
+
+Which one do you use most? Tell me in the comments.
+
+Next: Part 13, Foreign key and check table (today at 5 PM).
+
+More questions like this: ABAP Interview Pack (160 Q&A), link in bio.
+
+#sap #abap #sapabap #sapinterview #abapcodevault

@@ -642,7 +642,7 @@ SAY = {"ERDAT": "er dat", "VBELN": "V beln", "ENDSELECT": "end select", "NETWR":
        "EKPO": "E K P O", "KNA1": "K N A one", "BKPF": "B K P F", "BSEG": "B seg", "MSEG": "M seg",
        "OOPS": "oops", "HANA": "hana", "S/4HANA": "S four hana", "UI": "U I", "API": "A P I", "PDF": "P D F",
        "NUMC": "num C", "DATS": "dats", "TIMS": "tims", "CURR": "cur", "QUAN": "kwan", "CUKY": "C U K Y",
-       "DEC": "deck", "INR": "I N R", "USD": "U S D", "PUNE": "Pune", "F4": "F four", "F1": "F one", "SE14": "S E fourteen", "T005": "T zero zero five", "LAND1": "land one", "DEBI": "D E B I", "KUNNR": "K U N N R", "AUN": "A U N", "VBAP's": "V bap's", "SCARR": "S carr", "CARRID": "carr I D", "KUN": "K U N", "RFBLG": "R F B L G", "ZTAIRLINE": "Z T airline", "ECC": "E C C", "BTP": "B T P", "ADT": "A D T"}
+       "DEC": "deck", "INR": "I N R", "USD": "U S D", "PUNE": "Pune", "F4": "F four", "F1": "F one", "SE14": "S E fourteen", "T005": "T zero zero five", "LAND1": "land one", "DEBI": "D E B I", "KUNNR": "K U N N R", "AUN": "A U N", "VBAP's": "V bap's", "SCARR": "S carr", "CARRID": "carr I D", "KUN": "K U N", "RFBLG": "R F B L G", "ZTAIRLINE": "Z T airline", "ECC": "E C C", "BTP": "B T P", "ADT": "A D T", "SCU3": "S C U three", "DBTABLOG": "D B tab log", "DE": "D E", "XX": "X X", "CN": "C N", "LH": "L H", "LH's": "L H's"}
 
 
 def phonemize_mixed(text):

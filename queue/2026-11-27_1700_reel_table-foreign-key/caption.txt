@@ -1,0 +1,17 @@
+Stop letting 1 fake country into your table.
+
+SAP ABAP tables, Part 13 of 18: foreign key and check table in SE11.
+
+1. A foreign key checks a field's value against a check table (COUNTRY against T005)
+2. Entry help/check tab, cursor on the field, Foreign Keys button
+3. SE11 proposes the check table from the domain's value table
+4. Field assignment: MANDT to MANDT, LAND1 to COUNTRY, Check required ticked
+5. Common mistake: an INSERT from code skips the check
+
+Comment T005 if you've seen "check entry" errors before.
+
+Next: Part 14, Cardinality (tonight at 7:30 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

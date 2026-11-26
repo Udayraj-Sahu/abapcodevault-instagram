@@ -1,0 +1,17 @@
+Stop guessing what 1:CN means.
+
+SAP ABAP tables, Part 14 of 18: foreign key cardinality in SE11.
+
+1. Cardinality = how many rows on each side of a foreign key belong together
+2. Left side: 1 (always a match) or C (the field may be empty)
+3. Right side: 1, C (zero or one), N (one or more), CN (any number)
+4. Example: ZTAIRLINE to T005 is 1:CN
+5. It documents the link, it doesn't block data
+
+Quiz: what does CN mean? Comment your answer, it is in the reel.
+
+Next: Part 15, Include vs append structures (tomorrow at 9 AM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

@@ -1,7 +1,7 @@
 {
  "handle": "@abapcodevault",
  "mode": "reels_only",
- "last_queued_date": "2026-11-26",
+ "last_queued_date": "2026-11-27",
  "history": [
   "4 ABAP 7.40 syntax tricks (old vs new)",
   "sy-subrc cheat sheet",
@@ -63,7 +63,11 @@
   "Course 3.3 Tables part 9 Currency/Quantity fields (VBAK NETWR->WAERK, VBAP KWMENG->VRKME)",
   "Forgetting BAPI_TRANSACTION_COMMIT",
   "Course 3.3 Tables part 10 Technical settings: data class + size category (MARA/VBAK/T001)",
-  "Course 3.3 Tables part 11 Buffering (T001 yes, VBAK no)"
+  "Course 3.3 Tables part 11 Buffering (T001 yes, VBAK no)",
+  "Course 3.3 Tables part 12 Log data changes (rec/client, DBTABLOG, SCU3)",
+  "Interview: SELECT SINGLE vs UP TO 1 ROWS",
+  "Course 3.3 Tables part 13 Foreign key and check table (ZTAIRLINE-COUNTRY -> T005)",
+  "Course 3.3 Tables part 14 Cardinality (1/C left, 1/C/N/CN right)"
  ],
  "recent_formats": {
   "reel": [
@@ -120,6 +124,10 @@
    "course_lesson",
    "bug_hunt",
    "course_lesson",
+   "course_lesson",
+   "course_lesson",
+   "interview_chat",
+   "course_lesson",
    "course_lesson"
   ],
   "carousel": [],
@@ -133,30 +141,6 @@
    "lesson": 4
   },
   "pending_parts": [
-   {
-    "syllabus": "3.3",
-    "topic": "Tables",
-    "part": 12,
-    "parts": 18,
-    "title": "Log data changes",
-    "focus": "Map Q6: Technical Settings Log Data Changes flag; needs profile parameter rec/client; where to see logs (SCU3); when to use."
-   },
-   {
-    "syllabus": "3.3",
-    "topic": "Tables",
-    "part": 13,
-    "parts": 18,
-    "title": "Foreign key and check table",
-    "focus": "Map Q6: Entry help/check tab, foreign key dialog, check table, check required, error message when the value is not in the check table; example T005 for LAND1."
-   },
-   {
-    "syllabus": "3.3",
-    "topic": "Tables",
-    "part": 14,
-    "parts": 18,
-    "title": "Cardinality",
-    "focus": "Map Q6: foreign key cardinality left/right (1:N, 1:CN, C:N ...) in plain words with one example."
-   },
    {
     "syllabus": "3.3",
     "topic": "Tables",
@@ -267,6 +251,30 @@
     "parts": 18,
     "title": "Buffering",
     "focus": "Map Q6: Buffering not allowed / allowed but switched off / switched on; Single records, Generic area (No. of key fields), Fully buffered; why (fewer DB reads) and when not (data that changes often)."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 12,
+    "parts": 18,
+    "title": "Log data changes",
+    "focus": "Map Q6: Technical Settings Log Data Changes flag; needs profile parameter rec/client; where to see logs (SCU3); when to use."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 13,
+    "parts": 18,
+    "title": "Foreign key and check table",
+    "focus": "Map Q6: Entry help/check tab, foreign key dialog, check table, check required, error message when the value is not in the check table; example T005 for LAND1."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 14,
+    "parts": 18,
+    "title": "Cardinality",
+    "focus": "Map Q6: foreign key cardinality left/right (1:N, 1:CN, C:N ...) in plain words with one example."
    }
   ],
   "terms": [
@@ -347,7 +355,14 @@
    "data class (APPL0/APPL1/APPL2)",
    "size category (0-9)",
    "table buffer",
-   "buffering types (single records, generic area, fully buffered)"
+   "buffering types (single records, generic area, fully buffered)",
+   "Log data changes (table logging)",
+   "profile parameter rec/client",
+   "DBTABLOG (change log table)",
+   "SCU3 (table history)",
+   "Check required (foreign key)",
+   "foreign key table / field assignment",
+   "cardinality (left 1/C, right 1/C/N/CN)"
   ]
  },
  "improve_next": {

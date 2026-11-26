@@ -1,0 +1,602 @@
+{
+ "date": "2026-11-27",
+ "handle": "@abapcodevault",
+ "posts": [
+  {
+   "type": "reel",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "series": "course",
+   "format": "course_lesson",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 12,
+   "time": "09:00",
+   "slug": "table-log-data-changes",
+   "tag": "DDIC · Tables 12/18",
+   "comment_word": "SCU3",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 12/18",
+     "title": "Who changed *ZTAIRLINE* at 2 AM?",
+     "voiceover": "Stop guessing who changed ZTAIRLINE at two AM. Last time we learned buffering. Now, logging data changes.",
+     "spoken": "Stop guessing who changed ZTAIRLINE at 2 AM. Last time we learned buffering. Now, logging data changes."
+    },
+    {
+     "kind": "scene",
+     "scene": "nolog",
+     "label": "THE PROBLEM",
+     "heading": "A value changed, *no trace*",
+     "say_change": "changed",
+     "say_bad": "answer",
+     "voiceover": "Why? Someone changed the currency of LH from euro to dollar. Who? When? What was the old value? No log, no answer.",
+     "spoken": "Why? Someone changed the currency of LH from EUR to USD. Who? When? What was the old value? No log, no answer."
+    },
+    {
+     "kind": "screen",
+     "heading": "Tick *Log data changes*",
+     "tcode": "SE11",
+     "object": "Technical Settings ZTAIRLINE",
+     "fields": [
+      [
+       "Data Class",
+       "APPL0"
+      ],
+      [
+       "Size category",
+       "0"
+      ],
+      [
+       "Log data changes",
+       "☑"
+      ]
+     ],
+     "focus": [
+      2
+     ],
+     "focus_say": [
+      "log"
+     ],
+     "note": "then save + activate",
+     "voiceover": "The fix sits in technical settings. In SE11, click Technical Settings. Below data class and size category, tick Log data changes. Save and activate.",
+     "spoken": "The fix sits in technical settings. In SE11, click Technical Settings. Below data class and size category, tick Log data changes. Save and activate."
+    },
+    {
+     "kind": "answer",
+     "label": "NEW TERM",
+     "heading": "*rec/client*",
+     "body": "rec/client = the profile parameter that switches table logging on for your clients.",
+     "highlight": "switches table logging on",
+     "voiceover": "But the flag alone logs nothing. The profile parameter rec client must switch logging on. It's a system setting your Basis team maintains.",
+     "spoken": "But the flag alone logs nothing. The profile parameter rec/client must switch logging on. It's a system setting your Basis team maintains."
+    },
+    {
+     "kind": "scene",
+     "scene": "logbook",
+     "label": "THE FIX",
+     "heading": "Every change *logged*",
+     "say_change": "change",
+     "say_who": "who",
+     "say_when": "when",
+     "say_old": "old",
+     "say_new": "new",
+     "voiceover": "Now the same change writes an entry into DBTABLOG. Who did it, when, the old value, and the new one. Nothing is lost now.",
+     "spoken": "Now the same change writes an entry into DBTABLOG. Who did it, when, the old value, and the new one. Nothing is lost now."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "Read it in *SCU3*",
+     "tcode": "SCU3",
+     "title": "Table History · ZTAIRLINE",
+     "columns": [
+      "User",
+      "Field",
+      "Old",
+      "New"
+     ],
+     "rows": [
+      [
+       "USER01",
+       "CURRCODE",
+       "EUR",
+       "USD"
+      ],
+      [
+       "USER02",
+       "CARRNAME",
+       "Lufthansa",
+       "Deutsche Lufthansa"
+      ]
+     ],
+     "row_say": [
+      "user",
+      "old"
+     ],
+     "voiceover": "To read it, run SCU3 and pick your table. You see the user and the field. Then the old value, and the new one.",
+     "spoken": "To read it, run SCU3 and pick your table. You see the user and the field. Then the old value, and the new one."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Logging *everything*",
+     "bad": {
+      "title": "Log VBAK",
+      "sub": "every change = one extra write",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "Log customizing tables",
+      "sub": "small, changed rarely, must be traceable",
+      "say": "small"
+     },
+     "voiceover": "Common mistake: logging a big table like VBAK. Every change costs an extra write. Log small customizing tables instead.",
+     "spoken": "Common mistake: logging a big table like VBAK. Every change costs an extra write. Log small customizing tables instead."
+    },
+    {
+     "kind": "scene",
+     "scene": "grid",
+     "label": "REMEMBER",
+     "heading": "Two switches, *one log*",
+     "tiles": [
+      {
+       "title": "Log data changes",
+       "icon": "edit",
+       "say": "flag"
+      },
+      {
+       "title": "rec/client",
+       "icon": "key",
+       "say": "parameter"
+      },
+      {
+       "title": "SCU3",
+       "icon": "search",
+       "say": "SCU3"
+      }
+     ],
+     "accent": 0,
+     "voiceover": "Takeaway: the flag on the table, plus the profile parameter. Then read the log in SCU3.",
+     "spoken": "Takeaway: the flag on the table, plus the profile parameter. Then read the log in SCU3."
+    }
+   ],
+   "next": {
+    "title": "*SELECT SINGLE* vs UP TO 1 ROWS",
+    "when": "today at 1 PM",
+    "voice": "SELECT SINGLE versus up to one rows",
+    "vo": "At one PM: two ways to read one row, and the interview trap between them."
+   },
+   "caption": "Stop guessing who changed ZTAIRLINE at 2 AM.\n\nSAP ABAP tables, Part 12 of 18: log data changes in SE11 technical settings.\n\n1. Technical Settings: tick Log data changes\n2. The profile parameter rec/client must switch logging on for your client\n3. Every change then writes an entry into DBTABLOG: user, time, old and new value\n4. Read the log with SCU3 (Table History)\n5. Common mistake: logging big transaction tables like VBAK\n\nComment SCU3 if you've ever had to find who changed a setting.\n\nNext: SELECT SINGLE vs UP TO 1 ROWS (today at 1 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "format": "interview_chat",
+   "time": "13:00",
+   "slug": "select-single-vs-up-to",
+   "tag": "Additional concepts · Interview",
+   "comment_word": "SINGLE",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Additional concepts · Interview",
+     "title": "*SELECT SINGLE* or UP TO 1 ROWS?",
+     "voiceover": "Stop failing the SELECT SINGLE interview question. SINGLE or UP TO one rows?",
+     "spoken": "Stop failing the SELECT SINGLE interview question. SINGLE or UP TO 1 ROWS?"
+    },
+    {
+     "kind": "chat",
+     "heading": "The *interview* question",
+     "messages": [
+      {
+       "from": "Interviewer",
+       "text": "Both read one row. So what's the difference?"
+      },
+      {
+       "from": "You",
+       "text": "SINGLE needs the full key. UP TO 1 ROWS takes the first row of a sorted result."
+      }
+     ],
+     "voiceover": "The question goes like this. Both read one row, so what's the difference? Here's the answer.",
+     "spoken": "The question goes like this. Both read one row, so what's the difference? Here's the answer."
+    },
+    {
+     "kind": "scene",
+     "scene": "anyrow",
+     "label": "THE TRAP",
+     "heading": "Part of the key = *any row*",
+     "say_full": "full",
+     "say_part": "part",
+     "say_rand": "random",
+     "say_new": "newest",
+     "voiceover": "SELECT SINGLE wants the full key. Then you get exactly one row. Give it only part, like the customer? You get a random match. Not the newest. That's the trap.",
+     "spoken": "SELECT SINGLE wants the full key. Then you get exactly one row. Give it only part, like the customer? You get a random match. Not the newest. That's the trap."
+    },
+    {
+     "kind": "code",
+     "heading": "The *latest* order",
+     "typewriter": true,
+     "filename": "z_last_order.abap",
+     "code": "SELECT vbeln, erdat FROM vbak\n  WHERE kunnr = @lv_kunnr\n  ORDER BY erdat DESCENDING\n  INTO @DATA(ls_order)\n  UP TO 1 ROWS.\nENDSELECT.",
+     "voiceover": "Need the latest order of a customer? Sort by date, newest first, and take UP TO one rows. You get exactly that row.",
+     "spoken": "Need the latest order of a customer? Sort by date, newest first, and take UP TO 1 ROWS. You get exactly that row."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "ORDER BY with *SINGLE*",
+     "bad": {
+      "title": "SELECT SINGLE … ORDER BY",
+      "sub": "not allowed together",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "UP TO 1 ROWS + ORDER BY",
+      "sub": "you decide which row",
+      "say": "decide"
+     },
+     "voiceover": "Common mistake: adding ORDER BY to SELECT SINGLE. SAP doesn't allow it. When the order matters, you decide with UP TO one rows.",
+     "spoken": "Common mistake: adding ORDER BY to SELECT SINGLE. SAP doesn't allow it. When the order matters, you decide with UP TO 1 ROWS."
+    },
+    {
+     "kind": "scene",
+     "scene": "grid",
+     "label": "TAKEAWAY",
+     "heading": "Key or *order*?",
+     "tiles": [
+      {
+       "title": "Full key → SINGLE",
+       "icon": "key",
+       "say": "full"
+      },
+      {
+       "title": "Sorted → UP TO 1 ROWS",
+       "icon": "table",
+       "say": "many"
+      }
+     ],
+     "accent": 1,
+     "voiceover": "Takeaway: full key, SELECT SINGLE. One row out of many? UP TO one rows, with ORDER BY.",
+     "spoken": "Takeaway: full key, SELECT SINGLE. One row out of many? UP TO 1 ROWS, with ORDER BY."
+    }
+   ],
+   "next": {
+    "title": "Part 13 · *Foreign key* and check table",
+    "when": "today at 5 PM",
+    "voice": "part thirteen, foreign key and check table",
+    "vo": "At five PM: how SAP rejects a country that doesn't exist."
+   },
+   "caption": "Stop failing the SELECT SINGLE interview question: SINGLE or UP TO 1 ROWS?\n\nA classic SAP ABAP interview question on reading one row from a database table.\n\n1. SELECT SINGLE: use it with the full primary key, you get exactly one row\n2. With only part of the key, SELECT SINGLE returns any matching row\n3. UP TO 1 ROWS + ORDER BY: you decide which row, e.g. the latest order\n4. ORDER BY can't be combined with SELECT SINGLE\n\nWhich one do you use most? Tell me in the comments.\n\nNext: Part 13, Foreign key and check table (today at 5 PM).\n\nMore questions like this: ABAP Interview Pack (160 Q&A), link in bio.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#sapinterview",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "series": "course",
+   "format": "course_lesson",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 13,
+   "time": "17:00",
+   "slug": "table-foreign-key",
+   "tag": "DDIC · Tables 13/18",
+   "comment_word": "T005",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 13/18",
+     "title": "Country *XX* got into your table?",
+     "voiceover": "Stop letting one fake country into your table. Last time we learned logging data changes. Now, foreign keys.",
+     "spoken": "Stop letting 1 fake country into your table. Last time we learned logging data changes. Now, foreign keys."
+    },
+    {
+     "kind": "scene",
+     "scene": "gate",
+     "label": "THE CHECK",
+     "heading": "Every value meets the *check table*",
+     "say_gate": "T005",
+     "say_ok": "DE",
+     "say_bad": "XX",
+     "voiceover": "Why? Without a foreign key, the field takes anything. With one, SAP checks the value against T005 first. DE exists and passes. XX is rejected.",
+     "spoken": "Why? Without a foreign key, the field takes anything. With one, SAP checks the value against T005 first. DE exists and passes. XX is rejected."
+    },
+    {
+     "kind": "screen",
+     "heading": "Create the *foreign key*",
+     "tcode": "SE11",
+     "object": "Table ZTAIRLINE",
+     "tabs": [
+      "Attributes",
+      "Delivery and Maintenance",
+      "Fields",
+      "Entry help/check",
+      "Currency/Quantity Fields"
+     ],
+     "active": 3,
+     "fields": [
+      [
+       "Field",
+       "COUNTRY"
+      ],
+      [
+       "Data element",
+       "LAND1"
+      ],
+      [
+       "Check table",
+       "T005"
+      ]
+     ],
+     "focus": [
+      0,
+      2
+     ],
+     "focus_say": [
+      "COUNTRY",
+      "proposes"
+     ],
+     "note": "Foreign Keys button (key icon)",
+     "voiceover": "Open the Entry help/check tab. Put the cursor on COUNTRY and click Foreign Keys. SE11 proposes T005, from the domain's value table.",
+     "spoken": "Open the Entry help/check tab. Put the cursor on COUNTRY and click Foreign Keys. SE11 proposes T005, from the domain's value table."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "The *field assignment*",
+     "tcode": "SE11",
+     "title": "Create Foreign Key",
+     "columns": [
+      "Check table",
+      "ChkTablField",
+      "For. key table",
+      "Foreign key field"
+     ],
+     "rows": [
+      [
+       "T005",
+       "MANDT",
+       "ZTAIRLINE",
+       "MANDT"
+      ],
+      [
+       "T005",
+       "LAND1",
+       "ZTAIRLINE",
+       "COUNTRY"
+      ]
+     ],
+     "row_say": [
+      "client",
+      "LAND1"
+     ],
+     "voiceover": "In the dialog, SE11 pairs the key fields. Client with client, and LAND1 with your COUNTRY. Keep Check required ticked.",
+     "spoken": "In the dialog, SE11 pairs the key fields. Client with client, and LAND1 with your COUNTRY. Keep Check required ticked."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "INSERT *skips* the check",
+     "bad": {
+      "title": "INSERT from code",
+      "sub": "no foreign key check",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "Check it yourself",
+      "sub": "read T005 before you insert",
+      "say": "yourself"
+     },
+     "voiceover": "Common mistake: trusting it in code. The check runs on screens, like SM30. An INSERT from your program skips it. So check the value yourself.",
+     "spoken": "Common mistake: trusting it in code. The check runs on screens, like SM30. An INSERT from your program skips it. So check the value yourself."
+    },
+    {
+     "kind": "scene",
+     "scene": "grid",
+     "label": "REMEMBER",
+     "heading": "*Screens* check, code doesn't",
+     "tiles": [
+      {
+       "title": "Field → check table",
+       "icon": "key",
+       "say": "foreign"
+      },
+      {
+       "title": "Screens check it",
+       "icon": "check",
+       "say": "screens"
+      },
+      {
+       "title": "Code checks itself",
+       "icon": "code",
+       "say": "code"
+      }
+     ],
+     "accent": 0,
+     "voiceover": "Takeaway: a foreign key links your field to a check table. Screens check it. Your code has to check it too.",
+     "spoken": "Takeaway: a foreign key links your field to a check table. Screens check it. Your code has to check it too."
+    }
+   ],
+   "next": {
+    "title": "Part 14 · *Cardinality*",
+    "when": "tonight at 7:30 PM",
+    "voice": "part fourteen, cardinality",
+    "vo": "Tonight at seven thirty: what one to C N really means."
+   },
+   "caption": "Stop letting 1 fake country into your table.\n\nSAP ABAP tables, Part 13 of 18: foreign key and check table in SE11.\n\n1. A foreign key checks a field's value against a check table (COUNTRY against T005)\n2. Entry help/check tab, cursor on the field, Foreign Keys button\n3. SE11 proposes the check table from the domain's value table\n4. Field assignment: MANDT to MANDT, LAND1 to COUNTRY, Check required ticked\n5. Common mistake: an INSERT from code skips the check\n\nComment T005 if you've seen \"check entry\" errors before.\n\nNext: Part 14, Cardinality (tonight at 7:30 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "series": "course",
+   "format": "course_lesson",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 14,
+   "time": "19:30",
+   "slug": "table-cardinality",
+   "tag": "DDIC · Tables 14/18",
+   "comment_word": "CN",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 14/18",
+     "title": "*1:CN* in SE11, what does it mean?",
+     "voiceover": "Stop guessing what one to C N means. Last time we learned foreign keys. Now, cardinality.",
+     "spoken": "Stop guessing what 1:CN means. Last time we learned foreign keys. Now, cardinality."
+    },
+    {
+     "kind": "answer",
+     "label": "NEW TERM",
+     "heading": "*Cardinality*",
+     "body": "Cardinality = how many rows on each side of a foreign key belong together.",
+     "highlight": "how many rows",
+     "voiceover": "Why? A foreign key links two tables. Cardinality says how many rows on each side belong together. You set it in the foreign key dialog.",
+     "spoken": "Why? A foreign key links two tables. Cardinality says how many rows on each side belong together. You set it in the foreign key dialog."
+    },
+    {
+     "kind": "scene",
+     "scene": "links",
+     "label": "EXAMPLE",
+     "heading": "Countries and *airlines*",
+     "say_one": "exactly",
+     "say_left": "left",
+     "say_many": "many",
+     "say_none": "none",
+     "say_right": "right",
+     "voiceover": "Take T005 and ZTAIRLINE. Every airline has exactly one country. That's the one on the left. A country can have many airlines, or none. That's C N on the right.",
+     "spoken": "Take T005 and ZTAIRLINE. Every airline has exactly one country. That's the 1 on the left. A country can have many airlines, or none. That's CN on the right."
+    },
+    {
+     "kind": "scene",
+     "scene": "grid",
+     "label": "LEFT SIDE",
+     "heading": "Left: *1* or *C*",
+     "tiles": [
+      {
+       "title": "1 · always a match",
+       "icon": "check",
+       "say": "every"
+      },
+      {
+       "title": "C · may be empty",
+       "icon": "warn",
+       "say": "empty"
+      }
+     ],
+     "accent": 0,
+     "voiceover": "The left side is one or C. One: every row has a match in the check table. C: the field may be empty, so no match.",
+     "spoken": "The left side is 1 or C. 1: every row has a match in the check table. C: the field may be empty, so no match."
+    },
+    {
+     "kind": "output",
+     "label": "RIGHT SIDE",
+     "heading": "Right: *1, C, N, CN*",
+     "tcode": "SE11",
+     "title": "Cardinality (right side)",
+     "columns": [
+      "Right",
+      "Means"
+     ],
+     "rows": [
+      [
+       "1",
+       "exactly one"
+      ],
+      [
+       "C",
+       "zero or one"
+      ],
+      [
+       "N",
+       "one or more"
+      ],
+      [
+       "CN",
+       "any number"
+      ]
+     ],
+     "row_say": [
+      "exactly",
+      "zero",
+      "more",
+      "any"
+     ],
+     "voiceover": "The right side has four options. One: exactly one. C: zero or one. N: one or more. C N: any number, even zero.",
+     "spoken": "The right side has four options. 1: exactly one. C: zero or one. N: one or more. CN: any number, even zero."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Cardinality *won't block*",
+     "bad": {
+      "title": "Expecting it to block",
+      "sub": "it checks nothing at runtime",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "It documents the link",
+      "sub": "the check table does the checking",
+      "say": "documents"
+     },
+     "voiceover": "Common mistake: expecting cardinality to block wrong data. It doesn't. It documents the link. The check table does the checking.",
+     "spoken": "Common mistake: expecting cardinality to block wrong data. It doesn't. It documents the link. The check table does the checking."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Left *1*, right *CN*",
+     "body": "1:CN = each row has exactly one partner; a partner can have any number of rows.",
+     "highlight": "any number",
+     "voiceover": "Takeaway: one to C N. One country per airline. Any number of airlines per country.",
+     "spoken": "Takeaway: 1:CN. One country per airline. Any number of airlines per country."
+    }
+   ],
+   "next": {
+    "title": "Part 15 · *Include* vs *append*",
+    "when": "tomorrow at 9 AM",
+    "voice": "part fifteen, include versus append",
+    "quiz": {
+     "question": "Quiz: what does *CN* mean?",
+     "options": [
+      "Exactly one",
+      "Any number",
+      "One or more"
+     ]
+    },
+    "vo": "Quiz: what does C N mean? The answer is in this reel. Comment it."
+   },
+   "caption": "Stop guessing what 1:CN means.\n\nSAP ABAP tables, Part 14 of 18: foreign key cardinality in SE11.\n\n1. Cardinality = how many rows on each side of a foreign key belong together\n2. Left side: 1 (always a match) or C (the field may be empty)\n3. Right side: 1, C (zero or one), N (one or more), CN (any number)\n4. Example: ZTAIRLINE to T005 is 1:CN\n5. It documents the link, it doesn't block data\n\nQuiz: what does CN mean? Comment your answer, it is in the reel.\n\nNext: Part 15, Include vs append structures (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  }
+ ]
+}
