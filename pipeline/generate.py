@@ -753,6 +753,15 @@ def tighten_audio(data, sr, max_gap=0.2, thresh=0.012):
     return out
 
 
+HOOK_BEAT = 0.5          # seconds of silence after the hook sentence on slide 1 (27 Nov voice improvement; 0 = off)
+
+
+def split_hook(text):
+    """First sentence of slide 1 (the hook) and the rest; rest is '' when there is only one sentence."""
+    m = re.match(r"(.+?[.?!])\s+(\S.*)$", text.strip(), re.S)
+    return (m.group(1), m.group(2)) if m else (text, "")
+
+
 SCRIPT_HOOK_MAX = 8     # first spoken sentence = the hook (README Instagram skill checks, 20 Nov)
 SCRIPT_MAX_WORDS = 16   # longest voiceover sentence before the script check complains
 
@@ -811,10 +820,18 @@ def build_narration(slides, folder, p, default_secs):
         text = s.get("voiceover", "").strip()
         if text:
             wav = os.path.join(folder, f"vo_{i:02d}.wav")
-            secs = tts(text, voice, lang, speed, wav)
+            hook, rest = (split_hook(text) if i == 1 and HOOK_BEAT > 0 else (text, ""))
+            secs = tts(hook, voice, lang, speed, wav)
             data, sr = sf.read(wav, dtype="float32")
             os.remove(wav)
-            if p.get("_tighten"):
+            if rest:   # hook beat (27 Nov): the hook sentence lands, a short held pause, then the recap line
+                secs2 = tts(rest, voice, lang, speed, wav)
+                d2, _ = sf.read(wav, dtype="float32")
+                os.remove(wav)
+                mg = 0.2 if p.get("_tighten") else 1.0
+                data = np.concatenate([tighten_audio(data, sr, max_gap=mg), np.zeros(int(HOOK_BEAT * sr), dtype="float32"), tighten_audio(d2, sr, max_gap=mg)])
+                secs = len(data) / sr
+            if p.get("_tighten") and not rest:
                 data = tighten_audio(data, sr)
                 secs = len(data) / sr
         else:
