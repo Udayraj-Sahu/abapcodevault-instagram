@@ -53,6 +53,8 @@ function rich(g, text, x, y, px, o = {}) {
         g.save(); g.globalAlpha *= clamp(r * 2.5); const dy = (1 - eo(r)) * size * 0.35;
         if (t.ph && under > 0) { g.fillStyle = rgba(ACC, 0.22); g.fillRect(cx - 4, yy + size * 0.36, (t.tw + 8) * clamp(under), size * 0.14); }
         g.fillStyle = t.hi || t.ph ? hi : color; g.fillText(t.w, cx, yy + dy); g.restore();
+        // follow-through (27 Nov): a highlighted word's accent underline draws in ~0.15 s after the word lands
+        if (t.hi && reveal && hi === ACC) { const u = eo(clamp(reveal(k + 3))); if (u > 0) { g.save(); g.globalAlpha *= 0.85 * clamp(r * 2.5); g.fillStyle = ACC; g.fillRect(cx, yy + size * 0.5, t.tw * u, Math.max(3, size * 0.06)); g.restore(); } }
       }
       cx += t.tw + lines.sp; k++;
     });
