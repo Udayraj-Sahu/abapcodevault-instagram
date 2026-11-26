@@ -198,5 +198,9 @@
   "2026-11-25_1930_reel_table-primary-key-mandt": {
     "media_id": "17960705502319755",
     "published_at": "2026-11-25T19:31:29+05:30"
+  },
+  "2026-11-26_0900_reel_table-currency-quantity": {
+    "media_id": "17876248659640714",
+    "published_at": "2026-11-26T09:02:18+05:30"
   }
 }
