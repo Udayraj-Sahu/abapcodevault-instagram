@@ -1,0 +1,557 @@
+{
+ "date": "2026-11-28",
+ "handle": "@abapcodevault",
+ "posts": [
+  {
+   "type": "reel",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "series": "course",
+   "format": "course_lesson",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 15,
+   "time": "09:00",
+   "slug": "table-include-append",
+   "tag": "DDIC · Tables 15/18",
+   "comment_word": "APPEND",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 15/18",
+     "title": "Need a *new field* in VBAK?",
+     "voiceover": "Stop editing VBAK: use these two structures. Last time we learned cardinality. Now, include and append structures.",
+     "spoken": "Stop editing VBAK: use these two structures. Last time we learned cardinality. Now, include and append structures."
+    },
+    {
+     "kind": "scene",
+     "scene": "reuse",
+     "label": "REUSE",
+     "heading": "One structure, *many tables*",
+     "say_inc": "includes",
+     "say_chg": "change",
+     "voiceover": "Why? Many tables need the same address fields. Put them in a structure: fields that hold no data. Each table includes it. Change it once, every table gets it.",
+     "spoken": "Why? Many tables need the same address fields. Put them in a structure: fields that hold no data. Each table includes it. Change it once, every table gets it."
+    },
+    {
+     "kind": "screen",
+     "heading": "Type *.INCLUDE* in Fields",
+     "tcode": "SE11",
+     "object": "Table ZCUSTOMER",
+     "tabs": [
+      "Attributes",
+      "Delivery and Maintenance",
+      "Fields",
+      "Entry help/check",
+      "Currency/Quantity Fields"
+     ],
+     "active": 2,
+     "fields": [
+      [
+       "MANDT",
+       "MANDT (key)"
+      ],
+      [
+       "CUST_ID",
+       "ZCUST_ID (key)"
+      ],
+      [
+       ".INCLUDE",
+       "ZS_ADDRESS"
+      ]
+     ],
+     "focus": [
+      2
+     ],
+     "focus_say": [
+      "dot"
+     ],
+     "note": "its fields appear in the table",
+     "voiceover": "In SE11, open your table's Fields tab. In a new row, type dot INCLUDE as the field name. Enter ZS_ADDRESS as the data element. Activate.",
+     "spoken": "In SE11, open your table's Fields tab. In a new row, type .INCLUDE as the field name. Enter ZS_ADDRESS as the data element. Activate."
+    },
+    {
+     "kind": "scene",
+     "scene": "append",
+     "label": "THE PROBLEM",
+     "heading": "VBAK is *SAP's* table",
+     "say_sap": "belongs",
+     "say_mod": "modification",
+     "say_app": "append",
+     "say_end": "end",
+     "say_safe": "untouched",
+     "voiceover": "But VBAK belongs to SAP. Editing it is a modification. So add an append structure: your structure, attached to one SAP table. Its fields land at the end. VBAK stays untouched.",
+     "spoken": "But VBAK belongs to SAP. Editing it is a modification. So add an append structure: your structure, attached to one SAP table. Its fields land at the end. VBAK stays untouched."
+    },
+    {
+     "kind": "screen",
+     "heading": "Click *Append Structure*",
+     "tcode": "SE11",
+     "object": "Table VBAK (display)",
+     "fields": [
+      [
+       "Button",
+       "Append Structure..."
+      ],
+      [
+       "Name",
+       "ZAVBAK"
+      ],
+      [
+       "Field",
+       "ZZPRIORITY"
+      ],
+      [
+       "Data element",
+       "ZPRIORITY"
+      ]
+     ],
+     "focus": [
+      0,
+      1,
+      2
+     ],
+     "focus_say": [
+      "append",
+      "name",
+      "field"
+     ],
+     "note": "then activate",
+     "voiceover": "Display VBAK in SE11 and click Append Structure. Name it ZAVBAK. Add the field ZZPRIORITY with its data element. Then activate.",
+     "spoken": "Display VBAK in SE11 and click Append Structure. Name it ZAVBAK. Add the field ZZPRIORITY with its data element. Then activate."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Field names *without ZZ*",
+     "bad": {
+      "title": "PRIORITY",
+      "sub": "SAP may ship the same name later",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "ZZPRIORITY",
+      "sub": "customer prefix, no clash",
+      "say": "use"
+     },
+     "voiceover": "Common mistake: naming the field just PRIORITY. SAP could ship that exact name in a later upgrade. Then it clashes. Use the Z Z prefix.",
+     "spoken": "Common mistake: naming the field just PRIORITY. SAP could ship that exact name in a later upgrade. Then it clashes. Use the ZZ prefix."
+    },
+    {
+     "kind": "scene",
+     "scene": "grid",
+     "label": "REMEMBER",
+     "heading": "Reuse or *extend*",
+     "tiles": [
+      {
+       "title": ".INCLUDE · reuse in your tables",
+       "icon": "table",
+       "say": "include"
+      },
+      {
+       "title": "Append · extend SAP's table",
+       "icon": "edit",
+       "say": "append"
+      },
+      {
+       "title": "ZZ prefix",
+       "icon": "key",
+       "say": "always"
+      }
+     ],
+     "accent": 1,
+     "voiceover": "Takeaway: include reuses fields across your own tables. Append extends an SAP table like VBAK, without touching it. Always with the Z Z prefix.",
+     "spoken": "Takeaway: include reuses fields across your own tables. Append extends an SAP table like VBAK, without touching it. Always with the ZZ prefix."
+    }
+   ],
+   "next": {
+    "title": "*BINARY SEARCH* on an unsorted table",
+    "when": "today at 1 PM",
+    "voice": "binary search on an unsorted table",
+    "vo": "At one PM: why READ TABLE says a row is missing when it's right there."
+   },
+   "caption": "Stop editing VBAK: use these two structures.\n\nSAP ABAP tables, Part 15 of 18: include structure vs append structure in SE11.\n\n1. A structure = a group of fields that holds no data\n2. .INCLUDE: reuse one structure (ZS_ADDRESS) in many of your own tables\n3. Append structure: add your fields to an SAP table like VBAK without a modification\n4. SE11: display VBAK, click Append Structure, name it ZAVBAK, add ZZPRIORITY\n5. Common mistake: field names without the ZZ or YY prefix\n\nSave this for your next VBAK enhancement.\n\nNext: BINARY SEARCH on an unsorted table (today at 1 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "format": "myth_fact",
+   "time": "13:00",
+   "slug": "binary-search-unsorted",
+   "tag": "Additional concepts · Myth or fact",
+   "comment_word": "SORT",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Additional concepts · Myth or fact",
+     "title": "READ TABLE can't find *customer 1000*?",
+     "voiceover": "Your READ TABLE can't find customer one thousand? It's right there in the table.",
+     "spoken": "Your READ TABLE can't find customer 1000? It's right there in the table."
+    },
+    {
+     "kind": "myth",
+     "myth": "BINARY SEARCH always makes READ TABLE faster",
+     "fact": "It only works on a table sorted by that key",
+     "detail": "unsorted = rows go missing",
+     "voiceover": "Myth: BINARY SEARCH always makes READ TABLE faster. Fact: it only works on a table sorted by the key you search.",
+     "spoken": "Myth: BINARY SEARCH always makes READ TABLE faster. Fact: it only works on a table sorted by the key you search."
+    },
+    {
+     "kind": "scene",
+     "scene": "halving",
+     "label": "THE PROBLEM",
+     "heading": "It throws away the *wrong half*",
+     "say1": "middle",
+     "say2": "throws",
+     "say3": "wrong",
+     "say4": "four",
+     "voiceover": "Why? Binary search checks the middle row. One thousand is smaller, so it throws away the bottom half. Unsorted, that's the wrong half. The row is there, and S Y subrc says four.",
+     "spoken": "Why? Binary search checks the middle row. 1000 is smaller, so it throws away the bottom half. Unsorted, that's the wrong half. The row is there, and sy-subrc says 4."
+    },
+    {
+     "kind": "code",
+     "heading": "*SORT* first, then search",
+     "typewriter": true,
+     "filename": "z_read_customer.abap",
+     "code": "SORT lt_kna1 BY kunnr.\nREAD TABLE lt_kna1 INTO DATA(ls_kna1)\n  WITH KEY kunnr = '0000001000'\n  BINARY SEARCH.",
+     "voiceover": "The fix: sort the table by the same field first. Then read it with BINARY SEARCH, using that field in the key.",
+     "spoken": "The fix: sort the table by the same field first. Then read it with BINARY SEARCH, using that field in the key."
+    },
+    {
+     "kind": "scene",
+     "scene": "halving",
+     "sorted": true,
+     "label": "THE FIX",
+     "heading": "Sorted: *two checks*",
+     "say1": "middle",
+     "say2": "left",
+     "say3": "found",
+     "say4": "zero",
+     "voiceover": "Same search on the sorted table. The middle is three thousand. Keep the left half. Next check: one thousand, found. S Y subrc is zero.",
+     "spoken": "Same search on the sorted table. The middle is 3000. Keep the left half. Next check: 1000, found. sy-subrc is 0."
+    },
+    {
+     "kind": "versus",
+     "label": "COMMON MISTAKE",
+     "heading": "Sorted by the *wrong field*",
+     "bad": {
+      "title": "SORT BY name1",
+      "sub": "then search by kunnr: still misses",
+      "say": "mistake"
+     },
+     "good": {
+      "title": "SORT BY kunnr",
+      "sub": "the same field as WITH KEY",
+      "say": "same"
+     },
+     "voiceover": "Common mistake: sorting by name, then searching by customer. Always sort by the same fields you search with.",
+     "spoken": "Common mistake: sorting by name, then searching by customer. Always sort by the same fields you search with."
+    },
+    {
+     "kind": "scene",
+     "scene": "grid",
+     "label": "TAKEAWAY",
+     "heading": "Sort, then *search*",
+     "tiles": [
+      {
+       "title": "SORT BY the key",
+       "icon": "table",
+       "say": "sort"
+      },
+      {
+       "title": "then BINARY SEARCH",
+       "icon": "search",
+       "say": "binary"
+      },
+      {
+       "title": "or a SORTED table",
+       "icon": "check",
+       "say": "sorted"
+      }
+     ],
+     "accent": 0,
+     "voiceover": "Takeaway: sort by the key, then binary search. Or skip all that and use a sorted table, which searches by its key for you. Customer one thousand, found.",
+     "spoken": "Takeaway: sort by the key, then binary search. Or skip all that and use a sorted table, which searches by its key for you. Customer 1000, found."
+    }
+   ],
+   "next": {
+    "title": "Part 16 · *Table* key points",
+    "when": "today at 5 PM",
+    "voice": "part sixteen, table key points",
+    "vo": "At five PM: the rules every table must pass before it activates."
+   },
+   "caption": "Your READ TABLE can't find customer 1000? It's right there in the table.\n\nMyth or fact: BINARY SEARCH always makes READ TABLE faster on an internal table.\n\n1. Binary search checks the middle row and throws half the table away\n2. On an unsorted table it can throw away the half with your row: sy-subrc 4\n3. Fix: SORT the table BY the same field you search with\n4. Or use a SORTED table, it searches by its key for you\n\nComment SORT if this bug ever cost you an afternoon.\n\nNext: Part 16, Table key points (today at 5 PM).\n\nMore snippets like this: ABAP Code Vault, link in bio.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#abaptips",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "series": "course",
+   "format": "course_lesson",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 16,
+   "time": "17:00",
+   "slug": "table-key-points",
+   "tag": "DDIC · Tables 16/18",
+   "comment_word": "MANDT",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 16/18",
+     "title": "Will your *table* pass activation?",
+     "voiceover": "Stop missing these five SE11 table rules. Last time we learned include and append structures. Now, the key rules of tables.",
+     "spoken": "Stop missing these five SE11 table rules. Last time we learned include and append structures. Now, the key rules of tables."
+    },
+    {
+     "kind": "scene",
+     "scene": "keyorder",
+     "label": "RULE 1",
+     "heading": "Keys *on top*",
+     "say_err": "top",
+     "say_fix": "first",
+     "say_m": "MANDT",
+     "voiceover": "Why rules? SAP builds the primary key from the top rows. A key field below a normal field isn't allowed. So key fields come first. And in a client table, MANDT is the first key.",
+     "spoken": "Why rules? SAP builds the primary key from the top rows. A key field below a normal field isn't allowed. So key fields come first. And in a client table, MANDT is the first key."
+    },
+    {
+     "kind": "output",
+     "label": "EXAMPLE",
+     "heading": "*SCARR* follows the rules",
+     "tcode": "SE11",
+     "title": "Table SCARR · Fields",
+     "columns": [
+      "Field",
+      "Key",
+      "Data element"
+     ],
+     "rows": [
+      [
+       "MANDT",
+       "✓",
+       "MANDT"
+      ],
+      [
+       "CARRID",
+       "✓",
+       "S_CARR_ID"
+      ],
+      [
+       "CARRNAME",
+       "",
+       "S_CARRNAME"
+      ],
+      [
+       "CURRCODE",
+       "",
+       "S_CURRCODE"
+      ]
+     ],
+     "row_say": [
+      "client",
+      "CARRID",
+      "name",
+      "currency"
+     ],
+     "voiceover": "Look at SCARR. The client first, then CARRID, both key fields. Then the name and the currency. Each field has a data element.",
+     "spoken": "Look at SCARR. The client first, then CARRID, both key fields. Then the name and the currency. Each field has a data element."
+    },
+    {
+     "kind": "checklist",
+     "label": "RULES 2-4",
+     "heading": "Three more *musts*",
+     "items": [
+      "Data elements - labels + F1 help",
+      "CURR/QUAN - need a reference field",
+      "Technical settings - before activation"
+     ],
+     "voiceover": "Data elements give every field its labels and F1 help. CURR and QUAN fields need a reference field. Technical settings must be saved before you activate.",
+     "spoken": "Data elements give every field its labels and F1 help. CURR and QUAN fields need a reference field. Technical settings must be saved before you activate."
+    },
+    {
+     "kind": "scene",
+     "scene": "activate",
+     "label": "RULE 5",
+     "heading": "Activate = *real table*",
+     "say_p": "activate",
+     "say_db": "creates",
+     "say_same": "same",
+     "say_tr": "transparent",
+     "voiceover": "When you activate, SAP creates the real table in the database. Same name, same fields. That's what transparent table means.",
+     "spoken": "When you activate, SAP creates the real table in the database. Same name, same fields. That's what transparent table means."
+    },
+    {
+     "kind": "scene",
+     "scene": "grid",
+     "label": "REMEMBER",
+     "heading": "Five rules, *one table*",
+     "tiles": [
+      {
+       "title": "Keys on top, MANDT first",
+       "icon": "key",
+       "say": "keys"
+      },
+      {
+       "title": "Data elements",
+       "icon": "edit",
+       "say": "data"
+      },
+      {
+       "title": "Settings, then activate",
+       "icon": "check",
+       "say": "settings"
+      }
+     ],
+     "accent": 0,
+     "voiceover": "Takeaway: keys on top, client first. Data elements on every field, so labels and help come free. Technical settings, then activate.",
+     "spoken": "Takeaway: keys on top, client first. Data elements on every field, so labels and help come free. Technical settings, then activate."
+    }
+   ],
+   "next": {
+    "title": "Part 17 · Table *mistakes* + interview",
+    "when": "tonight at 7:30 PM",
+    "voice": "part seventeen, table mistakes and interview questions",
+    "quiz": {
+     "question": "Quiz: which field comes *first*?",
+     "options": [
+      "CARRID",
+      "MANDT",
+      "CURRCODE"
+     ]
+    },
+    "vo": "Quiz: which field comes first in a client table? The answer is in this reel. Comment it."
+   },
+   "caption": "Stop missing these five SE11 table rules.\n\nSAP ABAP tables, Part 16 of 18: the key rules of an SE11 database table.\n\n1. Key fields come first, at the top of the Fields tab\n2. In a client-dependent table, MANDT is the first key field\n3. Use data elements: labels and F1 help for every field\n4. CURR and QUAN fields need a reference field\n5. Technical settings before activation; activation creates the table in the database\n\nQuiz: which field comes first in a client table? Comment your answer, it is in the reel.\n\nNext: Part 17, Table mistakes + interview (tonight at 7:30 PM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#ddic",
+    "#abapcodevault"
+   ]
+  },
+  {
+   "type": "reel",
+   "voice": "am_michael",
+   "voice_lang": "en",
+   "series": "course",
+   "format": "course_lesson",
+   "syllabus": "3.3",
+   "parts": 18,
+   "part": 17,
+   "time": "19:30",
+   "slug": "table-mistakes-interview",
+   "tag": "DDIC · Tables 17/18",
+   "comment_word": "TABLES",
+   "slides": [
+    {
+     "kind": "cover",
+     "kicker": "Tables · Part 17/18",
+     "title": "Four *table mistakes* that hurt",
+     "voiceover": "Stop making these four table mistakes. Last time we learned the key rules of tables. Now, the mistakes and the interview questions.",
+     "spoken": "Stop making these four table mistakes. Last time we learned the key rules of tables. Now, the mistakes and the interview questions."
+    },
+    {
+     "kind": "scene",
+     "scene": "mistakes",
+     "label": "COMMON MISTAKES",
+     "heading": "Check these *four*",
+     "items": [
+      {
+       "title": "No MANDT",
+       "cons": "every client sees the same rows",
+       "say": "one",
+       "say_c": "every"
+      },
+      {
+       "title": "Delivery class A for settings",
+       "cons": "SM30 asks for no transport",
+       "say": "two",
+       "say_c": "transport"
+      },
+      {
+       "title": "Buffering VBAK",
+       "cons": "other servers can read old values",
+       "say": "three",
+       "say_c": "servers"
+      },
+      {
+       "title": "CURR without a reference field",
+       "cons": "activation fails",
+       "say": "four",
+       "say_c": "reference"
+      }
+     ],
+     "voiceover": "Mistake one: no MANDT. Then every client sees the same rows. Two: delivery class A for a settings table. SM30 won't ask for a transport. Three: buffering VBAK. It changes all day, so other servers can read old values. Four: a CURR field without a reference field. Activation fails.",
+     "spoken": "Mistake one: no MANDT. Then every client sees the same rows. Two: delivery class A for a settings table. SM30 won't ask for a transport. Three: buffering VBAK. It changes all day, so other servers can read old values. Four: a CURR field without a reference field. Activation fails."
+    },
+    {
+     "kind": "chat",
+     "heading": "Interview *question 1*",
+     "messages": [
+      {
+       "from": "Interviewer",
+       "text": "What is a transparent table?"
+      },
+      {
+       "from": "You",
+       "text": "One table in the database, with the same name and fields as in SE11."
+      }
+     ],
+     "voiceover": "Interview question one: what is a transparent table? Answer: one table in the database, with the same name and fields as in SE11.",
+     "spoken": "Interview question one: what is a transparent table? Answer: one table in the database, with the same name and fields as in SE11."
+    },
+    {
+     "kind": "scene",
+     "scene": "proposal",
+     "label": "INTERVIEW · Q2",
+     "heading": "Check table or *value table*?",
+     "say_d": "domain",
+     "say_p": "proposal",
+     "say_c": "check",
+     "say_r": "really",
+     "voiceover": "Question two: check table or value table? The value table sits on the domain, like T005 on LAND1. It's only a proposal. The check table is the one the foreign key really checks.",
+     "spoken": "Question two: check table or value table? The value table sits on the domain, like T005 on LAND1. It's only a proposal. The check table is the one the foreign key really checks."
+    },
+    {
+     "kind": "answer",
+     "label": "REMEMBER",
+     "heading": "Check *before* you activate",
+     "body": "MANDT, delivery class, buffering, reference fields: check all four before every activation.",
+     "highlight": "check all four",
+     "voiceover": "Takeaway: before every activation, check MANDT, the delivery class, buffering and reference fields. Four checks. That's the answer interviewers want.",
+     "spoken": "Takeaway: before every activation, check MANDT, the delivery class, buffering and reference fields. Four checks. That's the answer interviewers want."
+    }
+   ],
+   "next": {
+    "title": "Part 18 · Tables *recap quiz*",
+    "when": "tomorrow at 9 AM",
+    "voice": "part eighteen, the tables recap quiz",
+    "vo": "Tomorrow at nine AM: eighteen parts of tables, one quiz. How many can you answer?"
+   },
+   "caption": "Stop making these four table mistakes.\n\nSAP ABAP tables, Part 17 of 18: common SE11 table mistakes and interview questions.\n\n1. No MANDT: every client sees the same rows\n2. Delivery class A for a settings table: SM30 asks for no transport\n3. Buffering VBAK: other servers can read old values\n4. CURR without a reference field: activation fails\n5. Interview: transparent table, and check table vs value table\n\nWhich mistake have you seen in a real project? Tell me in the comments.\n\nNext: Part 18, Tables recap quiz (tomorrow at 9 AM).\n\nFollow the series so you don't miss it.",
+   "hashtags": [
+    "#sap",
+    "#abap",
+    "#sapabap",
+    "#sapinterview",
+    "#abapcodevault"
+   ]
+  }
+ ]
+}

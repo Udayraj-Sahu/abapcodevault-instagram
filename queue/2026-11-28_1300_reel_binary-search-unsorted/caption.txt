@@ -1,0 +1,16 @@
+Your READ TABLE can't find customer 1000? It's right there in the table.
+
+Myth or fact: BINARY SEARCH always makes READ TABLE faster on an internal table.
+
+1. Binary search checks the middle row and throws half the table away
+2. On an unsorted table it can throw away the half with your row: sy-subrc 4
+3. Fix: SORT the table BY the same field you search with
+4. Or use a SORTED table, it searches by its key for you
+
+Comment SORT if this bug ever cost you an afternoon.
+
+Next: Part 16, Table key points (today at 5 PM).
+
+More snippets like this: ABAP Code Vault, link in bio.
+
+#sap #abap #sapabap #abaptips #abapcodevault

@@ -1,7 +1,7 @@
 {
  "handle": "@abapcodevault",
  "mode": "reels_only",
- "last_queued_date": "2026-11-27",
+ "last_queued_date": "2026-11-28",
  "history": [
   "4 ABAP 7.40 syntax tricks (old vs new)",
   "sy-subrc cheat sheet",
@@ -67,7 +67,11 @@
   "Course 3.3 Tables part 12 Log data changes (rec/client, DBTABLOG, SCU3)",
   "Interview: SELECT SINGLE vs UP TO 1 ROWS",
   "Course 3.3 Tables part 13 Foreign key and check table (ZTAIRLINE-COUNTRY -> T005)",
-  "Course 3.3 Tables part 14 Cardinality (1/C left, 1/C/N/CN right)"
+  "Course 3.3 Tables part 14 Cardinality (1/C left, 1/C/N/CN right)",
+  "Course 3.3 Tables part 15 Include vs append structures (ZS_ADDRESS, ZAVBAK-ZZPRIORITY)",
+  "READ TABLE without BINARY SEARCH on a sorted table",
+  "Course 3.3 Tables part 16 Table key points (keys first, MANDT, data elements, SCARR)",
+  "Course 3.3 Tables part 17 Table mistakes + interview (transparent table, check vs value table)"
  ],
  "recent_formats": {
   "reel": [
@@ -128,6 +132,10 @@
    "course_lesson",
    "interview_chat",
    "course_lesson",
+   "course_lesson",
+   "course_lesson",
+   "myth_fact",
+   "course_lesson",
    "course_lesson"
   ],
   "carousel": [],
@@ -141,30 +149,6 @@
    "lesson": 4
   },
   "pending_parts": [
-   {
-    "syllabus": "3.3",
-    "topic": "Tables",
-    "part": 15,
-    "parts": 18,
-    "title": "Include vs append structures",
-    "focus": "Map Q6: .INCLUDE (reuse a structure in many tables) vs .APPEND (add customer fields to an SAP table without modification); ZZ field names."
-   },
-   {
-    "syllabus": "3.3",
-    "topic": "Tables",
-    "part": 16,
-    "parts": 18,
-    "title": "Table key points",
-    "focus": "Map Q7: the key rules of tables in one reel."
-   },
-   {
-    "syllabus": "3.3",
-    "topic": "Tables",
-    "part": 17,
-    "parts": 18,
-    "title": "Table mistakes + interview",
-    "focus": "Map Q8+Q9: common mistakes (no MANDT, wrong delivery class, buffering a changing table, missing reference field) + interview Q&A."
-   },
    {
     "syllabus": "3.3",
     "topic": "Tables",
@@ -275,6 +259,30 @@
     "parts": 18,
     "title": "Cardinality",
     "focus": "Map Q6: foreign key cardinality left/right (1:N, 1:CN, C:N ...) in plain words with one example."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 15,
+    "parts": 18,
+    "title": "Include vs append structures",
+    "focus": "Map Q6: .INCLUDE (reuse a structure in many tables) vs .APPEND (add customer fields to an SAP table without modification); ZZ field names."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 16,
+    "parts": 18,
+    "title": "Table key points",
+    "focus": "Map Q7: the key rules of tables in one reel."
+   },
+   {
+    "syllabus": "3.3",
+    "topic": "Tables",
+    "part": 17,
+    "parts": 18,
+    "title": "Table mistakes + interview",
+    "focus": "Map Q8+Q9: common mistakes (no MANDT, wrong delivery class, buffering a changing table, missing reference field) + interview Q&A."
    }
   ],
   "terms": [
@@ -362,7 +370,13 @@
    "SCU3 (table history)",
    "Check required (foreign key)",
    "foreign key table / field assignment",
-   "cardinality (left 1/C, right 1/C/N/CN)"
+   "cardinality (left 1/C, right 1/C/N/CN)",
+   "structure (group of fields, holds no data)",
+   ".INCLUDE (include structure)",
+   "append structure",
+   "modification",
+   "ZZ/YY customer field prefix",
+   "Activate (creates the database table)"
   ]
  },
  "improve_next": {

@@ -1,0 +1,17 @@
+Stop missing these five SE11 table rules.
+
+SAP ABAP tables, Part 16 of 18: the key rules of an SE11 database table.
+
+1. Key fields come first, at the top of the Fields tab
+2. In a client-dependent table, MANDT is the first key field
+3. Use data elements: labels and F1 help for every field
+4. CURR and QUAN fields need a reference field
+5. Technical settings before activation; activation creates the table in the database
+
+Quiz: which field comes first in a client table? Comment your answer, it is in the reel.
+
+Next: Part 17, Table mistakes + interview (tonight at 7:30 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

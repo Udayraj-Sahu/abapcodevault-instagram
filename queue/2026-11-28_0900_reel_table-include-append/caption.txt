@@ -1,0 +1,17 @@
+Stop editing VBAK: use these two structures.
+
+SAP ABAP tables, Part 15 of 18: include structure vs append structure in SE11.
+
+1. A structure = a group of fields that holds no data
+2. .INCLUDE: reuse one structure (ZS_ADDRESS) in many of your own tables
+3. Append structure: add your fields to an SAP table like VBAK without a modification
+4. SE11: display VBAK, click Append Structure, name it ZAVBAK, add ZZPRIORITY
+5. Common mistake: field names without the ZZ or YY prefix
+
+Save this for your next VBAK enhancement.
+
+Next: BINARY SEARCH on an unsorted table (today at 1 PM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #ddic #abapcodevault

@@ -1,0 +1,17 @@
+Stop making these four table mistakes.
+
+SAP ABAP tables, Part 17 of 18: common SE11 table mistakes and interview questions.
+
+1. No MANDT: every client sees the same rows
+2. Delivery class A for a settings table: SM30 asks for no transport
+3. Buffering VBAK: other servers can read old values
+4. CURR without a reference field: activation fails
+5. Interview: transparent table, and check table vs value table
+
+Which mistake have you seen in a real project? Tell me in the comments.
+
+Next: Part 18, Tables recap quiz (tomorrow at 9 AM).
+
+Follow the series so you don't miss it.
+
+#sap #abap #sapabap #sapinterview #abapcodevault
