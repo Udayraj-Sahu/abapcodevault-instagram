@@ -805,6 +805,54 @@ def script_lint(p):
     return msgs
 
 
+SCRIPT_CUE_LAST = 3  # a sync word among the last 3 words of a slide lands ~1 s before the cut: too late to be seen (28 Nov)
+
+
+def _cue_words(s):
+    """Sync words of a slide (versus say, grid tiles, row_say, focus_say, scene say_*), as the engine uses them."""
+    out = []
+    for side in ("bad", "good"):
+        if isinstance(s.get(side), dict) and s[side].get("say"):
+            out.append((f"{side}.say", s[side]["say"]))
+    for j, tile in enumerate(s.get("tiles") or []):
+        if isinstance(tile, dict) and tile.get("say"):
+            out.append((f"tile {j + 1}", tile["say"]))
+    for j, it in enumerate(s.get("items") or []):
+        if isinstance(it, dict):
+            out += [(f"item {j + 1}.{k}", it[k]) for k in ("say", "say_c") if it.get(k)]
+    fs = s.get("focus_say")
+    for j, w in enumerate(fs.values() if isinstance(fs, dict) else (fs or [])):
+        out.append((f"focus_say {j + 1}", w))
+    for j, w in enumerate(s.get("row_say") or []):
+        out.append((f"row_say {j + 1}", w))
+    out += [(k, v) for k, v in s.items() if k.startswith("say") and isinstance(v, str)]
+    return out
+
+
+def cue_lint(p):
+    """Cue check (script, 28 Nov): every sync word must be spoken, and not in the last words of its slide,
+    or the card/tile it reveals appears after the voice has moved on (temporal contiguity)."""
+    msgs, slug = [], p.get("slug", "?")
+    norm = lambda w: re.sub(r"[^a-z0-9]", "", str(w).lower())
+    for i, s in enumerate(p.get("slides", []), 1):
+        words = [w for w in (norm(x) for x in (s.get("voiceover") or "").split()) if w]
+        alt = [w for w in (norm(x) for x in (s.get("spoken") or "").split()) if w]
+        if len(words) < 6:
+            continue
+        for what, key in _cue_words(s):
+            k = norm(key)
+            if not k:
+                continue
+            find = lambda ws: next((j for j, w in enumerate(ws) if w == k or (len(k) >= 3 and w.startswith(k)) or (len(w) >= 4 and k.startswith(w))), None)
+            hit = find(words)
+            if hit is None and find(alt) is not None:
+                continue
+            if hit is None:
+                msgs.append(f"CUE: '{key}' ({what}) is never spoken in {slug} slide {i}; that element falls back to a guessed time")
+            elif hit >= len(words) - SCRIPT_CUE_LAST:
+                msgs.append(f"CUE: '{key}' ({what}) is spoken in the last words of {slug} slide {i}; its element may appear too late; check the stills or cue an earlier word")
+    return msgs
+
 def build_narration(slides, folder, p, default_secs):
     """Synthesize one clip per slide that has 'voiceover'. Returns (durations, wav path or None)."""
     voice = p.get("voice", "am_michael")
@@ -1864,6 +1912,8 @@ def make_motion_reel(p, slides, folder, handle, accent):
     has_vo = any(s.get("voiceover") for s in slides)
     if has_vo:
         OVERLAPS.extend(script_lint(p))
+        for m in cue_lint(p):   # advisory (28 Nov): check the stills, fix if the element shows up too late
+            print(m)
         durations, vo_wav, speech = build_narration(slides, folder, p, default)
         dmin, dmax = (COURSE_MIN, COURSE_MAX) if p.get("series") == "course" else (REEL_MIN, REEL_MAX)
         rmin, rmax = float(p.get("min_len", dmin)), float(p.get("max_len", dmax))
