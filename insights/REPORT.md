@@ -1,11 +1,15 @@
-# Reel insights (updated 2026-11-27 05:21 IST)
+# Reel insights (updated 2026-11-28 05:00 IST)
 
-Followers: 9  ·  reels tracked: 50
+Followers: 9  ·  reels tracked: 54
 
 | Reel | Views | Reach | Avg watch (s) | Skip rate | Likes | Comments | Shares (sends) | Saves |
 |---|---|---|---|---|---|---|---|---|
+| 2026-11-27_1930 table-cardinality |  |  |  |  | 1 | 0 |  |  |
+| 2026-11-27_1700 table-foreign-key |  |  |  |  | 0 | 0 |  |  |
+| 2026-11-27_1300 select-single-vs-up-to |  |  |  |  | 0 | 0 |  |  |
+| 2026-11-27_0900 table-log-data-changes |  |  |  |  | 0 | 0 |  |  |
 | 2026-11-26_1930 table-buffering |  |  |  |  | 0 | 0 |  |  |
-| 2026-11-26_1700 table-technical-settings |  |  |  |  | 0 | 0 |  |  |
+| 2026-11-26_1700 table-technical-settings |  |  |  |  | 1 | 0 |  |  |
 | 2026-11-26_1300 bapi-missing-commit |  |  |  |  | 0 | 0 |  |  |
 | 2026-11-26_0900 table-currency-quantity |  |  |  |  | 0 | 0 |  |  |
 | 2026-11-25_1930 table-primary-key-mandt |  |  |  |  | 0 | 0 |  |  |
